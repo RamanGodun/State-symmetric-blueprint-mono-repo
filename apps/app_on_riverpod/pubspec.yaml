@@ -41,6 +41,7 @@ dependencies:
   url_strategy: ^0.3.0
 
 dev_dependencies:
+  # dart_code_metrics: ^5.7.6
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.4

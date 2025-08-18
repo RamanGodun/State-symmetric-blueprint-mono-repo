@@ -1,5 +1,7 @@
 import 'package:app_on_bloc/app_bootstrap_and_config/firebase_config/user_auth_cubit/auth_cubit.dart';
 import 'package:app_on_bloc/core/base_moduls/navigation/module_core/go_router_factory.dart';
+import 'package:core/base_modules/localization/core_of_module/localization_wrapper.dart'
+    show LocalizationWrapper;
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart';
 import 'package:core/base_modules/overlays/core/global_overlay_handler.dart';
 import 'package:core/base_modules/theme/module_core/app_theme_preferences.dart'
@@ -9,6 +11,24 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart' show GoRouter;
+
+/// 🌍✅ [AppLocalizationShell] — Ensures the entire app tree is properly localized before rendering the root UI.
+//
+final class AppLocalizationShell extends StatelessWidget {
+  ///----------------------------------------------
+  const AppLocalizationShell({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    //
+    /// Injects localization context into the widget tree (provides all supported locales and translation assets)
+    return LocalizationWrapper.configure(const AppRootViewShell());
+  }
+}
+
+////
+
+////
 
 /// 🌳🧩 [AppRootViewShell] — Top-level reactive widget listening to [AppThemeCubit].
 /// ✅ Rebuilds GoRouter reactively on any AuthState change.

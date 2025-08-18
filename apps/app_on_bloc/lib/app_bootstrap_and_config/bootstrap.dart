@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:app_on_bloc/app_bootstrap_and_config/app_bootstrap/app_bootstrap.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
@@ -24,8 +25,12 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       WidgetsFlutterBinding.ensureInitialized();
 
       // Run initialization pipeline
-      // const appBootstrap = AppBootstrap();
-      // await appBootstrap.initAllServices();
+      const appBootstrap = AppBootstrap(
+        // ? Here can be plugged in custom dependencies (e.g.  "localStorage: IsarLocalStorage()," )
+      );
+
+      /// 🚀 Runs all startup logic (localization, Firebase, DI container, debug tools, local storage, etc).
+      await appBootstrap.initAllServices();
 
       runApp(await builder());
     },

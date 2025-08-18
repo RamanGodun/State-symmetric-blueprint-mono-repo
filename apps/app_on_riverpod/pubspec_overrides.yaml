@@ -1,0 +1,10 @@
+# melos_managed_dependency_overrides: adapter_for_apps_on_riverpod,app_bootstrap,assets,core
+dependency_overrides:
+  adapter_for_apps_on_riverpod:
+    path: ../../packages/adapter_for_apps_on_riverpod
+  app_bootstrap:
+    path: ../../packages/app_bootstrap
+  assets:
+    path: ../../packages/assets
+  core:
+    path: ../../packages/core

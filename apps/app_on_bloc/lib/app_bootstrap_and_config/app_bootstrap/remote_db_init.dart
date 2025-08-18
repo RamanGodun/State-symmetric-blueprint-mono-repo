@@ -1,5 +1,6 @@
 import 'package:app_on_bloc/app_bootstrap_and_config/firebase_config/env_config.dart';
-import 'package:app_on_bloc/app_bootstrap_and_config/firebase_config/env_firebase_options.dart';
+import 'package:app_on_bloc/app_bootstrap_and_config/firebase_config/env_firebase_options.dart'
+    show EnvFirebaseOptions;
 import 'package:app_on_bloc/app_bootstrap_and_config/firebase_config/firebase_utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
@@ -39,6 +40,7 @@ final class FirebaseRemoteDataBase implements IRemoteDataBase {
         debugPrint('🔥 Initializing Firebase...');
         await Firebase.initializeApp(
           options: EnvFirebaseOptions.currentPlatform,
+          // options: FirebaseOptionsSelector.current,
         );
         debugPrint('🔥 Firebase initialized!');
       } on FirebaseException catch (e) {

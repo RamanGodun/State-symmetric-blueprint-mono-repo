@@ -109,3 +109,20 @@ AUDIT_RESULTS.md
 Icon?
 Checklist.md
 **/CHANGELOG.md
+
+
+
+# Firebase generated
+!*.example
+lib/firebase_options_*.dart
+lib/firebase_options.dart
+firebase.json
+
+# Env files
+**/.env*
+!**/.env.example
+!*.example
+
+
+
+

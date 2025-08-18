@@ -1,5 +1,7 @@
 import 'package:app_on_riverpod/core/base_modules/navigation/module_core/provider_for_go_router.dart'
     show routerProvider;
+import 'package:core/base_modules/localization/core_of_module/localization_wrapper.dart'
+    show LocalizationWrapper;
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
     show LocaleKeys;
 import 'package:core/base_modules/overlays/core/global_overlay_handler.dart'
@@ -10,6 +12,24 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart' show GoRouter;
+
+/// 🌍✅ [AppLocalizationShell] — Ensures the entire app tree is properly localized before rendering the root UI.
+//
+final class AppLocalizationShell extends StatelessWidget {
+  ///----------------------------------------------
+  const AppLocalizationShell({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    //
+    /// Injects localization context into the widget tree (provides all supported locales and translation assets)
+    return LocalizationWrapper.configure(const AppRootViewShell());
+  }
+}
+
+////
+
+////
 
 /// 🧩 [AppRootViewShell] — Combines both Theme and Router configuration
 /// ✅ Ensures minimal rebuilds using selective `ref.watch(...)`

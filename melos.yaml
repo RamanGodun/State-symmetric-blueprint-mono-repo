@@ -70,6 +70,10 @@ scripts:
   run:riverpod:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter run --flavor staging     -t lib/main_staging.dart"
   run:riverpod:prod: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter run --flavor production  -t lib/main_production.dart"
 
+  # ---------- Run (direct entrypoint, без flavor) ----------
+  run:bloc:main:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter run -t apps/app_on_bloc/lib/main_development.dart"
+  run:bloc:main:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter run -t apps/app_on_bloc/lib/main_staging.dart"
+
   # ---------- Builds ----------
   build:bloc:apk:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter build apk       --flavor development -t lib/main_development.dart"
   build:bloc:aab:prod: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter build appbundle --flavor production  -t lib/main_production.dart"
@@ -84,6 +88,16 @@ scripts:
   # ---------- Workspace checks ----------
   check: melos run format:check && melos run analyze && melos run test
   ci: melos run check
+
+  # ---------- Dart Code Metrics (global-DCM) ----------
+  dcm: melos exec -- "dart pub global run dart_code_metrics:metrics analyze lib --disable-sunset-warning --exclude='{/**.g.dart,/**.freezed.dart}'"
+  dcm:html: melos exec -- "dart pub global run dart_code_metrics:metrics analyze lib --reporter=html --output-directory=build/dcm --disable-sunset-warning --exclude='{/**.g.dart,/**.freezed.dart}' && (open build/dcm/index.html || xdg-open build/dcm/index.html || start build\\dcm\\index.html)"
+  dcm:changed: melos exec --since -- "dart pub global run dart_code_metrics:metrics analyze lib --disable-sunset-warning --exclude='{/**.g.dart,/**.freezed.dart}'"
+
+  # Through apps/packages:
+  dcm:bloc: melos exec --scope="app_on_bloc" -- "dart pub global run dart_code_metrics:metrics analyze lib --exclude='{/**.g.dart,/**.freezed.dart}'"
+  dcm:core: melos exec --scope="core" -- "dart pub global run dart_code_metrics:metrics analyze lib --disable-sunset-warning --exclude='{/**.g.dart,/**.freezed.dart}'"
+  dcm:riverpod: melos exec --scope="app_on_riverpod" -- "dart pub global run dart_code_metrics:metrics analyze lib --disable-sunset-warning --exclude='{/**.g.dart,/**.freezed.dart}'"
 
   # ---------- Versioning (per-package releases if ever needed) ----------
   release: melos version

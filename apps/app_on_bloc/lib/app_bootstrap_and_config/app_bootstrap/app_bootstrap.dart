@@ -60,7 +60,7 @@ final class AppBootstrap implements IAppBootstrap {
     //
     debugPrint('🟢 [Startup] Flutter bindings and platform checks...');
     // Ensures Flutter bindings are ready before any further setup.
-    WidgetsFlutterBinding.ensureInitialized();
+    // WidgetsFlutterBinding.ensureInitialized();
     //
     /// Validates platform (min. OS versions, emulator restrictions, etc).
     await PlatformValidationUtil.run();
