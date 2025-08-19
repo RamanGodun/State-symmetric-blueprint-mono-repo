@@ -1,4 +1,4 @@
-import 'package:app_bootstrap_and_config/app_bootstrap_and_config.dart';
+import 'package:app_bootstrap_and_config/enums_and_constants/flavor_config.dart';
 
 /// 🌐 [Environment] — Enum that defines app runtime modes.
 ///
@@ -51,6 +51,16 @@ final class EnvConfig {
     AppFlavor.staging => Environment.staging,
   };
 
+  /// 🐞 Toggle for debug tools and verbose logging
+  static bool get isDebugMode => currentEnv == Environment.dev;
+
+  /// 🚀 Toggle for staging QA tools
+  static bool get isStagingMode => currentEnv == Environment.staging;
+
+  /// 🔐 Indicates if app is running in production
+  // static bool get isProduction => currentEnv == Environment.prod;
+
+  /*
   /// 🌐 API base URL by environment
   static String get apiBaseUrl => switch (currentEnv) {
     Environment.dev => 'https://api-dev.example.com',
@@ -64,15 +74,7 @@ final class EnvConfig {
     Environment.staging => 'STAGING_FIREBASE_KEY',
     // Environment.prod => 'PROD_FIREBASE_KEY',
   };
-
-  /// 🐞 Toggle for debug tools and verbose logging
-  static bool get isDebugMode => currentEnv == Environment.dev;
-
-  /// 🚀 Toggle for staging QA tools
-  static bool get isStagingMode => currentEnv == Environment.staging;
-
-  /// 🔐 Indicates if app is running in production
-  // static bool get isProduction => currentEnv == Environment.prod;
+ */
 
   //
 }

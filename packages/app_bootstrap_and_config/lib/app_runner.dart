@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:app_bootstrap_and_config/src/bootstrap_interface.dart';
+import 'package:app_bootstrap_and_config/contracts/bootstrap.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 

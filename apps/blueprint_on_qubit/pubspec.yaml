@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   adapter_for_apps_on_bloc:
-    path: ../../packages/adapter_for_apps_on_bloc
+    path: ../../packages/specific__bloc
   app_bootstrap_and_config:
     path: ../../packages/app_bootstrap_and_config
   bloc: ^9.0.0
