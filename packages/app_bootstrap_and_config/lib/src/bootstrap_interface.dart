@@ -1,8 +1,7 @@
-part of 'app_bootstrap.dart';
-
-/// 🏁 [IAppBootstrap] —  Abstract contract for app startup logic
+/// 🏁 [IAppBootstrap] — abstract contract for app startup logic.
+/// Use `implements` from app packages.
 //
-sealed class IAppBootstrap {
+abstract interface class IAppBootstrap {
   ///------------------
   //
   /// 🚀 Main initialization: all services and dependencies

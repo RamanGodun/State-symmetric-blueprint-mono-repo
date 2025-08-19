@@ -1,15 +1,14 @@
-import 'package:blueprint_on_riverpod/app_bootstrap_and_config/remote_db_init.dart';
+import 'package:app_bootstrap_and_config/app_bootstrap_and_config.dart';
+import 'package:blueprint_on_riverpod/app_bootstrap/remote_db_init.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/material.dart' show WidgetsFlutterBinding;
 
-part 'bootstrap_interface.dart';
-
-/// 🧰 [AppBootstrap] — Handles all critical bootstrapping (with injectable stacks for testing/mocks).
+/// 🧰 [DefaultAppBootstrap] — Handles all critical bootstrapping (with injectable stacks for testing/mocks).
 //
-final class AppBootstrap implements IAppBootstrap {
+final class DefaultAppBootstrap implements IAppBootstrap {
   ///----------------------------------------
   /// Constructor allows the injection of custom/mock implementations.
-  const AppBootstrap({
+  const DefaultAppBootstrap({
     // ILocalStorage? localStorageStack,
     // IDIConfig? diConfiguration,
     IRemoteDataBase? firebaseStack,

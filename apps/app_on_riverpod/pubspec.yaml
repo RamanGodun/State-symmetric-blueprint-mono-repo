@@ -10,10 +10,6 @@ environment:
 dependencies:
   adapter_for_apps_on_riverpod:
     path: ../../packages/adapter_for_apps_on_riverpod
-  app_bootstrap:
-    path: ../../packages/app_bootstrap
-  assets:
-    path: ../../packages/assets
   bloc: ^9.0.0
   cached_network_image: ^3.4.1
   cloud_firestore: ^6.0.0

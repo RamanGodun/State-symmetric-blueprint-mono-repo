@@ -7,34 +7,18 @@ environment:
   sdk: ^3.8.0
 
 dependencies:
-  # adapter_for_apps_on_bloc:
-  #   path: ../../packages/adapter_for_apps_on_bloc
-  # app_bootstrap:
-  #   path: ../../packages/app_bootstrap
-  # assets:
-  #   path: ../../packages/assets
-  # cloud_firestore: ^6.0.0
-  # core:
-  #   path: ../../packages/core
-  # device_info_plus: ^11.5.0
-  # easy_localization: ^3.0.8
-  # equatable: ^2.0.7
-  # firebase_auth: ^6.0.1
+  app_bootstrap_and_config:
+    path: ../../packages/app_bootstrap_and_config
+  core:
+    path: ../../packages/core
   firebase_core: ^4.0.0
-
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.2.1
-  # flutter_hooks: ^0.21.3
-
   flutter_localizations:
     sdk: flutter
-
-  # formz: ^0.8.0
-  # go_router: ^16.1.0
+  get_storage: ^2.1.1
   intl: ^0.20.2
-  # path_provider: ^2.1.5
-  # url_strategy: ^0.3.0
 
 dev_dependencies:
   bloc_test: ^10.0.0

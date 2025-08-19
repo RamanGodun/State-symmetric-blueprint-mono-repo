@@ -1,15 +1,18 @@
-//
-//  ignore_for_file: public_member_api_docs
-
-import 'package:blueprint_on_riverpod/app_bootstrap_and_config/flavor_config.dart';
+import 'package:app_bootstrap_and_config/app_bootstrap_and_config.dart';
 
 /// 🌐 [Environment] — Enum that defines app runtime modes.
-/// ✅ Used for switching configuration (API, Firebase, logging, etc.)
-/// ⚠️ Must match `.env.*` file naming convention.
+///
+/// ✅ Used for switching configuration, matches `.env.*` file naming convention (e.g., `.env.dev`, `.env.staging`)
+/// ⚠️ Must remain consistent across build flavors, env files, and CI/CD pipelines
 //
 enum Environment {
+  /// 🧪 Development environment (Local APIs / mocks, verbose logging & debug tools enabled)
   dev,
+
+  /// 🟡 Staging environment(Pre-production testing, QA, UAT, or internal builds)
   staging,
+
+  /// 🟢 Production environment (Live APIs, Logging/reporting only (Crashlytics, Sentry, etc.))
   // prod,
 }
 
