@@ -1,4 +1,5 @@
 import 'package:app_bootstrap_and_config/app_bootstrap_and_config.dart';
+import 'package:firebase_bootstrap_config/firebase_config/_barrel_for_firebase_config.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 

@@ -1,5 +1,5 @@
 import 'package:app_bootstrap_and_config/app_bootstrap_and_config.dart';
-import 'package:blueprint_on_riverpod/app_bootstrap/remote_db_init.dart';
+import 'package:firebase_bootstrap_config/firebase_init/_barrel_for_firebase_init.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/material.dart' show WidgetsFlutterBinding;
 

@@ -11,6 +11,8 @@ dependencies:
     path: ../../packages/app_bootstrap_and_config
   core:
     path: ../../packages/core
+  firebase_bootstrap_config:
+    path: ../../packages/firebase_bootstrap_config
   firebase_core: ^4.0.0
   flutter:
     sdk: flutter

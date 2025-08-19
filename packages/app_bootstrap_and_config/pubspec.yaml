@@ -1,5 +1,6 @@
 name: app_bootstrap_and_config
-description: A Very Good Project created by Very Good CLI.
+description: Common codebase for apps bootstra.
+
 version: 0.1.0+1
 publish_to: none
 
@@ -9,10 +10,10 @@ environment:
 
 dependencies:
   device_info_plus: ^11.5.0
-  firebase_core: ^4.0.0
+  # firebase_core: ^4.0.0
   flutter:
     sdk: flutter
-  flutter_dotenv: ^5.2.1
+  # flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_test:

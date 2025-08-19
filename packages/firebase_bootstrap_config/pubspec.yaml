@@ -1,0 +1,29 @@
+name: firebase_bootstrap_config
+description: Firebase bootstrap, helpers, utils
+
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.8.0
+  flutter: ^3.32.0
+  #
+
+#
+
+dependencies:
+  # 🔗 залежність на core
+  app_bootstrap_and_config:
+    path: ../app_bootstrap_and_config
+  firebase_core: ^4.0.0
+  flutter:
+    sdk: flutter
+  flutter_dotenv: ^5.2.1
+  #
+
+#
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^9.0.0
