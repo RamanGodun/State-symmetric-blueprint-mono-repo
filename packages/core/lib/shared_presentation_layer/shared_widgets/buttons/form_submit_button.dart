@@ -22,7 +22,7 @@ import 'package:formz/formz.dart';
 ///   - Place at bottom of forms (SignIn, SignUp, ResetPassword, etc)
 ///   - Controlled declaratively using status and validation selectors
 //
-final class FormSubmitButton<Cubit extends StateStreamable<State>, State>
+final class FormSubmitButton<TCubit extends StateStreamable<TState>, TState>
     extends StatelessWidget {
   ///--------------------------------------------------
   const FormSubmitButton({
@@ -35,8 +35,8 @@ final class FormSubmitButton<Cubit extends StateStreamable<State>, State>
   //
   final String label;
   final SubmitCallback onPressed;
-  final FormzSubmissionStatus Function(State) statusSelector;
-  final bool Function(State) isValidatedSelector;
+  final FormzSubmissionStatus Function(TState) statusSelector;
+  final bool Function(TState) isValidatedSelector;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ final class FormSubmitButton<Cubit extends StateStreamable<State>, State>
       (cubit) => cubit.state,
     );
 
-    return BlocBuilder<Cubit, State>(
+    return BlocBuilder<TCubit, TState>(
       buildWhen: (prev, curr) =>
           statusSelector(prev) != statusSelector(curr) ||
           isValidatedSelector(prev) != isValidatedSelector(curr),

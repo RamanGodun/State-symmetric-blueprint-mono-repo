@@ -1,3 +1,6 @@
+//
+// ignore_for_file: public_member_api_docs
+
 import 'package:app_on_bloc/app_bootstrap_and_config/constants/flavors.dart'
     show AppFlavor, FlavorConfig;
 
@@ -5,7 +8,6 @@ import 'package:app_on_bloc/app_bootstrap_and_config/constants/flavors.dart'
 /// ✅ Used for switching configuration (API, Firebase, logging, etc.)
 /// ⚠️ Must match `.env.*` file naming convention.
 //
-// ignore: public_member_api_docs
 enum Environment {
   dev,
   staging,

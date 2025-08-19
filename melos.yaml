@@ -52,6 +52,7 @@ scripts:
     melos exec --scope="app_on_*" -- "flutter test --coverage --no-pub"
 
     # ------ Coverage per app -------
+
   # --- Coverage per app (safe multiline) ---
   coverage:bloc: |
     melos exec --scope="app_on_bloc" --concurrency=1 -- \
@@ -62,13 +63,54 @@ scripts:
       bash -lc 'flutter test --coverage --no-pub && genhtml coverage/lcov.info -o coverage/html && (open coverage/html/index.html || xdg-open coverage/html/index.html || start coverage\\html\\index.html)'
 
   # ---------- Run (per app & flavor) ----------
-  run:bloc:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter run --flavor development -t lib/main_development.dart"
-  run:bloc:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter run --flavor staging     -t lib/main_staging.dart"
-  run:bloc:prod: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter run --flavor production  -t lib/main_production.dart"
 
-  run:riverpod:dev: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter run --flavor development -t lib/main_development.dart"
-  run:riverpod:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter run --flavor staging     -t lib/main_staging.dart"
-  run:riverpod:prod: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter run --flavor production  -t lib/main_production.dart"
+  # ---------- Run (Blueprint on Riverpod) ----------
+  run:rp:dev: melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- "flutter run --flavor development -t lib/main_development.dart"
+  run:rp:stg: melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- "flutter run --flavor staging     -t lib/main_staging.dart"
+
+  # ---------- Build (Blueprint on Riverpod) ----------
+  build:rp:apk:dev: melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- "flutter build apk       --flavor development -t lib/main_development.dart"
+  build:rp:aab:stg: melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- "flutter build appbundle --flavor staging     -t lib/main_staging.dart"
+
+  # iOS ipa (коли буде підпис)
+  build:ios:rp:dev: melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor development -t lib/main_development.dart"
+  build:ios:rp:stg: melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor staging     -t lib/main_staging.dart"
+
+  # ---------- Run blueprint_on_qubit ----------
+  run:blueprint:dev:
+    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    "flutter run --flavor development -t lib/main_development.dart"
+  run:blueprint:stg:
+    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    "flutter run --flavor staging -t lib/main_staging.dart"
+
+  # ---------- Run blueprint_on_qubit (explicit entrypoint paths) ----------
+  run:blueprint:main:dev:
+    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    "flutter run -t apps/blueprint_on_qubit/lib/main_development.dart"
+  run:blueprint:main:stg:
+    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    "flutter run -t apps/blueprint_on_qubit/lib/main_staging.dart"
+
+  # ---------- Build blueprint_on_qubit (Android) ----------
+  build:blueprint:apk:dev:
+    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    "flutter build apk --flavor development -t lib/main_development.dart"
+  build:blueprint:apk:stg:
+    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    "flutter build apk --flavor staging -t lib/main_staging.dart"
+
+  build:blueprint:aab:stg:
+    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    "flutter build appbundle --flavor staging -t lib/main_staging.dart"
+
+  # ---------- Build blueprint_on_qubit (iOS) ----------
+  build:ios:blueprint:dev:
+    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    "flutter build ipa --flavor development -t lib/main_development.dart"
+  build:ios:blueprint:stg:
+    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    "flutter build ipa --flavor staging -t lib/main_staging.dart"
 
   # ---------- Run (direct entrypoint, без flavor) ----------
   run:bloc:main:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter run -t apps/app_on_bloc/lib/main_development.dart"

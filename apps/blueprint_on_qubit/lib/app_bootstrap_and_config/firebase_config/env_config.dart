@@ -1,10 +1,12 @@
-import 'package:blueprint_on_qubit/app_bootstrap_and_config/constants/flavors.dart';
+//
+//  ignore_for_file: public_member_api_docs
+
+import 'package:blueprint_on_qubit/app_bootstrap_and_config/flavor_config.dart';
 
 /// 🌐 [Environment] — Enum that defines app runtime modes.
 /// ✅ Used for switching configuration (API, Firebase, logging, etc.)
 /// ⚠️ Must match `.env.*` file naming convention.
 //
-// ignore: public_member_api_docs
 enum Environment {
   dev,
   staging,
