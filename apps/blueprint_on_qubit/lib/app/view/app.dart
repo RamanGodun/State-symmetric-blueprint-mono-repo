@@ -1,7 +1,7 @@
 //
 // ignore_for_file: public_member_api_docs
 
-import 'package:blueprint_on_qubit/counter/counter.dart';
+import 'package:blueprint_on_qubit/app/counter/counter.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {

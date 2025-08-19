@@ -1,16 +1,14 @@
-import 'package:blueprint_on_qubit/app_bootstrap_and_config/remote_db_init.dart'
-    show FirebaseRemoteDataBase, IRemoteDataBase;
+import 'package:app_bootstrap_and_config/app_bootstrap_and_config.dart';
+import 'package:blueprint_on_qubit/app_bootstrap/remote_db_init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
 
-part 'bootstrap_interface.dart';
-
-/// 🧰 [AppBootstrap] — Handles all critical bootstrapping (with injectable stacks for testing/mocks).
+/// 🧰 [DefaultAppBootstrap] — Handles all critical bootstrapping (with injectable stacks for testing/mocks).
 //
-final class AppBootstrap implements IAppBootstrap {
+final class DefaultAppBootstrap implements IAppBootstrap {
   ///-------------------------------------------
   /// Constructor allows the injection of custom/mock implementations.
-  const AppBootstrap({
+  const DefaultAppBootstrap({
     // ILocalStorage? localStorageStack,
     IRemoteDataBase? firebaseStack,
   }) : _remoteDataBase = firebaseStack ?? const FirebaseRemoteDataBase()
@@ -28,7 +26,7 @@ final class AppBootstrap implements IAppBootstrap {
   Future<void> initAllServices() async {
     //
     debugPrint('🚀 [Bootstrap] Starting full initialization...');
-    await appStartUp();
+    await startUp();
     //
     // await initGlobalDIContainer(); // 📦  Register dependencies via GetIt
     //
@@ -49,7 +47,7 @@ final class AppBootstrap implements IAppBootstrap {
   ////
 
   @override
-  Future<void> appStartUp() async {
+  Future<void> startUp() async {
     //
     debugPrint('🟢 [Startup] Flutter bindings and platform checks...');
     // Ensures Flutter bindings are ready before any further setup.

@@ -1,8 +1,21 @@
-import 'package:blueprint_on_qubit/app/app.dart';
-import 'package:blueprint_on_qubit/app_bootstrap_and_config/bootstrap.dart';
-import 'package:blueprint_on_qubit/app_bootstrap_and_config/flavor_config.dart';
+import 'package:app_bootstrap_and_config/app_bootstrap_and_config.dart';
+import 'package:blueprint_on_qubit/app/view/app.dart';
+import 'package:blueprint_on_qubit/app_bootstrap/app_bootstrap.dart';
 
-void main() {
+/// 🏁 Application entrypoint — Defines environment flavor and launches the app
+//
+void main() async {
+  /// 🌱 Select active environment (development/staging/production)
   FlavorConfig.current = AppFlavor.staging;
-  bootstrap(() => const App());
+
+  /// 🚀 Run the full startup pipeline and launch the root widget
+  await AppLauncher.run(
+    ///
+    bootstrap: const DefaultAppBootstrap(
+      // ? Here can be plugged in custom dependencies (e.g.  "localStorage: IsarLocalStorage()," )
+    ),
+    //
+    builder: () => const App(),
+    //
+  );
 }
