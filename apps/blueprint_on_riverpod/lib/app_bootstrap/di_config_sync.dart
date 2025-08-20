@@ -7,30 +7,14 @@ import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatche
     show overlayDispatcherProvider, overlayStatusProvider;
 import 'package:core/base_modules/theme/theme_providers_or_cubits/theme_provider.dart'
     show ThemeConfigNotifier, themeProvider, themeStorageProvider;
+import 'package:core/di_container_riverpod/i_di_config.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart' show GetStorage;
-
-/// 🔧 [IDIConfig] — Abstract contract for DI (Dependency Injection) configuration.
-///     Provides lists of provider overrides and observers for Riverpod setup.
-///     Useful for switching between different DI environments or for testing.
-//
-sealed class IDIConfig {
-  //
-  /// List of provider overrides for this configuration.
-  List<Override> get overrides;
-  //
-  /// List of provider observers for this configuration.
-  List<ProviderObserver> get observers;
-}
-
-////
-
-////
 
 /// 🛠️ [DIConfiguration] — Default DI configuration for the app.
 ///     Sets up storage, theme, navigation, overlays, and profile repo.
 //
-final class DIConfiguration extends IDIConfig {
+final class DIConfiguration implements IDIConfig {
   ///-------------------------------------------------
   //
   /// 🔁 Combined list of all feature overrides
@@ -47,7 +31,6 @@ final class DIConfiguration extends IDIConfig {
 
   /// *🧩 FEATURE OVERRIDE MODULES
   //
-
   /// 🌐 Core system-wide overrides (e.g. theme, routing, overlays)
   List<Override> get coreOverrides => [
     /// 🎨 Theme storage and state

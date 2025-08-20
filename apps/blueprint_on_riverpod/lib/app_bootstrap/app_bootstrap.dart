@@ -1,24 +1,35 @@
 import 'package:app_bootstrap_and_config/contracts/bootstrap.dart';
+import 'package:app_bootstrap_and_config/contracts/local_storage.dart';
 import 'package:app_bootstrap_and_config/contracts/remote_database.dart';
+import 'package:app_bootstrap_and_config/platform_validation.dart';
+import 'package:blueprint_on_riverpod/app_bootstrap/di_config_sync.dart';
+import 'package:blueprint_on_riverpod/app_bootstrap/local_storage_init.dart';
+import 'package:core/base_modules/localization/core_of_module/init_localization.dart';
+import 'package:core/di_container_riverpod/di_container.dart';
+import 'package:core/di_container_riverpod/i_di_config.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_bootstrap_config/firebase_init/remote_db_init.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/material.dart' show WidgetsFlutterBinding;
+import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_strategy/url_strategy.dart' show setPathUrlStrategy;
 
 /// 🧰 [DefaultAppBootstrap] — Handles all critical bootstrapping (with injectable stacks for testing/mocks).
 //
 final class DefaultAppBootstrap implements IAppBootstrap {
   ///----------------------------------------
   /// Constructor allows the injection of custom/mock implementations.
-  const DefaultAppBootstrap({
-    // ILocalStorage? localStorageStack,
-    // IDIConfig? diConfiguration,
+  DefaultAppBootstrap({
+    ILocalStorage? localStorageStack,
+    IDIConfig? diConfiguration,
     IRemoteDataBase? firebaseStack,
-  }) : //  _localStorage = localStorageStack ?? const LocalStorage(),
-       //  _diConfiguration = diConfiguration ?? DIConfiguration(),
+  }) : _localStorage = localStorageStack ?? const LocalStorage(),
+       _diConfiguration = diConfiguration ?? DIConfiguration(),
        _remoteDataBase = firebaseStack ?? const FirebaseRemoteDataBase();
   //
-  // final ILocalStorage _localStorage;
-  // final IDIConfig _diConfiguration;
+  final ILocalStorage _localStorage;
+  final IDIConfig _diConfiguration;
   final IRemoteDataBase _remoteDataBase;
 
   ////
@@ -31,18 +42,18 @@ final class DefaultAppBootstrap implements IAppBootstrap {
     debugPrint('🚀 [Bootstrap] Starting full initialization...');
     await startUp();
     //
-    // await initGlobalDIContainer();
+    await initGlobalDIContainer();
     //
     /// Ensures EasyLocalization is initialized before runApp.
-    // await initEasyLocalization();
+    await initEasyLocalization();
     //
     /// Initializes local storage (currently, GetStorage).
-    // await initLocalStorage();
+    await initLocalStorage();
     //
     /// Initializes remote database (currently, Firebase).
     await initRemoteDataBase();
     //
-    // setPathUrlStrategy();
+    setPathUrlStrategy();
     debugPrint('✅ [Bootstrap] All services initialized!');
     //
   }
@@ -57,10 +68,10 @@ final class DefaultAppBootstrap implements IAppBootstrap {
     WidgetsFlutterBinding.ensureInitialized();
     //
     /// Validates platform (min. OS versions, emulator restrictions, etc).
-    // await PlatformValidationUtil.run();
+    await PlatformValidationUtil.run();
     //
     /// Controls visual debugging options (e.g., repaint highlighting).
-    // debugRepaintRainbowEnabled = false;
+    debugRepaintRainbowEnabled = false;
     // ... (other debug tools)
     debugPrint('✅ [Startup] Flutter bindings and platform validation done.');
   }
@@ -73,12 +84,12 @@ final class DefaultAppBootstrap implements IAppBootstrap {
   Future<void> initGlobalDIContainer() async {
     //
     debugPrint('📦 [DI] Initializing global dependency container...');
-    // final getGlobalContainer = ProviderContainer(
-    //   overrides: _diConfiguration.overrides,
-    //   observers: _diConfiguration.observers,
-    // );
-    // //
-    // GlobalDIContainer.initialize(getGlobalContainer);
+    final getGlobalContainer = ProviderContainer(
+      overrides: _diConfiguration.overrides,
+      observers: _diConfiguration.observers,
+    );
+    //
+    GlobalDIContainer.initialize(getGlobalContainer);
     debugPrint('✅ [DI] Dependency container ready.');
   }
 
@@ -89,7 +100,7 @@ final class DefaultAppBootstrap implements IAppBootstrap {
     //
     debugPrint('💾 [Storage] Initializing local storage...');
     // Initializes local storage (currently, GetStorage).
-    // await _localStorage.init();
+    await _localStorage.init();
   }
 
   ////
@@ -106,10 +117,10 @@ final class DefaultAppBootstrap implements IAppBootstrap {
   Future<void> initEasyLocalization() async {
     //
     debugPrint('🌍 Initializing EasyLocalization...');
-    // await EasyLocalization.ensureInitialized();
+    await EasyLocalization.ensureInitialized();
     //
     /// 🌍 Sets up the global localization resolver for the app.
-    // AppLocalizer.init(resolver: (key) => key.tr());
+    AppLocalizer.init(resolver: (key) => key.tr());
     // ? when app without localization, then instead previous method use next:
     // AppLocalizer.initWithFallback();
     debugPrint('🌍 EasyLocalization initialized!');
