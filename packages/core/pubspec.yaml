@@ -14,8 +14,6 @@ environment:
   flutter: ">=3.22.0"
 
 dependencies:
-  app_on_riverpod:
-    path: ../../apps/app_on_riverpod
   cloud_firestore: ">=6.0.0 <7.0.0"
   collection: ^1.18.0
   dio: ^5.9.0

@@ -1,0 +1,10 @@
+# melos_managed_dependency_overrides: adapter_for_apps_on_bloc,app_bootstrap_and_config,core,firebase_bootstrap_config
+dependency_overrides:
+  adapter_for_apps_on_bloc:
+    path: ../../packages/specific_for_bloc
+  app_bootstrap_and_config:
+    path: ../../packages/app_bootstrap_and_config
+  core:
+    path: ../../packages/core
+  firebase_bootstrap_config:
+    path: ../../packages/firebase_bootstrap_config
