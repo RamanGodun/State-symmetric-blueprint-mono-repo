@@ -1,13 +1,12 @@
 import 'package:app_on_riverpod/app_bootstrap_and_config/di_container/di_config_sync.dart'
     show DIConfiguration, IDIConfig;
+import 'package:app_on_riverpod/app_bootstrap_and_config/di_container/di_container.dart';
 import 'package:app_on_riverpod/app_bootstrap_and_config/local_storage_init.dart'
     show ILocalStorage, LocalStorage;
 import 'package:app_on_riverpod/app_bootstrap_and_config/platform_validation.dart'
     show PlatformValidationUtil;
 import 'package:app_on_riverpod/app_bootstrap_and_config/remote_db_init.dart'
     show FirebaseRemoteDataBase, IRemoteDataBase;
-import 'package:core/base_modules/di_container/di_container.dart'
-    show GlobalDIContainer;
 import 'package:core/base_modules/localization/core_of_module/init_localization.dart'
     show AppLocalizer;
 import 'package:easy_localization/easy_localization.dart';

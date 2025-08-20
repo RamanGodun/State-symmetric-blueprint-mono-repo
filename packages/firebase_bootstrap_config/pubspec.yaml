@@ -7,21 +7,18 @@ publish_to: none
 environment:
   sdk: ^3.8.0
   flutter: ^3.32.0
-  #
-
-#
 
 dependencies:
-  # 🔗 залежність на core
   app_bootstrap_and_config:
     path: ../app_bootstrap_and_config
+  cloud_firestore: ^6.0.0
+  core:
+    path: ../../packages/core
+  firebase_auth: ^6.0.1
   firebase_core: ^4.0.0
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.2.1
-  #
-
-#
 
 dev_dependencies:
   flutter_test:

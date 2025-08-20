@@ -1,4 +1,4 @@
-import 'package:core/base_modules/di_container/di_container.dart'
+import 'package:app_on_riverpod/app_bootstrap_and_config/di_container/di_container.dart'
     show GlobalDIContainer;
 import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher_provider.dart';

@@ -1,7 +1,14 @@
+/*
+ * 📜 License
+ * This package is licensed under the same terms as the monorepo’s root
+ * [LICENSE](../../../LICENSE).
+ */
+
 import 'package:app_bootstrap_and_config/app_runner.dart';
 import 'package:app_bootstrap_and_config/enums_and_constants/flavor_config.dart';
-import 'package:blueprint_on_qubit/app/view/app.dart';
 import 'package:blueprint_on_qubit/app_bootstrap/app_bootstrap.dart';
+import 'package:blueprint_on_qubit/core/base_moduls/di_container/global_di_container.dart';
+import 'package:blueprint_on_qubit/root_view_shell.dart';
 
 /// 🏁 Application entrypoint — Defines environment flavor and launches the app
 //
@@ -16,7 +23,7 @@ void main() async {
       // ? Here can be plugged in custom dependencies (e.g.  "localStorage: IsarLocalStorage()," )
     ),
     //
-    builder: () => const App(),
+    builder: () => const GlobalProviders(child: AppLocalizationShell()),
     //
   );
 }

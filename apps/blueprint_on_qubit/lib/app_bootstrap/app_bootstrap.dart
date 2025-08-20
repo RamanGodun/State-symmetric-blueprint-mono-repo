@@ -1,8 +1,15 @@
 import 'package:app_bootstrap_and_config/contracts/bootstrap.dart';
 import 'package:app_bootstrap_and_config/contracts/remote_database.dart';
+import 'package:app_bootstrap_and_config/platform_validation.dart';
+import 'package:blueprint_on_qubit/app_bootstrap/local_storage_init.dart';
+import 'package:blueprint_on_qubit/core/base_moduls/di_container/di_container_init.dart';
+import 'package:core/base_modules/localization/core_of_module/init_localization.dart';
+import 'package:core/base_modules/logging/for_bloc/bloc_observer.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_bootstrap_config/firebase_init/remote_db_init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// 🧰 [DefaultAppBootstrap] — Handles all critical bootstrapping (with injectable stacks for testing/mocks).
 //
@@ -10,13 +17,12 @@ final class DefaultAppBootstrap implements IAppBootstrap {
   ///-------------------------------------------
   /// Constructor allows the injection of custom/mock implementations.
   const DefaultAppBootstrap({
-    // ILocalStorage? localStorageStack,
+    ILocalStorage? localStorageStack,
     IRemoteDataBase? firebaseStack,
-  }) : _remoteDataBase = firebaseStack ?? const FirebaseRemoteDataBase()
-  //  _localStorage = localStorageStack ?? const HydratedLocalStorage()
-  ;
+  }) : _remoteDataBase = firebaseStack ?? const FirebaseRemoteDataBase(),
+       _localStorage = localStorageStack ?? const HydratedLocalStorage();
   //
-  // final ILocalStorage _localStorage;
+  final ILocalStorage _localStorage;
   final IRemoteDataBase _remoteDataBase;
 
   ////
@@ -29,13 +35,14 @@ final class DefaultAppBootstrap implements IAppBootstrap {
     debugPrint('🚀 [Bootstrap] Starting full initialization...');
     await startUp();
     //
-    // await initGlobalDIContainer(); // 📦  Register dependencies via GetIt
+    /// 📦  Register dependencies via GetIt
+    await initGlobalDIContainer();
     //
     /// Ensures EasyLocalization is initialized before runApp.
-    // await initEasyLocalization();
+    await initEasyLocalization();
     //
     /// Initializes local storage (currently, GetStorage).
-    // await initLocalStorage();
+    await initLocalStorage();
     //
     /// Initializes remote database (currently, Firebase).
     await initRemoteDataBase();
@@ -55,13 +62,13 @@ final class DefaultAppBootstrap implements IAppBootstrap {
     WidgetsFlutterBinding.ensureInitialized();
     //
     /// Validates platform (min. OS versions, emulator restrictions, etc).
-    // await PlatformValidationUtil.run();
+    await PlatformValidationUtil.run();
     //
     /// Controls visual debugging options (e.g., repaint highlighting).
     debugRepaintRainbowEnabled = false;
     //
     /// Custom bloc observer
-    // Bloc.observer = const AppBlocObserver();
+    Bloc.observer = const AppBlocObserver();
     //
     /// ... (other debug tools)
     debugPrint('✅ [Startup] Flutter bindings and platform validation done.');
@@ -75,7 +82,7 @@ final class DefaultAppBootstrap implements IAppBootstrap {
     //
     debugPrint('📦 [DI] Initializing global dependency container...');
     // 📦  Register dependencies via GetIt
-    // await DIContainer.initFull();
+    await DIContainer.initFull();
     debugPrint('✅ [DI] Dependency container ready.');
   }
 
@@ -86,7 +93,7 @@ final class DefaultAppBootstrap implements IAppBootstrap {
     //
     debugPrint('💾 [Storage] Initializing local storage...');
     // Setup HydratedBloc storage currently
-    // await _localStorage.init();
+    await _localStorage.init();
     debugPrint('✅ [Storage] Local storage initialized.');
   }
 
@@ -106,10 +113,10 @@ final class DefaultAppBootstrap implements IAppBootstrap {
   Future<void> initEasyLocalization() async {
     //
     debugPrint('🌍 Initializing EasyLocalization...');
-    // await EasyLocalization.ensureInitialized();
+    await EasyLocalization.ensureInitialized();
     //
     /// 🌍 Sets up the global localization resolver for the app.
-    // AppLocalizer.init(resolver: (key) => key.tr());
+    AppLocalizer.init(resolver: (key) => key.tr());
     // ? when app without localization, then instead previous method use next:
     // AppLocalizer.initWithFallback();
     debugPrint('✅ EasyLocalization initialized!');

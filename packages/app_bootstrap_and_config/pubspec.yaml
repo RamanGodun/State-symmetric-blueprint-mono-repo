@@ -1,5 +1,5 @@
 name: app_bootstrap_and_config
-description: Common codebase for apps bootstra.
+description: Common codebase for apps bootstrapping.
 
 version: 0.1.0+1
 publish_to: none

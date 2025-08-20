@@ -1,8 +1,7 @@
 import 'package:app_on_riverpod/app_bootstrap_and_config/app_bootstrap.dart'
     show AppBootstrap;
+import 'package:app_on_riverpod/app_bootstrap_and_config/di_container/di_container.dart';
 import 'package:app_on_riverpod/root_view_shell.dart';
-import 'package:core/base_modules/di_container/di_container.dart'
-    show GlobalDIContainer;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
