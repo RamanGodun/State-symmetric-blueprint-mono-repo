@@ -20,13 +20,11 @@ dependencies:
   firebase_auth: ^6.0.1
   firebase_bootstrap_config:
     path: ../../packages/firebase_bootstrap_config
-  firebase_core: ^4.0.0
   flutter:
     sdk: flutter
-  flutter_dotenv: ^5.2.1
   flutter_hooks: ^0.21.3+1
-  flutter_localizations:
-    sdk: flutter
+  # flutter_localizations:
+  #   sdk: flutter
   flutter_riverpod: ^2.6.1
   formz: ^0.8.0
   get_storage: ^2.1.1
