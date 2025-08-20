@@ -9,7 +9,7 @@ import 'package:app_bootstrap_and_config/enums_and_constants/flavor_config.dart'
 import 'package:blueprint_on_qubit/app_bootstrap/app_bootstrap.dart';
 import 'package:blueprint_on_qubit/app_bootstrap/di_container/global_di_container.dart'
     show GlobalProviders;
-import 'package:blueprint_on_qubit/root_view_shell.dart';
+import 'package:blueprint_on_qubit/root_shell.dart';
 
 /// 🏁 Application entrypoint — Defines environment flavor and launches the app
 //

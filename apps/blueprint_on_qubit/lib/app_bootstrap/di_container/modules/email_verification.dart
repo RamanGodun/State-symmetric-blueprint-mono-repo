@@ -1,15 +1,15 @@
 import 'package:blueprint_on_qubit/app_bootstrap/di_container/modules/auth_module.dart';
 import 'package:blueprint_on_qubit/app_bootstrap/di_container/modules/firebase_module.dart';
-import 'package:blueprint_on_qubit/features/email_verification/data/email_verification_repo_impl.dart';
-import 'package:blueprint_on_qubit/features/email_verification/data/remote_database_contract.dart';
-import 'package:blueprint_on_qubit/features/email_verification/data/remote_database_impl.dart';
-import 'package:blueprint_on_qubit/features/email_verification/domain/email_verification_use_case.dart';
-import 'package:blueprint_on_qubit/features/email_verification/domain/repo_contract.dart';
-import 'package:blueprint_on_qubit/features/email_verification/presentation/email_verification_cubit/email_verification_cubit.dart';
-import 'package:blueprint_on_qubit/user_auth_cubit/auth_cubit.dart';
+import 'package:blueprint_on_qubit/features_presentation/email_verification/email_verification_cubit/email_verification_cubit.dart';
 import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:core/di_container_cubit/core/di_module_interface.dart';
 import 'package:core/di_container_cubit/x_on_get_it.dart';
+import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_cubit.dart';
+import 'package:features/email_verification/data/email_verification_repo_impl.dart';
+import 'package:features/email_verification/data/remote_database_contract.dart';
+import 'package:features/email_verification/data/remote_database_impl.dart';
+import 'package:features/email_verification/domain/email_verification_use_case.dart';
+import 'package:features/email_verification/domain/repo_contract.dart';
 
 ///
 final class EmailVerificationModule implements DIModule {

@@ -1,11 +1,11 @@
 import 'package:blueprint_on_qubit/core/shared_presentation/pages/home_page.dart';
 import 'package:blueprint_on_qubit/core/shared_presentation/pages/page_not_found.dart';
-import 'package:blueprint_on_qubit/features/auth/presentation/sign_in/sign_in_page.dart';
-import 'package:blueprint_on_qubit/features/auth/presentation/sign_up/sign_up_page.dart';
-import 'package:blueprint_on_qubit/features/change_or_reset_password/presentation/change_password/change_password_page.dart';
-import 'package:blueprint_on_qubit/features/change_or_reset_password/presentation/reset_password/reset_password_page.dart';
-import 'package:blueprint_on_qubit/features/email_verification/presentation/email_verification_page.dart';
-import 'package:blueprint_on_qubit/features/profile/presentation/profile_page.dart';
+import 'package:blueprint_on_qubit/features_presentation/auth/sign_in/sign_in_page.dart';
+import 'package:blueprint_on_qubit/features_presentation/auth/sign_up/sign_up_page.dart';
+import 'package:blueprint_on_qubit/features_presentation/email_verification/email_verification_page.dart';
+import 'package:blueprint_on_qubit/features_presentation/password_changing_or_reset/change_password/change_password_page.dart';
+import 'package:blueprint_on_qubit/features_presentation/password_changing_or_reset/reset_password/reset_password_page.dart';
+import 'package:blueprint_on_qubit/features_presentation/profile/profile_page.dart';
 import 'package:core/base_modules/navigation/utils/page_transition.dart'
     show AppTransitions;
 import 'package:core/shared_presentation_layer/pages_shared/splash_page.dart';

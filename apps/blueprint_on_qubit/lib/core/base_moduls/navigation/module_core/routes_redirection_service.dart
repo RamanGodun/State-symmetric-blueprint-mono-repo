@@ -1,5 +1,5 @@
 import 'package:blueprint_on_qubit/core/base_moduls/navigation/routes/app_routes.dart';
-import 'package:blueprint_on_qubit/user_auth_cubit/auth_cubit.dart';
+import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_cubit.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';

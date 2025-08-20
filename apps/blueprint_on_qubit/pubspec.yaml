@@ -19,6 +19,8 @@ dependencies:
   device_info_plus: ^11.5.0
   easy_localization: ^3.0.8
   equatable: ^2.0.7
+  features:
+    path: ../../packages/features
   firebase_auth: ^6.0.1
   firebase_bootstrap_config:
     path: ../../packages/firebase_bootstrap_config

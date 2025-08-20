@@ -2,9 +2,9 @@ import 'package:blueprint_on_qubit/core/base_moduls/navigation/module_core/route
 import 'package:blueprint_on_qubit/core/base_moduls/navigation/routes/app_routes.dart';
 import 'package:blueprint_on_qubit/core/shared_presentation/pages/page_not_found.dart'
     show PageNotFound;
-import 'package:blueprint_on_qubit/user_auth_cubit/auth_cubit.dart';
 import 'package:core/base_modules/overlays/utils/overlays_cleaner_within_navigation.dart'
     show OverlaysCleanerWithinNavigation;
+import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_cubit.dart';
 import 'package:go_router/go_router.dart';
 
 /// 🧭🚦[buildGoRouter] — GoRouter factory. Returns fully constructed [GoRouter] instance
