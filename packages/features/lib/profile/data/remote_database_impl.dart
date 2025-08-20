@@ -1,5 +1,5 @@
-import 'package:blueprint_on_riverpod/features/profile/data/remote_database_contract.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' show CollectionReference;
+import 'package:features/profile/data/remote_database_contract.dart';
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
 import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
 

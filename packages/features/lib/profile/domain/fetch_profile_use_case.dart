@@ -1,9 +1,9 @@
-import 'package:blueprint_on_riverpod/features/profile/domain/repo_contract.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/core_utils/errors_observing/loggers/failure_logger_x.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/core_utils/extensions_on_either/either_getters_x.dart';
 import 'package:core/shared_domain_layer/shared_entities/_user_entity.dart'
     show UserEntity;
 import 'package:core/utils_shared/type_definitions.dart' show ResultFuture;
+import 'package:features/profile/domain/repo_contract.dart';
 
 /// 🧩 [FetchProfileUseCase] — Encapsulates domain logic of
 //     loading profile (with "fetch-or-create" user logic)

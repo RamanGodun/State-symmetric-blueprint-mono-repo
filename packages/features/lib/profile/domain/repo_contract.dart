@@ -1,8 +1,7 @@
-import 'package:blueprint_on_riverpod/features/profile/domain/fetch_profile_use_case.dart'
-    show FetchProfileUseCase;
 import 'package:core/shared_domain_layer/shared_entities/_user_entity.dart'
     show UserEntity;
 import 'package:core/utils_shared/type_definitions.dart' show ResultFuture;
+import 'package:features/profile/domain/fetch_profile_use_case.dart';
 
 /// 📦 [IProfileRepo] — Contract for [FetchProfileUseCase] repo
 //

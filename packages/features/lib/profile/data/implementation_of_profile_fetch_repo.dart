@@ -1,5 +1,3 @@
-import 'package:blueprint_on_riverpod/features/profile/data/remote_database_contract.dart';
-import 'package:blueprint_on_riverpod/features/profile/domain/repo_contract.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/_run_errors_handling.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
     show Failure;
@@ -17,6 +15,8 @@ import 'package:core/utils_shared/cash_manager/cache_manager.dart'
 import 'package:core/utils_shared/timing_control/timing_config.dart'
     show AppDurations;
 import 'package:core/utils_shared/type_definitions.dart' show ResultFuture;
+import 'package:features/profile/data/remote_database_contract.dart';
+import 'package:features/profile/domain/repo_contract.dart';
 
 /// 🧩 [ProfileRepoImpl] — Repository implementation for profile feature with cache manager composition
 /// ✅ Handles in-memory and in-flight cache, mapping, and error handling

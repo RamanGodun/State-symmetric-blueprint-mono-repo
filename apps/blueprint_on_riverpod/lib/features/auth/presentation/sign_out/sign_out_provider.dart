@@ -1,11 +1,11 @@
 import 'package:blueprint_on_riverpod/features/auth/domain/use_cases/sign_out.dart'
     show SignOutUseCase;
 import 'package:blueprint_on_riverpod/features/auth/domain/use_cases/use_cases_providers.dart';
-import 'package:blueprint_on_riverpod/features/profile/data/providers/data_layer_providers.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
     show Failure;
 import 'package:core/utils_shared/riverpod_specific/safe_async_state.dart'
     show SafeAsyncState;
+import 'package:features/profile/data/providers/data_layer_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sign_out_provider.g.dart';
