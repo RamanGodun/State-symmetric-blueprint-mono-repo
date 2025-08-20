@@ -20,7 +20,7 @@ import 'package:core/shared_presentation_layer/shared_widgets/app_bar.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/buttons/filled_button.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/key_value_text_widget.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/loader.dart';
-import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_cubit.dart';
+import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_stream_adapter.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:core/utils_shared/spider/app_images_paths.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -41,12 +41,19 @@ final class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final uid = context.read<AuthCubit>().state.user?.uid;
+    final auth = context.watch<AuthCubit>().state;
+    final uid = switch (auth) {
+      AuthViewReady(:final session) => session.uid,
+      _ => null,
+    };
     // 🛑 Guard: If user is not available, return empty widget
     if (uid == null) return const SizedBox.shrink();
 
-    /// Profile loading if not have been done
-    context.read<ProfileCubit>().loadProfile(uid);
+    // щоб не тригерити loadProfile на кожен rebuild:
+    final profileCubit = context.read<ProfileCubit>();
+    if (profileCubit.state is! ProfileLoaded) {
+      profileCubit.loadProfile(uid);
+    }
 
     /// 🧩♻️ Injects [ProfileCubit] and [SignOutCubit] with DI and loads profile on init
     return BlocProvider<SignOutCubit>(

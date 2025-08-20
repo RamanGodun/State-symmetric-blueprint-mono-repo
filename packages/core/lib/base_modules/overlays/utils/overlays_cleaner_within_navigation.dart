@@ -12,11 +12,11 @@ final class OverlaysCleanerWithinNavigation extends NavigatorObserver {
   ///--------------------------------------------------------
 
   /// 📦 Reference to the overlay dispatcher (via DI)
-  OverlayDispatcher get overlaysDispatcher =>
-      GlobalDIContainer.instance.read(overlayDispatcherProvider);
+  // OverlayDispatcher get overlaysDispatcher =>
+  //     GlobalDIContainer.instance.read(overlayDispatcherProvider);
 
   /// 📦 Reference to the overlay dispatcher (via GetIt)
-  // OverlayDispatcher get overlaysDispatcher => di<OverlayDispatcher>();
+  OverlayDispatcher get overlaysDispatcher => di<OverlayDispatcher>();
   ////
 
   /// 🔁 Called when a new route is pushed onto the navigator

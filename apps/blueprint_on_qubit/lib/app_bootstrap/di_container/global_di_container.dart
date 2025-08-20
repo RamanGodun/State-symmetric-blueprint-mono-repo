@@ -5,7 +5,7 @@ import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_status_cu
 import 'package:core/base_modules/theme/theme_providers_or_cubits/theme_cubit.dart'
     show AppThemeCubit;
 import 'package:core/di_container_cubit/core/di.dart';
-import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_cubit.dart';
+import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_stream_adapter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

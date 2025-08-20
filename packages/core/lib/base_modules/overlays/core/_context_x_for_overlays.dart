@@ -17,8 +17,8 @@ extension ContextXForOverlays on BuildContext {
   ///----------------------------------------
   //
   /// 🔌 Lazily access the shared [OverlayDispatcher] via DI container
-  OverlayDispatcher get dispatcher => readDI(overlayDispatcherProvider);
-  // OverlayDispatcher get dispatcher => di<OverlayDispatcher>();
+  // OverlayDispatcher get dispatcher => readDI(overlayDispatcherProvider);
+  OverlayDispatcher get dispatcher => di<OverlayDispatcher>();
   //
 
   /// 🧠 Handles displaying [FailureUIEntity] as banner/snackbar/dialog

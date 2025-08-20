@@ -54,8 +54,8 @@ final class IOSAppDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final dispatcher = context.readDI(overlayDispatcherProvider);
-    // final dispatcher = di<OverlayDispatcher>();
+    // final dispatcher = context.readDI(overlayDispatcherProvider);
+    final dispatcher = di<OverlayDispatcher>();
     //
     final isDark = context.isDarkMode;
     final colorScheme = context.colorScheme;

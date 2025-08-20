@@ -4,7 +4,7 @@ import 'package:blueprint_on_qubit/features_presentation/email_verification/emai
 import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:core/di_container_cubit/core/di_module_interface.dart';
 import 'package:core/di_container_cubit/x_on_get_it.dart';
-import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_cubit.dart';
+import 'package:core/utils_shared/auth/auth_gateway.dart';
 import 'package:features/email_verification/data/email_verification_repo_impl.dart';
 import 'package:features/email_verification/data/remote_database_contract.dart';
 import 'package:features/email_verification/data/remote_database_impl.dart';
@@ -36,12 +36,16 @@ final class EmailVerificationModule implements DIModule {
         () => IUserValidationRepoImpl(di()),
       )
       /// Usecases
-      ..registerFactoryIfAbsent(() => EmailVerificationUseCase(di()))
+      ..registerFactoryIfAbsent(
+        () => EmailVerificationUseCase(
+          di<IUserValidationRepo>(),
+          di<AuthGateway>(),
+        ),
+      )
       /// Email Verification Cubit
       ..registerFactoryIfAbsent<EmailVerificationCubit>(
         () => EmailVerificationCubit(
           di<EmailVerificationUseCase>(),
-          di<AuthCubit>(),
         ),
       );
 

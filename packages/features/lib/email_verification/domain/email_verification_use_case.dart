@@ -1,3 +1,4 @@
+import 'package:core/utils_shared/auth/auth_gateway.dart';
 import 'package:core/utils_shared/type_definitions.dart' show ResultFuture;
 import 'package:features/email_verification/domain/repo_contract.dart';
 
@@ -5,10 +6,13 @@ import 'package:features/email_verification/domain/repo_contract.dart';
 //
 final class EmailVerificationUseCase {
   ///------------------------------
-  const EmailVerificationUseCase(this.repo);
+  const EmailVerificationUseCase(this.repo, this.gateway);
 
   ///
   final IUserValidationRepo repo;
+
+  ///
+  final AuthGateway gateway;
   //
 
   /// 📧 Sends verification email

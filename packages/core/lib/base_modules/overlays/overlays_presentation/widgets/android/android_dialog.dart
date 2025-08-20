@@ -57,8 +57,8 @@ final class AndroidDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    // final dispatcher = di<OverlayDispatcher>();
-    final dispatcher = context.readDI(overlayDispatcherProvider);
+    final dispatcher = di<OverlayDispatcher>();
+    // final dispatcher = context.readDI(overlayDispatcherProvider);
     //
     final isDark = context.isDarkMode;
     final colorScheme = context.colorScheme;

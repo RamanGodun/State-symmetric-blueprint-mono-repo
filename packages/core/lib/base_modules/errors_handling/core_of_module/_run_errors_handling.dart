@@ -44,7 +44,11 @@ extension ResultFutureExtension<T> on Future<T> Function() {
       /// 🛡️ Convert infra-level exception into domain-level [Failure]
       return e.mapToFailure(st).toLeft<T>();
     }
-    //
+    /// Others (Error, Object, throw 'str' etc)
+    on Object catch (e, st) {
+      ErrorsLogger.log(e, st);
+      return e.mapToFailure(st).toLeft<T>();
+    }
   }
 }
 ////

@@ -7,7 +7,6 @@ import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.
     show Failure;
 import 'package:core/base_modules/errors_handling/core_of_module/failure_type.dart'
     show EmailVerificationTimeoutFailureType;
-import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_cubit.dart';
 import 'package:core/utils_shared/timing_control/timing_config.dart'
     show AppDurations;
 import 'package:equatable/equatable.dart';
@@ -22,13 +21,13 @@ part 'email_verification_state.dart';
 //
 final class EmailVerificationCubit extends Cubit<EmailVerificationState> {
   ///------------------------------------------------------------------
-  EmailVerificationCubit(this._useCase, this._authCubit)
+  EmailVerificationCubit(this._useCase)
     : super(const EmailVerificationState()) {
     _startPolling();
   }
   //
   final EmailVerificationUseCase _useCase;
-  final AuthCubit _authCubit;
+  // final AuthCubit _authCubit;
 
   //
 
@@ -95,7 +94,7 @@ final class EmailVerificationCubit extends Cubit<EmailVerificationState> {
       //
       (isVerified) async {
         if (isVerified) {
-          await _authCubit.reloadUser();
+          await _useCase.reloadUser();
           _stopPolling();
           emit(state.copyWith(status: EmailVerificationStatus.verified));
         } else {

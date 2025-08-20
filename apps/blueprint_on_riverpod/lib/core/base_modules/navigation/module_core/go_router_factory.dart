@@ -4,7 +4,8 @@ part of 'go_router__provider.dart';
 /// ✅ Declaratively creates router in dependence of actual [authStateStreamProvider].
 //
 GoRouter buildGoRouter(Ref ref) {
-  final authState = ref.watch(authStateStreamProvider);
+  // final authState = ref.watch(authStateStreamProvider);
+  final snapshot = ref.watch(authSnapshotsProvider);
 
   return GoRouter(
     //
@@ -29,7 +30,15 @@ GoRouter buildGoRouter(Ref ref) {
 
     /// 🧭 Global redirect handler — routes user depending on auth state
     redirect: (context, state) {
-      return RoutesRedirectionService.from(context, state, authState);
+      // return RoutesRedirectionService.from(context, state, authState);
+      final s = snapshot.valueOrNull;
+      if (s == null) return null;
+      return computeRedirect(
+        currentPath: state.matchedLocation.isNotEmpty
+            ? state.matchedLocation
+            : state.uri.toString(),
+        snapshot: s,
+      );
     },
   );
 }

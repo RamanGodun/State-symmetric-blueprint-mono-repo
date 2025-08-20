@@ -1,9 +1,51 @@
 import 'package:blueprint_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:core/utils_shared/auth/auth_snapshot.dart';
+
+///
+typedef Path = String;
+
+///
+Path? computeRedirect({
+  required Path currentPath,
+  required AuthSnapshot snapshot,
+}) {
+  const publicRoutes = {
+    RoutesPaths.signIn,
+    RoutesPaths.signUp,
+    RoutesPaths.resetPassword,
+  };
+
+  final isOnPublic = publicRoutes.contains(currentPath);
+  final isOnVerify = currentPath == RoutesPaths.verifyEmail;
+  final isOnSplash = currentPath == RoutesPaths.splash;
+
+  return switch (snapshot) {
+    AuthLoading() => isOnSplash ? null : RoutesPaths.splash,
+    AuthFailure() => RoutesPaths.signIn, // або сторінка помилки
+    AuthReady(:final session) => () {
+      final authed = session.isAuthenticated;
+      final verified = session.emailVerified;
+
+      if (!authed) return isOnPublic ? null : RoutesPaths.signIn;
+      if (!verified) return isOnVerify ? null : RoutesPaths.verifyEmail;
+
+      const restricted = {
+        RoutesPaths.splash,
+        RoutesPaths.verifyEmail,
+        ...publicRoutes,
+      };
+      final shouldGoHome =
+          restricted.contains(currentPath) && authed && verified;
+      if (shouldGoHome && currentPath != RoutesPaths.home)
+        return RoutesPaths.home;
+
+      return null; // no redirect
+    }(),
+  };
+}
+
+/*
+
 
 /// 🧭🚦 [RoutesRedirectionService] — centralized redirect logic for GoRouter
 /// 🔐 Dynamically handles redirection based on Firebase auth state:
@@ -107,4 +149,7 @@ abstract final class RoutesRedirectionService {
           '[🔁 Redirect] $currentPath → $target (authStatus: unknown)',
         );
       }
+ */
+
+
  */

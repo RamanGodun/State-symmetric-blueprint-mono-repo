@@ -16,8 +16,8 @@ abstract final class OverlayUtils {
   static VoidCallback dismissAndRun(VoidCallback action, BuildContext context) {
     //
     return () {
-      context.readDI(overlayDispatcherProvider).dismissCurrent(force: true);
-      // di<OverlayDispatcher>().dismissCurrent(force: true);
+      // context.readDI(overlayDispatcherProvider).dismissCurrent(force: true);
+      di<OverlayDispatcher>().dismissCurrent(force: true);
       action.call();
     };
   }

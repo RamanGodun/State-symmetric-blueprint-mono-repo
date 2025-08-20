@@ -4,13 +4,15 @@ import 'package:blueprint_on_qubit/core/shared_presentation/pages/page_not_found
     show PageNotFound;
 import 'package:core/base_modules/overlays/utils/overlays_cleaner_within_navigation.dart'
     show OverlaysCleanerWithinNavigation;
-import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_cubit.dart';
+import 'package:core/utils_shared/auth/auth_snapshot.dart';
+import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_stream_adapter.dart';
 import 'package:go_router/go_router.dart';
 
 /// 🧭🚦[buildGoRouter] — GoRouter factory. Returns fully constructed [GoRouter] instance
 /// ✅ Declaratively creates router in dependence of actual [authState].
 //
-GoRouter buildGoRouter(AuthState authState) {
+// GoRouter buildGoRouter(AuthState authState) {
+GoRouter buildGoRouter(AuthViewState authState) {
   return GoRouter(
     /// 👁️ Observers — navigation side-effects (e.g., dismissing overlays)
     observers: [OverlaysCleanerWithinNavigation()],
@@ -32,7 +34,19 @@ GoRouter buildGoRouter(AuthState authState) {
     //
 
     /// 🧭 Global redirect handler — routes user depending on auth state
-    redirect: (context, state) =>
-        RoutesRedirectionService.from(context, state, authState),
+    redirect: (context, state) {
+      // RoutesRedirectionService.from(context, state, authState);
+      final snapshot = switch (authState) {
+        AuthViewLoading() => const AuthLoading(),
+        AuthViewError(:final error) => AuthFailure(error),
+        AuthViewReady(:final session) => AuthReady(session),
+      };
+      return computeRedirect(
+        currentPath: state.matchedLocation.isNotEmpty
+            ? state.matchedLocation
+            : state.uri.toString(),
+        snapshot: snapshot,
+      );
+    },
   );
 }

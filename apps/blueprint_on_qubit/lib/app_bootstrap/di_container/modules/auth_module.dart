@@ -3,7 +3,8 @@ import 'package:blueprint_on_qubit/features_presentation/auth/sign_out/sign_out_
 import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:core/di_container_cubit/core/di_module_interface.dart';
 import 'package:core/di_container_cubit/x_on_get_it.dart';
-import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_cubit.dart';
+import 'package:core/utils_shared/auth/auth_gateway.dart';
+import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_stream_adapter.dart';
 import 'package:features/auth/data/auth_repo_implementations/sign_in_repo_impl.dart';
 import 'package:features/auth/data/auth_repo_implementations/sign_out_repo_impl.dart';
 import 'package:features/auth/data/auth_repo_implementations/sign_up_repo_impl.dart';
@@ -13,7 +14,8 @@ import 'package:features/auth/domain/repo_contracts.dart';
 import 'package:features/auth/domain/use_cases/sign_in.dart';
 import 'package:features/auth/domain/use_cases/sign_out.dart';
 import 'package:features/auth/domain/use_cases/sign_up.dart';
-import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
+import 'package:firebase_bootstrap_config/firebase_auth_gateway.dart';
+import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
 
 ///
 final class AuthModule implements DIModule {
@@ -50,11 +52,13 @@ final class AuthModule implements DIModule {
       //
       /// AuthStreamCubit
       //
-      ..registerLazySingletonIfAbsent<AuthCubit>(
-        () => AuthCubit(userStream: di<FirebaseAuth>().authStateChanges()),
+      ..registerLazySingleton<AuthGateway>(
+        () => FirebaseAuthGateway(FirebaseConstants.fbAuth),
       )
+      ..registerLazySingleton<AuthCubit>(() => AuthCubit(gateway: di()))
       //
       // Sign out Cubit
+      //
       ..registerFactoryIfAbsent(() => SignOutCubit(di<SignOutUseCase>()));
 
     //
