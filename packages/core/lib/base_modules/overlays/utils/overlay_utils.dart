@@ -1,5 +1,6 @@
-import 'package:app_on_riverpod/app_bootstrap_and_config/di_container/read_di_x_on_context.dart';
-import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher_provider.dart';
+import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart'
+    show OverlayDispatcher;
+import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:flutter/material.dart';
 
 /// 🛠️ [OverlayUtils] — utility class for overlay-related helpers
@@ -13,7 +14,8 @@ abstract final class OverlayUtils {
   static VoidCallback dismissAndRun(VoidCallback action, BuildContext context) {
     //
     return () {
-      context.readDI(overlayDispatcherProvider).dismissCurrent(force: true);
+      // context.readDI(overlayDispatcherProvider).dismissCurrent(force: true);
+      di<OverlayDispatcher>().dismissCurrent(force: true);
       action.call();
     };
   }

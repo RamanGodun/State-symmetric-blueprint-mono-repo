@@ -1,5 +1,3 @@
-import 'package:blueprint_on_qubit/core/base_moduls/di_container/di_container_init.dart'
-    show di;
 import 'package:blueprint_on_qubit/core/base_moduls/navigation/routes/app_routes.dart'
     show RoutesNames;
 import 'package:blueprint_on_qubit/features/auth/presentation/sign_out/sign_out_cubit/sign_out_cubit.dart'
@@ -15,6 +13,7 @@ import 'package:core/base_modules/theme/ui_constants/_app_constants.dart'
 import 'package:core/base_modules/theme/ui_constants/app_colors.dart'
     show AppColors;
 import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dart';
+import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:core/shared_presentation_layer/shared_widgets/buttons/text_button.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/loader.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';

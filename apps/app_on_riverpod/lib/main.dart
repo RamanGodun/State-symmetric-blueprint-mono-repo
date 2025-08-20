@@ -1,6 +1,5 @@
 import 'package:app_on_riverpod/app_bootstrap_and_config/app_bootstrap.dart'
     show AppBootstrap;
-import 'package:app_on_riverpod/app_bootstrap_and_config/di_container/di_container.dart';
 import 'package:app_on_riverpod/root_view_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,9 +19,9 @@ Future<void> main() async {
 
   /// 🏁🚀 Launches the app with ProviderScope using the global container as parent.
   runApp(
-    ProviderScope(
-      parent: GlobalDIContainer.instance,
-      child: const AppLocalizationShell(),
+    const ProviderScope(
+      // parent: GlobalDIContainer.instance,
+      child: AppLocalizationShell(),
     ),
   );
 }

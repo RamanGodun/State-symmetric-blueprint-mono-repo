@@ -22,28 +22,30 @@ brew install spider
 ### Create a configuration file in custom directory (recommended):
 
 ```bash
-spider create -p ./lib/core/utils/spider
+spider create -p packages/core/lib/utils_shared/spider/spider  // from monorepo root
+or
+lib/utils_shared/utils_shared/spider/spider // from package root
 ```
 
-This creates: `lib/core/app_config/spider/spider.yaml`
+This creates: `packages/core/lib/utils_shared/spider/spider.yaml`
 
 ### Sample `spider.yaml`
 
 ```yaml
-# Spider config
+# spider.yaml (in lib/utils_shared/spider/spider.yaml)
 
 generate_tests: false
 no_comments: true
 export: true
 use_part_of: false
 
-package: core/app_config/spider
+package: core
 
 groups:
   - path: assets/images
-    class_name: AppImages
+    class_name: AppImagesPaths
     types: [.png, .jpg, .jpeg, .webp, .gif]
-    output: lib/core/app_config/spider/app_images.dart
+    output: utils_shared/spider/images_paths.dart
 ```
 
 ---
@@ -53,13 +55,16 @@ groups:
 ### Run build manually:
 
 ```bash
-spider -p ./lib/core/utils/spider/spider.yaml build
+# from core root
+spider -p lib/utils_shared/spider/spider.yaml build
+# or watch
+spider -p lib/utils_shared/spider/spider.yaml --watch
 ```
 
 ### Optional: Watch for file changes
 
 ```bash
-spider -p ./lib/core/utils/spider/spider.yaml build --watch
+spider -p packages/core/lib/utils_shared/spider/spider.yaml --watch
 ```
 
 ---
@@ -67,9 +72,9 @@ spider -p ./lib/core/utils/spider/spider.yaml build --watch
 ## 🔍 Usage in Dart Code
 
 ```dart
-import 'package:core/app_config/spider/app_images.dart';
+import 'package:core/utils_shared/spider/images_paths.dart';
 
-Image.asset(AppImages.error);
+Image(image: AssetImage(AppImagesPaths.flutterLogo, package: 'core'));
 ```
 
 ---

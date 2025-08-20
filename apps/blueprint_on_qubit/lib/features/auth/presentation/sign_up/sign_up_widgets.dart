@@ -11,7 +11,10 @@ final class _LogoImage extends StatelessWidget {
     //
     return const Hero(
       tag: 'Logo',
-      child: Image(image: AssetImage(AppImagesPaths.flutterLogo), height: 150),
+      child: Image(
+        image: AssetImage(AppImagesPaths.flutterLogo, package: 'core'),
+        height: 150,
+      ),
     );
   }
 }

@@ -25,7 +25,7 @@ import 'package:core/shared_presentation_layer/shared_widgets/key_value_text_wid
     show KeyValueTextWidget;
 import 'package:core/shared_presentation_layer/shared_widgets/loader.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
-import 'package:core/utils_shared/spider/app_images.dart' show AppImagesPaths;
+import 'package:core/utils_shared/spider/app_images_paths.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

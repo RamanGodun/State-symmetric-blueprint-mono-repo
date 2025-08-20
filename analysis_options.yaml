@@ -45,6 +45,7 @@ analyzer:
     - "*.md"
     - "**/*.md"
     - "**/firebase_options.dart"
+    - "**/app_images_paths.dart"
 
   # Override severity levels for specific rules
   errors:

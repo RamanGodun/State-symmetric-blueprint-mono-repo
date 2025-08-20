@@ -1,7 +1,5 @@
-import 'package:app_on_riverpod/app_bootstrap_and_config/di_container/di_container.dart'
-    show GlobalDIContainer;
 import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart';
-import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher_provider.dart';
+import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:flutter/widgets.dart';
 
 /// 🧭 [OverlaysCleanerWithinNavigation] — Clears all overlays on navigation events
@@ -12,8 +10,10 @@ final class OverlaysCleanerWithinNavigation extends NavigatorObserver {
   ///--------------------------------------------------------
 
   /// 📦 Reference to the overlay dispatcher (via DI)
-  OverlayDispatcher get overlaysDispatcher =>
-      GlobalDIContainer.instance.read(overlayDispatcherProvider);
+  // OverlayDispatcher get overlaysDispatcher =>
+  //     GlobalDIContainer.instance.read(overlayDispatcherProvider);
+  /// 📦 Reference to the overlay dispatcher (via GetIt)
+  OverlayDispatcher get overlaysDispatcher => di<OverlayDispatcher>();
   ////
 
   /// 🔁 Called when a new route is pushed onto the navigator

@@ -1,6 +1,3 @@
-import 'package:blueprint_on_qubit/core/base_moduls/di_container/di_container_init.dart'
-    show di;
-
 import 'package:blueprint_on_qubit/core/base_moduls/navigation/routes/app_routes.dart'
     show RoutesNames;
 import 'package:blueprint_on_qubit/features/change_or_reset_password/domain/password_actions_use_case.dart';
@@ -23,6 +20,7 @@ import 'package:core/base_modules/overlays/core/_context_x_for_overlays.dart';
 import 'package:core/base_modules/overlays/core/_overlay_base_methods.dart';
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart'
     show AppSpacing;
+import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:core/shared_presentation_layer/shared_widgets/buttons/form_submit_button.dart'
     show FormSubmitButton;
 import 'package:core/shared_presentation_layer/shared_widgets/buttons/text_button.dart'

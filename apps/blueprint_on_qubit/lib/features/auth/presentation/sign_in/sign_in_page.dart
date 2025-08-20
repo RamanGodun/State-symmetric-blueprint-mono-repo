@@ -1,5 +1,3 @@
-import 'package:blueprint_on_qubit/core/base_moduls/di_container/di_container_init.dart'
-    show di;
 import 'package:blueprint_on_qubit/core/base_moduls/navigation/routes/app_routes.dart';
 import 'package:blueprint_on_qubit/features/auth/domain/use_cases/sign_in.dart';
 import 'package:blueprint_on_qubit/features/auth/presentation/sign_in/cubit/sign_in_page_cubit.dart';
@@ -30,11 +28,12 @@ import 'package:core/base_modules/theme/ui_constants/_app_constants.dart'
     show AppSpacing;
 import 'package:core/base_modules/theme/ui_constants/app_colors.dart'
     show AppColors;
+import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:core/shared_presentation_layer/shared_widgets/buttons/form_submit_button.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/buttons/text_button.dart';
 import 'package:core/utils_shared/extensions/context_extensions/_context_extensions.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
-import 'package:core/utils_shared/spider/app_images.dart' show AppImagesPaths;
+import 'package:core/utils_shared/spider/app_images_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' show HookWidget;

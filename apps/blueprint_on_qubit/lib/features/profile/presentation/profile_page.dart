@@ -1,5 +1,3 @@
-import 'package:blueprint_on_qubit/core/base_moduls/di_container/di_container_init.dart'
-    show di;
 import 'package:blueprint_on_qubit/core/base_moduls/navigation/routes/app_routes.dart';
 import 'package:blueprint_on_qubit/features/auth/presentation/sign_out/sign_out_cubit/sign_out_cubit.dart';
 import 'package:blueprint_on_qubit/features/auth/presentation/sign_out/sign_out_widget.dart';
@@ -17,13 +15,14 @@ import 'package:core/base_modules/theme/ui_constants/_app_constants.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/blur_wrapper.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/theme_toggle_widgets/theme_picker.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/theme_toggle_widgets/theme_toggler.dart';
+import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:core/shared_domain_layer/shared_entities/_user_entity.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/app_bar.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/buttons/filled_button.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/key_value_text_widget.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/loader.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
-import 'package:core/utils_shared/spider/app_images.dart' show AppImagesPaths;
+import 'package:core/utils_shared/spider/app_images_paths.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

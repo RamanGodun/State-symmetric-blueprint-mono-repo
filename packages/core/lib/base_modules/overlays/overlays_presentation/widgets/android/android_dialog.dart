@@ -1,12 +1,10 @@
 // 📌 No need for public API docs.
 // ignore_for_file: public_member_api_docs
 
-import 'package:app_on_riverpod/app_bootstrap_and_config/di_container/read_di_x_on_context.dart';
 import 'package:core/base_modules/animations/module_core/_animation_engine.dart';
 import 'package:core/base_modules/animations/overlays_animation/animation_wrapper/animated_overlay_shell.dart';
 import 'package:core/base_modules/localization/module_widgets/text_widget.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart';
-import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher_provider.dart';
 import 'package:core/base_modules/overlays/overlays_presentation/overlay_presets/overlay_preset_props.dart';
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/barrier_filter.dart';
@@ -14,6 +12,7 @@ import 'package:core/base_modules/theme/widgets_and_utils/blur_wrapper.dart'
     show BlurContainer;
 import 'package:core/base_modules/theme/widgets_and_utils/box_decorations/_box_decorations_factory.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dart';
+import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:core/shared_presentation_layer/shared_widgets/divider.dart';
 import 'package:core/utils_shared/extensions/context_extensions/_context_extensions.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
@@ -56,7 +55,8 @@ final class AndroidDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final dispatcher = context.readDI(overlayDispatcherProvider);
+    final dispatcher = di<OverlayDispatcher>();
+    //  final dispatcher = context.readDI(overlayDispatcherProvider);
     //
     final isDark = context.isDarkMode;
     final colorScheme = context.colorScheme;

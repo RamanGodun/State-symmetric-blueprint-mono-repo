@@ -1,6 +1,5 @@
-import 'package:app_on_riverpod/app_bootstrap_and_config/di_container/di_config_sync.dart'
-    show DIConfiguration, IDIConfig;
-import 'package:app_on_riverpod/app_bootstrap_and_config/di_container/di_container.dart';
+// import 'package:app_on_riverpod/app_bootstrap_and_config/di_container_riverpod/di_config_sync.dart'
+//     show DIConfiguration, IDIConfig;
 import 'package:app_on_riverpod/app_bootstrap_and_config/local_storage_init.dart'
     show ILocalStorage, LocalStorage;
 import 'package:app_on_riverpod/app_bootstrap_and_config/platform_validation.dart'
@@ -12,7 +11,7 @@ import 'package:core/base_modules/localization/core_of_module/init_localization.
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_strategy/url_strategy.dart' show setPathUrlStrategy;
 
 part 'bootstrap_interface.dart';
@@ -24,14 +23,14 @@ final class AppBootstrap extends IAppBootstrap {
   /// Constructor allows the injection of custom/mock implementations.
   AppBootstrap({
     ILocalStorage? localStorageStack,
-    IDIConfig? diConfiguration,
+    // IDIConfig? diConfiguration,
     IRemoteDataBase? firebaseStack,
   }) : _localStorage = localStorageStack ?? const LocalStorage(),
-       _diConfiguration = diConfiguration ?? DIConfiguration(),
+       //  _diConfiguration = diConfiguration ?? DIConfiguration(),
        _remoteDataBase = firebaseStack ?? const FirebaseRemoteDataBase();
   //
   final ILocalStorage _localStorage;
-  final IDIConfig _diConfiguration;
+  // final IDIConfig _diConfiguration;
   final IRemoteDataBase _remoteDataBase;
 
   ////
@@ -86,12 +85,12 @@ final class AppBootstrap extends IAppBootstrap {
   Future<void> initGlobalDIContainer() async {
     //
     debugPrint('📦 [DI] Initializing global dependency container...');
-    final getGlobalContainer = ProviderContainer(
-      overrides: _diConfiguration.overrides,
-      observers: _diConfiguration.observers,
-    );
+    // final getGlobalContainer = ProviderContainer(
+    //   overrides: _diConfiguration.overrides,
+    //   observers: _diConfiguration.observers,
+    // );
     //
-    GlobalDIContainer.initialize(getGlobalContainer);
+    // GlobalDIContainer.initialize(getGlobalContainer);
     debugPrint('✅ [DI] Dependency container ready.');
   }
 

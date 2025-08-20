@@ -49,6 +49,7 @@ final class _UserProfileCard extends StatelessWidget {
                 imageUrl: user.profileImage,
                 placeholder: (_, _) => Image.asset(
                   AppImagesPaths.loading,
+                  package: 'core',
                   width: double.infinity,
                   height: 200,
                   fit: BoxFit.cover,
