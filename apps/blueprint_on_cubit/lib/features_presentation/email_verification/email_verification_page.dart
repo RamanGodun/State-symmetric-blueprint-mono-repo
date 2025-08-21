@@ -37,12 +37,12 @@ final class VerifyEmailPage extends StatelessWidget {
     /// Register all the required cubits using MultiBlocProvider.
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: di<EmailVerificationcubit>()),
+        BlocProvider.value(value: di<EmailVerificationCubit>()),
         BlocProvider.value(value: di<SignOutCubit>()),
       ],
 
       /// Listen for any failures and show error overlay if needed.
-      child: BlocListener<EmailVerificationcubit, EmailVerificationState>(
+      child: BlocListener<EmailVerificationCubit, EmailVerificationState>(
         listenWhen: (prev, curr) => curr.failure?.consume() != null,
         listener: (context, state) {
           final error = state.failure?.consume();
@@ -69,7 +69,7 @@ final class _VerifyEmailPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// Get reference to the cubit.
-    final emailVerificationcubit = context.read<EmailVerificationcubit>();
+    final emailVerificationcubit = context.read<EmailVerificationCubit>();
 
     /// Ensure the verification flow is initialized only once after first frame.
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -77,7 +77,7 @@ final class _VerifyEmailPageView extends StatelessWidget {
     });
 
     // Listen for cubit state changes and rebuild UI accordingly.
-    return BlocBuilder<EmailVerificationcubit, EmailVerificationState>(
+    return BlocBuilder<EmailVerificationCubit, EmailVerificationState>(
       builder: (context, state) {
         final status = state.status;
         return Scaffold(

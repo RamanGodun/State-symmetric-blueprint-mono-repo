@@ -41,8 +41,8 @@ final class ProfileModule implements DIModule {
       // Use Cases
       ..registerLazySingletonIfAbsent(() => FetchProfileUseCase(di()))
       // Global Profile cubit
-      ..registerLazySingletonIfAbsent<Profilecubit>(
-        () => Profilecubit(di<FetchProfileUseCase>()),
+      ..registerLazySingletonIfAbsent<ProfileCubit>(
+        () => ProfileCubit(di<FetchProfileUseCase>()),
       );
 
     //

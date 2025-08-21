@@ -43,8 +43,8 @@ final class EmailVerificationModule implements DIModule {
         ),
       )
       /// Email Verification cubit
-      ..registerFactoryIfAbsent<EmailVerificationcubit>(
-        () => EmailVerificationcubit(
+      ..registerFactoryIfAbsent<EmailVerificationCubit>(
+        () => EmailVerificationCubit(
           di<EmailVerificationUseCase>(),
         ),
       );
@@ -55,7 +55,7 @@ final class EmailVerificationModule implements DIModule {
   ///
   @override
   Future<void> dispose() async {
-    await di.safeDispose<EmailVerificationcubit>();
+    await di.safeDispose<EmailVerificationCubit>();
   }
 
   //

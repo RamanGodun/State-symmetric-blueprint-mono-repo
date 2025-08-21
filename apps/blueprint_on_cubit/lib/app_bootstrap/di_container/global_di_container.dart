@@ -3,9 +3,9 @@ import 'package:blueprint_on_cubit/features_presentation/profile/cubit/profile_p
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_status_cubit.dart'
     show OverlayStatusCubit;
 import 'package:core/base_modules/theme/theme_providers_or_cubits/theme_cubit.dart'
-    show AppThemecubit;
+    show AppThemeCubit;
 import 'package:core/di_container_cubit/core/di.dart';
-import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_stream_adapter.dart';
+import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_stream_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,13 +23,13 @@ final class GlobalProviders extends StatelessWidget {
     //
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: di<AppThemecubit>()),
+        BlocProvider.value(value: di<AppThemeCubit>()),
         BlocProvider.value(value: di<OverlayStatusCubit>()),
 
         BlocProvider.value(value: di<AuthCubit>()),
-        BlocProvider.value(value: di<Profilecubit>()),
+        BlocProvider.value(value: di<ProfileCubit>()),
 
-        BlocProvider.value(value: di<EmailVerificationcubit>()),
+        BlocProvider.value(value: di<EmailVerificationCubit>()),
 
         // others...
       ],

@@ -21,12 +21,12 @@ import 'package:formz/formz.dart';
 
 part 'sign_in_page_state.dart';
 
-/// 🔐 [SignIncubit] — Manages Sign In logic, validation, submission.
+/// 🔐 [SignInCubit] — Manages Sign In logic, validation, submission.
 /// ✅ Leverages via DI [FormValidationService] and uses DSL-like result handler.
 //
-final class SignIncubit extends Cubit<SignInPageState> {
+final class SignInCubit extends Cubit<SignInPageState> {
   ///-----------------------------------------------
-  SignIncubit(this._signInUseCase, this._validationService)
+  SignInCubit(this._signInUseCase, this._validationService)
     : super(const SignInPageState());
   //
   final SignInUseCase _signInUseCase;

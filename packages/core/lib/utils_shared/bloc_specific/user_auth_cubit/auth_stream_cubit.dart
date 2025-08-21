@@ -8,6 +8,32 @@ import 'package:core/utils_shared/auth/auth_snapshot.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+final class AuthCubit extends Cubit<AuthViewState> {
+  AuthCubit({required AuthGateway gateway}) : super(const AuthViewLoading()) {
+    _sub = gateway.snapshots$.listen((snap) {
+      switch (snap) {
+        case AuthLoading():
+          emit(const AuthViewLoading());
+        case AuthFailure(:final error):
+          emit(AuthViewError(error));
+        case AuthReady(:final session):
+          emit(AuthViewReady(session));
+      }
+    });
+  }
+  late final StreamSubscription<AuthSnapshot> _sub;
+
+  @override
+  Future<void> close() async {
+    await _sub.cancel();
+    return super.close();
+  }
+}
+
+////
+
+////
+
 sealed class AuthViewState extends Equatable {
   const AuthViewState();
   @override
@@ -30,30 +56,4 @@ final class AuthViewReady extends AuthViewState {
   final AuthSession session;
   @override
   List<Object?> get props => [session.uid, session.emailVerified];
-}
-
-////
-
-////
-
-final class AuthCubit extends Cubit<AuthViewState> {
-  AuthCubit({required AuthGateway gateway}) : super(const AuthViewLoading()) {
-    _sub = gateway.snapshots$.listen((snap) {
-      switch (snap) {
-        case AuthLoading():
-          emit(const AuthViewLoading());
-        case AuthFailure(:final error):
-          emit(AuthViewError(error));
-        case AuthReady(:final session):
-          emit(AuthViewReady(session));
-      }
-    });
-  }
-  late final StreamSubscription<AuthSnapshot> _sub;
-
-  @override
-  Future<void> close() async {
-    await _sub.cancel();
-    return super.close();
-  }
 }

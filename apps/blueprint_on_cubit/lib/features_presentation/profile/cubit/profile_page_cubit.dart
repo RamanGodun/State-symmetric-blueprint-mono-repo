@@ -12,12 +12,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'profile_page_state.dart';
 
-/// 🧩 [Profilecubit] — State manager for profile loading and errors.
+/// 🧩 [ProfileCubit] — State manager for profile loading and errors.
 /// ✅ Uses AZER (Async, Zero side effects, Error handling, Reactive) pattern.
 //
-final class Profilecubit extends Cubit<ProfileState> {
+final class ProfileCubit extends Cubit<ProfileState> {
   ///-----------------------------------------------
-  Profilecubit(this._fetchProfileUsecase) : super(const ProfileInitial());
+  ProfileCubit(this._fetchProfileUsecase) : super(const ProfileInitial());
   //
   final FetchProfileUseCase _fetchProfileUsecase;
 

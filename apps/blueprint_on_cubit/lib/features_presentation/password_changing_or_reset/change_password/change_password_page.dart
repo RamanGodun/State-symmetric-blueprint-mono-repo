@@ -47,27 +47,27 @@ final class ChangePasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     return BlocProvider(
-      create: (_) => ChangePasswordcubit(
+      create: (_) => ChangePasswordCubit(
         di<PasswordRelatedUseCases>(),
         di<FormValidationService>(),
       ),
       child: MultiBlocListener(
         listeners: [
           /// ❌ Error Listener
-          BlocListener<ChangePasswordcubit, ChangePasswordState>(
+          BlocListener<ChangePasswordCubit, ChangePasswordState>(
             listenWhen: (prev, curr) =>
                 prev.status != curr.status && curr.status.isSubmissionFailure,
             listener: (context, state) {
               final error = state.failure?.consume();
               if (error != null) {
                 context.showError(error.toUIEntity());
-                context.read<ChangePasswordcubit>().clearFailure();
+                context.read<ChangePasswordCubit>().clearFailure();
               }
             },
           ),
 
           /// ✅ Success Listener
-          BlocListener<ChangePasswordcubit, ChangePasswordState>(
+          BlocListener<ChangePasswordCubit, ChangePasswordState>(
             listenWhen: (prev, curr) =>
                 prev.status != curr.status && curr.status.isSubmissionSuccess,
             listener: (context, state) {

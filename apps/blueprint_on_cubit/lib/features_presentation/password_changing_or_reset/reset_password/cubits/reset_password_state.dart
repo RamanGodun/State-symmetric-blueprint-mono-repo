@@ -4,7 +4,7 @@
 part of 'reset_password_cubit.dart';
 
 /// 📄 [ResetPasswordState] — Stores reset form values and validation status
-/// ✅ Used by [ResetPasswordcubit] to manage reactive UI state
+/// ✅ Used by [ResetPasswordCubit] to manage reactive UI state
 //
 final class ResetPasswordState extends Equatable {
   ///------------------------------------------

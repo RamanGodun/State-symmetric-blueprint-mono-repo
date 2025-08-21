@@ -38,14 +38,14 @@ final class _EmailField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<SignIncubit, SignInPageState, String?>(
+    return BlocSelector<SignInCubit, SignInPageState, String?>(
       selector: (state) => state.email.uiErrorKey,
       builder: (context, errorText) {
         return InputFieldFactory.create(
           type: InputFieldType.email,
           focusNode: focusNode,
           errorText: errorText,
-          onChanged: context.read<SignIncubit>().emailChanged,
+          onChanged: context.read<SignInCubit>().emailChanged,
           onSubmitted: () => FocusScope.of(context).requestFocus(nextFocus),
         );
       },
@@ -70,7 +70,7 @@ final class _PasswordField extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     return BlocSelector<
-      SignIncubit,
+      SignInCubit,
       SignInPageState,
       ({String? errorText, bool isObscure})
     >(
@@ -88,10 +88,10 @@ final class _PasswordField extends StatelessWidget {
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
-            onPressed: context.read<SignIncubit>().togglePasswordVisibility,
+            onPressed: context.read<SignInCubit>().togglePasswordVisibility,
           ),
-          onChanged: context.read<SignIncubit>().passwordChanged,
-          onSubmitted: () => context.read<SignIncubit>().submit(),
+          onChanged: context.read<SignInCubit>().passwordChanged,
+          onSubmitted: () => context.read<SignInCubit>().submit(),
         );
       },
     );
@@ -112,11 +112,11 @@ final class _SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return FormSubmitButton<SignIncubit, SignInPageState>(
+    return FormSubmitButton<SignInCubit, SignInPageState>(
       label: LocaleKeys.buttons_sign_in,
       onPressed: (context) {
         context.unfocusKeyboard();
-        context.read<SignIncubit>().submit();
+        context.read<SignInCubit>().submit();
       },
       statusSelector: (state) => state.status,
       isValidatedSelector: (state) => state.isValid,
@@ -142,7 +142,7 @@ final class _SignInFooter extends StatelessWidget {
       (cubit) => cubit.state,
     );
 
-    return BlocSelector<SignIncubit, SignInPageState, bool>(
+    return BlocSelector<SignInCubit, SignInPageState, bool>(
       selector: (state) => state.status.isSubmissionInProgress,
       builder: (context, isLoading) {
         final isEnabled = !isLoading && !isOverlayActive;

@@ -4,7 +4,7 @@ import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:core/di_container_cubit/core/di_module_interface.dart';
 import 'package:core/di_container_cubit/x_on_get_it.dart';
 import 'package:core/utils_shared/auth/auth_gateway.dart';
-import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_stream_adapter.dart';
+import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_stream_cubit.dart';
 import 'package:features/auth/data/auth_repo_implementations/sign_in_repo_impl.dart';
 import 'package:features/auth/data/auth_repo_implementations/sign_out_repo_impl.dart';
 import 'package:features/auth/data/auth_repo_implementations/sign_up_repo_impl.dart';

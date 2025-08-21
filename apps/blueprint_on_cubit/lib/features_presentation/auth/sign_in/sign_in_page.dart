@@ -52,11 +52,11 @@ final class SignInPage extends StatelessWidget {
     //
     return BlocProvider(
       create: (_) =>
-          SignIncubit(di<SignInUseCase>(), di<FormValidationService>()),
+          SignInCubit(di<SignInUseCase>(), di<FormValidationService>()),
 
       /// 🔄 [_SignInErrorsListener] — Bloc listener for one-shot error feedback.
       /// ✅ Uses `Consumable<FailureUIModel>` for single-use error overlays.
-      child: BlocListener<SignIncubit, SignInPageState>(
+      child: BlocListener<SignInCubit, SignInPageState>(
         listenWhen: (prev, curr) =>
             prev.status != curr.status && curr.status.isSubmissionFailure,
 
@@ -71,7 +71,7 @@ final class SignInPage extends StatelessWidget {
                 error.toUIEntity(),
                 showAs: ShowAs.dialog,
                 onConfirm: OverlayUtils.dismissAndRun(
-                  () => context.read<SignIncubit>().submit(),
+                  () => context.read<SignInCubit>().submit(),
                   context,
                 ),
                 confirmText: AppLocalizer.translateSafely(
@@ -82,7 +82,7 @@ final class SignInPage extends StatelessWidget {
               context.showError(error.toUIEntity());
             }
 
-            context.read<SignIncubit>()
+            context.read<SignInCubit>()
               ..resetStatus()
               ..clearFailure();
           }

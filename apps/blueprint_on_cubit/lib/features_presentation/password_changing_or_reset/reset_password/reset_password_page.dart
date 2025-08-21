@@ -45,27 +45,27 @@ final class ResetPasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     return BlocProvider(
-      create: (_) => ResetPasswordcubit(
+      create: (_) => ResetPasswordCubit(
         di<PasswordRelatedUseCases>(),
         di<FormValidationService>(),
       ),
       child: MultiBlocListener(
         listeners: [
           /// ❌ Error Listener
-          BlocListener<ResetPasswordcubit, ResetPasswordState>(
+          BlocListener<ResetPasswordCubit, ResetPasswordState>(
             listenWhen: (prev, curr) =>
                 prev.status != curr.status && curr.status.isSubmissionFailure,
             listener: (context, state) {
               final error = state.failure?.consume();
               if (error != null) {
                 context.showError(error.toUIEntity());
-                context.read<ResetPasswordcubit>().clearFailure();
+                context.read<ResetPasswordCubit>().clearFailure();
               }
             },
           ),
 
           /// ✅ Success Listener
-          BlocListener<ResetPasswordcubit, ResetPasswordState>(
+          BlocListener<ResetPasswordCubit, ResetPasswordState>(
             listenWhen: (prev, curr) =>
                 prev.status != curr.status && curr.status.isSubmissionSuccess,
             listener: (context, state) {
@@ -84,7 +84,7 @@ final class ResetPasswordPage extends StatelessWidget {
 }
 
 /// 🔐 [_ResetPasswordView] — screen that allows user to request password reset
-/// 📩 Sends reset link to user's email using [ResetPasswordcubit]
+/// 📩 Sends reset link to user's email using [ResetPasswordCubit]
 //
 final class _ResetPasswordView extends StatelessWidget {
   ///------------------------------------------------

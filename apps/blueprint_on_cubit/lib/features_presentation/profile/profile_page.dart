@@ -20,7 +20,7 @@ import 'package:core/shared_presentation_layer/shared_widgets/app_bar.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/buttons/filled_button.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/key_value_text_widget.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/loader.dart';
-import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_stream_adapter.dart';
+import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_stream_cubit.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:core/utils_shared/spider/app_images_paths.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -30,7 +30,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'widgets_for_profile_page.dart';
 
 /// 👤 [ProfilePage] — Shows user profile details and allows sign-out
-/// ✅ Uses [AuthCubit] to obtain UID and loads profile via [Profilecubit]
+/// ✅ Uses [AuthCubit] to obtain UID and loads profile via [ProfileCubit]
 /// ✅ Injects [SignOutCubit] to trigger logout
 //
 final class ProfilePage extends StatelessWidget {
@@ -50,7 +50,7 @@ final class ProfilePage extends StatelessWidget {
     if (uid == null) return const SizedBox.shrink();
 
     // щоб не тригерити loadProfile на кожен rebuild:
-    final profilecubit = context.read<Profilecubit>();
+    final profilecubit = context.read<ProfileCubit>();
     if (profilecubit.state is! ProfileLoaded) {
       profilecubit.loadProfile(uid);
     }
@@ -61,7 +61,7 @@ final class ProfilePage extends StatelessWidget {
 
       /// Bloc listener for one-shot error feedback.
       /// Uses `Consumable<FailureUIModel>` for single-use error overlays.
-      child: BlocListener<Profilecubit, ProfileState>(
+      child: BlocListener<ProfileCubit, ProfileState>(
         listenWhen: (prev, curr) =>
             prev is! ProfileError && curr is ProfileError,
 
@@ -72,7 +72,7 @@ final class ProfilePage extends StatelessWidget {
             if (failure != null) {
               final failureUIEntity = failure.toUIEntity();
               context.showError(failureUIEntity);
-              context.read<Profilecubit>().clearFailure();
+              context.read<ProfileCubit>().clearFailure();
             }
           }
         },
@@ -89,7 +89,7 @@ final class ProfilePage extends StatelessWidget {
 ////
 
 /// 📄 [ProfileView] — Handles state for loading, error, and loaded profile states
-/// ✅ Reacts to [Profilecubit] and shows appropriate UI
+/// ✅ Reacts to [ProfileCubit] and shows appropriate UI
 //
 final class ProfileView extends StatelessWidget {
   ///------------------------------------------
@@ -101,7 +101,7 @@ final class ProfileView extends StatelessWidget {
     return Scaffold(
       appBar: const _ProfileAppBar(),
 
-      body: BlocBuilder<Profilecubit, ProfileState>(
+      body: BlocBuilder<ProfileCubit, ProfileState>(
         builder: (context, state) => switch (state) {
           ProfileInitial() => const SizedBox.shrink(),
           ProfileLoaded(:final user) => _UserProfileCard(user: user),

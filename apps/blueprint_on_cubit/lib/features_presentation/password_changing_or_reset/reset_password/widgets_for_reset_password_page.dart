@@ -38,15 +38,15 @@ final class _ResetPasswordEmailInputField extends HookWidget {
     //
     final focusNode = useResetPasswordFocusNodes().email;
 
-    return BlocSelector<ResetPasswordcubit, ResetPasswordState, String?>(
+    return BlocSelector<ResetPasswordCubit, ResetPasswordState, String?>(
       selector: (state) => state.email.uiErrorKey,
       builder: (context, errorText) {
         return InputFieldFactory.create(
           type: InputFieldType.email,
           focusNode: focusNode,
           errorText: errorText,
-          onChanged: context.read<ResetPasswordcubit>().onEmailChanged,
-          onSubmitted: () => context.read<ResetPasswordcubit>().submit(),
+          onChanged: context.read<ResetPasswordCubit>().onEmailChanged,
+          onSubmitted: () => context.read<ResetPasswordCubit>().submit(),
         );
       },
     );
@@ -67,17 +67,17 @@ final class _ResetPasswordSubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     return BlocSelector<
-      ResetPasswordcubit,
+      ResetPasswordCubit,
       ResetPasswordState,
       ({FormzSubmissionStatus status, bool isValid})
     >(
       selector: (state) => (status: state.status, isValid: state.isValid),
       builder: (context, state) {
-        return FormSubmitButton<ResetPasswordcubit, ResetPasswordState>(
+        return FormSubmitButton<ResetPasswordCubit, ResetPasswordState>(
           label: LocaleKeys.buttons_reset_password,
           onPressed: (_) {
             context.unfocusKeyboard();
-            context.read<ResetPasswordcubit>().submit();
+            context.read<ResetPasswordCubit>().submit();
           },
           statusSelector: (s) => s.status,
           isValidatedSelector: (s) => s.isValid,

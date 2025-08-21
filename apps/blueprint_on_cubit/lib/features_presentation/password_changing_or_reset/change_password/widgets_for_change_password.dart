@@ -58,9 +58,9 @@ final class _PasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final changePasswordcubit = context.read<ChangePasswordcubit>();
+    final changePasswordcubit = context.read<ChangePasswordCubit>();
 
-    return BlocSelector<ChangePasswordcubit, ChangePasswordState, FieldUiState>(
+    return BlocSelector<ChangePasswordCubit, ChangePasswordState, FieldUiState>(
       selector: (state) => (
         errorText: state.password.uiErrorKey,
         isObscure: state.isPasswordObscure,
@@ -103,9 +103,9 @@ final class _ConfirmPasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final changePasswordcubit = context.read<ChangePasswordcubit>();
+    final changePasswordcubit = context.read<ChangePasswordCubit>();
 
-    return BlocSelector<ChangePasswordcubit, ChangePasswordState, FieldUiState>(
+    return BlocSelector<ChangePasswordCubit, ChangePasswordState, FieldUiState>(
       selector: (state) => (
         errorText: state.confirmPassword.uiErrorKey,
         isObscure: state.isConfirmPasswordObscure,
@@ -147,11 +147,11 @@ final class _ChangePasswordSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return FormSubmitButton<ChangePasswordcubit, ChangePasswordState>(
+    return FormSubmitButton<ChangePasswordCubit, ChangePasswordState>(
       label: LocaleKeys.change_password_title,
       onPressed: (context) {
         context.unfocusKeyboard();
-        context.read<ChangePasswordcubit>().submit();
+        context.read<ChangePasswordCubit>().submit();
       },
       statusSelector: (state) => state.status,
       isValidatedSelector: (state) => state.isValid,

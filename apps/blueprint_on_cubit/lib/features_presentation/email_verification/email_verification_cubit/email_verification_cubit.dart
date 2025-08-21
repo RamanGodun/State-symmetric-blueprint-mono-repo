@@ -19,9 +19,9 @@ part 'email_verification_state.dart';
 /// Handles the email verification flow, including sending the email,
 /// polling for verification, and timing out if necessary.
 //
-final class EmailVerificationcubit extends Cubit<EmailVerificationState> {
+final class EmailVerificationCubit extends Cubit<EmailVerificationState> {
   ///------------------------------------------------------------------
-  EmailVerificationcubit(this._useCase)
+  EmailVerificationCubit(this._useCase)
     : super(const EmailVerificationState()) {
     _startPolling();
   }

@@ -22,12 +22,12 @@ import 'package:formz/formz.dart';
 
 part 'change_password_state.dart';
 
-/// 🔐 [ChangePasswordcubit] — Manages reset password logic, validation, submission.
+/// 🔐 [ChangePasswordCubit] — Manages reset password logic, validation, submission.
 /// ✅ Leverages [PasswordRelatedUseCases] injected via DI and uses declarative state updates.
 //
-final class ChangePasswordcubit extends Cubit<ChangePasswordState> {
+final class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   ///-----------------------------------------------------------
-  ChangePasswordcubit(this._useCases, this._validation)
+  ChangePasswordCubit(this._useCases, this._validation)
     : super(const ChangePasswordState());
   //
   final PasswordRelatedUseCases _useCases;
