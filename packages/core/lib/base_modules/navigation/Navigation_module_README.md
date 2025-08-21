@@ -9,7 +9,7 @@ _Last updated: 2025-08-01_
 This module provides a **universal, declarative, and scalable navigation system** for Flutter apps,
 based on GoRouter. It encapsulates all route declarations, observers, redirect logic,
 and navigation extensions, and supports navigation side-effects, auth-driven routing
-and **both Riverpod and Cubit/BLoC** via fully decoupled DI (navigation is state-agnostic).
+and **both Riverpod and cubit/BLoC** via fully decoupled DI (navigation is state-agnostic).
 
 🦾 Designed for Clean Architecture, scalable projects, and modular codebases
 
@@ -40,14 +40,14 @@ MaterialApp.router(
 );
 ```
 
-### With Cubit/BLoC:
+### With cubit/BLoC:
 
 ```dart
 // main.dart (after DI and localization initialization)
 runApp(GlobalProviders(child: AppLocalizationShell()));
 
 // In your root shell widget:
-final router = buildGoRouter(context.select((AuthCubit c) => c.state));
+final router = buildGoRouter(context.select((Authcubit c) => c.state));
 
 MaterialApp.router(
   routerConfig: router,
@@ -67,7 +67,7 @@ routes config, transitions, observers, redirects, extension methods.
 ```
 navigation/
 ├── module_core/
-│   ├── go_router_factory.dart                        # Factory/fn for GoRouter (Cubit/BLoC)
+│   ├── go_router_factory.dart                        # Factory/fn for GoRouter (cubit/BLoC)
 │   ├── provider_for_go_router.dart                   # Riverpod Provider for GoRouter
 │   └── routes_redirection_service.dart               # Central redirect logic for auth flows
 │
@@ -96,9 +96,9 @@ navigation/
   All routes, names, and paths are defined centrally and strictly typed. `app_routes.dart` describes the route tree,
   while `routes_names.dart` and `route_paths.dart` keep names and paths in sync.
 - **State-agnostic GoRouter instantiation:**
-  GoRouter is constructed either via Riverpod provider or Cubit-based factory, always with dependency injection for reactive auth state.
+  GoRouter is constructed either via Riverpod provider or cubit-based factory, always with dependency injection for reactive auth state.
 - **Auth state driven**
-  Auth state is provided via AuthCubit or `authStateStreamProvider` (for Riverpod)).
+  Auth state is provided via Authcubit or `authStateStreamProvider` (for Riverpod)).
   GoRouter instance watches the **auth state** and re-evaluates routes on changes
 - **Centralized redirects:**
   The `RoutesRedirectionService` handles all global redirects in one place
@@ -262,7 +262,7 @@ context.go(RoutesPaths.home);
 
 ## ✅ Final Notes
 
-- Universal: Works with both Riverpod and Cubit/BLoC (only state injection layer differs)
+- Universal: Works with both Riverpod and cubit/BLoC (only state injection layer differs)
 - Fully declarative: Navigation, redirects, and side effects are centralized, testable, and extendable
 - UI-agnostic: All navigation code is outside the widget layer
 - Overlay-safe: All overlays/toasts/dialogs are auto-dismissed on navigation

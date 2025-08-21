@@ -50,3 +50,17 @@ final class FirebaseAuthGateway implements AuthGateway {
   //   _tick$.add(null);
   // }
 }
+
+/*
+
+	4.	FirebaseAuthGateway.distinct(...)
+	•	Порівнює uid, emailVerified, isAnonymous, але не email. Якщо email було змінено (наприклад, лінкований), стейт може не емінитись. Навмисно? Якщо ні — додати email у компаратор.
+	5.	_tick$ у FirebaseAuthGateway
+	•	PublishSubject не закривається. Якщо гейтвей живе весь runtime — не критично, але краще мати dispose() (і викликати з DI-диспоуз) для чистоти.
+
+
+ Так само варто подумати, чи не потрібен isAnonymous. Зараз rebuild Authcubit не відбудеться при зміні емейла.
+
+
+FirebaseAuthGateway._tick$ не закривається. Ти це зафіксував — просто нагадую тримати це на радарі разом із DI-диспоузом для модулів.
+ */

@@ -7,8 +7,8 @@ final class AppDurations {
   ///----------------------
   AppDurations._();
 
-  static const Duration ms10 = Duration(seconds: 10);
-  static const Duration ms20 = Duration(seconds: 20);
+  static const Duration ms10 = Duration(milliseconds: 10);
+  static const Duration ms20 = Duration(milliseconds: 20);
   static const Duration ms150 = Duration(milliseconds: 150);
   static const Duration ms180 = Duration(milliseconds: 180);
   static const Duration ms250 = Duration(milliseconds: 250);

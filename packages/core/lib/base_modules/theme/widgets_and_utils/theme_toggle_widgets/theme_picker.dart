@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 🌗 [ThemePicker] — Allows to pick the theme mode and shows overlay notification
-/// Use this widget in both Riverpod or Cubit/BLoC apps by toggling the relevant section.
-/// Only one block (Riverpod or Cubit) should be uncommented at a time.
+/// Use this widget in both Riverpod or cubit/BLoC apps by toggling the relevant section.
+/// Only one block (Riverpod or cubit) should be uncommented at a time.
 ///
 final class ThemePicker extends ConsumerWidget {
   ///--------------------------------------
@@ -23,10 +23,10 @@ final class ThemePicker extends ConsumerWidget {
     final themeConfig = ref.watch(themeProvider);
     final themeNotifier = ref.read(themeProvider.notifier);
 
-    /// 🔴 RIVERPOD — Uncomment for apps using Cubit/BLoC
+    /// 🔴 RIVERPOD — Uncomment for apps using cubit/BLoC
     /*
-      final themeConfig = context.watch<AppThemeCubit>().state;
-      final themeNotifier = context.read<AppThemeCubit>();
+      final themeConfig = context.watch<AppThemecubit>().state;
+      final themeNotifier = context.read<AppThemecubit>();
     */
 
     final locale = Localizations.localeOf(context);

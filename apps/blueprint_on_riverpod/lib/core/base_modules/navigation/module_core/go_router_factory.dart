@@ -1,7 +1,7 @@
 part of 'go_router__provider.dart';
 
 /// 🧭🚦[buildGoRouter] — GoRouter factory. Returns fully constructed [GoRouter] instance
-/// ✅ Declaratively creates router in dependence of actual [authStateStreamProvider].
+/// ✅ Declaratively creates router in dependence of actual [authSnapshotsProvider].
 //
 GoRouter buildGoRouter(Ref ref) {
   // final authState = ref.watch(authStateStreamProvider);

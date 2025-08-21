@@ -6,7 +6,7 @@ import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.
 import 'package:flutter/material.dart';
 
 /// 🧩 [ResultHandler<T>] — wrapper around `Either<Failure, T>`
-/// ✅ Chainable and readable result API for Cubits, Providers, UseCases.
+/// ✅ Chainable and readable result API for cubits, Providers, UseCases.
 //
 @immutable
 final class ResultHandler<T> {

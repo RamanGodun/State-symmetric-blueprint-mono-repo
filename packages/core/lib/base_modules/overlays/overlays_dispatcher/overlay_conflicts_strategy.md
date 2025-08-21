@@ -14,7 +14,7 @@ The overlay flow is orchestrated through these layers:
 - `OverlayUIEntry`: abstract entry (Dialog/Banner/Snackbar), describes strategy, dismissibility
 - `AnimatedOverlayWrapper`: handles animation and auto-dismiss
 - `TapThroughOverlayBarrier`: enables interaction pass-through
-- `OverlayStatusCubit`: provides `isOverlayActive` signal for UI logic
+- `OverlayStatuscubit`: provides `isOverlayActive` signal for UI logic
 
 Each overlay request is enqueued and inserted via `context.addOverlayRequest(...)`. Final rendering passes through:
 
@@ -144,12 +144,12 @@ Each category has its own `Debouncer` instance to avoid race conditions across u
 
 ---
 
-## 📶 UI Interaction With OverlayStatusCubit
+## 📶 UI Interaction With OverlayStatuscubit
 
 To block actions (like form submission) while an overlay is active:
 
 ```dart
-final isOverlayActive = context.select<OverlayStatusCubit, bool>((c) => c.state);
+final isOverlayActive = context.select<OverlayStatuscubit, bool>((c) => c.state);
 ```
 
 This is especially useful for disabling buttons (e.g. `SignUp`) during transitions.
@@ -165,7 +165,7 @@ This is especially useful for disabling buttons (e.g. `SignUp`) during transitio
 | Debounce            | Ensures overlays aren’t triggered too frequently            |
 | Tap-through         | Enabled selectively (banners/snackbars), blocked in dialogs |
 | Auto-dismiss        | Declarative timeout via AnimatedOverlayWrapper              |
-| Status sync         | `OverlayStatusCubit` used to reflect visibility in UI logic |
+| Status sync         | `OverlayStatuscubit` used to reflect visibility in UI logic |
 
 ---
 

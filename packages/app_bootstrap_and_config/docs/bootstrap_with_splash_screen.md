@@ -88,8 +88,8 @@ class AppReadinessNotifier extends _$AppReadinessNotifier {
 
 ```dart
 // Bloc
-class AppReadinessCubit extends Cubit<AppReadinessState> {
-  AppReadinessCubit() : super(const AppInitializing());
+class AppReadinesscubit extends cubit<AppReadinessState> {
+  AppReadinesscubit() : super(const AppInitializing());
   void updateLoading(...) => emit(...);
   void setReady() => emit(const AppReady());
   void setError(String msg, {bool canRetry = true}) => emit(AppError(message: msg, canRetry: canRetry));
@@ -175,7 +175,7 @@ void main() async {
 }
 ```
 
-3. **Async Initialization via Provider/Cubit:**
+3. **Async Initialization via Provider/cubit:**
 
 ```dart
 final initializationProvider = FutureProvider<void>((ref) async {

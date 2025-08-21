@@ -9,6 +9,7 @@ import 'package:core/base_modules/theme/theme_providers_or_cubits/theme_provider
     show ThemeConfigNotifier, themeProvider, themeStorageProvider;
 import 'package:core/di_container_riverpod/i_di_config.dart';
 import 'package:core/utils_shared/riverpod_specific/auth_stream_adapter.dart';
+import 'package:core/utils_shared/riverpod_specific/user_auth_provider/firebase_auth_providers.dart';
 import 'package:firebase_bootstrap_config/firebase_auth_gateway.dart';
 import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -56,6 +57,7 @@ final class DIConfiguration implements IDIConfig {
     authGatewayProvider.overrideWith(
       (ref) => FirebaseAuthGateway(FirebaseConstants.fbAuth),
     ),
+    firebaseAuthProvider.overrideWithValue(FirebaseConstants.fbAuth),
 
     //
   ];

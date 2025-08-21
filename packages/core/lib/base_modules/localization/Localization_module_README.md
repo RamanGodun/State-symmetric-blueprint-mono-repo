@@ -7,7 +7,7 @@ _Last updated: 2025-08-01_
 ## 🎯 GOAL
 
 This module provides a **universal, modular, and scalable localization system** for Flutter apps, based on `EasyLocalization`.
-It supports both **Riverpod** and **Cubit/BLoC** without code duplication and enables fully declarative, testable, and fallback-ready i18n.
+It supports both **Riverpod** and **cubit/BLoC** without code duplication and enables fully declarative, testable, and fallback-ready i18n.
 
 - 🧩 Designed for Clean Architecture and state-agnostic flows
 - 🌐 Built for modular codebases: localization is completely isolated
@@ -97,7 +97,7 @@ runApp(
 );
 ```
 
-#### In app with Cubit/BLoC as state manager:
+#### In app with cubit/BLoC as state manager:
 
 ```dart
 runApp(GlobalProviders(child: AppLocalizationShell()));
@@ -505,7 +505,7 @@ This injects both EasyLocalization and native ones:
 
 ## ✅ Final Notes
 
-- Fully modular: works with both Riverpod and Cubit/BLoC — no code duplication
+- Fully modular: works with both Riverpod and cubit/BLoC — no code duplication
 - Highly testable: all logic and context extensions are isolated
 - Built for scale: add/remove languages and keys with minimal friction
 - Compile-time safety: all translation keys are generated and type-safe and fallback aware

@@ -32,6 +32,10 @@ final class AuthViewReady extends AuthViewState {
   List<Object?> get props => [session.uid, session.emailVerified];
 }
 
+////
+
+////
+
 final class AuthCubit extends Cubit<AuthViewState> {
   AuthCubit({required AuthGateway gateway}) : super(const AuthViewLoading()) {
     _sub = gateway.snapshots$.listen((snap) {

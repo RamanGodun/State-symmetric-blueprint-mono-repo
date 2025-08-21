@@ -123,7 +123,7 @@ void setError(String message, {Object? error, StackTrace? stackTrace, bool canRe
 void retry();
 }
 
-Implementation can use Cubit, StateNotifier, ValueNotifier, custom — as needed.
+Implementation can use cubit, StateNotifier, ValueNotifier, custom — as needed.
 
 ### 3.2 State Management Implementation
 
@@ -180,8 +180,8 @@ bool isAppLoading(IsAppLoadingRef ref) {
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-class AppReadinessCubit extends Cubit<AppReadinessState> {
-  AppReadinessCubit() : super(const AppInitializing());
+class AppReadinesscubit extends cubit<AppReadinessState> {
+  AppReadinesscubit() : super(const AppInitializing());
 
   void updateLoading({double? progress, String? currentStep}) {
     emit(AppLoading(progress: progress, currentStep: currentStep));
@@ -812,7 +812,7 @@ final class AppError extends AppReadinessState {
 
 Summary of the Idea (Best Practices) 1. Centralized, Framework-Agnostic Readiness State
 • AppReadinessState (sealed class) — an independent model, with no ties to BLoC, Riverpod, GetIt, etc.
-• The state can be stored anywhere: ValueNotifier, Stream, ChangeNotifier, Cubit, StateNotifier, or a global variable.
+• The state can be stored anywhere: ValueNotifier, Stream, ChangeNotifier, cubit, StateNotifier, or a global variable.
 • State updates are performed only through a dedicated manager that fires new states. 2. Proxy / Fallback DI for All Services
 • Stub/Null Object/Fake pattern: every service has a minimal stub (e.g., StubUserRepository) that never returns null and never breaks the chain.
 • The real DI implementation is swapped in only after entering the AppReady state. 3. Minimal Bootstrap

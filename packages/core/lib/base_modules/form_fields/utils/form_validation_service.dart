@@ -1,7 +1,7 @@
 import 'package:core/base_modules/form_fields/input_validation/validation_enums.dart';
 
 /// 🧠 [FormValidationService] — Handles input field validation logic.
-/// ✅ Keeps Cubit clean (only state orchestration)
+/// ✅ Keeps cubit clean (only state orchestration)
 /// ✅ Centralizes and reuses validation logic across features
 //
 final class FormValidationService {

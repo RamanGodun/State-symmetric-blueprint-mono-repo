@@ -76,40 +76,40 @@ scripts:
   build:ios:rp:dev: melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor development -t lib/main_development.dart"
   build:ios:rp:stg: melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor staging     -t lib/main_staging.dart"
 
-  # ---------- Run blueprint_on_qubit ----------
+  # ---------- Run blueprint_on_cubit ----------
   run:blueprint:dev:
-    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    melos exec --scope="blueprint_on_cubit" --concurrency=1 -- \
     "flutter run --flavor development -t lib/main_development.dart"
   run:blueprint:stg:
-    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    melos exec --scope="blueprint_on_cubit" --concurrency=1 -- \
     "flutter run --flavor staging -t lib/main_staging.dart"
 
-  # ---------- Run blueprint_on_qubit (explicit entrypoint paths) ----------
+  # ---------- Run blueprint_on_cubit (explicit entrypoint paths) ----------
   run:blueprint:main:dev:
-    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
-    "flutter run -t apps/blueprint_on_qubit/lib/main_development.dart"
+    melos exec --scope="blueprint_on_cubit" --concurrency=1 -- \
+    "flutter run -t apps/blueprint_on_cubit/lib/main_development.dart"
   run:blueprint:main:stg:
-    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
-    "flutter run -t apps/blueprint_on_qubit/lib/main_staging.dart"
+    melos exec --scope="blueprint_on_cubit" --concurrency=1 -- \
+    "flutter run -t apps/blueprint_on_cubit/lib/main_staging.dart"
 
-  # ---------- Build blueprint_on_qubit (Android) ----------
+  # ---------- Build blueprint_on_cubit (Android) ----------
   build:blueprint:apk:dev:
-    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    melos exec --scope="blueprint_on_cubit" --concurrency=1 -- \
     "flutter build apk --flavor development -t lib/main_development.dart"
   build:blueprint:apk:stg:
-    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    melos exec --scope="blueprint_on_cubit" --concurrency=1 -- \
     "flutter build apk --flavor staging -t lib/main_staging.dart"
 
   build:blueprint:aab:stg:
-    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    melos exec --scope="blueprint_on_cubit" --concurrency=1 -- \
     "flutter build appbundle --flavor staging -t lib/main_staging.dart"
 
-  # ---------- Build blueprint_on_qubit (iOS) ----------
+  # ---------- Build blueprint_on_cubit (iOS) ----------
   build:ios:blueprint:dev:
-    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    melos exec --scope="blueprint_on_cubit" --concurrency=1 -- \
     "flutter build ipa --flavor development -t lib/main_development.dart"
   build:ios:blueprint:stg:
-    melos exec --scope="blueprint_on_qubit" --concurrency=1 -- \
+    melos exec --scope="blueprint_on_cubit" --concurrency=1 -- \
     "flutter build ipa --flavor staging -t lib/main_staging.dart"
 
   # ---------- Run (direct entrypoint, без flavor) ----------

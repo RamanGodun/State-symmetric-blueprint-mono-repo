@@ -17,7 +17,7 @@ _Last updated: 2025-08-07_
 
 - Declarative and reactive validation powered by [Formz]
 - Pure Dart logic with no dependency on any UI state manager
-- Seamless support for both **Riverpod** and **Cubit/BLoC**
+- Seamless support for both **Riverpod** and **cubit/BLoC**
 - Localized error feedback via `LocaleKeys`
 - Composable focus node logic for iOS-like UX
 - Semantic UI feedback
@@ -95,7 +95,7 @@ InputFieldFactory.create(
 ---
 
 This module is designed to be state-agnostic.
-Below are examples of how to use it with Riverpod and Cubit/BLoC-based apps.
+Below are examples of how to use it with Riverpod and cubit/BLoC-based apps.
 
 ### 🔵 Riverpod Integration
 
@@ -169,7 +169,7 @@ final class _EmailField extends ConsumerWidget {
 }
 ```
 
-### 🟡 BLoC/Cubit Integration
+### 🟡 BLoC/cubit Integration
 
 **State Definition**
 
@@ -204,11 +204,11 @@ final class SignInPageState extends Equatable {
 }
 ```
 
-**Cubit Implementation**
+**cubit Implementation**
 
 ```dart
-final class SignInCubit extends Cubit<SignInPageState> {
-  SignInCubit() : super(const SignInPageState());
+final class SignIncubit extends cubit<SignInPageState> {
+  SignIncubit() : super(const SignInPageState());
 
   void emailChanged(String value) {
     final email = EmailInputValidation.dirty(value.trim());
@@ -234,14 +234,14 @@ final class SignInCubit extends Cubit<SignInPageState> {
 final class _EmailField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<SignInCubit, SignInPageState, String?>(
+    return BlocSelector<SignIncubit, SignInPageState, String?>(
       selector: (state) => state.email.uiErrorKey,
       builder: (context, errorText) {
         return InputFieldFactory.create(
           type: InputFieldType.email,
           focusNode: focusNode,
           errorText: errorText,
-          onChanged: context.read<SignInCubit>().emailChanged,
+          onChanged: context.read<SignIncubit>().emailChanged,
         );
       },
     );
@@ -279,8 +279,7 @@ enum InputFieldType {
 * Automatically sets correct keyboard type (email, text, etc.)
 * Resolves `label` via localization (`LocaleKeys.form_email`, etc.)
 * Wraps `AppTextField` with all standard behavior
-* Supports suffix icon (e.g. visibility toggle)
-  2. **`AppTextField`**
+* Supports suffix icon (e.g. visibility toggle) 2. **`AppTextField`**
 
   > 🎨 This widget ensures that all fields follow a uniform visual and behavioral standard across your app, includes:
 
@@ -444,7 +443,7 @@ graph TD
     %% State Management Integration
     A --> S[State Management Layer]
     S --> T[Riverpod Providers]
-    S --> U[BLoC/Cubit States]
+    S --> U[BLoC/cubit States]
 
     T --> V[Form State Models]
     U --> W[State Classes with Validation]
@@ -482,7 +481,7 @@ graph TD
 
 ```dart
 // ✅ Optimized - Only rebuilds when email error changes
-BlocSelector<SignInCubit, SignInPageState, String?>(
+BlocSelector<SignIncubit, SignInPageState, String?>(
   selector: (state) => state.email.uiErrorKey,
   builder: (context, errorText) => InputFieldFactory.create(...),
 )
@@ -589,7 +588,7 @@ type-safe forms in Flutter applications with clean architecture principles.
 **🔄 State Management Flexibility**
 
 - Native Riverpod integration with optimized providers
-- Seamless BLoC/Cubit support with reactive state updates
+- Seamless BLoC/cubit support with reactive state updates
 - Pure Dart validation logic works without any framework
 - Easy migration from existing form implementations
 
@@ -606,12 +605,12 @@ This module scales from simple single-field inputs to complex validation workflo
 
 ### ✨ **Key Benefits**
 
-✅ **Unified form UX** across all application features  
-✅ **Drop-in compatibility** with Riverpod and BLoC/Cubit  
-✅ **Declarative validation** powered by battle-tested Formz  
-✅ **Localized errors** and accessibility built-in by design  
-✅ **Fully testable** and clean-architecture compliant  
+✅ **Unified form UX** across all application features
+✅ **Drop-in compatibility** with Riverpod and BLoC/cubit
+✅ **Declarative validation** powered by battle-tested Formz
+✅ **Localized errors** and accessibility built-in by design
+✅ **Fully testable** and clean-architecture compliant
 ✅ **Performance optimized** with selective rebuilds and smart caching
 
-> **Transform your form development experience!** 🚀  
+> **Transform your form development experience!** 🚀
 > Build robust, user-friendly forms with confidence and maintain them effortlessly as your application grows.

@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 🌗 [ThemeTogglerIcon] — toggles between light and dark mode and shows overlay notification
-/// ✅ Supports both Riverpod and Cubit
+/// ✅ Supports both Riverpod and cubit
 /// Just toggle comments the appropriate block below 👇
 //
 final class ThemeTogglerIcon extends ConsumerWidget {
@@ -25,9 +25,9 @@ final class ThemeTogglerIcon extends ConsumerWidget {
     /// * 🟢 For RIVERPOD apps — uncomment this block
     final wasDark = ref.watch(themeProvider).theme == ThemeVariantsEnum.dark;
 
-    /// * 🔴 For CUBIT/BLoC apps — uncomment this block
+    /// * 🔴 For cubit/BLoC apps — uncomment this block
     /*
-      final wasDark = context.select<AppThemeCubit, bool>(
+      final wasDark = context.select<AppThemecubit, bool>(
          (cubit) => cubit.state.theme.isDark);
     */
 

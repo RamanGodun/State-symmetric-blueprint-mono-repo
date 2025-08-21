@@ -32,6 +32,7 @@ final class GlobalDIContainer {
   }
 
   /// 🔄 Resets global DI container (for testing purposes)
+  /// ! Within tests don't forget between cases to CALL GlobalDIContainer.reset(), or will catch previous test state
   static void reset() => _instance = null;
 
   /// 🧼 Properly disposes the global container and clears reference

@@ -94,7 +94,7 @@ extension FailureListenerRefX on WidgetRef {
 }
 ```
 
-- BLoC/Cubit as State Management
+- BLoC/cubit as State Management
 
 ```dart
   Future<void> loadUser(String uid) async {
@@ -107,7 +107,7 @@ extension FailureListenerRefX on WidgetRef {
   }
 
 // In UI Widget
-   BlocListener<Cubit, State>(
+   BlocListener<cubit, State>(
       listenWhen: ...,
       listener: (context, state) {
       final failure = state.failure?.consume(); // for guaranteeing one-shot feedback.
@@ -115,11 +115,11 @@ extension FailureListenerRefX on WidgetRef {
           final failureUIEntity = failure.toUIEntity();
           context.showError(failureUIEntity);
           ...
-          context.read<Cubit>().clearFailure();
+          context.read<cubit>().clearFailure();
          ...
           }})
 
-    child: BlocBuilder<UserCubit, UserState>(
+    child: BlocBuilder<Usercubit, UserState>(
     builder: (context, state) => switch (state) {
       UserLoading() => CircularProgressIndicator(),
       UserLoaded(:final user) => UserProfile(user),
@@ -195,7 +195,7 @@ This errors handling module supports two alternative paradigms:
 
 ✅ When to Use:
 
-- Common simle cases in Cubit/BLoC/Riverpod state management
+- Common simle cases in cubit/BLoC/Riverpod state management
 
   🤩 Code Example:
 
@@ -319,7 +319,7 @@ UI (error listener)  Failure maps to FailureUIEntity `failure.toUIEntity()`
 ```
 User triggers action
   ↓
-State manager (Cubit/Notifier) calls UseCase
+State manager (cubit/Notifier) calls UseCase
   ↓
 UseCase delegates to Repository
   ↓
@@ -412,7 +412,7 @@ errors_handling/
 - **How do I display overlays/dialogs in Riverpod?**
   - Use `ref.listenFailure(yourProvider, context)`.
 
-- **How do I display overlays in Cubit/BLoC?**
+- **How do I display overlays in cubit/BLoC?**
   - Emit `Consumable<FailureUIEntity>`, BlocListener, `context.showError(error)`.
 
 - **How do I log or report errors?**
@@ -449,10 +449,10 @@ errors_handling/
 - **Overlay/dialog not shown in Riverpod:**
   - Use `ref.listenFailure(yourProvider, context)`.
 
-- **Overlay/dialog not shown in Cubit/BLoC:**
+- **Overlay/dialog not shown in cubit/BLoC:**
   - Use BlocListener, emit `Consumable<FailureUIEntity>`, call `context.showError(...)`.
 
-- **Overlay/dialog duplication in Cubit/BLoC:**
+- **Overlay/dialog duplication in cubit/BLoC:**
   - Use `Consumable<FailureUIEntity>`
 
 - **Failure is always generic:**
@@ -491,7 +491,7 @@ errors_handling/
 - **Map all exceptions to Failure ASAP** via `.mapToFailure()`.
 - **Isolate mapping logic** for 3rd-party exceptions (dio, firebase, etc.) in dedicated files.
 - **Never display raw errors inline in widgets** — always use overlays/dialogs via provided extensions.
-- **For Cubit/BLoC:** Always use `Consumable<FailureUIEntity>` for one-shot overlays.
+- **For cubit/BLoC:** Always use `Consumable<FailureUIEntity>` for one-shot overlays.
 - **For Riverpod:** Always attach `ref.listenFailure` in your widgets.
 - **Log all errors via provided extensions** (`failure.log()`) before reporting or displaying.
 - **Test all error flows using functional result types (Either) or pure Dart logic.**
@@ -523,40 +523,40 @@ errors_handling/
 
 ### 🏆 **Key Principles**
 
-- 🦾 **Universal & State-Agnostic**  
-  Seamlessly works with Riverpod, Cubit/BLoC, or pure Dart — zero vendor lock-in.
+- 🦾 **Universal & State-Agnostic**
+  Seamlessly works with Riverpod, cubit/BLoC, or pure Dart — zero vendor lock-in.
 
-- 💪 **Optimized for real-world teams & codebases**  
+- 💪 **Optimized for real-world teams & codebases**
   Suitable for projects of any size or complexity.
 
-- ⚡️ **Decoupled Error Flow**  
+- ⚡️ **Decoupled Error Flow**
   Mapping, logging, UI overlays, and retry logic are modular and isolated.
 
-- 🔒 **Strictly type-safe & future-proof**  
+- 🔒 **Strictly type-safe & future-proof**
   No raw exceptions or magic strings leak outside the data layer.
 
-- 🧩 **Single Source of Truth**  
+- 🧩 **Single Source of Truth**
   All domain-errors are modeled as `Failure`, UI errors - as `FailureUIEntity`, enforcing clean boundaries.
 
-- 📐 **Clean Architecture by Design**  
+- 📐 **Clean Architecture by Design**
   Each layer (DataSource, Repository, UseCase, StateManager, UI) has a clear, decoupled responsibility.
 
 ---
 
 ### 💡 **Benefits**
 
-- 🧑‍💻 **Collaboration-Ready**  
+- 🧑‍💻 **Collaboration-Ready**
   Explicit contracts and clear boundaries make onboarding and teamwork effortless.
-- 📚 **Self-Documenting & Discoverable**  
+- 📚 **Self-Documenting & Discoverable**
   Flows, extensions, and usage are easily found and understood via intuitive docs and naming.
-- 🔄 **Easy Refactoring & Maintenance**  
+- 🔄 **Easy Refactoring & Maintenance**
   Change or extend any layer with confidence; no hidden coupling or side effects.
-- 🚦 **Safe by Default**  
+- 🚦 **Safe by Default**
   Every error is either surfaced to the user or logged/tracked — never lost.
-- ⏳ **Minimal Boilerplate**  
+- ⏳ **Minimal Boilerplate**
   Declarative patterns let teams focus on features, not glue spaghetti code.
 
-> **Build robust, scalable Flutter apps with declarative error handling and architecture-first philosophy.**  
+> **Build robust, scalable Flutter apps with declarative error handling and architecture-first philosophy.**
 > Your error handling will remain robust and maintainable — no matter how fast your product or team grows.
 
 🧪 Happy error handling & bulletproof code! ☕️

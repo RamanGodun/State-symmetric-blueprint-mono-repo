@@ -103,3 +103,11 @@ final class CacheManager<T, K> {
 
   //
 }
+
+/*
+
+	1.	CacheManager.execute(...) — некоректний forceRefresh
+	•	await _inFlightRequests.remove(key); фактично очікує старий Future (бо Map<K, Future>), тобто ти блокуєшся на попередньому запиті й «форс» втрачає сенс.
+	•	Навіть якщо прибрати await, є race-condition: старий in-flight все одно завершиться й перезапише _storage[key] своїм результатом уже після форсованого оновлення.
+	•	Що зафіксувати: потрібен generation/token на ключ, або зберігати в _inFlightRequests[key] тільки актуальний future і перевіряти в момент result чи він ще актуальний (інакше ігнорувати).
+ */

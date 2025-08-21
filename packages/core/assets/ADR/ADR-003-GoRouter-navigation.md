@@ -37,7 +37,7 @@ route definition, transitions, and redirect logic. The router instance is provid
 
 3. **Redirection & Guards**
    - Centralized `RoutesRedirectionService` handles all auth-driven (or custom) redirects based on app/user state.
-   - Logic is state-agnostic: works equally with Riverpod's `StreamProvider`, Bloc's `Cubit/Stream`, or any other observable/stream.
+   - Logic is state-agnostic: works equally with Riverpod's `StreamProvider`, Bloc's `cubit/Stream`, or any other observable/stream.
    - System is ready for extension: deep links, future guard objects, and multi-stack (Navigator 2.0) scenarios.
 
 4. **Testability**

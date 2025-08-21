@@ -3,7 +3,7 @@ import 'package:core/base_modules/errors_handling/core_of_module/failure_type.da
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 🧩 [AsyncValueFoldX] — extension for declarative, type-safe branching over [AsyncValue]
-/// ✅ Makes UI logic concise and Cubit-consistent: success, error, loading handled in one place
+/// ✅ Makes UI logic concise and cubit-consistent: success, error, loading handled in one place
 /// ✅ Guarantees only domain [Failure] errors are passed to onError
 /// ✅ Ensures fallback even for unknown errors (never throws)
 ///

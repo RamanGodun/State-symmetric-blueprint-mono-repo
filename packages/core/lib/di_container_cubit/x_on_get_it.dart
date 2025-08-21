@@ -33,7 +33,7 @@ extension SafeRegistration on GetIt {
 
 /// 🧩 [SafeDispose] — Extension on [GetIt] for safe disposal/unregistration
 /// Disposes and unregisters any registered singleton that implements 'Closeable'
-///   - T: Type of singleton (Cubit, Bloc, StreamController, etc.)
+///   - T: Type of singleton (cubit, Bloc, StreamController, etc.)
 ///   - If instance has .close(), calls it and unregisters
 ///   - Safe to call even there was no registration
 //
@@ -51,3 +51,8 @@ extension SafeDispose on GetIt {
     }
   }
 }
+
+/*
+	•	Коментар про “implements Closeable” не відповідає реалізації: закривається лише cubit/BlocBase. Інші типи (наприклад, StreamController, ChangeNotifier, власні dispose()) не покриті.
+	•	Зафіксувати: або розширити на загальний інтерфейс (наприклад, власний Disposable { FutureOr<void> dispose(); }) і перевіряти через is Disposable, або явно документувати, що це тільки для Bloc/cubit.
+ */

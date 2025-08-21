@@ -1,3 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+/// ⚠️ Токен-провайдер без дефолтної реалізації — має бути overridden у DI
+final firebaseAuthProvider = Provider<FirebaseAuth>(
+  (_) => throw UnimplementedError('Provide FirebaseAuth in DI'),
+);
+
+/*
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, User;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -20,3 +29,5 @@ FirebaseAuth firebaseAuth(Ref ref) => FirebaseAuth.instance;
 final authStateStreamProvider = StreamProvider<User?>((ref) {
   return FirebaseAuth.instance.userChanges();
 });
+
+ */

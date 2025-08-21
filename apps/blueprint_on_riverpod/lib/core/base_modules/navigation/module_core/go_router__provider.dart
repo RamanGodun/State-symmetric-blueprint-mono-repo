@@ -3,7 +3,6 @@ import 'package:blueprint_on_riverpod/core/base_modules/navigation/routes/app_ro
 import 'package:blueprint_on_riverpod/core/shared_presentation/pages/page_not_found.dart';
 import 'package:core/base_modules/overlays/utils/overlays_cleaner_within_navigation.dart';
 import 'package:core/utils_shared/riverpod_specific/auth_stream_adapter.dart';
-import 'package:core/utils_shared/riverpod_specific/user_auth_provider/firebase_auth_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 

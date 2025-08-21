@@ -13,7 +13,7 @@ _Last updated: 2025-08-08_
 
 This module provides a **platform-adaptive, type-safe overlay system** for Flutter apps with Clean Architecture.
 It handles dialogs, banners, snackbars, and error feedback in a **declarative**, **conflict-aware** manner
-that works seamlessly with **Riverpod**, **Cubit**, and **BLoC**.
+that works seamlessly with **Riverpod**, **cubit**, and **BLoC**.
 
 🦾 **Key Benefits:**
 
@@ -96,10 +96,10 @@ Widget build(BuildContext context, WidgetRef ref) {
 }
 ```
 
-#### With Cubit/BLoC:
+#### With cubit/BLoC:
 
 ```dart
-// In Cubit
+// In cubit
 Future<void> updateProfile(UserData data) async {
   emit(UserUpdating());
   final result = await updateUserUseCase(data);
@@ -110,14 +110,14 @@ Future<void> updateProfile(UserData data) async {
 }
 
 // In Widget
-BlocListener<UserCubit, UserState>(
+BlocListener<Usercubit, UserState>(
   listener: (context, state) {
     final failure = state.failure?.consume();
     if (failure != null) {
       context.showError(failure.toUIEntity());
     }
   },
-  child: BlocBuilder<UserCubit, UserState>(
+  child: BlocBuilder<Usercubit, UserState>(
     builder: (context, state) => switch (state) {
       UserUpdating() => const LoadingView(),
       UserUpdated(:final user) => UserProfileView(user),
@@ -261,7 +261,7 @@ This allows user to **interact with widgets underneath** overlay (e.g., click a 
   - 1. **Reactive**
 
 ```dart
-context.watch<OverlayStatusCubit>().state; // true if active
+context.watch<OverlayStatuscubit>().state; // true if active
 ```
 
 - 2. **Non-Reactive**
@@ -557,7 +557,7 @@ This overlay system provides:
 - **Easy customization** with presets
 - **Seamless state management** integration
 
-> **Build delightful user experiences with professional overlay management!** 🎪✨  
+> **Build delightful user experiences with professional overlay management!** 🎪✨
 > This module handles all the complexity so you can focus on your app's unique features.
 
 **Happy coding!** 🚀

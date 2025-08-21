@@ -2,7 +2,7 @@
 
 🚀 Overview
 
-This manual summarizes best practices for dependency injection (DI) and service registration in scalable, maintainable Flutter apps—covering both Riverpod and Bloc/Cubit architectures.
+This manual summarizes best practices for dependency injection (DI) and service registration in scalable, maintainable Flutter apps—covering both Riverpod and Bloc/cubit architectures.
 
 It reflects the architectural patterns used by top Flutter teams and community leaders, ensuring your codebase remains:
 • 🧼 Clean
@@ -17,7 +17,7 @@ It reflects the architectural patterns used by top Flutter teams and community l
 “Explicit dependencies = explicit control and testability”
 — Very Good Ventures, Felix Angelov
 
-    •	Never create dependencies directly inside your Cubit, Bloc, or UseCase.
+    •	Never create dependencies directly inside your cubit, Bloc, or UseCase.
     •	All business logic, repositories, data sources, and external clients must be injected.
     •	This enables easy mocking, swapping, and testing—keeping code composable and scalable.
 
@@ -35,26 +35,26 @@ final useCaseProvider = Provider((ref) => GetProfileUseCase(ref.watch(repoProvid
 
 ⸻
 
-3. Bloc/Cubit: Everything is Registered in DI (GetIt/Injectable)
+3. Bloc/cubit: Everything is Registered in DI (GetIt/Injectable)
    • Register all dependencies in a DI container—no singletons or new inside your logic classes.
-   • Inject dependencies via constructor—never hardcode them inside Cubit/BLoC/UseCase.
+   • Inject dependencies via constructor—never hardcode them inside cubit/BLoC/UseCase.
 
 Example:
 
 // DI Registration
 GetIt.I.registerLazySingleton(() => ProfileRepoImpl(...));
 GetIt.I.registerLazySingleton(() => GetProfileUseCase(GetIt.I()));
-GetIt.I.registerLazySingleton(() => ProfileCubit(GetIt.I()));
+GetIt.I.registerLazySingleton(() => Profilecubit(GetIt.I()));
 
 // BlocProvider
-BlocProvider.value(value: GetIt.I<ProfileCubit>())
+BlocProvider.value(value: GetIt.I<Profilecubit>())
 
 ⸻
 
 4. Service Graph Consistency
    • Do not create repositories, use cases, or data sources inside logic classes.
    • Compose your graph from top to bottom, and keep your layers thin:
-   • Cubit/BLoC -> UseCase -> Repo -> DataSource -> External API
+   • cubit/BLoC -> UseCase -> Repo -> DataSource -> External API
    • This ensures modularity and full testability.
 
 ⸻
@@ -74,17 +74,17 @@ Q: Can you create dependencies locally if you’re in a rush?
 
 6. Recommended Patterns
 
-Bloc/Cubit Example (GetIt)
+Bloc/cubit Example (GetIt)
 
 // Registration
 GetIt.I.registerLazySingleton(() => ProfileRepoImpl(...));
 GetIt.I.registerLazySingleton(() => GetProfileUseCase(GetIt.I()));
-GetIt.I.registerLazySingleton(() => ProfileCubit(GetIt.I()));
+GetIt.I.registerLazySingleton(() => Profilecubit(GetIt.I()));
 
 // Usage
 MultiBlocProvider(
 providers: [
-BlocProvider.value(value: GetIt.I<ProfileCubit>()),
+BlocProvider.value(value: GetIt.I<Profilecubit>()),
 // ...
 ],
 child: MyApp(),
@@ -101,9 +101,9 @@ final profileProvider = NotifierProvider<Profile, AsyncValue<UserEntity>>(...);
 7. TL;DR & Expert Quotes
    • Always inject dependencies, never create them inside logic classes.
    • Keep architecture explicit, decoupled, and testable.
-   • Riverpod: Everything is a provider. Bloc/Cubit: Everything is registered in DI.
+   • Riverpod: Everything is a provider. Bloc/cubit: Everything is registered in DI.
 
-“In professional, scalable Flutter apps, never create dependencies inside your Cubit/BLoC or UseCase. Always inject via constructor and register in DI. Riverpod = the same, but via providers.”
+“In professional, scalable Flutter apps, never create dependencies inside your cubit/BLoC or UseCase. Always inject via constructor and register in DI. Riverpod = the same, but via providers.”
 — Felix Angelov (Very Good Ventures, Bloc)
 
 “Explicit, visible dependency graphs are the only way to keep big Flutter apps maintainable.”
@@ -112,7 +112,7 @@ final profileProvider = NotifierProvider<Profile, AsyncValue<UserEntity>>(...);
 ⸻
 
 8. Bonus: Testing & Flexibility
-   • Need to test your Cubit? Just pass a mock dependency to its constructor.
+   • Need to test your cubit? Just pass a mock dependency to its constructor.
    • Want to switch repo implementation (REST → Firebase)? Just change the DI/providing code.
 
 ⸻

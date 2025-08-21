@@ -7,15 +7,15 @@
 
 // part 'auth_state.dart';
 
-// /// 🔐 [AuthCubit] — Manages authentication state using Firebase [userStream].
+// /// 🔐 [Authcubit] — Manages authentication state using Firebase [userStream].
 // /// ✅ Emits `authenticated` / `unauthenticated` states reactively (SRP)
-// /// ✅ signOut logic is in separate 'SignOutCubit' (in 'auth' feature of app)
+// /// ✅ signOut logic is in separate 'SignOutcubit' (in 'auth' feature of app)
 // //
-// final class AuthCubit extends Cubit<AuthState> {
+// final class Authcubit extends cubit<AuthState> {
 //   ///------------------------------------------
-//   /// 🧱 Initializes [AuthCubit] with Firebase user stream
+//   /// 🧱 Initializes [Authcubit] with Firebase user stream
 //   /// 🧭 Listens to auth state changes and emits updates
-//   AuthCubit({required this.userStream}) : super(AuthState.unknown()) {
+//   Authcubit({required this.userStream}) : super(AuthState.unknown()) {
 //     _authSubscription = userStream.listen(_onAuthStateChanged);
 //   }
 
@@ -36,7 +36,7 @@
 //     }
 //     //
 //     debugPrint(
-//       '🟡 [AuthCubit] FirebaseAuth stream event received.\n'
+//       '🟡 [Authcubit] FirebaseAuth stream event received.\n'
 //       'User: ${user?.uid ?? "null"} | Verified: ${user?.emailVerified} | NewStatus: $newStatus',
 //     );
 
@@ -48,7 +48,7 @@
 //     try {
 //       final currentUser = FirebaseAuth.instance.currentUser;
 //       if (currentUser == null) {
-//         debugPrint('⚠️ [AuthCubit] reloadUser: currentUser is null');
+//         debugPrint('⚠️ [Authcubit] reloadUser: currentUser is null');
 //         return;
 //       }
 //       //
@@ -57,7 +57,7 @@
 //       //
 //       if (updatedUser == null) {
 //         debugPrint(
-//           '⚠️ [AuthCubit] reloadUser: updatedUser is null after reload',
+//           '⚠️ [Authcubit] reloadUser: updatedUser is null after reload',
 //         );
 //         return;
 //       }
@@ -73,23 +73,23 @@
 //           state.user?.emailVerified == updatedUser.emailVerified;
 //       //
 //       if (nothingChanged) {
-//         debugPrint('🟢 [AuthCubit] reloadUser skipped: no state changes');
+//         debugPrint('🟢 [Authcubit] reloadUser skipped: no state changes');
 //         return;
 //       }
 //       //
 //       debugPrint(
-//         '🔄 [AuthCubit] reloadUser completed.\n'
+//         '🔄 [Authcubit] reloadUser completed.\n'
 //         'User: ${updatedUser.uid} | Verified: ${updatedUser.emailVerified} | NewStatus: $newStatus',
 //       );
 //       //
 //       emit(state.copyWith(user: updatedUser, authStatus: newStatus));
 //     } on Object catch (e, st) {
-//       debugPrint('❌ [AuthCubit] reloadUser error: $e\n$st');
+//       debugPrint('❌ [Authcubit] reloadUser error: $e\n$st');
 //       debugPrint(st.toString());
 //     }
 //   }
 
-//   /// 🧼 Cancels auth stream subscription on Cubit close
+//   /// 🧼 Cancels auth stream subscription on cubit close
 //   @override
 //   Future<void> close() {
 //     _authSubscription.cancel();

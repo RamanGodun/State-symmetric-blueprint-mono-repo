@@ -3,12 +3,12 @@ import 'package:core/base_modules/theme/module_core/theme_variants.dart';
 import 'package:core/base_modules/theme/text_theme/text_theme_factory.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-/// 🎨 [AppThemeCubit] — manages [ThemePreferences] (theme variant + font)
+/// 🎨 [AppThemecubit] — manages [ThemePreferences] (theme variant + font)
 /// ✅ Uses [HydratedCubit] for state persistence
-final class AppThemeCubit extends HydratedCubit<ThemePreferences> {
+final class AppThemecubit extends HydratedCubit<ThemePreferences> {
   ///---------------------------------------------------------
 
-  AppThemeCubit()
+  AppThemecubit()
     : super(
         const ThemePreferences(
           theme: ThemeVariantsEnum.light,

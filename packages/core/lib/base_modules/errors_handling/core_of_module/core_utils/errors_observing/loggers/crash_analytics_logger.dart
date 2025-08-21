@@ -46,7 +46,7 @@ abstract final class CrashlyticsLogger {
     );
   }
 
-  /// 🧨 Logs errors from Bloc or Cubit observers.
+  /// 🧨 Logs errors from Bloc or cubit observers.
   static void blocError({
     required Object error,
     required StackTrace stackTrace,

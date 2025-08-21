@@ -8,17 +8,17 @@ _Last updated: 2025-08-01_
 
 This module provides a **universal, declarative, and persistent theme system** for Flutter applications.
 It encapsulates all theme logic (colors, fonts, spacing, shadows, typography)
-and supports **both Riverpod and Cubit/BLoC** without code duplication.
+and supports **both Riverpod and cubit/BLoC** without code duplication.
 
 ---
 
 ## 🚀 Quick Start
 
-### With Cubit:
+### With cubit:
 
 ```dart
 // In MaterialApp
-BlocSelector<AppThemeCubit, ThemePreferences, ThemePreferences>(
+BlocSelector<AppThemecubit, ThemePreferences, ThemePreferences>(
   selector: (state) => state,
   builder: (context, prefs) {
     return MaterialApp(
@@ -60,7 +60,7 @@ MaterialApp(
 |
 |
 ├── theme_providers_or_cubits                # Dual state management
-│   ├── theme_cubit.dart                     # Cubit with HydratedBloc (as persistant storage)
+│   ├── theme_cubit.dart                     # cubit with HydratedBloc (as persistant storage)
 │   ├── theme_provider.dart                  # Riverpod StateNotifier
 │   └── theme_storage_provider.dart          # Persistent storage provider
 |
@@ -102,7 +102,7 @@ MaterialApp(
 ### High-level Flow
 
 1. `ThemePreferences` defines selected variant + font.
-2. `ThemeConfigNotifier` (Riverpod) or `AppThemeCubit` (Cubit) updates preferences.
+2. `ThemeConfigNotifier` (Riverpod) or `AppThemecubit` (cubit) updates preferences.
 3. `ThemeVariantsEnum.build()` + `ThemeCacheMixin` generate ThemeData.
 4. `MaterialApp.router()` consumes light/dark theme via `prefs.buildLight()`.
 
@@ -110,7 +110,7 @@ MaterialApp(
 
 | Approach | State Logic         | Persistence         |
 | -------- | ------------------- | ------------------- |
-| Cubit    | AppThemeCubit       | HydratedBloc (JSON) |
+| cubit    | AppThemecubit       | HydratedBloc (JSON) |
 | Riverpod | ThemeConfigNotifier | GetStorage          |
 
 ---
@@ -120,8 +120,8 @@ MaterialApp(
 ### Theme toggling
 
 ```dart
-// Cubit
-context.read<AppThemeCubit>().toggleTheme();
+// cubit
+context.read<AppThemecubit>().toggleTheme();
 
 // Riverpod
 ref.read(themeProvider.notifier).setTheme(ThemeVariantsEnum.dark);
@@ -174,14 +174,14 @@ ThemePicker(
 
 ## ⚠️ Avoid Pitfalls
 
-- Do not bypass `themeProvider` or `AppThemeCubit` directly.
+- Do not bypass `themeProvider` or `AppThemecubit` directly.
 - Avoid mutating `ThemePreferences` — always use `copyWith`.
 
 ---
 
 ## ✅ Final Notes
 
-- Supports both **Riverpod** and **Cubit**. Theme state saved across sessions using `GetStorage` or `HydratedBloc`.
+- Supports both **Riverpod** and **cubit**. Theme state saved across sessions using `GetStorage` or `HydratedBloc`.
 - Easily extendable via enums/configs
 - Highly testable, no context-coupling
 - Fully declarative + composable UI integration

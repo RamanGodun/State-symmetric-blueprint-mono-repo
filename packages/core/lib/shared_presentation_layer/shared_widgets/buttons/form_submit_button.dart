@@ -13,7 +13,7 @@ import 'package:formz/formz.dart';
 /// 🚀 [FormSubmitButton] — Bloc-aware smart submit button for forms.
 ///
 /// 🧠 This widget acts as a **behavioral adapter** around [CustomFilledButton].
-/// It listens to the given Bloc/Cubit and automatically:
+/// It listens to the given Bloc/cubit and automatically:
 ///   - shows a loader during form submission
 ///   - disables itself if form is invalid or submission in progress
 ///   - respects overlay state (to avoid multiple submissions)
@@ -22,7 +22,7 @@ import 'package:formz/formz.dart';
 ///   - Place at bottom of forms (SignIn, SignUp, ResetPassword, etc)
 ///   - Controlled declaratively using status and validation selectors
 //
-final class FormSubmitButton<TCubit extends StateStreamable<TState>, TState>
+final class FormSubmitButton<Tcubit extends StateStreamable<TState>, TState>
     extends StatelessWidget {
   ///--------------------------------------------------
   const FormSubmitButton({
@@ -46,7 +46,7 @@ final class FormSubmitButton<TCubit extends StateStreamable<TState>, TState>
       (cubit) => cubit.state,
     );
 
-    return BlocBuilder<TCubit, TState>(
+    return BlocBuilder<Tcubit, TState>(
       buildWhen: (prev, curr) =>
           statusSelector(prev) != statusSelector(curr) ||
           isValidatedSelector(prev) != isValidatedSelector(curr),

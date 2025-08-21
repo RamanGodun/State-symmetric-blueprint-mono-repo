@@ -109,7 +109,7 @@ final class DefaultAppBootstrap implements IAppBootstrap {
   Future<void> initRemoteDataBase() async {
     /// Initializes remote database (currently, Firebase).
     await _remoteDataBase.init();
-    debugPrint('✅ [Storage] Local storage initialized.');
+    debugPrint('✅ [Storage] Remote storage initialized.');
   }
 
   ////

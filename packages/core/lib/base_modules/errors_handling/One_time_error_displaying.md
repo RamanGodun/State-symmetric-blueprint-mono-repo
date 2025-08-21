@@ -1,4 +1,4 @@
-# 🧯 One-Time Error Feedback in Cubit — Clean & Reliable
+# 🧯 One-Time Error Feedback in cubit — Clean & Reliable
 
 ---
 
@@ -16,7 +16,7 @@ Ensure error feedback (dialogs, banners, snackbars) is **shown only once**, even
 
 ---
 
-In `Cubit`/`Bloc`, emitting a `Failure` or `FailureUIModel` can cause:
+In `cubit`/`Bloc`, emitting a `Failure` or `FailureUIModel` can cause:
 
 - repeated dialogs/snackbars after navigation
 - feedback shown again on rebuild
@@ -40,7 +40,7 @@ Emit `FormzSubmissionStatus.failure`, then reset it to `initial` in a `Future.mi
 
 Great for simple forms using `.status` as a change notifier.
 
-### 📦 Cubit Example
+### 📦 cubit Example
 
 ```dart
 emit(state.copyWith(
@@ -56,7 +56,7 @@ Future.microtask(() {
 ### 📦 Listener Example
 
 ```dart
-BlocListener<MyCubit, MyState>(
+BlocListener<Mycubit, MyState>(
   listenWhen: (prev, curr) =>
     prev.status != curr.status && curr.status.isSubmissionFailure,
   listener: (context, state) {
@@ -99,7 +99,7 @@ final class Consumable<T> {
 }
 ```
 
-### 📦 In Cubit
+### 📦 In cubit
 
 ```dart
 result.fold(
@@ -114,14 +114,14 @@ result.fold(
 ### 📦 In Listener
 
 ```dart
-BlocListener<MyCubit, MyState>(
+BlocListener<Mycubit, MyState>(
   listenWhen: (prev, curr) =>
     prev.status != curr.status && curr.status.isSubmissionFailure,
   listener: (context, state) {
     final failure = state.failure?.consume();
     if (failure != null) {
       context.overlay.showError(failure.toUIEntity());
-      context.read<MyCubit>()
+      context.read<Mycubit>()
         ..resetStatus()
         ..clearFailure();
     }
@@ -159,5 +159,5 @@ BlocListener<MyCubit, MyState>(
 
 - ✅ Either: Domain-level `Failure` returned as `Either<Failure, T>`
 - ✅ Failure Mapping: `.toUIEntity()` for consistent overlays
-- ✅ Clean Presentation: `Consumable<FailureUIEntity>` in `Cubit`, no business logic in UI
+- ✅ Clean Presentation: `Consumable<FailureUIEntity>` in `cubit`, no business logic in UI
 - ✅ Stateless Feedback: UI reads + consumes, never stores failure logic

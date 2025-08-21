@@ -6,7 +6,7 @@
 
 Provide a **modular**, **scalable**, and **testable** way to manage dependencies using `GetIt`,
 aligned with **Clean Architecture**, **SOLID**, and **Global Scoping** principles.
-This guide ensures compatibility with Bloc, Cubit, and Provider patterns.
+This guide ensures compatibility with Bloc, cubit, and Provider patterns.
 
 ---
 
@@ -100,14 +100,14 @@ void _registerAuthModule() {
 
 ### 🧭 Global Scope via DI (Best Practice)
 
-Used for shared Cubits/Providers across the app lifecycle:
+Used for shared cubits/Providers across the app lifecycle:
 
 ```dart
 MultiBlocProvider(
   providers: [
     BlocProvider.value(value: di<AuthBloc>()),
-    BlocProvider.value(value: di<AppThemeCubit>()),
-    BlocProvider.value(value: di<OverlayStatusCubit>()),
+    BlocProvider.value(value: di<AppThemecubit>()),
+    BlocProvider.value(value: di<OverlayStatuscubit>()),
   ],
   child: AppRootView(),
 )
@@ -119,7 +119,7 @@ For isolated feature logic:
 
 ```dart
 BlocProvider(
-  create: (_) => LocalCubit(),
+  create: (_) => Localcubit(),
   child: FeatureView(),
 )
 ```
@@ -133,7 +133,7 @@ Registering `UseCase` as `lazySingleton` gives:
 - Predictable memory usage (shared, cached, not recreated)
 - Easy mocking in tests
 - Respect to **SRP** and **DIP**
-- Reusability across multiple Cubits/Features
+- Reusability across multiple cubits/Features
 
 ```dart
 class SignInUseCase {
