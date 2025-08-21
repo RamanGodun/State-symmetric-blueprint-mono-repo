@@ -2,7 +2,6 @@ import 'package:core/base_modules/localization/core_of_module/init_localization.
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
     show LocaleKeys;
 import 'package:core/base_modules/overlays/core/_context_x_for_overlays.dart';
-import 'package:core/base_modules/theme/module_core/theme_variants.dart';
 import 'package:core/base_modules/theme/theme_providers_or_cubits/theme_provider.dart';
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dart';
@@ -23,7 +22,7 @@ final class ThemeTogglerIcon extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //
     /// * 🟢 For RIVERPOD apps — uncomment this block
-    final wasDark = ref.watch(themeProvider).theme == ThemeVariantsEnum.dark;
+    final wasDark = ref.watch(themeProvider).theme.isDark;
 
     /// * 🔴 For cubit/BLoC apps — uncomment this block
     /*

@@ -14,11 +14,19 @@ extension ThemeVariantX on ThemeVariantsEnum {
   /// - Configures app bars, buttons, cards, text styles, etc.
   ThemeData build({AppFontFamily? font}) {
     return ThemeData(
+      useMaterial3: true,
+
       /// Theme core palette
       brightness: brightness,
       scaffoldBackgroundColor: background,
       primaryColor: primaryColor,
-      colorScheme: colorScheme,
+      colorScheme: colorScheme.copyWith(
+        //normalization on* values, if set
+        onPrimary: colorScheme.onPrimary,
+        onSecondary: colorScheme.onSecondary,
+        onBackground: colorScheme.onBackground,
+        onSurface: colorScheme.onSurface,
+      ),
 
       /// AppBar configuration: transparent, with custom text and icon colors
       appBarTheme: AppBarTheme(

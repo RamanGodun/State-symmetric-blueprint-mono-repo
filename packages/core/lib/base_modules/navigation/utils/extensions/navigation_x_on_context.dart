@@ -20,7 +20,7 @@ extension NavigationX on BuildContext {
         queryParameters: queryParameters,
       );
     } on Object catch (_) {
-      GoRouter.of(this).go('pageNotFound');
+      GoRouter.of(this).goNamed('pageNotFound');
     }
   }
 
@@ -37,7 +37,7 @@ extension NavigationX on BuildContext {
         queryParameters: queryParameters,
       );
     } on Object catch (_) {
-      GoRouter.of(this).go('pageNotFound');
+      GoRouter.of(this).goNamed('pageNotFound');
     }
   }
 

@@ -1,5 +1,8 @@
 import 'package:core/base_modules/animations/overlays_animation/animation_wrapper/animated_overlay_wrapper.dart';
 import 'package:core/base_modules/animations/overlays_animation/engine_mapper_x_on_context.dart';
+import 'package:core/base_modules/localization/core_of_module/init_localization.dart';
+import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
+    show LocaleKeys;
 import 'package:core/base_modules/overlays/core/_context_x_for_overlays.dart';
 import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart';
 import 'package:core/base_modules/overlays/core/platform_mapper.dart';
@@ -40,14 +43,18 @@ extension OverlayBaseMethods on BuildContext {
     // 1️⃣ Get engine for dialog, based on platform
     final engine = getEngine(OverlayCategory.dialog);
 
+    /// ✅ Localized defaults
+    confirmText ??= AppLocalizer.translateSafely(LocaleKeys.buttons_ok);
+    cancelText ??= AppLocalizer.translateSafely(LocaleKeys.buttons_cancel);
+
     // 2️⃣ Resolve platform-specific dialog widget
     final dialogWidget = PlatformMapper.resolveAppDialog(
       platform: platform,
       engine: engine,
       title: title,
       content: content,
-      confirmText: confirmText ?? 'OK',
-      cancelText: cancelText ?? 'Cancel',
+      confirmText: confirmText,
+      cancelText: cancelText,
       onConfirm: onConfirm,
       onCancel: onCancel,
       presetProps: preset.resolve(),

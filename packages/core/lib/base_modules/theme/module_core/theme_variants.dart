@@ -1,6 +1,5 @@
 // 📌 No need for public API docs.
 // ignore_for_file: public_member_api_docs
-
 import 'package:core/base_modules/theme/text_theme/text_theme_factory.dart';
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart';
 import 'package:core/base_modules/theme/ui_constants/app_colors.dart';
@@ -27,7 +26,7 @@ enum ThemeVariantsEnum {
       background: AppColors.lightBackground,
       error: AppColors.forErrors,
     ),
-    font: AppFontFamily.sfPro,
+    // font: AppFontFamily.someFont,
   ),
 
   ///
@@ -46,7 +45,7 @@ enum ThemeVariantsEnum {
       onSecondary: AppColors.white,
       error: AppColors.forErrors,
     ),
-    font: AppFontFamily.sfPro,
+    // font: AppFontFamily.someFont,
   ),
 
   ///
@@ -65,7 +64,7 @@ enum ThemeVariantsEnum {
       onSecondary: AppColors.white,
       error: AppColors.forErrors,
     ),
-    font: AppFontFamily.sfPro,
+    // font: AppFontFamily.someFont,
   );
 
   ///
@@ -76,7 +75,7 @@ enum ThemeVariantsEnum {
     required this.cardColor,
     required this.contrastColor,
     required this.colorScheme,
-    required this.font,
+    // required this.font,
   });
 
   final Brightness brightness;
@@ -85,7 +84,7 @@ enum ThemeVariantsEnum {
   final Color cardColor;
   final Color contrastColor;
   final ColorScheme colorScheme;
-  final AppFontFamily font;
+  // final AppFontFamily font;
   //
 
   /// 🔘 True getter if dark theme
@@ -95,7 +94,7 @@ enum ThemeVariantsEnum {
   ThemeMode get themeMode => isDark ? ThemeMode.dark : ThemeMode.light;
 
   /// 🔤 Selected font family
-  AppFontFamily get defaultFont => AppFontFamily.sfPro;
+  // AppFontFamily get defaultFont => AppFontFamily.someFont;
 
   //
 }

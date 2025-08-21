@@ -15,7 +15,7 @@ final class ThemePreferences with ThemeCacheMixin {
   /// Selected theme variant (light, dark, glass, amoled)
   final ThemeVariantsEnum theme;
 
-  /// Selected font family (e.g., SF Pro, Aeonik)
+  /// Selected font family (e.g., Montserrat)
   final AppFontFamily font;
 
   //
@@ -27,11 +27,13 @@ final class ThemePreferences with ThemeCacheMixin {
   bool get isDark => theme.isDark;
 
   /// Returns light [ThemeData] using cache
-  ThemeData buildLight() =>
-      cachedTheme(ThemeVariantsEnum.light, ThemeVariantsEnum.light.font);
+  ThemeData buildLight() => cachedTheme(ThemeVariantsEnum.light, font);
+  // ThemeData buildLight() =>
+  //     cachedTheme(ThemeVariantsEnum.light, ThemeVariantsEnum.light.font);
 
   /// Returns dark [ThemeData] using cache
-  ThemeData buildDark() => cachedTheme(theme, ThemeVariantsEnum.dark.font);
+  ThemeData buildDark() => cachedTheme(ThemeVariantsEnum.dark, font);
+  // ThemeData buildDark() => cachedTheme(theme, ThemeVariantsEnum.dark.font);
   //
 
   /// Creates a copy with updated fields

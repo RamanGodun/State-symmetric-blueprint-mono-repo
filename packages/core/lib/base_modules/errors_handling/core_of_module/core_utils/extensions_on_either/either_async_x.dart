@@ -30,7 +30,7 @@ extension ResultFutureX<T> on Future<Either<Failure, T>> {
       },
       (r) async {
         final tag = successTag ?? 'Success';
-        debugPrint('[SUCCESS][$tag] \$r');
+        debugPrint('[SUCCESS][$tag] $r');
         await onSuccess(r);
       },
     );

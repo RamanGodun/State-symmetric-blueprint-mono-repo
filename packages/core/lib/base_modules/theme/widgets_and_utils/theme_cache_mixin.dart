@@ -14,5 +14,8 @@ mixin ThemeCacheMixin {
     return _cache.putIfAbsent(key, () => theme.build(font: font));
   }
 
+  /// Optional:
+  static void clearThemeCache() => _cache.clear();
+
   //
 }

@@ -5,7 +5,6 @@ import 'package:core/base_modules/animations/module_core/_animation_engine.dart'
 import 'package:core/base_modules/animations/overlays_animation/animation_wrapper/animated_overlay_shell.dart';
 import 'package:core/base_modules/localization/module_widgets/text_widget.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart';
-import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher_provider.dart';
 import 'package:core/base_modules/overlays/overlays_presentation/overlay_presets/overlay_preset_props.dart';
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/barrier_filter.dart';
@@ -14,7 +13,6 @@ import 'package:core/base_modules/theme/widgets_and_utils/blur_wrapper.dart'
 import 'package:core/base_modules/theme/widgets_and_utils/box_decorations/_box_decorations_factory.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dart';
 import 'package:core/di_container_cubit/core/di.dart' show di;
-import 'package:core/di_container_riverpod/read_di_x_on_context.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/divider.dart';
 import 'package:core/utils_shared/extensions/context_extensions/_context_extensions.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
@@ -116,7 +114,11 @@ final class AndroidDialog extends StatelessWidget {
                                   _DialogButton(
                                     text: confirmText,
                                     colorScheme: colorScheme,
-                                    onPressed: _handleConfirm(dispatcher),
+                                    onPressed: _dismissThen(
+                                      dispatcher,
+                                      onConfirm,
+                                    ),
+                                    // onPressed: _handleConfirm(dispatcher),
                                     // onPressed: _wrapWithDismiss(dispatcher, onConfirm),
                                   ),
                                 ]
@@ -124,13 +126,21 @@ final class AndroidDialog extends StatelessWidget {
                                   _DialogButton(
                                     text: cancelText,
                                     colorScheme: colorScheme,
-                                    onPressed: _handleCancel(dispatcher),
+                                    onPressed: _dismissThen(
+                                      dispatcher,
+                                      onCancel,
+                                    ),
+                                    // onPressed: _handleCancel(dispatcher),
                                     // onPressed: _wrapWithDismiss(dispatcher, onCancel),
                                   ),
                                   _DialogButton(
                                     text: confirmText,
                                     colorScheme: colorScheme,
-                                    onPressed: _handleConfirm(dispatcher),
+                                    onPressed: _dismissThen(
+                                      dispatcher,
+                                      onConfirm,
+                                    ),
+                                    // onPressed: _handleConfirm(dispatcher),
                                     // onPressed: _wrapWithDismiss(dispatcher, onConfirm),
                                   ),
                                 ],
@@ -147,9 +157,8 @@ final class AndroidDialog extends StatelessWidget {
     );
   }
 
-  /// Option with dialog auto-closing, when action is given
-  // ignore: unused_element
-  VoidCallback _wrapWithDismiss(
+  /// ✅ Dissmis overlay, then run callback (if available)
+  VoidCallback _dismissThen(
     OverlayDispatcher dispatcher,
     VoidCallback? action,
   ) {
@@ -159,6 +168,7 @@ final class AndroidDialog extends StatelessWidget {
     };
   }
 
+  /*
   /// 🧭 Resolves cancel action: fallback to 'onAnimatedDismiss' if [onCancel] is null
   VoidCallback _handleCancel(OverlayDispatcher dispatcher) =>
       onCancel ??
@@ -174,6 +184,19 @@ final class AndroidDialog extends StatelessWidget {
         dispatcher.dismissCurrent(force: true);
         onConfirm?.call();
       };
+
+
+  /// Option with dialog auto-closing, when action is given
+  VoidCallback _wrapWithDismiss(
+    OverlayDispatcher dispatcher,
+    VoidCallback? action,
+  ) {
+    return () {
+      dispatcher.dismissCurrent(force: true);
+      action?.call();
+    };
+  }
+ */
 
   //
 }

@@ -31,6 +31,12 @@ final class ThemePicker extends ConsumerWidget {
 
     final locale = Localizations.localeOf(context);
 
+    const variants = [
+      ThemeVariantsEnum.light,
+      ThemeVariantsEnum.dark,
+      ThemeVariantsEnum.amoled,
+    ];
+
     return DropdownButton<ThemeVariantsEnum>(
       key: ValueKey(locale.languageCode),
       value: themeConfig.theme,
@@ -52,22 +58,17 @@ final class ThemePicker extends ConsumerWidget {
       },
 
       // 🧾 Theme options list
-      items:
-          [
-                ThemeVariantsEnum.light,
-                ThemeVariantsEnum.dark,
-                ThemeVariantsEnum.amoled,
-              ]
-              .map(
-                (type) => DropdownMenuItem<ThemeVariantsEnum>(
-                  value: type,
-                  child: TextWidget(
-                    _themeLabel(context, type),
-                    TextType.titleMedium,
-                  ),
-                ),
-              )
-              .toList(),
+      items: variants
+          .map(
+            (type) => DropdownMenuItem<ThemeVariantsEnum>(
+              value: type,
+              child: TextWidget(
+                _themeLabel(context, type),
+                TextType.titleMedium,
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 

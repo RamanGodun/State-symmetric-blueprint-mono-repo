@@ -39,16 +39,14 @@ extension ResultX<T> on Either<Failure, T> {
   String? get failureMessage => fold((f) => f.message, (_) => null);
 
   /// 🔁 Maps right value
-  Either<Failure, R> mapRight<R>(R Function(T value) transform) =>
-      mapRight(transform);
-  // Either<Failure, R> mapRight<R>(R Function(T value) transform) =>
-  // fold((l) => Left(l), (r) => Right(transform(r)));
+  //  Either<Failure, R> mapRight<R>(R Function(T) f) => this.mapRight(f);
+  Either<Failure, R> mapRightX<R>(R Function(T value) transform) =>
+      fold(Left.new, (r) => Right(transform(r)));
 
   /// 🔁 Maps left value
-  Either<Failure, T> mapLeft(Failure Function(Failure failure) transform) =>
-      mapLeft(transform);
-  // Either<Failure, T> mapLeft(Failure Function(Failure failure) transform) =>
-  //     fold((l) => Left(transform(l)), (r) => Right(r));
+  // Either<Failure, T> mapLeft(Failure Function(Failure) f) => this.mapLeft(f);
+  Either<Failure, T> mapLeftX(Failure Function(Failure failure) transform) =>
+      fold((l) => Left(transform(l)), Right.new);
 
   /// 🔍 True if failure is Unauthorized
   bool get isUnauthorizedFailure => switch (this) {

@@ -1,7 +1,5 @@
 import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart';
-import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher_provider.dart';
 import 'package:core/di_container_cubit/core/di.dart' show di;
-import 'package:core/di_container_riverpod/di_container.dart';
 import 'package:flutter/widgets.dart';
 
 /// 🧭 [OverlaysCleanerWithinNavigation] — Clears all overlays on navigation events
@@ -23,28 +21,40 @@ final class OverlaysCleanerWithinNavigation extends NavigatorObserver {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
-    overlaysDispatcher.clearAll(); // 🧹 Clear overlays on push
+    overlaysDispatcher.dismissCurrent(
+      force: true,
+      clearQueue: true,
+    ); // 🧹 Clear overlay on push
   }
 
   /// 🔁 Called when a route is popped from the navigator
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPop(route, previousRoute);
-    overlaysDispatcher.clearAll(); // 🧹 Clear overlays on pop
+    overlaysDispatcher.dismissCurrent(
+      force: true,
+      clearQueue: true,
+    ); // 🧹 Clear overlay on pop
   }
 
   /// 🔁 Called when a route is removed without being completed
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didRemove(route, previousRoute);
-    overlaysDispatcher.clearAll(); // 🧹 Clear overlays on remove
+    overlaysDispatcher.dismissCurrent(
+      force: true,
+      clearQueue: true,
+    ); // 🧹 Clear overlay on remove
   }
 
   /// 🔁 Called when a route is replaced with another
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    overlaysDispatcher.clearAll(); // 🧹 Clear overlays on replace
+    overlaysDispatcher.dismissCurrent(
+      force: true,
+      clearQueue: true,
+    ); // 🧹 Clear overlay on replace
   }
 
   //
