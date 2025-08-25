@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart'
     show CollectionReference, FirebaseFirestore;
-import 'package:core/utils_shared/riverpod_specific/user_auth_provider/firebase_auth_providers.dart';
 import 'package:features/profile/data/implementation_of_profile_fetch_repo.dart';
 import 'package:features/profile/data/remote_database_contract.dart';
 import 'package:features/profile/data/remote_database_impl.dart';
 import 'package:features/profile/domain/repo_contract.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:specific_for_riverpod/riverpod_specific/user_auth_provider/firebase_auth_providers.dart';
 
 part 'data_layer_providers.g.dart';
 

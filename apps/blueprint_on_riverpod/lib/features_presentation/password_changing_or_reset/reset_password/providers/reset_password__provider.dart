@@ -1,11 +1,10 @@
 import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
     show Failure;
-import 'package:core/utils_shared/riverpod_specific/safe_async_state.dart'
-    show SafeAsyncState;
 import 'package:features/password_changing_or_reset/domain/password_actions_use_case.dart'
     show PasswordRelatedUseCases;
 import 'package:features/password_changing_or_reset/domain/provider/use_cases_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:specific_for_riverpod/riverpod_specific/safe_async_state.dart';
 
 part 'reset_password__provider.g.dart';
 

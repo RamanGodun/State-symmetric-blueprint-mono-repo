@@ -2,10 +2,9 @@ import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.
     show Failure;
 import 'package:core/shared_domain_layer/shared_entities/_user_entity.dart'
     show UserEntity;
-import 'package:core/utils_shared/riverpod_specific/safe_async_state.dart'
-    show SafeAsyncState;
 import 'package:features/profile/domain/providers/use_case_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:specific_for_riverpod/riverpod_specific/safe_async_state.dart';
 
 part 'profile_provider.g.dart';
 

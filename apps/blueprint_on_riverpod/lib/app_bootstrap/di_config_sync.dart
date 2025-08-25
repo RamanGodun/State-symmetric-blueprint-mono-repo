@@ -8,12 +8,12 @@ import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatche
 import 'package:core/base_modules/theme/theme_providers_or_cubits/theme_provider.dart'
     show ThemeConfigNotifier, themeProvider, themeStorageProvider;
 import 'package:core/di_container_riverpod/i_di_config.dart';
-import 'package:core/utils_shared/riverpod_specific/auth_stream_adapter.dart';
-import 'package:core/utils_shared/riverpod_specific/user_auth_provider/firebase_auth_providers.dart';
 import 'package:firebase_bootstrap_config/firebase_auth_gateway.dart';
 import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart' show GetStorage;
+import 'package:specific_for_riverpod/riverpod_specific/auth_stream_adapter.dart';
+import 'package:specific_for_riverpod/riverpod_specific/user_auth_provider/firebase_auth_providers.dart';
 
 /// 🛠️ [DIConfiguration] — Default DI configuration for the app.
 ///     Sets up storage, theme, navigation, overlays, and profile repo.

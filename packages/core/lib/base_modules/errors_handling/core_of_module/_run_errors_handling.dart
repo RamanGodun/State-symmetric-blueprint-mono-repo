@@ -2,6 +2,7 @@ import 'dart:async' show TimeoutException;
 import 'dart:convert' show JsonUnsupportedObjectError;
 import 'dart:io' show FileSystemException, SocketException;
 
+import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseException;
 import 'package:core/base_modules/errors_handling/core_of_module/core_utils/errors_observing/loggers/errors_log_util.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/core_utils/errors_observing/loggers/failure_logger_x.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/core_utils/extensions_on_failure/failure_to_either_x.dart';
@@ -9,13 +10,12 @@ import 'package:core/base_modules/errors_handling/core_of_module/either.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/failure_type.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_core/firebase_core.dart' show FirebaseException;
 import 'package:flutter/services.dart'
     show MissingPluginException, PlatformException;
 
 part '../extensible_part/exceptions_to_failure_mapping/_exceptions_to_failures_mapper_x.dart';
-part '../extensible_part/exceptions_to_failure_mapping/dio_exceptions_mapper.dart';
 part '../extensible_part/exceptions_to_failure_mapping/firebase_exceptions_mapper.dart';
+part '../extensible_part/exceptions_to_failure_mapping/dio_exceptions_mapper.dart';
 
 /// [ResultFutureExtension] - Extension for async function types.
 /// Provides a declarative way to wrap any async operation

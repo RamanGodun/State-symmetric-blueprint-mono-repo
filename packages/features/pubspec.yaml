@@ -18,6 +18,8 @@ dependencies:
     sdk: flutter
   flutter_riverpod: ^2.6.1
   riverpod_annotation: ^2.6.1
+  specific_for_riverpod:
+    path: ../../packages/specific_for_riverpod
 
 dev_dependencies:
   flutter_test:

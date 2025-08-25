@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:core/shared_data_layer/user_data_transfer_objects/_user_dto.dart';
 import 'package:core/utils_shared/type_definitions.dart';
 
@@ -8,6 +7,7 @@ import 'package:core/utils_shared/type_definitions.dart';
 extension UserDTOFactories on UserDTO {
   ///--------------------------------
 
+  /*
   /// 🔄 Creates [UserDTO] from Firestore document snapshot
   /// ❗️ Throws [FormatException] if document is missing
   static UserDTO fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
@@ -25,6 +25,7 @@ extension UserDTOFactories on UserDTO {
       rank: data['rank'] as String? ?? '',
     );
   }
+ */
 
   /// 🔄 Creates [UserDTO] from raw Firestore [Map]
   static UserDTO fromMap(DataMap map, {required String id}) => UserDTO(

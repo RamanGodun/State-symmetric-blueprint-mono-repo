@@ -3,12 +3,12 @@
 
 part of '../../core_of_module/_run_errors_handling.dart';
 
-/// 🗺️ [_firebaseFailureMap] — Maps Firebase error codes to domain [Failure]s
+/// 🗺️ [firebaseFailureMap] — Maps Firebase error codes to domain [Failure]s
 /// ✅ Injects original message as fallback (used when no localization is available)
 /// ✅ Add more codes from [FirebaseCodes] as needed
 /// ✅ Covers both FirebaseAuth & Firestore codes
 //
-final _firebaseFailureMap = <String, Failure Function(String?)>{
+final firebaseFailureMap = <String, Failure Function(String?)>{
   ///
   ///
   FirebaseCodes.invalidCredential: (msg) => Failure(

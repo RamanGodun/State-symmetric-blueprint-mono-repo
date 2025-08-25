@@ -23,8 +23,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_hooks: ^0.21.3+1
-  # flutter_localizations:
-  #   sdk: flutter
   flutter_riverpod: ^2.6.1
   formz: ^0.8.0
   get_storage: ^2.1.1
@@ -32,6 +30,8 @@ dependencies:
   hooks_riverpod: ^2.6.1
   intl: ^0.20.2
   riverpod_annotation: ^2.6.1
+  specific_for_riverpod:
+    path: ../../packages/specific_for_riverpod
   url_strategy: ^0.3.0
 
 dev_dependencies:

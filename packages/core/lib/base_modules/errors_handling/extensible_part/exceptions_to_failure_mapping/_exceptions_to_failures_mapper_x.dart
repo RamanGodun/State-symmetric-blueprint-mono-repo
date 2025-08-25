@@ -26,7 +26,7 @@ extension ExceptionToFailureX on Object {
 
     /// 🔥 Firebase error code handling
     final FirebaseException error =>
-      _firebaseFailureMap[error.code]?.call(error.message) ??
+      firebaseFailureMap[error.code]?.call(error.message) ??
           () {
             final failure =
                 Failure(
