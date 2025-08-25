@@ -2,7 +2,7 @@ import 'package:features/email_verification/data/providers/data_layer_providers.
 import 'package:features/email_verification/domain/email_verification_use_case.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:specific_for_riverpod/riverpod_specific/auth_stream_adapter.dart';
+import 'package:specific_for_riverpod/auth_stream_adapter.dart';
 
 //packages/specific_for_riverpod/lib/riverpod_specific/auth_stream_adapter.dart
 

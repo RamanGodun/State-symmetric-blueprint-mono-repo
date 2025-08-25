@@ -1,6 +1,6 @@
-import 'package:core/di_container_riverpod/di_container.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:specific_for_riverpod/di_container_riverpod/di_container.dart';
 
 /// 🔌 [ContextDI] — Provides access to global DI container via context.
 /// ✅ Use for imperative code outside widget tree or in cases where ref/context is not available.

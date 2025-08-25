@@ -5,7 +5,7 @@ import 'package:core/base_modules/overlays/utils/overlays_cleaner_within_navigat
 // import 'package:core/utils_shared/riverpod_specific/auth_stream_adapter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:specific_for_riverpod/riverpod_specific/auth_stream_adapter.dart';
+import 'package:specific_for_riverpod/auth_stream_adapter.dart';
 
 part 'go_router_factory.dart';
 

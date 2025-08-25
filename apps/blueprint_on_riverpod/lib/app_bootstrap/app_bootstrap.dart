@@ -5,14 +5,14 @@ import 'package:app_bootstrap_and_config/platform_validation.dart';
 import 'package:blueprint_on_riverpod/app_bootstrap/di_config_sync.dart';
 import 'package:blueprint_on_riverpod/app_bootstrap/local_storage_init.dart';
 import 'package:core/base_modules/localization/core_of_module/init_localization.dart';
-import 'package:core/di_container_riverpod/di_container.dart';
-import 'package:core/di_container_riverpod/i_di_config.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_bootstrap_config/firebase_init/remote_db_init.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/material.dart' show WidgetsFlutterBinding;
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:specific_for_riverpod/di_container_riverpod/di_container.dart';
+import 'package:specific_for_riverpod/di_container_riverpod/i_di_config.dart';
 import 'package:url_strategy/url_strategy.dart' show setPathUrlStrategy;
 
 /// 🧰 [DefaultAppBootstrap] — Handles all critical bootstrapping (with injectable stacks for testing/mocks).

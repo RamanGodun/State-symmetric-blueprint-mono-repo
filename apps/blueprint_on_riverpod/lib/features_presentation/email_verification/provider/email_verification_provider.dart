@@ -12,7 +12,7 @@ import 'package:features/email_verification/domain/providers/use_case_provider.d
 import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:specific_for_riverpod/riverpod_specific/safe_async_state.dart';
+import 'package:specific_for_riverpod/safe_async_state.dart';
 
 part 'email_verification_provider.g.dart';
 

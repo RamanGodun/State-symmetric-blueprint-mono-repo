@@ -4,8 +4,8 @@ import 'package:blueprint_on_riverpod/app_bootstrap/app_bootstrap.dart'
     show DefaultAppBootstrap;
 import 'package:blueprint_on_riverpod/root_shell.dart'
     show AppLocalizationShell;
-import 'package:core/di_container_riverpod/di_container.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:specific_for_riverpod/di_container_riverpod/di_container.dart';
 
 /// 🏁 Application entrypoint — Defines environment flavor and launches the app
 //
