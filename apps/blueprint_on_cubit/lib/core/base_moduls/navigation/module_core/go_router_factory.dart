@@ -5,8 +5,8 @@ import 'package:blueprint_on_cubit/core/shared_presentation/pages/page_not_found
 import 'package:core/base_modules/overlays/utils/overlays_cleaner_within_navigation.dart'
     show OverlaysCleanerWithinNavigation;
 import 'package:core/utils_shared/auth/auth_snapshot.dart';
-import 'package:core/utils_shared/bloc_specific/user_auth_cubit/auth_stream_cubit.dart';
 import 'package:go_router/go_router.dart';
+import 'package:specific_for_bloc/user_auth_cubit/auth_stream_cubit.dart';
 
 /// 🧭🚦[buildGoRouter] — GoRouter factory. Returns fully constructed [GoRouter] instance
 /// ✅ Declaratively creates router in dependence of actual [authState].

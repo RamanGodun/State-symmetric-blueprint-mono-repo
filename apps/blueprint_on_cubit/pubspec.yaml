@@ -7,8 +7,6 @@ environment:
   sdk: ^3.8.0
 
 dependencies:
-  adapter_for_apps_on_bloc:
-    path: ../../packages/specific_for_bloc
   app_bootstrap_and_config:
     path: ../../packages/app_bootstrap_and_config
   bloc: ^9.0.0
@@ -38,6 +36,8 @@ dependencies:
   hydrated_bloc: ^10.1.1
   intl: ^0.20.2
   path_provider: ^2.1.5
+  specific_for_bloc:
+    path: ../../packages/specific_for_bloc
   url_strategy: ^0.3.0
 
 dev_dependencies:
