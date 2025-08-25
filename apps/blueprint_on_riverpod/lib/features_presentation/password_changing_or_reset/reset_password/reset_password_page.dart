@@ -8,6 +8,7 @@ import 'package:core/base_modules/form_fields/_form_field_factory.dart'
     show InputFieldFactory;
 import 'package:core/base_modules/form_fields/input_validation/validation_enums.dart'
     show InputFieldType;
+import 'package:core/base_modules/form_fields/utils/use_auth_focus_nodes.dart';
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
     show LocaleKeys;
 import 'package:core/base_modules/localization/module_widgets/text_widget.dart';
@@ -21,7 +22,7 @@ import 'package:core/utils_shared/extensions/context_extensions/_context_extensi
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart' show useFocusNode;
+// import 'package:flutter_hooks/flutter_hooks.dart' show useFocusNode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' show HookConsumerWidget;
 import 'package:specific_for_riverpod/overlay_dispatcher_provider.dart';

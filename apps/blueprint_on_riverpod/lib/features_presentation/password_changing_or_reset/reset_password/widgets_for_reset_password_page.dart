@@ -38,11 +38,11 @@ final class _ResetPasswordEmailInputField extends HookConsumerWidget {
     //
     final form = ref.watch(resetPasswordFormProvider);
     final notifier = ref.read(resetPasswordFormProvider.notifier);
-    final focusNode = useFocusNode();
+    final focusNode = useResetPasswordFocusNodes();
 
     return InputFieldFactory.create(
       type: InputFieldType.email,
-      focusNode: focusNode,
+      focusNode: focusNode.email,
       errorText: form.email.uiErrorKey,
       onChanged: notifier.emailChanged,
       onSubmitted: form.isValid ? () => ref.submitResetPassword() : null,
