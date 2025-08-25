@@ -17,7 +17,7 @@ final class PasswordRemoteDatabaseImpl implements IPasswordRemoteDatabase {
 
   @override
   Future<void> sendResetLink(String email) async {
-    await FirebaseConstants.fbAuth.sendPasswordResetEmail(email: email);
+    await FirebaseConstants.fbAuthInstance.sendPasswordResetEmail(email: email);
   }
 
   //

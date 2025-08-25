@@ -21,6 +21,8 @@ dependencies:
     sdk: flutter
   flutter_dotenv: ^5.2.1
   rxdart: ^0.28.0
+  specific_for_bloc:
+    path: ../../packages/specific_for_bloc
 
 dev_dependencies:
   flutter_test:

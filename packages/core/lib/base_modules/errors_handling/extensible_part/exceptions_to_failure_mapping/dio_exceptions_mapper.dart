@@ -1,5 +1,7 @@
 part of '../../core_of_module/_run_errors_handling.dart';
 
+/*
+
 /// 🧩 [_mapDioError] — maps [DioException] to specific [Failure]s
 /// ✅ Handles timeouts, HTTP errors, and default cases
 //
@@ -39,3 +41,5 @@ Failure _mapDioError(DioException error) => switch (error.type) {
   // 🌐 Others Dio cases
   _ => Failure(type: const NetworkFailureType(), message: error.message),
 };
+
+ */

@@ -9,7 +9,6 @@ import 'package:core/base_modules/errors_handling/core_of_module/core_utils/exte
 import 'package:core/base_modules/errors_handling/core_of_module/either.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/failure_type.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/services.dart'
     show MissingPluginException, PlatformException;
 

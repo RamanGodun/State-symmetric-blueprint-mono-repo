@@ -1,11 +1,11 @@
 import 'package:blueprint_on_riverpod/features_presentation/auth/sign_out/sign_out_provider.dart';
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/specific_for_riverpod/show_dialog_when_error_x.dart';
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
     show LocaleKeys;
 import 'package:core/shared_presentation_layer/shared_widgets/buttons/text_button.dart'
     show AppTextButton;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:specific_for_riverpod/errors_handling/show_dialog_when_error_x.dart';
 
 /// 🔘 [SignOutTextButton] — triggers logout via [signOutProvider]
 /// 🧼 Declarative error handling with overlay via `.listen()`

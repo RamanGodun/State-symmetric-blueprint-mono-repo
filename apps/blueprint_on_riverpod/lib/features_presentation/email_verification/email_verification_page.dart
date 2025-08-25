@@ -1,6 +1,5 @@
 import 'package:blueprint_on_riverpod/features_presentation/auth/sign_out/sign_out_provider.dart';
 import 'package:blueprint_on_riverpod/features_presentation/email_verification/provider/email_verification_provider.dart';
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/specific_for_riverpod/show_dialog_when_error_x.dart';
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
     show LocaleKeys;
 import 'package:core/base_modules/localization/module_widgets/text_widget.dart';
@@ -16,6 +15,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:specific_for_riverpod/errors_handling/show_dialog_when_error_x.dart';
 
 part 'widgets_for_email_verification_page.dart';
 

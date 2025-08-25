@@ -18,9 +18,9 @@ abstract final class FirebaseConstants {
         'users',
       );
 
-  /// 🧩 [fbAuth] — Firebase Authentication instance
+  /// 🧩 [fbAuthInstance] — Firebase Authentication instance
   /// 📦 Provides access to Firebase user-related auth methods
-  static final FirebaseAuth fbAuth = FirebaseAuth.instance;
+  static final FirebaseAuth fbAuthInstance = FirebaseAuth.instance;
 
   // 🧩 Extend with more collections as needed (e.g., 'tasks', 'chats', etc.)
 }

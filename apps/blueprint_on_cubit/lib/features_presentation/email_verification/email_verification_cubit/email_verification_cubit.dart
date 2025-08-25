@@ -11,7 +11,9 @@ import 'package:core/utils_shared/timing_control/timing_config.dart'
     show AppDurations;
 import 'package:equatable/equatable.dart';
 import 'package:features/email_verification/domain/email_verification_use_case.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_bootstrap_config/firebase_types.dart'
+    show FirebaseUser;
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'email_verification_state.dart';

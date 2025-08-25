@@ -9,20 +9,35 @@ extension SafeRegistration on GetIt {
 
   /// 💤 Registers a lazy singleton if not already registered
   /// - `T`: the type to register
-  void registerLazySingletonIfAbsent<T extends Object>(T Function() factory) {
-    if (!isRegistered<T>()) registerLazySingleton<T>(factory);
+  void registerLazySingletonIfAbsent<T extends Object>(
+    T Function() factory, {
+    String? instanceName,
+  }) {
+    if (!isRegistered<T>(instanceName: instanceName)) {
+      registerLazySingleton<T>(factory, instanceName: instanceName);
+    }
   }
 
   /// 🏭 Registers a factory if not already registered
   /// - Use when a new instance is needed on each `get<T>()` call
-  void registerFactoryIfAbsent<T extends Object>(T Function() factory) {
-    if (!isRegistered<T>()) registerFactory<T>(factory);
+  void registerFactoryIfAbsent<T extends Object>(
+    T Function() factory, {
+    String? instanceName,
+  }) {
+    if (!isRegistered<T>(instanceName: instanceName)) {
+      registerFactory<T>(factory, instanceName: instanceName);
+    }
   }
 
   /// 📦 Registers a singleton instance if not already registered
   /// - Use for immutable/global services
-  void registerSingletonIfAbsent<T extends Object>(T instance) {
-    if (!isRegistered<T>()) registerSingleton<T>(instance);
+  void registerSingletonIfAbsent<T extends Object>(
+    T instance, {
+    String? instanceName,
+  }) {
+    if (!isRegistered<T>(instanceName: instanceName)) {
+      registerSingleton<T>(instance, instanceName: instanceName);
+    }
   }
 
   //
@@ -39,15 +54,16 @@ extension SafeRegistration on GetIt {
 //
 extension SafeDispose on GetIt {
   ///
-  Future<void> safeDispose<T extends Object>() async {
-    if (isRegistered<T>()) {
-      final instance = get<T>();
+  Future<void> safeDispose<T extends Object>({String? instanceName}) async {
+    if (isRegistered<T>(instanceName: instanceName)) {
+      final instance = get<T>(instanceName: instanceName);
+
       if (instance is Cubit) {
         await instance.close();
       } else if (instance is BlocBase) {
         await instance.close();
       }
-      unregister<T>();
+      unregister<T>(instanceName: instanceName);
     }
   }
 }

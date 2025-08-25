@@ -1,5 +1,4 @@
-import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart'
-    show OverlayDispatcher;
+import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
 import 'package:flutter/material.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 

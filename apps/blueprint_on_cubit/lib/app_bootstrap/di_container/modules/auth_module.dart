@@ -11,7 +11,8 @@ import 'package:features/auth/domain/use_cases/sign_in.dart';
 import 'package:features/auth/domain/use_cases/sign_out.dart';
 import 'package:features/auth/domain/use_cases/sign_up.dart';
 import 'package:firebase_bootstrap_config/firebase_auth_gateway.dart';
-import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
+import 'package:firebase_bootstrap_config/firebase_types.dart'
+    show FirebaseAuth;
 import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_interface.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/x_on_get_it.dart';
@@ -53,7 +54,9 @@ final class AuthModule implements DIModule {
       /// AuthStreamcubit
       //
       ..registerLazySingleton<AuthGateway>(
-        () => FirebaseAuthGateway(FirebaseConstants.fbAuth),
+        () => FirebaseAuthGateway(
+          di<FirebaseAuth>(instanceName: kFbAuthInstance),
+        ),
       )
       ..registerLazySingleton<AuthCubit>(() => AuthCubit(gateway: di()))
       //

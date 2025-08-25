@@ -13,7 +13,6 @@ import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:specific_for_riverpod/di_container_riverpod/di_container.dart';
 import 'package:specific_for_riverpod/di_container_riverpod/i_di_config.dart';
-import 'package:url_strategy/url_strategy.dart' show setPathUrlStrategy;
 
 /// 🧰 [DefaultAppBootstrap] — Handles all critical bootstrapping (with injectable stacks for testing/mocks).
 //
@@ -53,7 +52,8 @@ final class DefaultAppBootstrap implements IAppBootstrap {
     /// Initializes remote database (currently, Firebase).
     await initRemoteDataBase();
     //
-    setPathUrlStrategy();
+    /// Initializes optional/miscellaneous services.
+    initOptionalMiscServices();
     debugPrint('✅ [Bootstrap] All services initialized!');
     //
   }
@@ -125,6 +125,16 @@ final class DefaultAppBootstrap implements IAppBootstrap {
     // AppLocalizer.initWithFallback();
     debugPrint('🌍 EasyLocalization initialized!');
     //
+  }
+
+  ////
+
+  void initOptionalMiscServices() {
+    /// Set URL strategy for web
+    // setPathUrlStrategy();
+    //
+    /// Configure default ID generator
+    // Id.generator = () => const Uuid().v4(); // or nanoid() / ulid()
   }
 
   //

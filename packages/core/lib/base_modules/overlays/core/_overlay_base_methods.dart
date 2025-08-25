@@ -6,7 +6,7 @@ import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
 import 'package:core/base_modules/overlays/core/_context_x_for_overlays.dart';
 import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart';
 import 'package:core/base_modules/overlays/core/platform_mapper.dart';
-import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart';
+import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_entries/_overlay_entries_registry.dart';
 import 'package:core/base_modules/overlays/overlays_presentation/overlay_presets/overlay_presets.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dart';

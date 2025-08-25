@@ -5,12 +5,11 @@ import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
     show LocaleKeys;
 import 'package:core/base_modules/overlays/core/global_overlay_handler.dart'
     show GlobalOverlayHandler;
-import 'package:core/base_modules/theme/theme_providers_or_cubits/theme_provider.dart'
-    show themeProvider;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart' show GoRouter;
+import 'package:specific_for_riverpod/theme_providers/theme_provider.dart';
 
 /// 🌍✅ [AppLocalizationShell] — Ensures the entire app tree is properly localized before rendering the root UI.
 //

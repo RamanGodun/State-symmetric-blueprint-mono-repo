@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart' show CollectionReference;
 import 'package:features/profile/data/remote_database_contract.dart';
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
-import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
 
 /// 🛠️ [ProfileRemoteDatabaseImpl] — Firestore implementation of [IProfileRemoteDatabase]
 /// ✅ Only low-level calls to Firestore/Auth, no business logic, no DTO<->Entity mapping
@@ -24,7 +23,7 @@ final class ProfileRemoteDatabaseImpl implements IProfileRemoteDatabase {
   /// 🆕 Creates/updates user map in Firestore for given [uid]
   @override
   Future<void> createUserMap(String uid, Map<String, dynamic> data) async {
-    await FirebaseConstants.usersCollection.doc(uid).set(data);
+    await _usersCollection.doc(uid).set(data);
   }
 
   /// 🔐 Retrieves current authenticated user's basic info (for profile creation)

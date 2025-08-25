@@ -1,4 +1,3 @@
-// 📁 lib/core/di/module.dart
 /// 🧩 Base interface for all DI modules
 //
 abstract interface class DIModule {

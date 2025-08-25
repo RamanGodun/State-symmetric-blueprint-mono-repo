@@ -1,7 +1,6 @@
 import 'package:core/base_modules/errors_handling/core_of_module/either.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 🧩 [ResultFuture] — Represents async result with [Either<Failure, T>]
 typedef ResultFuture<T> = Future<Either<Failure, T>>;
@@ -29,6 +28,3 @@ typedef ListenFailureCallback = void Function(Failure failure);
 
 /// 🔧 [RefAction] — Executes an action without returning value, using Riverpod context
 typedef RefAction = void Function();
-
-/// 🔧 [RefCallback] — Provides [WidgetRef] for scoped logic or widget actions
-typedef RefCallback = void Function(WidgetRef ref);

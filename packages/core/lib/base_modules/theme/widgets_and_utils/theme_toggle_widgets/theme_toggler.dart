@@ -2,12 +2,12 @@ import 'package:core/base_modules/localization/core_of_module/init_localization.
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
     show LocaleKeys;
 import 'package:core/base_modules/overlays/core/_context_x_for_overlays.dart';
-import 'package:core/base_modules/theme/theme_providers_or_cubits/theme_provider.dart';
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:specific_for_riverpod/theme_providers/theme_provider.dart';
 
 /// 🌗 [ThemeTogglerIcon] — toggles between light and dark mode and shows overlay notification
 /// ✅ Supports both Riverpod and cubit

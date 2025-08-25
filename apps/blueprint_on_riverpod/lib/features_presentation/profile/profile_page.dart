@@ -3,7 +3,6 @@ import 'package:blueprint_on_riverpod/features_presentation/auth/sign_out/sign_o
 import 'package:blueprint_on_riverpod/features_presentation/profile/providers/profile_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart'
     show CachedNetworkImage;
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/specific_for_riverpod/show_dialog_when_error_x.dart';
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
     show LocaleKeys;
 import 'package:core/base_modules/localization/module_widgets/language_toggle_button/toggle_button.dart';
@@ -28,6 +27,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:specific_for_riverpod/errors_handling/show_dialog_when_error_x.dart';
 
 part 'widgets_for_profile_page.dart';
 
@@ -43,7 +43,7 @@ final class ProfilePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //
     /// Get current user UID (null if not signed in)
-    final uid = FirebaseConstants.fbAuth.currentUser?.uid;
+    final uid = FirebaseConstants.fbAuthInstance.currentUser?.uid;
     if (uid == null) return const SizedBox();
     final asyncUser = ref.watch<AsyncValue<UserEntity>>(profileProvider(uid));
 

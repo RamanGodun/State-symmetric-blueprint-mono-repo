@@ -10,7 +10,7 @@ final class AuthRemoteDatabaseImpl implements IAuthRemoteDatabase {
   /// 🔐 Firebase sign-in
   @override
   Future<void> signIn({required String email, required String password}) async {
-    await FirebaseConstants.fbAuth.signInWithEmailAndPassword(
+    await FirebaseConstants.fbAuthInstance.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -22,10 +22,11 @@ final class AuthRemoteDatabaseImpl implements IAuthRemoteDatabase {
     required String email,
     required String password,
   }) async {
-    final cred = await FirebaseConstants.fbAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    final cred = await FirebaseConstants.fbAuthInstance
+        .createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
     // Return UID only (to stay generic)
     return cred.user?.uid ?? '';
   }
@@ -39,7 +40,7 @@ final class AuthRemoteDatabaseImpl implements IAuthRemoteDatabase {
   /// 🔓 Firebase sign-out
   @override
   Future<void> signOut() async {
-    await FirebaseConstants.fbAuth.signOut();
+    await FirebaseConstants.fbAuthInstance.signOut();
   }
 
   //

@@ -4,7 +4,7 @@
 import 'package:core/base_modules/animations/module_core/_animation_engine.dart';
 import 'package:core/base_modules/animations/overlays_animation/animation_wrapper/animated_overlay_shell.dart';
 import 'package:core/base_modules/localization/module_widgets/text_widget.dart';
-import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart';
+import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
 import 'package:core/base_modules/overlays/overlays_presentation/overlay_presets/overlay_preset_props.dart';
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/barrier_filter.dart';

@@ -1,7 +1,7 @@
 import 'package:core/base_modules/animations/module_core/_animation_engine.dart';
 import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart'
     show ShowAs;
-import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart';
+import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
 import 'package:core/base_modules/overlays/overlays_presentation/overlay_presets/overlay_preset_props.dart';
 import 'package:core/base_modules/overlays/overlays_presentation/widgets/android/android_banner.dart';
 import 'package:core/base_modules/overlays/overlays_presentation/widgets/android/android_dialog.dart';

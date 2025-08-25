@@ -1,6 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart'
-    show CollectionReference, FirebaseFirestore;
-import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
+import 'package:features/profile/data/remote_database_contract.dart';
+import 'package:features/profile/data/remote_database_impl.dart';
+import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
+import 'package:firebase_bootstrap_config/firebase_types.dart'
+    show FirebaseAuth, UsersCollection;
 import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_interface.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/x_on_get_it.dart';
@@ -20,14 +22,23 @@ final class FirebaseModule implements DIModule {
   @override
   Future<void> register() async {
     di
-      ..registerLazySingletonIfAbsent<FirebaseAuth>(() => FirebaseAuth.instance)
-      ..registerLazySingletonIfAbsent<FirebaseFirestore>(
-        () => FirebaseFirestore.instance,
+      // Base instances
+      ..registerLazySingletonIfAbsent<FirebaseAuth>(
+        () => FirebaseConstants.fbAuthInstance,
+        instanceName: kFbAuthInstance,
       )
-      ..registerLazySingletonIfAbsent<
-        CollectionReference<Map<String, dynamic>>
-      >(
-        () => FirebaseFirestore.instance.collection('users'),
+      ..registerLazySingletonIfAbsent<UsersCollection>(
+        () => FirebaseConstants.usersCollection,
+        instanceName: kUsersCollection,
+      )
+      ///
+      //
+      /// 🔁 BACKEND SWITCH POINT for profile feature
+      ..registerLazySingletonIfAbsent<IProfileRemoteDatabase>(
+        () => ProfileRemoteDatabaseImpl(
+          di<UsersCollection>(instanceName: kUsersCollection),
+          di<FirebaseAuth>(instanceName: kFbAuthInstance),
+        ),
       );
   }
 
@@ -39,3 +50,13 @@ final class FirebaseModule implements DIModule {
 
   //
 }
+
+////
+
+/// 🔑 DI key for FirebaseAuth instance
+const kFbAuthInstance = 'fbAuth';
+
+////
+
+/// 🔑 DI key for Firestore users collection
+const kUsersCollection = 'usersCollection';

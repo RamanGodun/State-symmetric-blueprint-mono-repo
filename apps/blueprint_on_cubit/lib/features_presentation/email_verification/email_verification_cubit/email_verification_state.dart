@@ -26,13 +26,13 @@ final class EmailVerificationState extends Equatable {
   });
   //
   final EmailVerificationStatus status;
-  final User? user;
+  final FirebaseUser? user;
   final Consumable<Failure>? failure;
 
   ///
   EmailVerificationState copyWith({
     EmailVerificationStatus? status,
-    User? user,
+    FirebaseUser? user,
     Consumable<Failure>? failure,
   }) {
     return EmailVerificationState(

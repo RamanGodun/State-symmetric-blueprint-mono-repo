@@ -1,18 +1,14 @@
 import 'package:blueprint_on_riverpod/core/base_modules/navigation/module_core/go_router__provider.dart';
-import 'package:core/base_modules/logging/for_riverpod/riverpod_observer.dart'
-    show RiverpodLogger;
-import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart'
-    show OverlayDispatcher;
-import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher_provider.dart'
-    show overlayDispatcherProvider, overlayStatusProvider;
-import 'package:core/base_modules/theme/theme_providers_or_cubits/theme_provider.dart'
-    show ThemeConfigNotifier, themeProvider, themeStorageProvider;
+import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
 import 'package:firebase_bootstrap_config/firebase_auth_gateway.dart';
 import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart' show GetStorage;
 import 'package:specific_for_riverpod/auth_stream_adapter.dart';
 import 'package:specific_for_riverpod/di_container_riverpod/i_di_config.dart';
+import 'package:specific_for_riverpod/observing/riverpod_observer.dart';
+import 'package:specific_for_riverpod/overlay_dispatcher_provider.dart';
+import 'package:specific_for_riverpod/theme_providers/theme_provider.dart';
 import 'package:specific_for_riverpod/user_auth_provider/firebase_auth_providers.dart';
 
 /// 🛠️ [DIConfiguration] — Default DI configuration for the app.
@@ -55,9 +51,9 @@ final class DIConfiguration implements IDIConfig {
 
     ///
     authGatewayProvider.overrideWith(
-      (ref) => FirebaseAuthGateway(FirebaseConstants.fbAuth),
+      (ref) => FirebaseAuthGateway(FirebaseConstants.fbAuthInstance),
     ),
-    firebaseAuthProvider.overrideWithValue(FirebaseConstants.fbAuth),
+    firebaseAuthProvider.overrideWithValue(FirebaseConstants.fbAuthInstance),
 
     //
   ];

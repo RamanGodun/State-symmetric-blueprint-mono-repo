@@ -1,7 +1,6 @@
 import 'package:blueprint_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
 import 'package:blueprint_on_riverpod/features_presentation/auth/sign_in/providers/sign_in__provider.dart';
 import 'package:blueprint_on_riverpod/features_presentation/auth/sign_in/providers/sign_in_form_fields_provider.dart';
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/specific_for_riverpod/show_dialog_when_error_x.dart';
 import 'package:core/base_modules/form_fields/_form_field_factory.dart'
     show InputFieldFactory;
 import 'package:core/base_modules/form_fields/input_validation/validation_enums.dart'
@@ -14,7 +13,6 @@ import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
     show LocaleKeys;
 import 'package:core/base_modules/localization/module_widgets/text_widget.dart';
 import 'package:core/base_modules/navigation/utils/extensions/navigation_x_on_context.dart';
-import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher_provider.dart';
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart'
     show AppSpacing;
 import 'package:core/base_modules/theme/ui_constants/app_colors.dart'
@@ -28,6 +26,8 @@ import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barre
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' show HookConsumerWidget;
+import 'package:specific_for_riverpod/errors_handling/show_dialog_when_error_x.dart';
+import 'package:specific_for_riverpod/overlay_dispatcher_provider.dart';
 
 part 'widgets_for_sign_in_page.dart';
 

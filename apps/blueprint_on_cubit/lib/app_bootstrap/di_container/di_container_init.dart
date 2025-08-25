@@ -9,13 +9,6 @@ import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/theme_modu
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_manager.dart';
 
-// /// 💠 Global [GetIt] instance used as service locator across the app
-// //
-// final GetIt di = GetIt.instance;
-
-////
-////
-
 /// 🚀 [DIContainer] — Centralized class for dependency registration
 /// ✅ Separates all responsibilities by layers: Services, DataSources, UseCases, Blocs, etc.
 ///    - Call [initNecessaryForAppSplashScreen] first for splash/loader dependencies.

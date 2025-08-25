@@ -15,7 +15,6 @@ import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
 import 'package:core/base_modules/localization/module_widgets/text_widget.dart';
 import 'package:core/base_modules/navigation/utils/extensions/navigation_x_on_context.dart';
 import 'package:core/base_modules/overlays/core/_context_x_for_overlays.dart';
-import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher_provider.dart';
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart'
     show AppSpacing;
 import 'package:core/shared_presentation_layer/shared_widgets/buttons/filled_button.dart';
@@ -25,6 +24,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' show HookConsumerWidget;
+import 'package:specific_for_riverpod/overlay_dispatcher_provider.dart';
 
 part 'widgets_for_change_password.dart';
 part 'x_on_ref_for_change_password.dart';

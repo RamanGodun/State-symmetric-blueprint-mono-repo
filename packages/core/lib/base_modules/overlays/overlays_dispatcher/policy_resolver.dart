@@ -1,4 +1,4 @@
-part of '_overlay_dispatcher.dart';
+part of 'overlay_dispatcher.dart';
 
 /// 🎯 [OverlayPolicyResolver] — Static resolver for overlay conflict and dismiss policies
 /// ✅ Centralizes logic for priority-based replacement and dismissibility behavior

@@ -22,7 +22,7 @@ extension ExceptionToFailureX on Object {
     ),
 
     /// 🔌 Dio error handler
-    final DioException error => _mapDioError(error),
+    // final DioException error => _mapDioError(error),
 
     /// 🔥 Firebase error code handling
     final FirebaseException error =>

@@ -4,10 +4,12 @@
 import 'package:core/base_modules/animations/module_core/_animation_engine.dart'
     show AnimationEngine;
 import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart';
-import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart'
+import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart'
     show OverlayDispatcher;
+import 'package:core/utils_shared/id_generator.dart'
+    show IdGenerator, IdNamespace;
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart' show Uuid;
+// import 'package:uuid/uuid.dart' show Uuid;
 
 part 'banner_overlay_entry.dart';
 part 'dialog_overlay_entry.dart';
@@ -20,8 +22,9 @@ part 'snackbar_overlay_entry.dart';
 //
 sealed class OverlayUIEntry {
   ///---------------------
-  /// 🆔 Unique entry identifier (auto-generated via UUID if not provided)
-  OverlayUIEntry({String? id}) : id = id ?? const Uuid().v4();
+  /// 🆔 Unique entry identifier (auto-generated if not provided)
+  OverlayUIEntry({String? id, IdGenerator? idGen})
+    : id = id ?? (idGen ?? overlayIds).next();
   //
   final String id;
 
@@ -66,3 +69,9 @@ final class OverlayConflictStrategy {
 
   //
 }
+
+////
+////
+
+// Binds to the *current* global generator (honors future overrides in bootstrap)
+final overlayIds = IdNamespace.fromGlobal(prefix: 'overlays');

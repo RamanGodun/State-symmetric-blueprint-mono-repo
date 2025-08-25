@@ -15,9 +15,11 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.6.1
+  get_storage: ^2.1.1
   riverpod_annotation: ^2.6.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  riverpod_generator: ^2.6.1
   very_good_analysis: ^9.0.0
