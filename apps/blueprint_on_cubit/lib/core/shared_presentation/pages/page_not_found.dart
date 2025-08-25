@@ -1,4 +1,4 @@
-import 'package:blueprint_on_cubit/core/base_moduls/navigation/routes/app_routes.dart';
+import 'package:blueprint_on_cubit/core/base_modules/navigation/routes/app_routes.dart';
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
     show LocaleKeys;
 import 'package:core/base_modules/localization/module_widgets/text_widget.dart';

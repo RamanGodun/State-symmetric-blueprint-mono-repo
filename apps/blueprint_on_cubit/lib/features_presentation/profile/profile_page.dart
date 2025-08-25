@@ -1,4 +1,4 @@
-import 'package:blueprint_on_cubit/core/base_moduls/navigation/routes/app_routes.dart';
+import 'package:blueprint_on_cubit/core/base_modules/navigation/routes/app_routes.dart';
 import 'package:blueprint_on_cubit/features_presentation/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';
 import 'package:blueprint_on_cubit/features_presentation/auth/sign_out/sign_out_widget.dart';
 import 'package:blueprint_on_cubit/features_presentation/profile/cubit/profile_page_cubit.dart';
@@ -14,7 +14,6 @@ import 'package:core/base_modules/theme/ui_constants/_app_constants.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/blur_wrapper.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/theme_toggle_widgets/theme_picker.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/theme_toggle_widgets/theme_toggler.dart';
-import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:core/shared_domain_layer/shared_entities/_user_entity.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/app_bar.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/buttons/filled_button.dart';
@@ -25,6 +24,7 @@ import 'package:core/utils_shared/spider/app_images_paths.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 import 'package:specific_for_bloc/user_auth_cubit/auth_stream_cubit.dart';
 
 part 'widgets_for_profile_page.dart';

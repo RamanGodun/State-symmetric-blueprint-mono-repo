@@ -1,11 +1,10 @@
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/theme_module.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart'
     show OverlayDispatcher;
-import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_status_cubit.dart'
-    show OverlayStatusCubit;
-import 'package:core/di_container_cubit/core/di.dart' show di;
-import 'package:core/di_container_cubit/core/di_module_interface.dart';
-import 'package:core/di_container_cubit/x_on_get_it.dart';
+import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
+import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_interface.dart';
+import 'package:specific_for_bloc/di_container_on_get_it/x_on_get_it.dart';
+import 'package:specific_for_bloc/overlay_status_cubit.dart';
 
 ///
 final class OverlaysModule implements DIModule {

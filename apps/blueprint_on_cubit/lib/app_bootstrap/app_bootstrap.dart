@@ -4,12 +4,12 @@ import 'package:app_bootstrap_and_config/platform_validation.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/di_container_init.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/local_storage_init.dart';
 import 'package:core/base_modules/localization/core_of_module/init_localization.dart';
-import 'package:core/base_modules/logging/for_bloc/bloc_observer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_bootstrap_config/firebase_init/remote_db_init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:specific_for_bloc/bloc_observing/bloc_observer.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 /// 🧰 [DefaultAppBootstrap] — Handles all critical bootstrapping (with injectable stacks for testing/mocks).

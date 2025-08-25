@@ -1,6 +1,6 @@
 import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart';
-import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:flutter/widgets.dart';
+import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 
 /// 🧭 [OverlaysCleanerWithinNavigation] — Clears all overlays on navigation events
 /// ✅ Ensures that overlays (banners, snackbars, dialogs) do not persist

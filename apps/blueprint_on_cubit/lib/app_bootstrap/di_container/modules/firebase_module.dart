@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart'
     show CollectionReference, FirebaseFirestore;
-import 'package:core/di_container_cubit/core/di.dart' show di;
-import 'package:core/di_container_cubit/core/di_module_interface.dart';
-import 'package:core/di_container_cubit/x_on_get_it.dart';
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
+import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
+import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_interface.dart';
+import 'package:specific_for_bloc/di_container_on_get_it/x_on_get_it.dart';
 
 ///
 final class FirebaseModule implements DIModule {

@@ -1,16 +1,14 @@
-import 'package:blueprint_on_cubit/core/base_moduls/navigation/module_core/go_router_factory.dart'
+import 'package:blueprint_on_cubit/core/base_modules/navigation/module_core/go_router_factory.dart'
     show buildGoRouter;
-import 'package:core/base_modules/localization/core_of_module/localization_wrapper.dart'
-    show LocalizationWrapper;
+import 'package:core/base_modules/localization/core_of_module/localization_wrapper.dart';
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart';
 import 'package:core/base_modules/overlays/core/global_overlay_handler.dart';
-import 'package:core/base_modules/theme/module_core/app_theme_preferences.dart'
-    show ThemePreferences;
-import 'package:core/base_modules/theme/theme_providers_or_cubits/theme_cubit.dart';
+import 'package:core/base_modules/theme/module_core/app_theme_preferences.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart' show GoRouter;
+import 'package:specific_for_bloc/theme_cubit.dart';
 import 'package:specific_for_bloc/user_auth_cubit/auth_stream_cubit.dart';
 
 /// 🌍✅ [AppLocalizationShell] — Ensures the entire app tree is properly localized before rendering the root UI.

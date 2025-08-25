@@ -1,4 +1,4 @@
-import 'package:blueprint_on_cubit/core/base_moduls/navigation/routes/app_routes.dart'
+import 'package:blueprint_on_cubit/core/base_modules/navigation/routes/app_routes.dart'
     show RoutesNames;
 import 'package:blueprint_on_cubit/features_presentation/auth/sign_out/sign_out_cubit/sign_out_cubit.dart'
     show SignOutCubit, SignOutState, SignOutStatus;
@@ -13,7 +13,6 @@ import 'package:core/base_modules/theme/ui_constants/_app_constants.dart'
 import 'package:core/base_modules/theme/ui_constants/app_colors.dart'
     show AppColors;
 import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dart';
-import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:core/shared_presentation_layer/shared_widgets/buttons/text_button.dart';
 import 'package:core/shared_presentation_layer/shared_widgets/loader.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
@@ -21,6 +20,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 
 part 'widgets_for_email_verification_page.dart';
 

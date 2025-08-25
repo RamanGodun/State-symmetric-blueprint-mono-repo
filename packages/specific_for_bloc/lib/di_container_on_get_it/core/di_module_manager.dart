@@ -1,5 +1,5 @@
-import 'package:core/di_container_cubit/core/di_module_interface.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
+import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_interface.dart';
 
 /// 📦 Enhanced Module Manager with better error handling
 //

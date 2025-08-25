@@ -5,8 +5,8 @@ import 'package:core/base_modules/overlays/core/_overlay_base_methods.dart';
 import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/_overlay_dispatcher.dart';
 import 'package:core/base_modules/overlays/overlays_presentation/overlay_presets/overlay_presets.dart';
-import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:flutter/material.dart';
+import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 
 /// 🎯 [ContextXForOverlays] — Unified extension for overlay DSL and dispatcher access
 /// ✅ Use `context.showSnackbar(...)` / `context.showBanner(...)` directly

@@ -12,11 +12,11 @@ import 'package:core/base_modules/theme/widgets_and_utils/blur_wrapper.dart'
     show BlurContainer;
 import 'package:core/base_modules/theme/widgets_and_utils/box_decorations/_box_decorations_factory.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dart';
-import 'package:core/di_container_cubit/core/di.dart' show di;
 import 'package:core/shared_presentation_layer/shared_widgets/divider.dart';
 import 'package:core/utils_shared/extensions/context_extensions/_context_extensions.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:flutter/material.dart';
+import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 
 /// 💬 [AndroidDialog] — Platform-aware Material dialog with animation
 /// - Built for Android: uses [AlertDialog] + entrance animation via [AnimationEngine]

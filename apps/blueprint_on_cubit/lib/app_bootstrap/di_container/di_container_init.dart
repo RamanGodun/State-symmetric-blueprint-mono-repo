@@ -6,8 +6,8 @@ import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/overlays_m
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/password_module.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/profile_module.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/theme_module.dart';
-import 'package:core/di_container_cubit/core/di_module_manager.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
+import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_manager.dart';
 
 // /// 💠 Global [GetIt] instance used as service locator across the app
 // //

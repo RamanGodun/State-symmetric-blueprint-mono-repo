@@ -1,4 +1,4 @@
-import 'package:blueprint_on_cubit/core/base_moduls/navigation/routes/app_routes.dart';
+import 'package:blueprint_on_cubit/core/base_modules/navigation/routes/app_routes.dart';
 import 'package:core/utils_shared/auth/auth_snapshot.dart';
 
 ///

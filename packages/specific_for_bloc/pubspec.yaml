@@ -14,6 +14,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
+  formz: ^0.8.0
+  get_it: ^8.2.0
+  hydrated_bloc: ^10.1.1
 
 dev_dependencies:
   flutter_test:

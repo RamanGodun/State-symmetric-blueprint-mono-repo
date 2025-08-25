@@ -1,4 +1,4 @@
-import 'package:blueprint_on_cubit/core/base_moduls/navigation/routes/app_routes.dart'
+import 'package:blueprint_on_cubit/core/base_modules/navigation/routes/app_routes.dart'
     show RoutesNames;
 import 'package:blueprint_on_cubit/features_presentation/password_changing_or_reset/change_password/cubit/change_password_cubit.dart';
 import 'package:blueprint_on_cubit/features_presentation/password_changing_or_reset/reset_password/reset_password_page.dart'
@@ -23,8 +23,6 @@ import 'package:core/base_modules/overlays/core/_context_x_for_overlays.dart';
 import 'package:core/base_modules/overlays/core/_overlay_base_methods.dart';
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart'
     show AppSpacing;
-import 'package:core/di_container_cubit/core/di.dart' show di;
-import 'package:core/shared_presentation_layer/shared_widgets/buttons/form_submit_button.dart';
 import 'package:core/utils_shared/extensions/context_extensions/_context_extensions.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:core/utils_shared/type_definitions.dart' show FieldUiState;
@@ -33,6 +31,8 @@ import 'package:features/password_changing_or_reset/domain/password_actions_use_
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
+import 'package:specific_for_bloc/form_submit_button.dart';
 
 part 'widgets_for_change_password.dart';
 

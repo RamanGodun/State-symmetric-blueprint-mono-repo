@@ -1,5 +1,5 @@
-import 'package:blueprint_on_cubit/core/base_moduls/navigation/module_core/routes_redirection_service.dart';
-import 'package:blueprint_on_cubit/core/base_moduls/navigation/routes/app_routes.dart';
+import 'package:blueprint_on_cubit/core/base_modules/navigation/module_core/routes_redirection_service.dart';
+import 'package:blueprint_on_cubit/core/base_modules/navigation/routes/app_routes.dart';
 import 'package:blueprint_on_cubit/core/shared_presentation/pages/page_not_found.dart'
     show PageNotFound;
 import 'package:core/base_modules/overlays/utils/overlays_cleaner_within_navigation.dart'
