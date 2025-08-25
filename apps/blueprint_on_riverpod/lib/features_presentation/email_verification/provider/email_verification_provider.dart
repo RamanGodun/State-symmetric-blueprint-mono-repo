@@ -8,10 +8,10 @@ import 'package:core/base_modules/errors_handling/core_of_module/failure_type.da
 import 'package:core/utils_shared/timing_control/timing_config.dart'
     show AppDurations;
 import 'package:features/email_verification/domain/email_verification_use_case.dart';
-import 'package:features/email_verification/domain/providers/use_case_provider.dart';
 import 'package:firebase_bootstrap_config/firebase_constants.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:specific_for_riverpod/features_providers/email_verification/domain_layer_providers/use_case_provider.dart';
 import 'package:specific_for_riverpod/utils/safe_async_state.dart';
 
 part 'email_verification_provider.g.dart';

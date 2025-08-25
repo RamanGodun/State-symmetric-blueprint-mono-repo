@@ -1,5 +1,5 @@
-import 'package:features/auth/domain/use_cases/use_cases_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:specific_for_riverpod/features_providers/auth/domain_layer_providers/use_cases_providers.dart';
 import 'package:specific_for_riverpod/utils/safe_async_state.dart';
 
 part 'sign_up__provider.g.dart';

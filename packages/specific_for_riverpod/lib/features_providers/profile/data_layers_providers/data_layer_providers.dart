@@ -1,5 +1,3 @@
-// import 'package:cloud_firestore/cloud_firestore.dart'
-//     show CollectionReference, FirebaseFirestore;
 import 'package:features/profile/data/implementation_of_profile_fetch_repo.dart';
 import 'package:features/profile/data/remote_database_contract.dart';
 import 'package:features/profile/domain/repo_contract.dart';
@@ -9,6 +7,18 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:specific_for_riverpod/auth/firebase_auth_providers.dart';
 
 part 'data_layer_providers.g.dart';
+
+/*
+/// 🗃️ [usersCollectionProvider] — Firestore users collection reference
+/// ✅ Provides access to the `users` collection for remote profile operations
+//
+@riverpod
+CollectionReference<Map<String, dynamic>> usersCollection(Ref ref) =>
+    FirebaseFirestore.instance.collection('users');
+
+////
+////
+ */
 
 /// 🧩 [profileRepoProvider] — provides instance of [ProfileRepoImpl]
 /// 🧠 Injects [IProfileRemoteDatabase] from [profileRemoteDataSourceProvider]

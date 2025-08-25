@@ -1,9 +1,9 @@
-import 'package:features/auth/data/providers/data_layer_providers.dart';
 import 'package:features/auth/domain/use_cases/sign_in.dart';
 import 'package:features/auth/domain/use_cases/sign_out.dart';
 import 'package:features/auth/domain/use_cases/sign_up.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:specific_for_riverpod/features_providers/auth/data_layer_providers/data_layer_providers.dart';
 
 part 'use_cases_providers.g.dart';
 

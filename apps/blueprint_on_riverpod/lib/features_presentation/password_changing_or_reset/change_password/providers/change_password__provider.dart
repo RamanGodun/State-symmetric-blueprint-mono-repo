@@ -8,8 +8,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:features/password_changing_or_reset/domain/password_actions_use_case.dart'
     show PasswordRelatedUseCases;
 // import '../../../../../core/base_modules/errors_handling/extensible_part/failure_types/_failure_codes.dart';
-import 'package:features/password_changing_or_reset/domain/provider/use_cases_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:specific_for_riverpod/features_providers/password_changing_or_reset/domain_layer_providers/use_cases_provider.dart';
 
 part 'change_password__state.dart';
 

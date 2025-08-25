@@ -2,9 +2,9 @@ import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.
     show Failure;
 import 'package:features/auth/domain/use_cases/sign_out.dart'
     show SignOutUseCase;
-import 'package:features/auth/domain/use_cases/use_cases_providers.dart';
-import 'package:features/profile/data/providers/data_layer_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:specific_for_riverpod/features_providers/auth/domain_layer_providers/use_cases_providers.dart';
+import 'package:specific_for_riverpod/features_providers/profile/data_layers_providers/data_layer_providers.dart';
 import 'package:specific_for_riverpod/utils/safe_async_state.dart';
 
 part 'sign_out_provider.g.dart';
