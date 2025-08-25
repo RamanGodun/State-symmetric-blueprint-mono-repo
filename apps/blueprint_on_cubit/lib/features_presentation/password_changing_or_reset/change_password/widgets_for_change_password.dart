@@ -58,7 +58,7 @@ final class _PasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final changePasswordcubit = context.read<ChangePasswordCubit>();
+    final changePasswordCubit = context.read<ChangePasswordCubit>();
 
     return BlocSelector<ChangePasswordCubit, ChangePasswordState, FieldUiState>(
       selector: (state) => (
@@ -76,10 +76,10 @@ final class _PasswordField extends StatelessWidget {
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
-            onPressed: changePasswordcubit.togglePasswordVisibility,
+            onPressed: changePasswordCubit.togglePasswordVisibility,
           ),
           //
-          onChanged: changePasswordcubit.onPasswordChanged,
+          onChanged: changePasswordCubit.onPasswordChanged,
           onSubmitted: focusNodes.confirmPassword.requestFocus,
           //
         ).withPaddingBottom(AppSpacing.m);
@@ -103,7 +103,7 @@ final class _ConfirmPasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final changePasswordcubit = context.read<ChangePasswordCubit>();
+    final changePasswordCubit = context.read<ChangePasswordCubit>();
 
     return BlocSelector<ChangePasswordCubit, ChangePasswordState, FieldUiState>(
       selector: (state) => (
@@ -121,11 +121,11 @@ final class _ConfirmPasswordField extends StatelessWidget {
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
-            onPressed: changePasswordcubit.toggleConfirmPasswordVisibility,
+            onPressed: changePasswordCubit.toggleConfirmPasswordVisibility,
           ),
           //
-          onChanged: changePasswordcubit.onConfirmPasswordChanged,
-          onSubmitted: changePasswordcubit.submit,
+          onChanged: changePasswordCubit.onConfirmPasswordChanged,
+          onSubmitted: changePasswordCubit.submit,
           //
         ).withPaddingBottom(AppSpacing.xxxl);
       },

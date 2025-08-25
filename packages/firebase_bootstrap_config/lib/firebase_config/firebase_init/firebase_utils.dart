@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
-/// 🧩 [FirebaseUtils] — helper for Firebase state checks & safe initialization
-abstract final class FirebaseUtils {
+/// 🧩 [SafeFirebaseInit] — helper for Firebase state checks & safe initialization
+abstract final class SafeFirebaseInit {
   ///----------------------------
-  const FirebaseUtils._();
+  const SafeFirebaseInit._();
   //
 
   /// ✅ Checks if the DEFAULT Firebase app is already initialized.
@@ -12,7 +12,7 @@ abstract final class FirebaseUtils {
       Firebase.apps.any((app) => app.name == defaultFirebaseAppName);
 
   /// 🧾 Logs all initialized Firebase apps.
-  static void logAllApps() {
+  static void _logAllApps() {
     for (final app in Firebase.apps) {
       debugPrint('🧩 Firebase App: ${app.name} (${app.options.projectId})');
     }
@@ -22,13 +22,13 @@ abstract final class FirebaseUtils {
   ///
   /// - If [options] provided → initializes with options (works for web and mobile w/o GoogleService files).
   /// - If [options] is null → tries default `Firebase.initializeApp()` (works when GoogleService files are present).
-  static Future<void> safeFirebaseInit({
+  static Future<void> run({
     FirebaseOptions? options,
     bool logApps = true,
   }) async {
     if (isDefaultAppInitialized) {
       debugPrint('⚠️ Firebase already initialized (checked manually)');
-      if (logApps) logAllApps();
+      if (logApps) _logAllApps();
       return;
     }
 
@@ -53,6 +53,6 @@ abstract final class FirebaseUtils {
       }
     }
 
-    if (logApps) logAllApps();
+    if (logApps) _logAllApps();
   }
 }

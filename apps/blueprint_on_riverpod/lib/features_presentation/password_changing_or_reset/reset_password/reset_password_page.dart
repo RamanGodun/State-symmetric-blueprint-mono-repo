@@ -25,7 +25,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_hooks/flutter_hooks.dart' show useFocusNode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' show HookConsumerWidget;
-import 'package:specific_for_riverpod/overlay_dispatcher_provider.dart';
+import 'package:specific_for_riverpod/base_modules/overlays/overlay_dispatcher_provider.dart';
 
 part 'widgets_for_reset_password_page.dart';
 part 'x_on_ref_for_reset_password.dart';

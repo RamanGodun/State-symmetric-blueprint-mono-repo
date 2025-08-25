@@ -31,10 +31,11 @@ dependencies:
     path: ../../packages/specific_for_riverpod
 
 dev_dependencies:
-  bloc_test: ^10.0.0
+  build_runner: ^2.7.0
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.4
+  riverpod_generator: ^2.6.5
   very_good_analysis: ^9.0.0
 
 flutter:

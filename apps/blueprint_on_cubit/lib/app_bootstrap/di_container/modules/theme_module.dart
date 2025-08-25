@@ -1,7 +1,7 @@
+import 'package:specific_for_bloc/base_modules/theme/theme_cubit.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_interface.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/x_on_get_it.dart';
-import 'package:specific_for_bloc/theme_cubit.dart';
 
 /// 🎨 Registers theme cubit for loader (and later, the main app).
 //

@@ -1,5 +1,5 @@
 import 'package:features/email_verification/data/remote_database_contract.dart';
-import 'package:firebase_bootstrap_config/firebase_config/auth_user_utils.dart';
+import 'package:firebase_bootstrap_config/utils/auth/auth_user_utils.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 
 /// 🛠️ [IUserValidationRemoteDataSourceImpl] — Firebase-powered implementation

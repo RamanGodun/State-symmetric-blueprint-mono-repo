@@ -5,7 +5,7 @@ import 'package:core/base_modules/overlays/core/_context_x_for_overlays.dart';
 import 'package:core/base_modules/theme/module_core/theme_variants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:specific_for_riverpod/theme_providers/theme_provider.dart';
+import 'package:specific_for_riverpod/base_modules/theme_providers/theme_provider.dart';
 
 /// 🌗 [ThemePicker] — Allows to pick the theme mode and shows overlay notification
 /// Use this widget in both Riverpod or cubit/BLoC apps by toggling the relevant section.

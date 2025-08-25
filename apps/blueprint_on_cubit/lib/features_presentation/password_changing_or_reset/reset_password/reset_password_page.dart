@@ -29,7 +29,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:formz/formz.dart' show FormzSubmissionStatus;
 import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
-import 'package:specific_for_bloc/form_submit_button.dart';
+import 'package:specific_for_bloc/presentation_shared/widgets_shared/form_submit_button.dart';
 
 part 'widgets_for_reset_password_page.dart';
 

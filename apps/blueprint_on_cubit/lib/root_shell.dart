@@ -8,7 +8,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart' show GoRouter;
-import 'package:specific_for_bloc/theme_cubit.dart';
+import 'package:specific_for_bloc/base_modules/theme/theme_cubit.dart';
 import 'package:specific_for_bloc/user_auth_cubit/auth_stream_cubit.dart';
 
 /// 🌍✅ [AppLocalizationShell] — Ensures the entire app tree is properly localized before rendering the root UI.

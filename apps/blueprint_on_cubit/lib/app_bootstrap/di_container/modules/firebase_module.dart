@@ -1,6 +1,6 @@
 import 'package:features/profile/data/remote_database_contract.dart';
-import 'package:features/profile/data/remote_database_impl.dart';
-import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
+import 'package:firebase_bootstrap_config/features/profile/remote_database_impl.dart';
+import 'package:firebase_bootstrap_config/firebase_constants.dart';
 import 'package:firebase_bootstrap_config/firebase_types.dart'
     show FirebaseAuth, UsersCollection;
 import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';

@@ -1,5 +1,6 @@
 name: specific_for_bloc
 description: Lightweight adapters that connect core ports to BLoC/cubit.
+
 version: 0.1.0
 publish_to: none
 

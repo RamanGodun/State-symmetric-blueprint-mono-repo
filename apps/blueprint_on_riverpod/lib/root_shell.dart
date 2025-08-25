@@ -9,7 +9,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart' show GoRouter;
-import 'package:specific_for_riverpod/theme_providers/theme_provider.dart';
+import 'package:specific_for_riverpod/base_modules/theme_providers/theme_provider.dart';
 
 /// 🌍✅ [AppLocalizationShell] — Ensures the entire app tree is properly localized before rendering the root UI.
 //

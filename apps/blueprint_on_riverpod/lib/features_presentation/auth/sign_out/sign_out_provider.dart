@@ -5,7 +5,7 @@ import 'package:features/auth/domain/use_cases/sign_out.dart'
 import 'package:features/auth/domain/use_cases/use_cases_providers.dart';
 import 'package:features/profile/data/providers/data_layer_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:specific_for_riverpod/safe_async_state.dart';
+import 'package:specific_for_riverpod/utils/safe_async_state.dart';
 
 part 'sign_out_provider.g.dart';
 

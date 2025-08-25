@@ -26,8 +26,8 @@ import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barre
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' show HookConsumerWidget;
-import 'package:specific_for_riverpod/errors_handling/show_dialog_when_error_x.dart';
-import 'package:specific_for_riverpod/overlay_dispatcher_provider.dart';
+import 'package:specific_for_riverpod/base_modules/errors_handling/show_dialog_when_error_x.dart';
+import 'package:specific_for_riverpod/base_modules/overlays/overlay_dispatcher_provider.dart';
 
 part 'widgets_for_sign_in_page.dart';
 

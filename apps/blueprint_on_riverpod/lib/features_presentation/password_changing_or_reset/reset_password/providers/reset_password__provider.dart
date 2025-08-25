@@ -4,7 +4,7 @@ import 'package:features/password_changing_or_reset/domain/password_actions_use_
     show PasswordRelatedUseCases;
 import 'package:features/password_changing_or_reset/domain/provider/use_cases_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:specific_for_riverpod/safe_async_state.dart';
+import 'package:specific_for_riverpod/utils/safe_async_state.dart';
 
 part 'reset_password__provider.g.dart';
 

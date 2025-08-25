@@ -1,5 +1,6 @@
 name: features
 description: Shared clean-architecture feature modules (domain/data) for all apps
+
 version: 0.1.0+1
 publish_to: none
 
@@ -8,10 +9,8 @@ environment:
   flutter: ^3.32.0
 
 dependencies:
-  cloud_firestore: ^6.0.0
   core:
     path: ../../packages/core
-  firebase_auth: ^6.0.1
   firebase_bootstrap_config:
     path: ../../packages/firebase_bootstrap_config
   flutter:

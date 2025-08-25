@@ -24,7 +24,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' show HookConsumerWidget;
-import 'package:specific_for_riverpod/overlay_dispatcher_provider.dart';
+import 'package:specific_for_riverpod/base_modules/overlays/overlay_dispatcher_provider.dart';
 
 part 'widgets_for_change_password.dart';
 part 'x_on_ref_for_change_password.dart';

@@ -7,7 +7,7 @@ import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dar
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:specific_for_riverpod/theme_providers/theme_provider.dart';
+import 'package:specific_for_riverpod/base_modules/theme_providers/theme_provider.dart';
 
 /// 🌗 [ThemeTogglerIcon] — toggles between light and dark mode and shows overlay notification
 /// ✅ Supports both Riverpod and cubit

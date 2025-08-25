@@ -1,4 +1,3 @@
-// packages/firebase_bootstrap_config/lib/firebase_auth_gateway.dart
 //
 // ignore_for_file: public_member_api_docs
 

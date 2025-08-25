@@ -1,5 +1,5 @@
 import 'package:features/auth/data/remote_database_contract.dart';
-import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
+import 'package:firebase_bootstrap_config/firebase_constants.dart';
 
 /// 🛠️ [AuthRemoteDatabaseImpl] — Firebase-powered remote data source.
 /// ✅ Implements low-level Firebase logic only.

@@ -4,7 +4,7 @@ import 'package:core/shared_domain_layer/shared_entities/_user_entity.dart'
     show UserEntity;
 import 'package:features/profile/domain/providers/use_case_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:specific_for_riverpod/safe_async_state.dart';
+import 'package:specific_for_riverpod/utils/safe_async_state.dart';
 
 part 'profile_provider.g.dart';
 

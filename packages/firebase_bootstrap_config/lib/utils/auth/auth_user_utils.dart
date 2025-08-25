@@ -3,7 +3,7 @@ import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.
 import 'package:core/base_modules/errors_handling/core_of_module/failure_type.dart'
     show UserMissingFirebaseFailureType;
 import 'package:firebase_auth/firebase_auth.dart' show User;
-import 'package:firebase_bootstrap_config/firebase_config/firebase_constants.dart';
+import 'package:firebase_bootstrap_config/firebase_constants.dart';
 
 /// 🧩 [AuthUserUtils] — centralized utils for accessing current user
 /// 🛡️ Guarantees null-safe usage of FirebaseAuth.currentUser

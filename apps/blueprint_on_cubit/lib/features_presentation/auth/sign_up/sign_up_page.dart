@@ -35,9 +35,9 @@ import 'package:features/auth/domain/use_cases/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' show HookWidget;
+import 'package:specific_for_bloc/base_modules/overlays/overlay_status_cubit.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
-import 'package:specific_for_bloc/form_submit_button.dart';
-import 'package:specific_for_bloc/overlay_status_cubit.dart';
+import 'package:specific_for_bloc/presentation_shared/widgets_shared/form_submit_button.dart';
 
 part 'sign_up_widgets.dart';
 
