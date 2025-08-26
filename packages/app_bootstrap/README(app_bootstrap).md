@@ -1,34 +1,35 @@
-# App_bootstrap
+# App Bootstrap Package
 
-**App_bootstrap** provides a unified startup pipeline for Flutter apps: launch, error handling,
-environment configuration (flavors, .env mapping), platform validation, and clean contracts for local/remote stacks.
-
-- ✅ Single entrypoint for launching (`AppLauncher.run`)
-- ✅ Environment & flavor configuration (`EnvConfig`, `FlavorConfig`)
-- ✅ Platform pre-checks (`PlatformValidationUtil`)
-- ✅ Clean contracts for local & remote stacks (`ILocalStorage`, `IRemoteDataBase`, `IAppBootstrap`)
+**App Bootstrap** is a shared Flutter package that standardizes application startup across all apps in the monorepo,
+that keeps boot logic **consistent across apps** and **technology‑agnostic** (you can plug in any storage/remote backend).
+It centralizes platform checks, dependency injection wiring, Firebase configuration, local storage initialization,
+and environment-driven flags — so each app can boot consistently with minimal boilerplate.
 
 ---
 
 ## Installation
 
-Add dependency in your app:
+Add the package to your app's `pubspec.yaml`:
 
 ```yaml
+# apps/<your_app>/pubspec.yaml
 dependencies:
   app_bootstrap:
     path: ../../packages/app_bootstrap
 ```
 
-Import only via the public barrel:
+Import the public API only:
 
 ```dart
-import 'package:app_bootstrap/app_bootstrap_barrel.dart';
+import 'package:app_bootstrap/app_bootstrap.dart';
 ```
+
+> **Import rule:** Do not import internal files directly (e.g. `di_container/…`, `firebase_config/…`).
+> Always go through the package’s public API.
 
 ---
 
-## Public API & Structure
+## Directory Structure
 
 ```
 lib/
@@ -47,67 +48,72 @@ lib/
     └─ platform_validation.dart   # PlatformValidationUtil
 ```
 
-> **Import rule:** In apps, import only `app_bootstrap_barrel.dart`.
+> The exact file names may evolve; this README describes the intended responsibilities and boundaries of each area.
+
+---
+
+## What It Does
+
+App Bootstrap orchestrates a **deterministic startup pipeline**:
+
+1. **Platform validation** – assert OS/SDK/device requirements (e.g., Android min SDK, iOS version).
+2. **Environment & flags** – read flavor and env variables, expose feature flags.
+3. **Local storage** – initialize storage engines (SharedPreferences/Hive/SecureStorage).
+4. **Remote/Firebase** – initialize Firebase (via `firebase_config`) or other remote backends.
+5. **Dependency Injection** – register sync/async services in a single place.
+6. **Run app** – hand control to your root `Widget` (optionally showing a splash screen during boot).
+
+This isolates “how to start an app” from the app’s UI/business logic.
 
 ---
 
 ## Quick Start
 
-### 1) Select environment & launch app
+Below is a **generic** usage sketch. Adapt function names to your package’s actual API (see file names above).
 
 ```dart
-import 'package:app_bootstrap/app_bootstrap_barrel.dart';
+import 'package:flutter/widgets.dart';
+import 'package:app_bootstrap/app_bootstrap.dart';
 
-void main() async {
-  FlavorConfig.current = AppFlavor.development; // select flavor
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  await AppLauncher.run(
-    bootstrap: MyAppBootstrap(),
-    builder: () => const MyRootWidget(),
-  );
+  // 1) Validate platform requirements (throws/asserts on unsupported setups)
+  await validatePlatformRequirements();
+
+  // 2) Load env & feature flags (from flavors, dotenv, or compile-time defines)
+  final env = await loadEnvironment(); // e.g., from env_config.dart
+
+  // 3) Init local storage
+  await initLocalStorage(); // e.g., SharedPreferences/Hive
+
+  // 4) Init remote backends / Firebase (no-op if not used)
+  await initFirebaseFrom(env); // wraps Firebase.initializeApp(options: ...)
+
+  // 5) Wire DI (sync + async registrations)
+  configureDependenciesSync();
+  await configureDependenciesAsync();
+
+  // 6) Run the app
+  runApp(const App());
 }
 ```
 
-### 2) Minimal `IAppBootstrap` implementation
-
-```dart
-final class MyAppBootstrap implements IAppBootstrap {
-  const MyAppBootstrap();
-
-  @override
-  Future<void> initAllServices() async {
-    await startUp();
-    await initGlobalDIContainer();
-    await initLocalStorage();
-    await initRemoteDataBase();
-  }
-
-  @override
-  Future<void> startUp() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await PlatformValidationUtil.run();
-  }
-
-  @override
-  Future<void> initGlobalDIContainer() async {
-    // Setup DI container (GetIt / Riverpod)
-  }
-
-  @override
-  Future<void> initLocalStorage() async {
-    // Initialize local storage stack
-  }
-
-  @override
-  Future<void> initRemoteDataBase() async {
-    // Initialize remote database stack (e.g. Firebase)
-  }
-}
-```
+> If you use a splash/loader during async boot, see `docs/bootstrap_with_splash_screen.md` for
+> a pattern that displays a placeholder while steps 2–5 complete.
 
 ---
 
-## Environment & Flavors
+## Environment & Flags
+
+Use `constants/environment_flags.dart` to expose **feature flags** and **flavor switches** (development/staging/production).
+Couple them with `info_constants.dart` (app name, links) and `platform_requirements.dart` (min versions/devices) to produce consistent behavior across apps.
+
+**Recommendations:**
+
+- Prefer **compile-time** defines for critical toggles (e.g., `--dart-define=USE_FAKE_API=true`).
+- Mirror them into a **typed runtime model** (`EnvConfig`) for easy consumption in UI/DI.
+- Keep sensitive values in app-level secure storage or config management; do not hardcode secrets in this package.
 
 ### Flavors
 
@@ -128,45 +134,51 @@ definal isStg   = EnvConfig.isStagingMode; // true in staging
 
 ---
 
-## Platform Validation
+## Testing
 
-Run pre-checks before app startup:
+- Keep generated files (e.g., `*.g.dart`) **excluded** from analysis/coverage.
+- Unit-test each boot step in isolation (e.g., platform validator, env loader, DI registrars).
+- Provide small fakes for `EnvConfig` and storage to keep tests hermetic.
+
+Example (pseudo):
 
 ```dart
-await PlatformValidationUtil.run();
+void main() {
+  test('platform validator throws on unsupported iOS version', () {
+    expect(() => validatePlatformRequirements(fake: IOS_12), throwsA(isA<PlatformError>()));
+  });
+}
 ```
-
-Checks against `PlatformConstants`:
-
-- `minSdkVersion` for Android
-- `minIOSMajorVersion` for iOS
-
----
-
-## Conventions
-
-- Keep **contracts** (`IAppBootstrap`, `ILocalStorage`, `IRemoteDataBase`) technology-agnostic.
-- Add specific implementations (Firebase, Isar, SecureStorage, etc.) in adapters, not here.
-- Keep `app_bootstrap` minimal: **only startup orchestration and contracts.**
 
 ---
 
 ## Development
 
-This repository uses [Melos](https://melos.invertase.dev/).
+From the monorepo root:
 
 ```bash
-# bootstrap all packages
-melos bootstrap
+# Format + analyze + test everything
+melos run check
 
-# only this package
-melos exec --scope="app_bootstrap" -- flutter pub get
+# Only this package
+melos exec --scope="app_bootstrap" -- dart format .
 melos exec --scope="app_bootstrap" -- flutter analyze
-melos exec --scope="app_bootstrap" -- flutter test
+melos exec --scope="app_bootstrap" -- flutter test --coverage --no-pub
 ```
+
+---
+
+## Conventions
+
+- **Single entry point**: expose a small, stable API from `app_bootstrap.dart`.
+- Keep **contracts** (`IAppBootstrap`, `ILocalStorage`, `IRemoteDataBase`) technology-agnostic.
+- Add specific implementations (Firebase, Isar, SecureStorage, etc.) in adapters, not here.
+- Keep `app_bootstrap` minimal: **only startup orchestration and contracts.**
+- **Pluggable**: each step (env/storage/firebase/di) is optional and replaceable.
+- **Docs**: evolve `docs/` with diagrams and sample flows as features grow.
 
 ---
 
 ## License
 
-Licensed under the same terms as the monorepo’s root [LICENSE](../../LICENSE).
+This package is licensed under the same terms as the monorepo’s root [LICENSE](../../LICENSE).
