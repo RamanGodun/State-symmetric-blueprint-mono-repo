@@ -5,9 +5,9 @@ import 'package:features/auth/data/remote_database_contract.dart';
 import 'package:features/auth/data/remote_database_impl.dart';
 import 'package:features/auth/domain/repo_contracts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:specific_for_riverpod/auth/firebase_providers.dart'
+import 'package:riverpod_adapter/utils/auth/firebase_providers.dart'
     show firebaseAuthProvider, usersCollectionProvider;
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'data_layer_providers.g.dart';
 

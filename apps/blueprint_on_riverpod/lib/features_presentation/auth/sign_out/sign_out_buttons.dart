@@ -5,7 +5,7 @@ import 'package:core/shared_presentation_layer/widgets_shared/buttons/text_butto
     show AppTextButton;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:specific_for_riverpod/base_modules/errors_handling/show_dialog_when_error_x.dart';
+import 'package:riverpod_adapter/base_modules/errors_handling_module/show_dialog_when_error_x.dart';
 
 /// 🔘 [SignOutTextButton] — triggers logout via [signOutProvider]
 /// 🧼 Declarative error handling with overlay via `.listen()`

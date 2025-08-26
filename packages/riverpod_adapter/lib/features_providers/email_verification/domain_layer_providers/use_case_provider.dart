@@ -1,8 +1,10 @@
 import 'package:features/email_verification/domain/email_verification_use_case.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_adapter/features_providers/email_verification/data_layer_providers/data_layer_providers.dart'
+    show emailVerificationRepoProvider;
+import 'package:riverpod_adapter/utils/auth/auth_stream_adapter.dart'
+    show authGatewayProvider;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:specific_for_riverpod/auth/auth_stream_adapter.dart';
-import 'package:specific_for_riverpod/features_providers/email_verification/data_layer_providers/data_layer_providers.dart';
 
 //packages/specific_for_riverpod/lib/riverpod_specific/auth_stream_adapter.dart
 

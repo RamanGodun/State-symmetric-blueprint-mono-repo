@@ -5,12 +5,13 @@ import 'package:firebase_adapter/gateways/firebase_auth_gateway.dart'
     show FirebaseAuthGateway;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart' show GetStorage;
-import 'package:specific_for_riverpod/auth/auth_stream_adapter.dart';
-import 'package:specific_for_riverpod/auth/firebase_providers.dart';
-import 'package:specific_for_riverpod/base_modules/observing/riverpod_observer.dart';
-import 'package:specific_for_riverpod/base_modules/overlays/overlay_dispatcher_provider.dart';
-import 'package:specific_for_riverpod/base_modules/theme_providers/theme_provider.dart';
-import 'package:specific_for_riverpod/di_container/i_di_config.dart';
+import 'package:riverpod_adapter/base_modules/observing/riverpod_observer.dart';
+import 'package:riverpod_adapter/base_modules/overlays_module/overlay_dispatcher_provider.dart';
+import 'package:riverpod_adapter/base_modules/theme_module/theme_provider.dart';
+import 'package:riverpod_adapter/di/i_di_config.dart';
+import 'package:riverpod_adapter/utils/auth/auth_stream_adapter.dart';
+import 'package:riverpod_adapter/utils/auth/firebase_providers.dart'
+    show firebaseAuthProvider, usersCollectionProvider;
 
 /// 🛠️ [DIConfiguration] — Default DI configuration for the app.
 ///     Sets up storage, theme, navigation, overlays, and profile repo.

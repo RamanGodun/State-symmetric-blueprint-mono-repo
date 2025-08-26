@@ -1,13 +1,20 @@
-name: specific_for_riverpod
-description: Lightweight adapters that connect core ports to Riverpod.
+name: riverpod_adapter
+description: >
+  Lightweight Riverpod adapters that connect core ports and features to concrete infra (Firebase, storage, overlays, theming).
 
 version: 0.1.0
 publish_to: none
 
+# =============================
+# ENVIRONMENT
+# =============================
 environment:
+  flutter: ">=3.22.0" # keep alphabetical (flutter before sdk)
   sdk: ">=3.8.0 <4.0.0"
-  flutter: ">=3.22.0"
 
+# =============================
+# DEPENDENCIES
+# =============================
 dependencies:
   core:
     path: ../core

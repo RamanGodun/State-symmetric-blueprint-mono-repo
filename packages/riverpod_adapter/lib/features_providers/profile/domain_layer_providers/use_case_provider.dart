@@ -1,7 +1,7 @@
 import 'package:features/profile/domain/fetch_profile_use_case.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_adapter/features_providers/profile/data_layers_providers/data_layer_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:specific_for_riverpod/features_providers/profile/data_layers_providers/data_layer_providers.dart';
 
 part 'use_case_provider.g.dart';
 

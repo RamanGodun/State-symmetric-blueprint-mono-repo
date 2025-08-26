@@ -51,8 +51,8 @@ dependencies:
   meta: ^1.12.0
 
   # Shared Riverpod-specific utilities for apps using Riverpod
-  specific_for_riverpod:
-    path: ../../packages/specific_for_riverpod
+  riverpod_adapter:
+    path: ../../packages/riverpod_adapter
 
   # Common validators for form fields (email, password, etc.)
   validators: ^3.0.0

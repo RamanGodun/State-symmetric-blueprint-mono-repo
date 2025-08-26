@@ -10,8 +10,8 @@ import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/material.dart' show WidgetsFlutterBinding;
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:specific_for_riverpod/di_container/di_container.dart';
-import 'package:specific_for_riverpod/di_container/i_di_config.dart';
+import 'package:riverpod_adapter/di/di_container.dart';
+import 'package:riverpod_adapter/di/i_di_config.dart';
 
 /// 🧰 [DefaultAppBootstrap] — Handles all critical bootstrapping (with injectable stacks for testing/mocks).
 //

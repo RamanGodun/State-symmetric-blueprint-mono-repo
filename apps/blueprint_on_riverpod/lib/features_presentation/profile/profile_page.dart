@@ -26,7 +26,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_adapter/constants/firebase_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:specific_for_riverpod/base_modules/errors_handling/show_dialog_when_error_x.dart';
+import 'package:riverpod_adapter/base_modules/errors_handling_module/show_dialog_when_error_x.dart';
 
 part 'widgets_for_profile_page.dart';
 

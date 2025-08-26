@@ -22,10 +22,9 @@ import 'package:core/utils_shared/extensions/context_extensions/_context_extensi
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_hooks/flutter_hooks.dart' show useFocusNode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' show HookConsumerWidget;
-import 'package:specific_for_riverpod/base_modules/overlays/overlay_dispatcher_provider.dart';
+import 'package:riverpod_adapter/base_modules/overlays_module/overlay_dispatcher_provider.dart';
 
 part 'widgets_for_reset_password_page.dart';
 part 'x_on_ref_for_reset_password.dart';

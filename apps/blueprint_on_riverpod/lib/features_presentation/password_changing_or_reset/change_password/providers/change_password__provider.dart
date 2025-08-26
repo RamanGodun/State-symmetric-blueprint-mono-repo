@@ -9,7 +9,8 @@ import 'package:features/password_changing_or_reset/domain/password_actions_use_
     show PasswordRelatedUseCases;
 // import '../../../../../core/base_modules/errors_handling/extensible_part/failure_types/_failure_codes.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:specific_for_riverpod/features_providers/password_changing_or_reset/domain_layer_providers/use_cases_provider.dart';
+import 'package:riverpod_adapter/features_providers/password_changing_or_reset/domain_layer_providers/use_cases_provider.dart'
+    show passwordUseCasesProvider;
 
 part 'change_password__state.dart';
 

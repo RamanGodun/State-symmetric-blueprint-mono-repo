@@ -20,8 +20,8 @@ import 'package:core/utils_shared/extensions/context_extensions/_context_extensi
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:specific_for_riverpod/base_modules/errors_handling/show_dialog_when_error_x.dart';
-import 'package:specific_for_riverpod/base_modules/overlays/overlay_dispatcher_provider.dart';
+import 'package:riverpod_adapter/base_modules/errors_handling_module/show_dialog_when_error_x.dart';
+import 'package:riverpod_adapter/base_modules/overlays_module/overlay_dispatcher_provider.dart';
 
 part 'sign_up_input_fields.dart';
 part 'widgets_for_sign_up_page.dart';

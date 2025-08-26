@@ -1,4 +1,4 @@
-# melos_managed_dependency_overrides: app_bootstrap,bloc_adapter,core,firebase_adapter,specific_for_riverpod
+# melos_managed_dependency_overrides: app_bootstrap,bloc_adapter,core,firebase_adapter,riverpod_adapter
 dependency_overrides:
   app_bootstrap:
     path: ../app_bootstrap
@@ -8,5 +8,5 @@ dependency_overrides:
     path: ../core
   firebase_adapter:
     path: ../firebase_adapter
-  specific_for_riverpod:
-    path: ../specific_for_riverpod
+  riverpod_adapter:
+    path: ../riverpod_adapter
