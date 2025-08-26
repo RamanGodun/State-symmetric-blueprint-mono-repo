@@ -3,12 +3,12 @@
 
 import 'package:flutter/material.dart';
 
-/// 🗝 [AppKeys] — All ValueKeys used across the app.
+/// 🗝 [FormFieldsKeys] — All ValueKeys used across the module.
 /// Centralized for testability, clarity, and consistency.
 //
-abstract final class AppKeys {
+abstract final class FormFieldsKeys {
   ///──────────────--------
-  const AppKeys._();
+  const FormFieldsKeys._();
 
   /// 👤 Signup fields
   static const ValueKey<String> nameField = ValueKey('signup_name_field');
@@ -18,14 +18,6 @@ abstract final class AppKeys {
   );
   static const ValueKey<String> confirmPasswordField = ValueKey(
     'signup_confirm_password_field',
-  );
-
-  // 🚀 Submit button
-  static const ValueKey<String> submitButtonText = ValueKey(
-    'submit_button_text',
-  );
-  static const ValueKey<String> submitButtonLoader = ValueKey(
-    'submit_button_loader',
   );
 
   //

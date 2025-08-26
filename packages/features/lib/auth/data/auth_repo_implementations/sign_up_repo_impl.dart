@@ -1,4 +1,4 @@
-import 'package:core/base_modules/errors_handling/core_of_module/_run_errors_handling.dart';
+import 'package:core/base_modules/errors_handling/core_of_module/_errors_handling_entry_point.dart';
 import 'package:core/shared_data_layer/user_data_transfer_objects/user_dto_factories_x.dart'
     show UserDTOFactories;
 import 'package:core/shared_data_layer/user_data_transfer_objects/user_dto_x.dart';

@@ -1,4 +1,4 @@
-import 'package:core/base_modules/errors_handling/extensible_part/failure_types/_failure_codes.dart';
+import 'package:core/base_modules/errors_handling/extensible_part/failure_types/failure_codes.dart';
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
     show LocaleKeys;
 import 'package:flutter/material.dart';

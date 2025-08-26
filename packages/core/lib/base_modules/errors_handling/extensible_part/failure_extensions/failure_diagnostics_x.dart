@@ -1,5 +1,5 @@
 import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart';
-import 'package:core/base_modules/errors_handling/extensible_part/failure_types/_failure_codes.dart';
+import 'package:core/base_modules/errors_handling/extensible_part/failure_types/failure_codes.dart';
 
 /// 🧭 [FailureX] — Unified extensions for [Failure]
 /// ✅ Includes semantic type-checkers, diagnostics, casting, and safe metadata access

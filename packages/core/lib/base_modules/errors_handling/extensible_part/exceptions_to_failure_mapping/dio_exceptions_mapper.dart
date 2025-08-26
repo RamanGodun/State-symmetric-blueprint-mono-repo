@@ -1,4 +1,4 @@
-part of '../../core_of_module/_run_errors_handling.dart';
+part of '../../core_of_module/_errors_handling_entry_point.dart';
 
 /*
 

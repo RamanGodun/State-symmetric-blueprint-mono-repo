@@ -1,4 +1,4 @@
-import 'package:core/base_modules/animations/module_core/_animation_engine.dart';
+import 'package:core/base_modules/animations/module_core/animation__engine.dart';
 import 'package:core/base_modules/animations/overlays_animation/overlays_animation_engines/android_animation_engine.dart';
 import 'package:core/base_modules/animations/overlays_animation/overlays_animation_engines/ios_animation_engine.dart';
 import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart';

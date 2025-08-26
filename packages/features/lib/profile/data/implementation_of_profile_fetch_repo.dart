@@ -1,4 +1,4 @@
-import 'package:core/base_modules/errors_handling/core_of_module/_run_errors_handling.dart';
+import 'package:core/base_modules/errors_handling/core_of_module/_errors_handling_entry_point.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
     show Failure;
 import 'package:core/base_modules/errors_handling/core_of_module/failure_type.dart'

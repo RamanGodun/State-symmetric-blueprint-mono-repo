@@ -55,52 +55,61 @@ core/lib
 
 ---
 
-## Modules (fill as you implement)
+## Modules
 
-Each section below should include: purpose, public entry points, dependencies, and usage examples.
+Each module in `core` has its own detailed README.
+Below are entry points with direct links:
 
-### Animations
+### [Animations](./lib/base_modules/animations/Animations_module_README.md)
 
-> _TODO: purpose, engines, presets, examples._
+Reusable animation engines, presets, and widget wrappers.
 
-### Error Handling
+### [Error Handling](./lib/base_modules/errors_handling/Errors_handling_module_README.md)
 
-> _TODO: Failure types, Either helpers, loggers, UI mapping, examples._
+Failure types, Either helpers, loggers, and UI mapping.
 
-### Form Fields
+### [Form Fields](./lib/base_modules/form_fields/Module%20README.md)
 
-> _TODO: validators, input widgets, submission helpers, examples._
+Validators, input widgets, and submission helpers.
 
-### Localization
+### [Localization](./lib/base_modules/localization/Localization_module_README.md)
 
-> _TODO: init, context helpers, toggles, strings helpers, examples._
+EasyLocalization setup, context extensions, and language toggles.
 
-### Navigation
+### [Navigation](./lib/base_modules/navigation/Navigation_module_README.md)
 
-> _TODO: GoRouter factory, redirects, context extensions, examples._
+GoRouter factory, redirects, and navigation extensions.
 
-### Overlays
+### [Overlays](./lib/base_modules/overlays/Overlays_module_README.md)
 
-> _TODO: dispatcher, conflict policies, dialog/banner/snackbar presets, examples._
+Dispatcher, conflict policies, dialog/banner/snackbar presets.
 
-### Theme
+### [Theme](./lib/base_modules/theme/Theme_module_README.md)
 
-> _TODO: theme variants, typography, colors, toggles, examples._
-
-### Logging
-
-> _TODO: observers (Bloc/Riverpod), format, routing/async logs, examples._
+Theme variants, typography (Inter/Montserrat), colors, and toggles.
 
 ---
 
 ## Layers
 
-- **shared_data_layer** — DTOs, mappers, contracts/adapters shared across features.
-- **shared_domain_layer** — entities, value objects, shared domain interfaces/use cases.
-- **shared_presentation_layer** — shared pages/widgets (e.g., `SplashPage`, `AppBar`, `Loader`).
-- **utils_shared** — cross-cutting utilities/extensions that don’t fit a single layer (debouncer, context extensions, etc.).
+| Layer                       | Purpose                                                                  |
+| --------------------------- | ------------------------------------------------------------------------ |
+| `shared_data_layer`         | DTOs, mappers, contracts/adapters shared across features.                |
+| `shared_domain_layer`       | Entities, value objects, shared use cases & domain interfaces.           |
+| `shared_presentation_layer` | Shared pages/widgets (`SplashPage`, `AppBar`, `Loader`).                 |
+| `utils_shared`              | Cross-cutting utilities/extensions (debouncer, context extensions, etc). |
 
 > If something doesn’t clearly fit a layer, place it in `utils_shared` temporarily and plan a follow-up refactor.
+
+---
+
+## Assets & Fonts
+
+Core ships with shared assets:
+
+- `assets/images/` → Shared icons, logos, loaders.
+- `assets/translations/` → Localizations (`en.json`, `uk.json`, `pl.json`).
+- `assets/fonts/` → **Inter** (default app font) and **Montserrat** (headings/accents).
 
 ---
 
@@ -116,25 +125,65 @@ Each section below should include: purpose, public entry points, dependencies, a
 ## Development
 
 This repository uses [Melos](https://melos.invertase.dev/) to manage all packages.
+All common tasks are automated via `melos run` scripts defined in the root `melos.yaml`.
 
-### Common tasks (from repo root)
+### 🔧 Common workflows (from repo root)
 
 ```bash
-# Format + analyze + test all packages
+# Bootstrap all packages (safe pub get)
+melos bootstrap
+
+# Clean build artifacts
+melos run clean
+melos run clean:deep   # ⚠️ removes untracked files too
+
+# Format, analyze, test all packages
 melos run check
 
-# Only this package
-melos exec --scope="core" -- dart format .
+# Only this package (core)
+melos exec --scope="core" -- flutter pub get
 melos exec --scope="core" -- flutter analyze
-melos exec --scope="core" -- flutter test --coverage --no-pub
+melos exec --scope="core" -- flutter test
 ```
 
-(Optional) Generate an HTML coverage report with `lcov`:
+### (Optional) Generate an HTML coverage report with `lcov`:
 
 ```bash
+# Run all tests
+melos run test
+
+# Run tests with Very Good CLI (randomized order + coverage)
+melos run vg:test
+
+# Generate coverage (lcov + HTML report)
+melos run coverage
+
 # once: brew install lcov
 genhtml coverage/lcov.info -o coverage/html
 open coverage/html/index.html
+```
+
+### Code Metrics (DCM) and code quality
+
+```
+# Auto-fix Dart hints
+melos run fix:apply
+
+# Apply formatting
+melos run format:write
+melos run format:check   # fails CI if formatting is wrong
+
+# Analyze all packages
+melos run dcm
+
+# Generate HTML report
+melos run dcm:html
+
+# Analyze only changed files since last commit
+melos run dcm:changed
+
+# Per package
+melos run dcm:core
 ```
 
 ### Adding a new module
@@ -144,9 +193,7 @@ open coverage/html/index.html
 3. Re-export the module barrel from `lib/core_barrel.dart`.
 4. Document the module in this README (section above).
 
----
-
-## Versioning & Changelog
+### Versioning & Changelog
 
 We follow **SemVer**: `MAJOR.MINOR.PATCH`. Keep a `CHANGELOG.md` in the package root.
 

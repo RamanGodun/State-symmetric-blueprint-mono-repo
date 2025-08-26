@@ -1,4 +1,4 @@
-part of '../../core_of_module/_run_errors_handling.dart';
+part of '../../core_of_module/_errors_handling_entry_point.dart';
 
 /// 📦 [ExceptionToFailureX] — Extension to map any [Object] (Exception/Error) to a domain-level [Failure]
 /// ✅ Handles known exceptions and maps them declaratively via [mapToFailure]

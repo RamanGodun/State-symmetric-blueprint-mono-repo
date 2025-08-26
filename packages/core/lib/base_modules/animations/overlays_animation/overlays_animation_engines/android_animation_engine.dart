@@ -1,4 +1,4 @@
-import 'package:core/base_modules/animations/module_core/_animation_engine.dart';
+import 'package:core/base_modules/animations/module_core/animation__engine.dart';
 import 'package:core/base_modules/animations/module_core/engine_configs.dart';
 import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart';
 import 'package:core/utils_shared/timing_control/timing_config.dart';

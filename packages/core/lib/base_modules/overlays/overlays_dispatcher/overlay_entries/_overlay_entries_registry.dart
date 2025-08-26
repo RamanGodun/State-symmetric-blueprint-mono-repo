@@ -1,7 +1,7 @@
 // 📌 No need for public API docs.
 // ignore_for_file: public_member_api_docs
 
-import 'package:core/base_modules/animations/module_core/_animation_engine.dart'
+import 'package:core/base_modules/animations/module_core/animation__engine.dart'
     show AnimationEngine;
 import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart'

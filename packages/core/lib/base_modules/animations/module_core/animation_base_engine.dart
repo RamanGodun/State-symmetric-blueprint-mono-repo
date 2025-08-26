@@ -1,4 +1,4 @@
-part of '_animation_engine.dart';
+part of 'animation__engine.dart';
 
 /// ✅ \[BaseAnimationEngine] — General base realization  of Engine
 /// 🔁 Incapsulates logic of `initialize`, `play`, `reverse`, `dispose`

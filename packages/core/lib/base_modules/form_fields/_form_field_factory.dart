@@ -1,5 +1,5 @@
 import 'package:core/base_modules/form_fields/input_validation/validation_enums.dart';
-import 'package:core/base_modules/form_fields/keys_for_widgets.dart';
+import 'package:core/base_modules/form_fields/utils/keys.dart';
 import 'package:core/base_modules/form_fields/widgets/app_text_field.dart';
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart';
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart';
@@ -26,7 +26,7 @@ abstract final class InputFieldFactory {
     return switch (type) {
       ///
       InputFieldType.name => AppTextField(
-        key: AppKeys.nameField,
+        key: FormFieldsKeys.nameField,
         focusNode: focusNode,
         label: LocaleKeys.form_name,
         icon: AppIcons.name,
@@ -39,7 +39,7 @@ abstract final class InputFieldFactory {
 
       ///
       InputFieldType.email => AppTextField(
-        key: AppKeys.emailField,
+        key: FormFieldsKeys.emailField,
         focusNode: focusNode,
         label: LocaleKeys.form_email,
         icon: AppIcons.email,
@@ -52,7 +52,7 @@ abstract final class InputFieldFactory {
 
       ///
       InputFieldType.password => AppTextField(
-        key: AppKeys.passwordField,
+        key: FormFieldsKeys.passwordField,
         focusNode: focusNode,
         label: LocaleKeys.form_password,
         icon: AppIcons.password,
@@ -65,7 +65,7 @@ abstract final class InputFieldFactory {
 
       ///
       InputFieldType.confirmPassword => AppTextField(
-        key: AppKeys.confirmPasswordField,
+        key: FormFieldsKeys.confirmPasswordField,
         focusNode: focusNode,
         label: LocaleKeys.form_confirm_password,
         icon: AppIcons.confirmPassword,

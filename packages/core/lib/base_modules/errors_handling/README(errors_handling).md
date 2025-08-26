@@ -107,7 +107,7 @@ extension FailureListenerRefX on WidgetRef {
   }
 
 // In UI Widget
-   BlocListener<cubit, State>(
+   BlocListener<Cubit, State>(
       listenWhen: ...,
       listener: (context, state) {
       final failure = state.failure?.consume(); // for guaranteeing one-shot feedback.
@@ -115,11 +115,11 @@ extension FailureListenerRefX on WidgetRef {
           final failureUIEntity = failure.toUIEntity();
           context.showError(failureUIEntity);
           ...
-          context.read<cubit>().clearFailure();
+          context.read<Cubit>().clearFailure();
          ...
           }})
 
-    child: BlocBuilder<Usercubit, UserState>(
+    child: BlocBuilder<UserCubit, UserState>(
     builder: (context, state) => switch (state) {
       UserLoading() => CircularProgressIndicator(),
       UserLoaded(:final user) => UserProfile(user),
@@ -195,7 +195,7 @@ This errors handling module supports two alternative paradigms:
 
 ✅ When to Use:
 
-- Common simle cases in cubit/BLoC/Riverpod state management
+- Common simle cases in Cubit/BLoC/Riverpod state management
 
   🤩 Code Example:
 
@@ -319,7 +319,7 @@ UI (error listener)  Failure maps to FailureUIEntity `failure.toUIEntity()`
 ```
 User triggers action
   ↓
-State manager (cubit/Notifier) calls UseCase
+State manager (Cubit/Notifier) calls UseCase
   ↓
 UseCase delegates to Repository
   ↓
@@ -412,7 +412,7 @@ errors_handling/
 - **How do I display overlays/dialogs in Riverpod?**
   - Use `ref.listenFailure(yourProvider, context)`.
 
-- **How do I display overlays in cubit/BLoC?**
+- **How do I display overlays in Cubit/BLoC?**
   - Emit `Consumable<FailureUIEntity>`, BlocListener, `context.showError(error)`.
 
 - **How do I log or report errors?**
@@ -449,10 +449,10 @@ errors_handling/
 - **Overlay/dialog not shown in Riverpod:**
   - Use `ref.listenFailure(yourProvider, context)`.
 
-- **Overlay/dialog not shown in cubit/BLoC:**
+- **Overlay/dialog not shown in Cubit/BLoC:**
   - Use BlocListener, emit `Consumable<FailureUIEntity>`, call `context.showError(...)`.
 
-- **Overlay/dialog duplication in cubit/BLoC:**
+- **Overlay/dialog duplication in Cubit/BLoC:**
   - Use `Consumable<FailureUIEntity>`
 
 - **Failure is always generic:**
@@ -491,7 +491,7 @@ errors_handling/
 - **Map all exceptions to Failure ASAP** via `.mapToFailure()`.
 - **Isolate mapping logic** for 3rd-party exceptions (dio, firebase, etc.) in dedicated files.
 - **Never display raw errors inline in widgets** — always use overlays/dialogs via provided extensions.
-- **For cubit/BLoC:** Always use `Consumable<FailureUIEntity>` for one-shot overlays.
+- **For Cubit/BLoC:** Always use `Consumable<FailureUIEntity>` for one-shot overlays.
 - **For Riverpod:** Always attach `ref.listenFailure` in your widgets.
 - **Log all errors via provided extensions** (`failure.log()`) before reporting or displaying.
 - **Test all error flows using functional result types (Either) or pure Dart logic.**
@@ -524,7 +524,7 @@ errors_handling/
 ### 🏆 **Key Principles**
 
 - 🦾 **Universal & State-Agnostic**
-  Seamlessly works with Riverpod, cubit/BLoC, or pure Dart — zero vendor lock-in.
+  Seamlessly works with Riverpod, Cubit/BLoC, or pure Dart — zero vendor lock-in.
 
 - 💪 **Optimized for real-world teams & codebases**
   Suitable for projects of any size or complexity.

@@ -1,4 +1,4 @@
-part of '_animation_engine.dart';
+part of 'animation__engine.dart';
 
 /// 🛑 [FallbackAnimationEngine] — default no-op engine used when platform/type is unsupported
 /// ✅ Always returns complete animations (opacity/scale = 1.0)

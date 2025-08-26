@@ -382,29 +382,28 @@ Each hook memoizes the focus nodes and disposes them automatically.
 ---
 
 ```
-form_fields/
-│
-├── input_validation/
+├── _form_field_factory.dart
+├── form_fields_barrel.dart
+|
+├── input_validation
 │   ├── currently_using_validators
-│   │   ├── email_input.dart               # EmailInputValidation (part of validation_enums)
-│   │   ├── name_input.dart                # PasswordInputValidation (part of validation_enums)
-│   │   ├── password__input.dart           # NameInputValidation (part of validation_enums)
-│   │   └── password_confirm.dart          # ConfirmPasswordInputValidation (part of validation_enums)
-│   ├── validation_enums.dart              # Main file with enums + validation classes
-│   └── x_on_forms_submission_status.dart  # FormzSubmissionStatus extensions
+│   │   ├── email_input.dart
+│   │   ├── name_input.dart
+│   │   ├── password__input.dart
+│   │   └── password_confirm.dart
+│   ├── validation_enums.dart
+│   └── x_on_forms_submission_status.dart
+|
+├── utils
+│   ├── focus_nodes_generator.dart
+│   ├── form_validation_service.dart
+│   ├── keys.dart
+│   └── use_auth_focus_nodes.dart
+├── widgets
+|   ├── app_text_field.dart
+|   └── password_visibility_icon.dart
 │
-├── widgets/
-│   ├── _fields_factory.dart               # InputFieldFactory - main entry point
-│   ├── app_text_field.dart                # Base AppTextField component
-│   ├── keys_for_widgets.dart              # Centralized widget keys for testing
-│   └── password_visibility_icon.dart      # ObscureToggleIcon widget
-│
-├── utils/
-│   ├── use_auth_focus_nodes.dart          # Focus management hooks
-│   ├── focus_nodes_generator.dart         # Focus nodes generator
-│   └── _form_validation_service.dart      # Validation service (if needed)
-│
-└── Module README.md
+└── README(form_fields).md
 ```
 
 ---

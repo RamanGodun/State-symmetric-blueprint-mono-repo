@@ -1,6 +1,6 @@
-export 'base_modules/animations/animation.dart';
-export 'base_modules/errors_handling/errors_handling.dart';
-export 'base_modules/form_fields/form_fields.dart';
+export 'base_modules/animations/animations_barrel.dart';
+export 'base_modules/errors_handling/errors_handling_barrel.dart';
+export 'base_modules/form_fields/form_fields_barrel.dart';
 export 'base_modules/localization/localization.dart';
 export 'base_modules/navigation/navigation.dart';
 export 'base_modules/overlays/overlays.dart';
