@@ -1,29 +1,51 @@
 name: features
-description: Shared clean-architecture feature modules (domain/data) for all apps
+description: >
+  Shared feature modules (Domain/Data) for all apps. Technology-agnostic domain
+  and repository contracts + Firebase-ready remote implementations wired via DI
+  (using types re-exported from firebase_bootstrap_config).
 
 version: 0.1.0+1
 publish_to: none
 
+# =============================
+# ENVIRONMENT
+# =============================
 environment:
   sdk: ^3.8.0
-  flutter: ^3.32.0
+  flutter: ">=3.22.0"
 
+# =============================
+# DEPENDENCIES
+# =============================
 dependencies:
+  # Core shared modules (Errors, DTOs, utils, etc.)
   core:
     path: ../../packages/core
+
+  # Firebase bridges & type re-exports (e.g., FirebaseAuth, UsersCollection)
   firebase_bootstrap_config:
     path: ../../packages/firebase_bootstrap_config
+
+  # Flutter SDK (for foundation/debugPrint and basic types)
   flutter:
     sdk: flutter
-  specific_for_riverpod:
-    path: ../../packages/specific_for_riverpod
 
+# =============================
+# DEV DEPENDENCIES
+# =============================
 dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.4
   very_good_analysis: ^9.0.0
+  # build_runner can stay if you plan to add codegen later (Riverpod, Freezed, etc.)
+  # build_runner: ^2.5.4
 
+# =============================
+# FLUTTER CONFIG
+# =============================
 flutter:
+  # No assets/fonts here — features is pure domain/data package.
+  # Keep generate on for future localization/codegen if needed.
   generate: true
   uses-material-design: true

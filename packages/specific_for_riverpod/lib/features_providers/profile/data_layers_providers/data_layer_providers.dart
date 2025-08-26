@@ -1,7 +1,7 @@
 import 'package:features/profile/data/implementation_of_profile_fetch_repo.dart';
 import 'package:features/profile/data/remote_database_contract.dart';
+import 'package:features/profile/data/remote_database_impl.dart';
 import 'package:features/profile/domain/repo_contract.dart';
-import 'package:firebase_bootstrap_config/features/profile/remote_database_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:specific_for_riverpod/auth/firebase_auth_providers.dart';

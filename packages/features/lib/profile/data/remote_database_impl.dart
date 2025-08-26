@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart' show CollectionReference;
 import 'package:features/profile/data/remote_database_contract.dart';
-import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
+import 'package:firebase_bootstrap_config/firebase_types.dart'
+    show CollectionReference, FirebaseAuth;
 
 /// 🛠️ [ProfileRemoteDatabaseImpl] — Firestore implementation of [IProfileRemoteDatabase]
 /// ✅ Only low-level calls to Firestore/Auth, no business logic, no DTO<->Entity mapping
