@@ -25,7 +25,7 @@ extension ExceptionToFailureX on Object {
     // final DioException error => _mapDioError(error),
 
     /// 🔥 Firebase error code handling
-    final FirebaseException error =>
+    final FBException error =>
       firebaseFailureMap[error.code]?.call(error.message) ??
           () {
             final failure =

@@ -47,14 +47,24 @@ final class ThemeConfigNotifier extends StateNotifier<ThemePreferences> {
     );
   }
 
-  /// 🔤 Load saved font
+  /// 🔤 Load saved font (with legacy migration: 'sfPro' -> Inter)
   static AppFontFamily _loadFont(GetStorage storage) {
-    //
     final stored = storage.read<String>(_fontKey);
-    return AppFontFamily.values.firstWhere(
-      (e) => e.name == stored,
-      orElse: () => AppFontFamily.sfPro,
-    );
+    return _parseFont(stored);
+  }
+
+  /// 🔁 Legacy-safe parser for stored font names
+  static AppFontFamily _parseFont(String? raw) {
+    switch (raw) {
+      case 'inter':
+      case 'Inter':
+        return AppFontFamily.inter;
+      case 'montserrat':
+      case 'Montserrat':
+        return AppFontFamily.montserrat;
+      default:
+        return AppFontFamily.inter; // default
+    }
   }
 
   /// 🌓 Update theme only

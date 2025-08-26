@@ -7,12 +7,11 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 /// ✅ Uses [HydratedCubit] for state persistence
 final class AppThemeCubit extends HydratedCubit<ThemePreferences> {
   ///---------------------------------------------------------
-
   AppThemeCubit()
     : super(
         const ThemePreferences(
           theme: ThemeVariantsEnum.light,
-          font: AppFontFamily.sfPro,
+          font: AppFontFamily.inter,
         ),
       );
 
@@ -32,15 +31,7 @@ final class AppThemeCubit extends HydratedCubit<ThemePreferences> {
     return {'theme': state.theme.name, 'font': state.font.name};
   }
 
-  ///
-  void toggleTheme() {
-    final newTheme = state.theme == ThemeVariantsEnum.dark
-        ? ThemeVariantsEnum.light
-        : ThemeVariantsEnum.dark;
-    emit(state.copyWith(theme: newTheme));
-  }
-
-  /// 💾 Deserialize state from JSON
+  /// 💾 Deserialize state from JSON (with legacy migration for 'sfPro')
   @override
   ThemePreferences? fromJson(Map<String, dynamic> json) {
     try {
@@ -48,13 +39,36 @@ final class AppThemeCubit extends HydratedCubit<ThemePreferences> {
         (e) => e.name == json['theme'],
         orElse: () => ThemeVariantsEnum.light,
       );
-      final font = AppFontFamily.values.firstWhere(
-        (e) => e.name == json['font'],
-        orElse: () => AppFontFamily.sfPro,
-      );
+      final font = _parseFont(json['font']?.toString());
       return ThemePreferences(theme: theme, font: font);
-    } on Object catch (_) {
+    } on Object {
       return null;
     }
   }
+
+  /// 🔁 Legacy-safe parser for stored font names
+  static AppFontFamily _parseFont(String? raw) {
+    switch (raw) {
+      case 'sfPro': // legacy
+        return AppFontFamily.inter;
+      case 'inter':
+      case 'Inter':
+        return AppFontFamily.inter;
+      case 'montserrat':
+      case 'Montserrat':
+        return AppFontFamily.montserrat;
+      default:
+        return AppFontFamily.inter;
+    }
+  }
+
+  /// 🔁 Toggle
+  void toggleTheme() {
+    final next = state.theme == ThemeVariantsEnum.dark
+        ? ThemeVariantsEnum.light
+        : ThemeVariantsEnum.dark;
+    emit(state.copyWith(theme: next));
+  }
+
+  //
 }

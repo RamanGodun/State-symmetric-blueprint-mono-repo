@@ -85,8 +85,11 @@ extension ThemeVariantX on ThemeVariantsEnum {
       ),
 
       /// Typography: generated via factory using current palette & font
-      textTheme: TextThemeFactory.from(colorScheme, font: font),
-
+      textTheme: TextThemeFactory.from(
+        colorScheme,
+        font: font ?? AppFontFamily.inter, // Inter as base font
+        accentFont: AppFontFamily.montserrat, // Montserrat as accent font
+      ),
       //
     );
   }

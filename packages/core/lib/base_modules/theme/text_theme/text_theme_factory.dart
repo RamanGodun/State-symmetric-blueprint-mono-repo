@@ -5,58 +5,61 @@ part 'font_family_enum.dart';
 
 /// 🧩 [TextThemeFactory] — Entry point for accessing themed [TextTheme] & [CupertinoTextThemeData]
 /// ✅ Centralized typography resolver used across both Material & Cupertino widgets
+/// * Currently: Inter = primary (body/labels/titles), Montserrat = accent (display/headlines)
 //
 abstract final class TextThemeFactory {
   ///────────────────────────────
 
-  /// 🎨 Builds TextTheme using color + optional font
-  static TextTheme from(ColorScheme colorScheme, {AppFontFamily? font}) {
+  /// 🎨Build Material [TextTheme] with optional primary/accent fonts.
+  ///   - [font]        — base family (defaults to Inter)
+  ///   - [accentFont]  — headings/accent family (defaults to Montserrat)
+  static TextTheme from(
+    ColorScheme colorScheme, {
+    AppFontFamily? font,
+    AppFontFamily? accentFont,
+  }) {
     //
     final color = colorScheme.onSurface;
-    final fontFamily = (font ?? AppFontFamily.sfPro).value;
+
+    /// Primary family (body, labels, most titles) — Inter by default
+    final primary = (font ?? AppFontFamily.inter).value;
+
+    /// Accent family (display + headline [+ optionally titleLarge]) — Montserrat
+    final accent = (accentFont ?? AppFontFamily.montserrat).value;
+
+    /// 🧱  Builds individual [TextTheme]
+    TextStyle t(Color c, FontWeight w, double s, String f) =>
+        TextStyle(fontFamily: f, fontWeight: w, fontSize: s, color: c);
+
+    ////
 
     return TextTheme(
-      // DISPLAY
-      displayLarge: _builder(color, FontWeight.w300, 57, fontFamily),
-      displayMedium: _builder(color, FontWeight.w300, 45, fontFamily),
-      displaySmall: _builder(color, FontWeight.w400, 36, fontFamily),
+      // DISPLAY — accent (Montserrat)
+      displayLarge: t(color, FontWeight.w300, 57, accent),
+      displayMedium: t(color, FontWeight.w300, 45, accent),
+      displaySmall: t(color, FontWeight.w400, 36, accent),
 
-      // HEADLINE
-      headlineLarge: _builder(color, FontWeight.w400, 32, fontFamily),
-      headlineMedium: _builder(color, FontWeight.w400, 28, fontFamily),
-      headlineSmall: _builder(color, FontWeight.w400, 24, fontFamily),
+      // HEADLINE — accent (Montserrat)
+      headlineLarge: t(color, FontWeight.w400, 32, accent),
+      headlineMedium: t(color, FontWeight.w500, 28, accent),
+      headlineSmall: t(color, FontWeight.w600, 24, accent),
 
-      // TITLE
-      titleLarge: _builder(color, FontWeight.w500, 22, fontFamily),
-      titleMedium: _builder(color, FontWeight.w500, 16, fontFamily),
-      titleSmall: _builder(color, FontWeight.w500, 14, fontFamily),
+      // TITLE — mix: large = accent, medium/small = primary
+      titleLarge: t(color, FontWeight.w600, 22, accent),
+      titleMedium: t(color, FontWeight.w500, 16, primary),
+      titleSmall: t(color, FontWeight.w500, 14, primary),
 
-      // BODY
-      bodyLarge: _builder(color, FontWeight.w400, 16, fontFamily),
-      bodyMedium: _builder(color, FontWeight.w400, 14, fontFamily),
-      bodySmall: _builder(color, FontWeight.w400, 12, fontFamily),
+      // BODY — primary (Inter)
+      bodyLarge: t(color, FontWeight.w400, 16, primary),
+      bodyMedium: t(color, FontWeight.w400, 14, primary),
+      bodySmall: t(color, FontWeight.w400, 12, primary),
 
-      // LABEL
-      labelLarge: _builder(color, FontWeight.w500, 14, fontFamily),
-      labelMedium: _builder(color, FontWeight.w500, 12, fontFamily),
-      labelSmall: _builder(color, FontWeight.w500, 11, fontFamily),
+      // LABEL — primary (Inter)
+      labelLarge: t(color, FontWeight.w600, 14, primary),
+      labelMedium: t(color, FontWeight.w500, 12, primary),
+      labelSmall: t(color, FontWeight.w500, 11, primary),
     );
   }
-
-  /// 🧱  Builds individual [TextTheme]
-  static TextStyle _builder(
-    Color color,
-    FontWeight weight,
-    double size,
-    String family,
-  ) => TextStyle(
-    fontFamily: family,
-    fontWeight: weight,
-    fontSize: size,
-    color: color,
-  );
-
-  ////
 
   //
 }

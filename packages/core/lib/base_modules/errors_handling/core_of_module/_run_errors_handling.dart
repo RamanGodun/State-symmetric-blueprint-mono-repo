@@ -2,13 +2,13 @@ import 'dart:async' show TimeoutException;
 import 'dart:convert' show JsonUnsupportedObjectError;
 import 'dart:io' show FileSystemException, SocketException;
 
-import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseException;
 import 'package:core/base_modules/errors_handling/core_of_module/core_utils/errors_observing/loggers/errors_log_util.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/core_utils/errors_observing/loggers/failure_logger_x.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/core_utils/extensions_on_failure/failure_to_either_x.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/either.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/failure_type.dart';
+import 'package:firebase_bootstrap_config/firebase_types.dart' show FBException;
 import 'package:flutter/services.dart'
     show MissingPluginException, PlatformException;
 

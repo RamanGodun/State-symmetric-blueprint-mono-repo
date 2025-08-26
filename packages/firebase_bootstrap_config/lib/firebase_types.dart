@@ -1,4 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart' show CollectionReference;
+import 'package:cloud_firestore/cloud_firestore.dart'
+    show CollectionReference, FirebaseException;
 import 'package:firebase_auth/firebase_auth.dart' show User;
 
 /// ✅ Expose base Firebase types for DI and features
@@ -14,3 +15,7 @@ typedef UsersCollection = CollectionReference<Map<String, dynamic>>;
 
 /// ✅ Firebase user entity from FirebaseAuth
 typedef FirebaseUser = User;
+
+/// 🔄 [FBException] — shorthand typedef for [FirebaseException]
+/// 💡 Use everywhere instead of importing `FirebaseException` directly
+typedef FBException = FirebaseException;
