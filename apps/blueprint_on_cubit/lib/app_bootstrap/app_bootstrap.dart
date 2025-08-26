@@ -3,6 +3,7 @@ import 'package:app_bootstrap/bootstrap_contracts/_remote_database.dart'
 import 'package:app_bootstrap/bootstrap_contracts/contracts_barrel.dart'
     show IAppBootstrap;
 import 'package:app_bootstrap/utils/platform_validation.dart';
+import 'package:bloc_adapter/base_modules/observer/bloc_observer.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/di_container_init.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/local_storage_init.dart'
     show HydratedLocalStorage, ILocalStorage;
@@ -14,7 +15,6 @@ import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/material.dart' show WidgetsFlutterBinding;
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:specific_for_bloc/base_modules/observer/bloc_observer.dart';
 
 /// 🧰 [DefaultAppBootstrap] — Handles all critical bootstrapping (with injectable stacks for testing/mocks).
 //

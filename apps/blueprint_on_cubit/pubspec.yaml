@@ -10,6 +10,9 @@ environment:
 dependencies:
   app_bootstrap:
     path: ../../packages/app_bootstrap
+  # Shared BLoC-specific utilities for apps using Cubit/BLoC
+  bloc_adapter:
+    path: ../../packages/bloc_adapter
   cached_network_image: ^3.4.1
   core:
     path: ../../packages/core
@@ -30,8 +33,6 @@ dependencies:
   go_router: ^16.1.0
   hydrated_bloc: ^10.1.1
   path_provider: ^2.1.5
-  specific_for_bloc:
-    path: ../../packages/specific_for_bloc
 
 dev_dependencies:
   bloc_test: ^10.0.0

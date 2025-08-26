@@ -1,3 +1,6 @@
+import 'package:bloc_adapter/di/core/di.dart';
+import 'package:bloc_adapter/di/core/di_module_interface.dart';
+import 'package:bloc_adapter/di/x_on_get_it.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/firebase_module.dart'
     show FirebaseModule, kFbAuthInstance;
 import 'package:features/password_changing_or_reset/data/password_actions_repo_impl.dart';
@@ -6,9 +9,6 @@ import 'package:features/password_changing_or_reset/data/remote_database_impl.da
 import 'package:features/password_changing_or_reset/domain/password_actions_use_case.dart';
 import 'package:features/password_changing_or_reset/domain/repo_contract.dart';
 import 'package:firebase_adapter/firebase_typedefs.dart' show FirebaseAuth;
-import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_interface.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/x_on_get_it.dart';
 
 /// 🔐 [PasswordModule] — Registers dependencies for password-related features
 /// ⛓️ Depends on [FirebaseModule] to get `FirebaseAuth` instance via DI.

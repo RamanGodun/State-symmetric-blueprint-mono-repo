@@ -1,3 +1,4 @@
+import 'package:bloc_adapter/di/core/di_module_manager.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/auth_module.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/email_verification.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/firebase_module.dart';
@@ -7,7 +8,6 @@ import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/password_m
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/profile_module.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/theme_module.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
-import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_manager.dart';
 
 /// 🚀 [DIContainer] — Centralized class for dependency registration
 /// ✅ Separates all responsibilities by layers: Services, DataSources, UseCases, Blocs, etc.

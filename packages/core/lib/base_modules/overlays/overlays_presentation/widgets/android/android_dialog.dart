@@ -1,6 +1,7 @@
 // 📌 No need for public API docs.
 // ignore_for_file: public_member_api_docs
 
+import 'package:bloc_adapter/di/core/di.dart';
 import 'package:core/base_modules/animations/module_core/animation__engine.dart';
 import 'package:core/base_modules/animations/overlays_animation/animation_wrapper/animated_overlay_shell.dart';
 import 'package:core/base_modules/localization/module_widgets/text_widget.dart';
@@ -16,7 +17,6 @@ import 'package:core/shared_presentation_layer/widgets_shared/divider.dart';
 import 'package:core/utils_shared/extensions/context_extensions/_context_extensions.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:flutter/material.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 
 /// 💬 [AndroidDialog] — Platform-aware Material dialog with animation
 /// - Built for Android: uses [AlertDialog] + entrance animation via [AnimationEngine]

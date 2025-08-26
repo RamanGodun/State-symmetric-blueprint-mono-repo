@@ -1,12 +1,12 @@
+import 'package:bloc_adapter/di/core/di.dart';
+import 'package:bloc_adapter/di/core/di_module_interface.dart';
+import 'package:bloc_adapter/di/x_on_get_it.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/auth_module.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/firebase_module.dart';
 import 'package:blueprint_on_cubit/features_presentation/profile/cubit/profile_page_cubit.dart';
 import 'package:features/profile/data/implementation_of_profile_fetch_repo.dart';
 import 'package:features/profile/domain/fetch_profile_use_case.dart';
 import 'package:features/profile/domain/repo_contract.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_interface.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/x_on_get_it.dart';
 
 ///
 final class ProfileModule implements DIModule {

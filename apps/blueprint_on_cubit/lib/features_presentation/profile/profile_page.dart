@@ -1,3 +1,5 @@
+import 'package:bloc_adapter/di/core/di.dart';
+import 'package:bloc_adapter/utils/user_auth_cubit/auth_stream_cubit.dart';
 import 'package:blueprint_on_cubit/core/base_modules/navigation/routes/app_routes.dart';
 import 'package:blueprint_on_cubit/features_presentation/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';
 import 'package:blueprint_on_cubit/features_presentation/auth/sign_out/sign_out_widget.dart';
@@ -24,8 +26,6 @@ import 'package:core/utils_shared/spider/app_images_paths.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
-import 'package:specific_for_bloc/user_auth_cubit/auth_stream_cubit.dart';
 
 part 'widgets_for_profile_page.dart';
 

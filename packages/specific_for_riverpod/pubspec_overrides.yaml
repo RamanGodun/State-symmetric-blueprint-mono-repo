@@ -1,12 +1,12 @@
-# melos_managed_dependency_overrides: app_bootstrap,core,features,firebase_adapter,specific_for_bloc
+# melos_managed_dependency_overrides: app_bootstrap,bloc_adapter,core,features,firebase_adapter
 dependency_overrides:
   app_bootstrap:
     path: ../app_bootstrap
+  bloc_adapter:
+    path: ../bloc_adapter
   core:
     path: ../core
   features:
     path: ../features
   firebase_adapter:
     path: ../firebase_adapter
-  specific_for_bloc:
-    path: ../specific_for_bloc

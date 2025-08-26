@@ -1,3 +1,4 @@
+import 'package:bloc_adapter/di/core/di.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/firebase_module.dart';
 import 'package:blueprint_on_cubit/core/base_modules/navigation/routes/app_routes.dart'
     show RoutesNames;
@@ -21,7 +22,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_adapter/firebase_typedefs.dart' show FirebaseAuth;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 
 part 'widgets_for_email_verification_page.dart';
 

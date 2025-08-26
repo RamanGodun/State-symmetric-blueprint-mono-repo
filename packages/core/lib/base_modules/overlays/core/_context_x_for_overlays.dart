@@ -1,3 +1,4 @@
+import 'package:bloc_adapter/di/core/di.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/failure_ui_entity.dart';
 import 'package:core/base_modules/localization/core_of_module/init_localization.dart';
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart';
@@ -6,7 +7,6 @@ import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
 import 'package:core/base_modules/overlays/overlays_presentation/overlay_presets/overlay_presets.dart';
 import 'package:flutter/material.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 
 /// 🎯 [ContextXForOverlays] — Unified extension for overlay DSL and dispatcher access
 /// ✅ Use `context.showSnackbar(...)` / `context.showBanner(...)` directly

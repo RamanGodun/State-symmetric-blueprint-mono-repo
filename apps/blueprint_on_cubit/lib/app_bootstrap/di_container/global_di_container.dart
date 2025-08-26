@@ -1,11 +1,11 @@
+import 'package:bloc_adapter/base_modules/overlays_module/overlay_status_cubit.dart';
+import 'package:bloc_adapter/base_modules/theme_module/theme_cubit.dart';
+import 'package:bloc_adapter/di/core/di.dart';
+import 'package:bloc_adapter/utils/user_auth_cubit/auth_stream_cubit.dart';
 import 'package:blueprint_on_cubit/features_presentation/email_verification/email_verification_cubit/email_verification_cubit.dart';
 import 'package:blueprint_on_cubit/features_presentation/profile/cubit/profile_page_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:specific_for_bloc/base_modules/overlays/overlay_status_cubit.dart';
-import 'package:specific_for_bloc/base_modules/theme/theme_cubit.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
-import 'package:specific_for_bloc/user_auth_cubit/auth_stream_cubit.dart';
 
 /// 📦 [GlobalProviders] — Wraps all global Blocs with providers for the app
 //

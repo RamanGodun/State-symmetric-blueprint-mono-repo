@@ -1,8 +1,8 @@
+import 'package:bloc_adapter/di/core/di.dart';
+import 'package:bloc_adapter/di/core/di_module_interface.dart';
+import 'package:bloc_adapter/di/x_on_get_it.dart';
 import 'package:core/base_modules/form_fields/utils/form_validation_service.dart'
     show FormValidationService;
-import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_interface.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/x_on_get_it.dart';
 
 ///  🔐 Registers form validation service
 //

@@ -1,6 +1,7 @@
 // 📌 No need for public API docs.
 // ignore_for_file: public_member_api_docs
 
+import 'package:bloc_adapter/di/core/di.dart';
 import 'package:core/base_modules/animations/module_core/animation__engine.dart';
 import 'package:core/base_modules/animations/overlays_animation/animation_wrapper/animated_overlay_shell.dart';
 import 'package:core/base_modules/localization/module_widgets/text_widget.dart';
@@ -13,7 +14,6 @@ import 'package:core/base_modules/theme/widgets_and_utils/box_decorations/_box_d
 import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 
 /// 🍎 [IOSAppDialog] — Animated glass-style Cupertino dialog for iOS/macOS
 /// - Fade + scale animation

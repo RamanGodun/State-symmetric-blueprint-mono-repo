@@ -1,6 +1,6 @@
+import 'package:bloc_adapter/di/core/di.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
 import 'package:flutter/material.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 
 /// 🛠️ [OverlayUtils] — utility class for overlay-related helpers
 /// ✅ Dismisses current overlay before executing the given action

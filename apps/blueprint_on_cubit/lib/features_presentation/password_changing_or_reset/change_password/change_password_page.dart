@@ -1,3 +1,5 @@
+import 'package:bloc_adapter/di/core/di.dart';
+import 'package:bloc_adapter/presentation_shared/widgets_shared/form_submit_button.dart';
 import 'package:blueprint_on_cubit/core/base_modules/navigation/routes/app_routes.dart'
     show RoutesNames;
 import 'package:blueprint_on_cubit/features_presentation/password_changing_or_reset/change_password/cubit/change_password_cubit.dart';
@@ -31,8 +33,6 @@ import 'package:features/password_changing_or_reset/domain/password_actions_use_
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
-import 'package:specific_for_bloc/presentation_shared/widgets_shared/form_submit_button.dart';
 
 part 'widgets_for_change_password.dart';
 

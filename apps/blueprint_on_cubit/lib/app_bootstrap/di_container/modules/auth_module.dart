@@ -1,3 +1,7 @@
+import 'package:bloc_adapter/di/core/di.dart';
+import 'package:bloc_adapter/di/core/di_module_interface.dart';
+import 'package:bloc_adapter/di/x_on_get_it.dart';
+import 'package:bloc_adapter/utils/user_auth_cubit/auth_stream_cubit.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/firebase_module.dart';
 import 'package:blueprint_on_cubit/features_presentation/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';
 import 'package:core/utils_shared/auth/auth_gateway.dart';
@@ -13,10 +17,6 @@ import 'package:features/auth/domain/use_cases/sign_up.dart';
 import 'package:firebase_adapter/firebase_typedefs.dart'
     show FirebaseAuth, UsersCollection;
 import 'package:firebase_adapter/gateways/firebase_auth_gateway.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_interface.dart';
-import 'package:specific_for_bloc/di_container_on_get_it/x_on_get_it.dart';
-import 'package:specific_for_bloc/user_auth_cubit/auth_stream_cubit.dart';
 
 ///
 final class AuthModule implements DIModule {
