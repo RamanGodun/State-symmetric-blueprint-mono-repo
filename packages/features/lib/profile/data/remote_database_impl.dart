@@ -1,5 +1,5 @@
 import 'package:features/profile/data/remote_database_contract.dart';
-import 'package:firebase_bootstrap_config/firebase_types.dart'
+import 'package:firebase_adapter/firebase_typedefs.dart'
     show CollectionReference, FirebaseAuth;
 
 /// 🛠️ [ProfileRemoteDatabaseImpl] — Firestore implementation of [IProfileRemoteDatabase]

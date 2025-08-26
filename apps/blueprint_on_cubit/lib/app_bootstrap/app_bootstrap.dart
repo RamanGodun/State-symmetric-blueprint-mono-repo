@@ -5,7 +5,7 @@ import 'package:blueprint_on_cubit/app_bootstrap/di_container/di_container_init.
 import 'package:blueprint_on_cubit/app_bootstrap/local_storage_init.dart';
 import 'package:core/base_modules/localization/core_of_module/init_localization.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_bootstrap_config/firebase_config/firebase_init/remote_db_init.dart';
+import 'package:firebase_adapter/bootstrap/firebase_initializer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
 import 'package:flutter_bloc/flutter_bloc.dart';

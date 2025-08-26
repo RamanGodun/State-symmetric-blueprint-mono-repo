@@ -2,8 +2,8 @@ import 'package:app_bootstrap_and_config/contracts/_barrel_for_contracts.dart'
     show IRemoteDataBase;
 import 'package:app_bootstrap_and_config/enums_and_constants/_barrel_for_enums_and_constants.dart'
     show EnvConfig, EnvFileName;
-import 'package:firebase_bootstrap_config/firebase_config/dotenv_firebase_options.dart';
-import 'package:firebase_bootstrap_config/firebase_config/firebase_init/firebase_utils.dart';
+import 'package:firebase_adapter/bootstrap/dotenv_options.dart';
+import 'package:firebase_adapter/utils/firebase_utils.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 

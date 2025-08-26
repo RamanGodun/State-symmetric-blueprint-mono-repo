@@ -55,7 +55,7 @@ windows/
 web/.dart_tool/
 web/build/
 
-# 🟤 Firebase 
+# 🟤 Firebase
 firebase_options.dart
 firebase.json
 
@@ -125,6 +125,7 @@ firebase.json
 !**/.env.example
 !*.example
 
-
+# Melos / pubspec overrides (local only, never commit)
+**/pubspec_overrides.yaml
 
 

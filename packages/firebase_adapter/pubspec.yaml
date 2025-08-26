@@ -1,0 +1,61 @@
+name: firebase_adapter
+description: >
+  Single entry-point adapter around Firebase (init, types, gateways, utils).
+  Keeps apps/features backend-agnostic and prevents direct Firebase deps leakage.
+
+version: 0.1.0+1
+publish_to: none
+
+# =============================
+# ENVIRONMENT
+# =============================
+environment:
+  flutter: ">=3.22.0" # keep alphabetical (flutter before sdk)
+  sdk: ^3.8.0
+
+# =============================
+# DEPENDENCIES
+# =============================
+dependencies:
+  # App bootstrap contracts (IRemoteDataBase, env config, etc.)
+  app_bootstrap_and_config:
+    path: ../app_bootstrap_and_config
+
+  # Firebase Firestore SDK (centralized here only)
+  cloud_firestore: ^6.0.0
+
+  # Shared core contracts/utilities (AuthGateway, Failures, etc.)
+  core:
+    path: ../../packages/core
+
+  # Firebase SDKs (centralized here only)
+  firebase_auth: ^6.0.1
+  firebase_core: ^4.0.0
+  firebase_crashlytics: ^5.0.0
+
+  # Flutter SDK (must stay alphabetically among deps)
+  flutter:
+    sdk: flutter
+
+  # Env loader for FirebaseOptions via .env
+  flutter_dotenv: ^5.2.1
+
+  # Streams composition used by gateways
+  rxdart: ^0.28.0
+
+# (!) IMPORTANT: do not add a dependency on `features` here — it creates cycles.
+
+# =============================
+# DEV DEPENDENCIES
+# =============================
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^9.0.0
+
+# =============================
+# FLUTTER CONFIG
+# =============================
+flutter:
+  # No assets/fonts — only code and types.
+  generate: true

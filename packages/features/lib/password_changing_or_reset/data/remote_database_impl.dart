@@ -1,6 +1,5 @@
 import 'package:features/password_changing_or_reset/data/remote_database_contract.dart';
-import 'package:firebase_bootstrap_config/firebase_types.dart'
-    show FirebaseAuth;
+import 'package:firebase_adapter/firebase_typedefs.dart' show FirebaseAuth;
 
 /// 🧩 [PasswordRemoteDatabaseImpl] — low-level Firebase access (Auth only)
 /// ⛓️ Dependencies are injected to keep `features` backend-agnostic.

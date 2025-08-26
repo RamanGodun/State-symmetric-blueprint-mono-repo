@@ -23,7 +23,7 @@ import 'package:core/shared_presentation_layer/widgets_shared/loader.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:core/utils_shared/spider/app_images_paths.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_bootstrap_config/firebase_constants.dart';
+import 'package:firebase_adapter/constants/firebase_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:specific_for_riverpod/base_modules/errors_handling/show_dialog_when_error_x.dart';

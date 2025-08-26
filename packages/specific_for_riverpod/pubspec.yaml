@@ -13,8 +13,8 @@ dependencies:
     path: ../core
   features:
     path: ../../packages/features
-  firebase_bootstrap_config:
-    path: ../../packages/firebase_bootstrap_config
+  firebase_adapter:
+    path: ../../packages/firebase_adapter
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.6.1

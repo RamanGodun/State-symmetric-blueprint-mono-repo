@@ -1,5 +1,5 @@
-import 'package:firebase_bootstrap_config/firebase_constants.dart';
-import 'package:firebase_bootstrap_config/firebase_types.dart'
+import 'package:firebase_adapter/constants/firebase_constants.dart';
+import 'package:firebase_adapter/firebase_typedefs.dart'
     show FirebaseAuth, UsersCollection;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

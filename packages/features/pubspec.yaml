@@ -23,8 +23,8 @@ dependencies:
     path: ../../packages/core
 
   # Firebase bridges & type re-exports (e.g., FirebaseAuth, UsersCollection)
-  firebase_bootstrap_config:
-    path: ../../packages/firebase_bootstrap_config
+  firebase_adapter:
+    path: ../../packages/firebase_adapter
 
   # Flutter SDK (for foundation/debugPrint and basic types)
   flutter:

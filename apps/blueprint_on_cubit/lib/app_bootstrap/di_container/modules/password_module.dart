@@ -5,8 +5,7 @@ import 'package:features/password_changing_or_reset/data/remote_database_contrac
 import 'package:features/password_changing_or_reset/data/remote_database_impl.dart';
 import 'package:features/password_changing_or_reset/domain/password_actions_use_case.dart';
 import 'package:features/password_changing_or_reset/domain/repo_contract.dart';
-import 'package:firebase_bootstrap_config/firebase_types.dart'
-    show FirebaseAuth;
+import 'package:firebase_adapter/firebase_typedefs.dart' show FirebaseAuth;
 import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_interface.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/x_on_get_it.dart';

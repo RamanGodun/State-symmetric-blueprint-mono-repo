@@ -1,7 +1,8 @@
 import 'package:blueprint_on_riverpod/core/base_modules/navigation/module_core/go_router__provider.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
-import 'package:firebase_bootstrap_config/firebase_constants.dart';
-import 'package:firebase_bootstrap_config/utils/auth/firebase_auth_gateway.dart';
+import 'package:firebase_adapter/constants/firebase_constants.dart';
+import 'package:firebase_adapter/gateways/firebase_auth_gateway.dart'
+    show FirebaseAuthGateway;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart' show GetStorage;
 import 'package:specific_for_riverpod/auth/auth_stream_adapter.dart';
@@ -58,12 +59,6 @@ final class DIConfiguration implements IDIConfig {
       FirebaseConstants.usersCollection,
     ),
 
-    /*
-?USAGE:
-final auth = ref.watch(firebaseAuthProvider);
-final users = ref.watch(usersCollectionProvider);
-
- */
     //
   ];
 
