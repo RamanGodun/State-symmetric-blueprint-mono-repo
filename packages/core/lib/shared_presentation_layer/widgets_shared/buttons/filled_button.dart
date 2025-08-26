@@ -4,7 +4,7 @@ import 'package:core/base_modules/animations/widget_animations/widget_animation_
 import 'package:core/base_modules/localization/module_widgets/text_widget.dart';
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dart';
-import 'package:core/shared_presentation_layer/shared_widgets/loader.dart';
+import 'package:core/shared_presentation_layer/widgets_shared/loader.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:flutter/material.dart';
 

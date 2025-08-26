@@ -1,7 +1,7 @@
 import 'package:blueprint_on_riverpod/features_presentation/auth/sign_out/sign_out_provider.dart';
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
     show LocaleKeys;
-import 'package:core/shared_presentation_layer/shared_widgets/buttons/text_button.dart'
+import 'package:core/shared_presentation_layer/widgets_shared/buttons/text_button.dart'
     show AppTextButton;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

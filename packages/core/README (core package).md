@@ -34,22 +34,22 @@ import 'package:core/core.dart';
 
 ```
 core/lib
-├─ core_barrel.dart
-└─ base_modules/
-   ├─ animations/        ── animation_barrel.dart
-   ├─ errors_handling/   ── errors_handling_barrel.dart
-   ├─ form_fields/       ── form_fields_barrel.dart
-   ├─ localization/      ── localization_barrel.dart
-   ├─ logging/           ── (barrel when needed)
-   ├─ navigation/        ── navigation_barrel.dart
-   ├─ overlays/          ── overlays_barrel.dart
-   └─ theme/             ── theme_barrel.dart
-
+├─ README (core package)
+|
+├─ base_modules/
+|   ├─ animations/        ── animation_barrel.dart
+|   ├─ errors_handling/   ── errors_handling_barrel.dart
+|   ├─ form_fields/       ── form_fields_barrel.dart
+|   ├─ localization/      ── localization_barrel.dart
+|   ├─ logging/           ── (barrel when needed)
+|   ├─ navigation/        ── navigation_barrel.dart
+|   ├─ overlays/          ── overlays_barrel.dart
+|   └─ theme/             ── theme_barrel.dart
+|
 ├─ shared_data_layer/
 ├─ shared_domain_layer/
 ├─ shared_presentation_layer/
 ├─ utils_shared/
-|
 └─core_barrel.dart
 ```
 

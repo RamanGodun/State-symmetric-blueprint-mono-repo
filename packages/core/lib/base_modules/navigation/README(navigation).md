@@ -66,10 +66,14 @@ routes config, transitions, observers, redirects, extension methods.
 
 ```
 navigation/
-├── module_core/
-│   ├── go_router_factory.dart                        # Factory/fn for GoRouter (cubit/BLoC)
-│   ├── provider_for_go_router.dart                   # Riverpod Provider for GoRouter
-│   └── routes_redirection_service.dart               # Central redirect logic for auth flows
+├── module_core
+│   ├── specific_for_bloc
+│   │   ├── go_router_factory.dart                   # Factory/fn for GoRouter (cubit/BLoC)
+│   │   └── routes_redirection_service.dart          # Central redirect logic for auth flows
+│   └── specific_for_riverpod
+│       ├── go_router__provider.dart                 # Riverpod Provider for GoRouter
+│       ├── go_router_factory.dart                   # Factory/fn for GoRouter (Riverpod)
+│       └── routes_redirection_service.dart          # Central redirect logic for auth flows
 │
 ├── routes/
 │   ├── app_routes.dart                               # Main list of all GoRoute(s)
@@ -83,7 +87,8 @@ navigation/
 │   │   └── navigation_x_on_failure.dart              # Failure ext for error-based nav
 │   └── overlays_cleaner_within_navigation.dart       # Observer for auto-dismiss overlays
 │
-└── Navigation_module_README.md
+├── README(navigation).md
+└── navigation_barrel.dart
 ```
 
 ---

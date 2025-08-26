@@ -16,11 +16,10 @@ import 'package:core/base_modules/theme/widgets_and_utils/theme_toggle_widgets/t
 import 'package:core/base_modules/theme/widgets_and_utils/theme_toggle_widgets/theme_toggler.dart';
 import 'package:core/shared_domain_layer/shared_entities/_user_entity.dart'
     show UserEntity;
-import 'package:core/shared_presentation_layer/shared_widgets/app_bar.dart';
-import 'package:core/shared_presentation_layer/shared_widgets/buttons/filled_button.dart';
-import 'package:core/shared_presentation_layer/shared_widgets/key_value_text_widget.dart'
-    show KeyValueTextWidget;
-import 'package:core/shared_presentation_layer/shared_widgets/loader.dart';
+import 'package:core/shared_presentation_layer/widgets_shared/app_bar.dart';
+import 'package:core/shared_presentation_layer/widgets_shared/buttons/filled_button.dart';
+import 'package:core/shared_presentation_layer/widgets_shared/key_value_text_widget.dart';
+import 'package:core/shared_presentation_layer/widgets_shared/loader.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:core/utils_shared/spider/app_images_paths.dart';
 import 'package:easy_localization/easy_localization.dart';

@@ -26,7 +26,7 @@ import 'package:core/base_modules/theme/ui_constants/_app_constants.dart'
     show AppSpacing;
 import 'package:core/base_modules/theme/ui_constants/app_colors.dart'
     show AppColors;
-import 'package:core/shared_presentation_layer/shared_widgets/buttons/text_button.dart';
+import 'package:core/shared_presentation_layer/widgets_shared/buttons/text_button.dart';
 import 'package:core/utils_shared/extensions/context_extensions/_context_extensions.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:core/utils_shared/spider/app_images_paths.dart';

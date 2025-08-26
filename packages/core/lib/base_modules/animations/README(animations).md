@@ -26,7 +26,7 @@ All future animation logic and features should be encapsulated here to ensure co
 > Files structure keeps module's codebase easy to maintain or extend.
 
 ```
-├── Animation module readme.md
+├── README(animations).md
 │
 ├── overlays_animation
 │   ├── animation_engines

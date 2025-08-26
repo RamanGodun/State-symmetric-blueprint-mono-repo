@@ -1,4 +1,4 @@
-import 'package:core/shared_presentation_layer/shared_widgets/loader.dart';
+import 'package:core/shared_presentation_layer/widgets_shared/loader.dart';
 import 'package:flutter/material.dart';
 
 /// ⏳ [SplashPage] — Displays a loading indicator

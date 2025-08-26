@@ -17,7 +17,7 @@ import 'package:core/base_modules/navigation/utils/extensions/navigation_x_on_co
 import 'package:core/base_modules/overlays/core/_context_x_for_overlays.dart';
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart'
     show AppSpacing;
-import 'package:core/shared_presentation_layer/shared_widgets/buttons/filled_button.dart';
+import 'package:core/shared_presentation_layer/widgets_shared/buttons/filled_button.dart';
 import 'package:core/utils_shared/extensions/context_extensions/_context_extensions.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:easy_localization/easy_localization.dart';

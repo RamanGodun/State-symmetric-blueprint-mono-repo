@@ -381,7 +381,7 @@ localization/
       |   ├── app_strings.dart              # For static, non-translatable strings (e.g., test labels, debug UI text)
       |   └── fallback_keys.dart            # Constants used in tests or fallback mode
       |
-      └── Localization_module_README.md
+      └── README(localization)s.md
 ```
 
 - Also there is assets/translations folder with all locale JSON files

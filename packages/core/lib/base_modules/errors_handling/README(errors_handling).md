@@ -350,7 +350,9 @@ THEN
 errors_handling/
 .
 ├── core_of_module
-|
+| |
+│ ├── \_errors_handling_entry_point.dart # Entrypoint: run error handling pipeline
+| |
 │ ├── core_utils
 │ │ ├── errors_observing
 │ │ │ ├── loggers/ # Crash analytics & error logging tools
@@ -369,12 +371,12 @@ errors_handling/
 │ │ ├── result_handler.dart # Sync result handler (chainable API)
 │ │ ├── specific_for_bloc
 │ │ │ ├── consumable_extensions.dart # Bloc-specific: Consumable extensions
-│ │ │ └── consumable.dart # One-shot wrapper for UI feedback
+│ │ │ ├── consumable.dart # One-shot wrapper for UI feedback
+│ │ │ └──One_time_error_displaying.md # Guide: one-time UI feedback (Consumable)
 │ │ └── specific_for_riverpod
 │ │ ├── async_value_fold_x.dart # Riverpod: AsyncValue.fold extension
 │ │ └── show_dialog_when_error_x.dart # Riverpod: Overlay/dialog error ext
 | |
-│ ├── \_run_errors_handling.dart # Entrypoint: run error handling pipeline
 │ ├── either.dart # Core: Either<L, R> functional type
 │ ├── failure_entity.dart # Domain model for Failure
 │ ├── failure_type.dart # FailureType: error code + i18n key
@@ -400,8 +402,8 @@ errors_handling/
 │ ├── misc.dart # Miscellaneous FailureTypes
 │ └── network.dart # Network FailureTypes
 │
-├── Errors_handling_module_README.md # Main documentation for the module
-└── One_time_error_displaying.md # Guide: one-time UI feedback (Consumable)
+├── README(errors_handling).md # Main documentation for the module
+└──
 
 ---
 
