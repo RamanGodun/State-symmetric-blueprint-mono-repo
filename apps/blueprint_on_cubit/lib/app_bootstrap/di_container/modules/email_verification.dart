@@ -7,6 +7,8 @@ import 'package:features/email_verification/data/remote_database_contract.dart';
 import 'package:features/email_verification/data/remote_database_impl.dart';
 import 'package:features/email_verification/domain/email_verification_use_case.dart';
 import 'package:features/email_verification/domain/repo_contract.dart';
+import 'package:firebase_bootstrap_config/firebase_types.dart'
+    show FirebaseAuth;
 import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_interface.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/x_on_get_it.dart';
@@ -28,8 +30,10 @@ final class EmailVerificationModule implements DIModule {
     //
     /// Data sources
     di
-      ..registerFactoryIfAbsent<IUserValidationRemoteDataSource>(
-        IUserValidationRemoteDataSourceImpl.new,
+      ..registerLazySingletonIfAbsent<IUserValidationRemoteDataSource>(
+        () => IUserValidationRemoteDataSourceImpl(
+          di<FirebaseAuth>(instanceName: kFbAuthInstance),
+        ),
       )
       /// Repositories
       ..registerFactoryIfAbsent<IUserValidationRepo>(

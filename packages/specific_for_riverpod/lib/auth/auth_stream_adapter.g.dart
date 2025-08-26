@@ -8,7 +8,9 @@ part of 'auth_stream_adapter.dart';
 
 String _$authGatewayHash() => r'b9e8ff3b66528d7d4ffbb67c56524e3ff40ddb07';
 
-/// See also [authGateway].
+///
+///
+/// Copied from [authGateway].
 @ProviderFor(authGateway)
 final authGatewayProvider = AutoDisposeProvider<AuthGateway>.internal(
   authGateway,
@@ -25,7 +27,9 @@ final authGatewayProvider = AutoDisposeProvider<AuthGateway>.internal(
 typedef AuthGatewayRef = AutoDisposeProviderRef<AuthGateway>;
 String _$authSnapshotsHash() => r'0fc1d29112e0a255f0ce2517a3997a2009b308d8';
 
-/// See also [authSnapshots].
+///
+///
+/// Copied from [authSnapshots].
 @ProviderFor(authSnapshots)
 final authSnapshotsProvider = AutoDisposeStreamProvider<AuthSnapshot>.internal(
   authSnapshots,

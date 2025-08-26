@@ -9,7 +9,7 @@ part of 'data_layer_providers.dart';
 String _$passwordRemoteDatabaseHash() =>
     r'66171cb14415dd20c6f7d93ccfc1fb62ed12047c';
 
-/// 🧩 [passwordRemoteDataSourceProvider] — provides implementation of [IPasswordRemoteDatabase]
+/// 🧩 [passwordRemoteDatabaseProvider] — provides implementation of [IPasswordRemoteDatabase]
 /// ✅ Low-level data access for password-related Firebase actions
 ///
 /// Copied from [passwordRemoteDatabase].

@@ -7,7 +7,7 @@ part of 'use_case_provider.dart';
 // **************************************************************************
 
 String _$emailVerificationUseCaseHash() =>
-    r'b6fda1ec9295c6b03db60c124ed5101349644409';
+    r'c5ac3bccc6993de0591a5b35e0a11269e8e03c89';
 
 /// 🧩 [emailVerificationUseCaseProvider] — provides [EmailVerificationUseCase]
 ///

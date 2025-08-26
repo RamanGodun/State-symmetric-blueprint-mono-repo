@@ -6,14 +6,20 @@ import 'package:features/auth/data/remote_database_impl.dart';
 import 'package:features/auth/domain/repo_contracts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:specific_for_riverpod/auth/firebase_providers.dart'
+    show firebaseAuthProvider, usersCollectionProvider;
 
 part 'data_layer_providers.g.dart';
 
 /// 🔌 [authRemoteDatabaseProvider] — provides instance of [AuthRemoteDatabaseImpl]
-/// 🧼 Dependency injection for Firebase Auth access
+/// with injected infra (Auth + Users collection)
 //
 @riverpod
-IAuthRemoteDatabase authRemoteDatabase(Ref ref) => AuthRemoteDatabaseImpl();
+IAuthRemoteDatabase authRemoteDatabase(Ref ref) {
+  final auth = ref.watch(firebaseAuthProvider);
+  final users = ref.watch(usersCollectionProvider);
+  return AuthRemoteDatabaseImpl(auth, users);
+}
 
 ////
 

@@ -1,15 +1,20 @@
+import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/firebase_module.dart'
+    show FirebaseModule, kFbAuthInstance;
 import 'package:features/password_changing_or_reset/data/password_actions_repo_impl.dart';
 import 'package:features/password_changing_or_reset/data/remote_database_contract.dart';
 import 'package:features/password_changing_or_reset/data/remote_database_impl.dart';
 import 'package:features/password_changing_or_reset/domain/password_actions_use_case.dart';
 import 'package:features/password_changing_or_reset/domain/repo_contract.dart';
+import 'package:firebase_bootstrap_config/firebase_types.dart'
+    show FirebaseAuth;
 import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_interface.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/x_on_get_it.dart';
 
 /// 🔐 [PasswordModule] — Registers dependencies for password-related features
-/// ✅ Includes remote DB, repository, and use cases for reset/change password flows
-///
+/// ⛓️ Depends on [FirebaseModule] to get `FirebaseAuth` instance via DI.
+/// ✅ Remote DB → Repo → UseCases
+//
 final class PasswordModule implements DIModule {
   ///----------------------------------------
   //
@@ -24,10 +29,12 @@ final class PasswordModule implements DIModule {
   @override
   Future<void> register() async {
     //
-    // 📡 Remote Database
     di
+      // 📡 Remote Database (inject FirebaseAuth from DI)
       ..registerLazySingletonIfAbsent<IPasswordRemoteDatabase>(
-        PasswordRemoteDatabaseImpl.new,
+        () => PasswordRemoteDatabaseImpl(
+          di<FirebaseAuth>(instanceName: kFbAuthInstance),
+        ),
       )
       // 📦 Repository
       ..registerFactoryIfAbsent<IPasswordRepo>(

@@ -7,10 +7,10 @@ part of 'data_layer_providers.dart';
 // **************************************************************************
 
 String _$authRemoteDatabaseHash() =>
-    r'0a1ee8f7ee2e4d62bb3d5aac62ba46576eaf61e3';
+    r'c6487d47503926491c08b476f48bdc1f7aa795bd';
 
-/// 🔌 [authRemoteDataSourceProvider] — provides instance of [AuthRemoteDatabaseImpl]
-/// 🧼 Dependency injection for Firebase Auth access
+/// 🔌 [authRemoteDatabaseProvider] — provides instance of [AuthRemoteDatabaseImpl]
+/// with injected infra (Auth + Users collection)
 ///
 /// Copied from [authRemoteDatabase].
 @ProviderFor(authRemoteDatabase)
@@ -30,7 +30,7 @@ final authRemoteDatabaseProvider =
 typedef AuthRemoteDatabaseRef = AutoDisposeProviderRef<IAuthRemoteDatabase>;
 String _$signInRepoHash() => r'117f3a17f3e7837901155515a6910c34d4aa7150'; ////
 ////
-/// 🧩 [signInRepoProvider] — provides instance of [SignInRepoImpl], injects [IAuthRemoteDatabase] from [authRemoteDataSourceProvider]
+/// 🧩 [signInRepoProvider] — provides instance of [SignInRepoImpl], injects [IAuthRemoteDatabase] from [authRemoteDatabaseProvider]
 ///
 /// Copied from [signInRepo].
 @ProviderFor(signInRepo)

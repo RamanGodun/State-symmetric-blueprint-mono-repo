@@ -11,7 +11,7 @@ import 'package:features/auth/domain/use_cases/sign_in.dart';
 import 'package:features/auth/domain/use_cases/sign_out.dart';
 import 'package:features/auth/domain/use_cases/sign_up.dart';
 import 'package:firebase_bootstrap_config/firebase_types.dart'
-    show FirebaseAuth;
+    show FirebaseAuth, UsersCollection;
 import 'package:firebase_bootstrap_config/utils/auth/firebase_auth_gateway.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/core/di.dart';
 import 'package:specific_for_bloc/di_container_on_get_it/core/di_module_interface.dart';
@@ -36,7 +36,10 @@ final class AuthModule implements DIModule {
     // Data Sources
     di
       ..registerLazySingletonIfAbsent<IAuthRemoteDatabase>(
-        AuthRemoteDatabaseImpl.new,
+        () => AuthRemoteDatabaseImpl(
+          di<FirebaseAuth>(instanceName: kFbAuthInstance),
+          di<UsersCollection>(instanceName: kUsersCollection),
+        ),
       )
       //
       /// Repositories
@@ -51,7 +54,7 @@ final class AuthModule implements DIModule {
       ..registerFactoryIfAbsent(() => SignUpUseCase(di()))
       ..registerLazySingletonIfAbsent(() => SignOutUseCase(di()))
       //
-      /// AuthStreamcubit
+      /// AuthStreamCubit
       //
       ..registerLazySingleton<AuthGateway>(
         () => FirebaseAuthGateway(

@@ -1,23 +1,29 @@
 import 'package:features/password_changing_or_reset/data/remote_database_contract.dart';
-import 'package:firebase_bootstrap_config/firebase_constants.dart';
-import 'package:firebase_bootstrap_config/utils/auth/auth_user_utils.dart';
+import 'package:firebase_bootstrap_config/firebase_types.dart'
+    show FirebaseAuth;
 
-/// 🧩 [PasswordRemoteDatabaseImpl] — Firebase-based implementation of [IPasswordRemoteDatabase]
-/// ✅ Handles actual communication with [FirebaseConstants]
+/// 🧩 [PasswordRemoteDatabaseImpl] — low-level Firebase access (Auth only)
+/// ⛓️ Dependencies are injected to keep `features` backend-agnostic.
+/// 🚫 No failure mapping here — infra only; repo maps errors upstream.
 //
 final class PasswordRemoteDatabaseImpl implements IPasswordRemoteDatabase {
-  ///-----------------------------------------------------------------------
+  ///-------------------------------------------------------------------
+  PasswordRemoteDatabaseImpl(this._auth);
+  final FirebaseAuth _auth;
   //
 
+  /// 🔁 Updates password of the currently signed-in user
   @override
   Future<void> changePassword(String newPassword) async {
-    final user = AuthUserUtils.currentUserOrThrow;
+    final user = _auth.currentUser;
+    if (user == null) throw StateError('No authorized user');
     await user.updatePassword(newPassword);
   }
 
+  /// 📩 Sends reset password link to the provided email
   @override
   Future<void> sendResetLink(String email) async {
-    await FirebaseConstants.fbAuthInstance.sendPasswordResetEmail(email: email);
+    await _auth.sendPasswordResetEmail(email: email);
   }
 
   //

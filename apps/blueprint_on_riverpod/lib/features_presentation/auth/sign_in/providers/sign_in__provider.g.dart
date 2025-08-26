@@ -8,7 +8,7 @@ part of 'sign_in__provider.dart';
 
 String _$signInHash() => r'dd256dcb77fe1c90870ad8c9964b15d736459c4d';
 
-/// 🧩 [signinProvider] — async notifier that handles user sign-in
+/// 🧩 [signInProvider] — async notifier that handles user sign-in
 /// 🧼 Uses [SafeAsyncState] to prevent post-dispose state updates
 /// 🧼 Wraps logic in [AsyncValue.guard] for robust error handling
 ///

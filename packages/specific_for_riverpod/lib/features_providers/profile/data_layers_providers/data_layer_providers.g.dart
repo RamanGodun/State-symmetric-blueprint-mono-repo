@@ -6,30 +6,8 @@ part of 'data_layer_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$usersCollectionHash() => r'fd15e594e066345965be6826b3240abbbc43c21c';
+String _$profileRepoHash() => r'401cce60527da4575ca5d6e916b799202bc1a583';
 
-/// 🗃️ [usersCollectionProvider] — Firestore users collection reference
-/// ✅ Provides access to the `users` collection for remote profile operations
-///
-/// Copied from [usersCollection].
-@ProviderFor(usersCollection)
-final usersCollectionProvider =
-    AutoDisposeProvider<CollectionReference<Map<String, dynamic>>>.internal(
-      usersCollection,
-      name: r'usersCollectionProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$usersCollectionHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef UsersCollectionRef =
-    AutoDisposeProviderRef<CollectionReference<Map<String, dynamic>>>;
-String _$profileRepoHash() => r'401cce60527da4575ca5d6e916b799202bc1a583'; ////
-////
 /// 🧩 [profileRepoProvider] — provides instance of [ProfileRepoImpl]
 /// 🧠 Injects [IProfileRemoteDatabase] from [profileRemoteDataSourceProvider]
 /// ✅ Adds caching, failure mapping, and DTO → Entity conversion

@@ -1,31 +1,43 @@
 import 'package:features/email_verification/data/remote_database_contract.dart';
-import 'package:firebase_bootstrap_config/utils/auth/auth_user_utils.dart';
+import 'package:firebase_bootstrap_config/firebase_types.dart'
+    show FirebaseAuth;
 import 'package:flutter/foundation.dart' show debugPrint;
 
-/// 🛠️ [IUserValidationRemoteDataSourceImpl] — Firebase-powered implementation
-/// 🚫 No failure mapping — pure infrastructure logic
+/// 🛠️ [IUserValidationRemoteDataSourceImpl] — low-level Firebase access (Auth only)
+/// ⛓️ Dependencies are injected to keep `features` backend-agnostic.
+/// 🚫 No failure mapping here — infra only; upstream repo maps errors.
 //
 final class IUserValidationRemoteDataSourceImpl
     implements IUserValidationRemoteDataSource {
-  ///----------------------------------------
+  ///------------------------------------------------------------------------------------
+  IUserValidationRemoteDataSourceImpl(this._auth);
+  final FirebaseAuth _auth;
   //
+
+  /// 📧 Sends verification email to the current user
   @override
   Future<void> sendVerificationEmail() async {
-    final user = AuthUserUtils.currentUserOrThrow;
+    final user = _auth.currentUser;
+    if (user == null) throw StateError('No authorized user');
     debugPrint('Sending verification email to: ${user.email}');
     await user.sendEmailVerification();
     debugPrint('Verification email sent!');
   }
 
+  /// 🔁 Reloads current user from FirebaseAuth
   @override
   Future<void> reloadUser() async {
-    final user = AuthUserUtils.currentUserOrThrow;
+    final user = _auth.currentUser;
+    if (user == null) throw StateError('No authorized user');
     await user.reload();
   }
 
+  /// ✅ Returns whether current user's email is verified
   @override
   bool isEmailVerified() {
-    return AuthUserUtils.currentUserOrThrow.emailVerified;
+    final user = _auth.currentUser;
+    if (user == null) return false; // keep it non-throwing for sync read
+    return user.emailVerified;
   }
 
   //

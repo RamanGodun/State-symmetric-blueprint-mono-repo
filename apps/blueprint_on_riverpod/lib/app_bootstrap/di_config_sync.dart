@@ -5,7 +5,7 @@ import 'package:firebase_bootstrap_config/utils/auth/firebase_auth_gateway.dart'
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart' show GetStorage;
 import 'package:specific_for_riverpod/auth/auth_stream_adapter.dart';
-import 'package:specific_for_riverpod/auth/firebase_auth_providers.dart';
+import 'package:specific_for_riverpod/auth/firebase_providers.dart';
 import 'package:specific_for_riverpod/base_modules/observing/riverpod_observer.dart';
 import 'package:specific_for_riverpod/base_modules/overlays/overlay_dispatcher_provider.dart';
 import 'package:specific_for_riverpod/base_modules/theme_providers/theme_provider.dart';
@@ -54,7 +54,7 @@ final class DIConfiguration implements IDIConfig {
       (ref) => FirebaseAuthGateway(FirebaseConstants.fbAuthInstance),
     ),
     firebaseAuthProvider.overrideWithValue(FirebaseConstants.fbAuthInstance),
-    usersCollectionProviderManual.overrideWithValue(
+    usersCollectionProvider.overrideWithValue(
       FirebaseConstants.usersCollection,
     ),
 

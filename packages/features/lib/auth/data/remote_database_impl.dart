@@ -1,46 +1,46 @@
 import 'package:features/auth/data/remote_database_contract.dart';
-import 'package:firebase_bootstrap_config/firebase_constants.dart';
+import 'package:firebase_bootstrap_config/firebase_types.dart'
+    show FirebaseAuth, UsersCollection;
 
-/// 🛠️ [AuthRemoteDatabaseImpl] — Firebase-powered remote data source.
-/// ✅ Implements low-level Firebase logic only.
+/// 🛠️ [AuthRemoteDatabaseImpl] — low-level Firebase access (Auth + users collection)
+/// ⛓️ Dependencies are injected to keep `features` package backend-agnostic.
 //
 final class AuthRemoteDatabaseImpl implements IAuthRemoteDatabase {
-  ///---------------------------------------------------------------
-  //
+  ///-----------------------------------------------------------
+  AuthRemoteDatabaseImpl(this._auth, this._users);
+
+  final FirebaseAuth _auth;
+  final UsersCollection _users;
+
   /// 🔐 Firebase sign-in
   @override
   Future<void> signIn({required String email, required String password}) async {
-    await FirebaseConstants.fbAuthInstance.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    await _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
-  /// 🆕 Firebase sign-up
+  /// 🆕 Sign up → returns UID only
   @override
   Future<String> signUp({
     required String email,
     required String password,
   }) async {
-    final cred = await FirebaseConstants.fbAuthInstance
-        .createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-    // Return UID only (to stay generic)
+    final cred = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
     return cred.user?.uid ?? '';
   }
 
-  /// 💾 Save User in Firestore
+  /// 💾 Save user document in `users` collection
   @override
   Future<void> saveUserData(String uid, Map<String, dynamic> userData) async {
-    await FirebaseConstants.usersCollection.doc(uid).set(userData);
+    await _users.doc(uid).set(userData);
   }
 
-  /// 🔓 Firebase sign-out
+  /// 🔓 Sign out
   @override
   Future<void> signOut() async {
-    await FirebaseConstants.fbAuthInstance.signOut();
+    await _auth.signOut();
   }
 
   //

@@ -4,19 +4,19 @@ import 'package:features/password_changing_or_reset/data/remote_database_impl.da
 import 'package:features/password_changing_or_reset/domain/repo_contract.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:specific_for_riverpod/auth/firebase_providers.dart'
+    show firebaseAuthProvider;
 
 part 'data_layer_providers.g.dart';
 
-/// 🧩 [passwordRemoteDatabaseProvider] — provides implementation of [IPasswordRemoteDatabase]
-/// ✅ Low-level data access for password-related Firebase actions
+/// 🔌 [passwordRemoteDatabaseProvider] — low-level remote access (FirebaseAuth injected)
+/// ⛓️ Keeps `features` backend-agnostic.
 //
 @riverpod
 IPasswordRemoteDatabase passwordRemoteDatabase(Ref ref) =>
-    PasswordRemoteDatabaseImpl();
+    PasswordRemoteDatabaseImpl(ref.watch(firebaseAuthProvider));
 
-/// 🧩 [passwordRepoProvider] — provides implementation of [IPasswordRepo]
-/// 🧼 Adds failure mapping on top of remote data source
-/// ✅ Used by domain layer use cases
+/// 🧩 [passwordRepoProvider] — adds failure mapping and domain boundary
 //
 @riverpod
 IPasswordRepo passwordRepo(Ref ref) =>
