@@ -4,8 +4,8 @@
  * [LICENSE](../../../LICENSE).
  */
 
-import 'package:app_bootstrap_and_config/app_runner.dart';
-import 'package:app_bootstrap_and_config/enums_and_constants/flavor_config.dart';
+import 'package:app_bootstrap/app_launcher.dart';
+import 'package:app_bootstrap/configs/flavor.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/app_bootstrap.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/global_di_container.dart'
     show GlobalProviders;

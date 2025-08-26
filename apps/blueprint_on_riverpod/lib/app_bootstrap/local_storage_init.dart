@@ -1,4 +1,5 @@
-import 'package:app_bootstrap_and_config/contracts/local_storage.dart';
+import 'package:app_bootstrap/bootstrap_contracts/_local_storage.dart'
+    show ILocalStorage;
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:get_storage/get_storage.dart';
 

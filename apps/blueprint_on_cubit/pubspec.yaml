@@ -8,8 +8,8 @@ environment:
   sdk: ^3.8.0
 
 dependencies:
-  app_bootstrap_and_config:
-    path: ../../packages/app_bootstrap_and_config
+  app_bootstrap:
+    path: ../../packages/app_bootstrap
   cached_network_image: ^3.4.1
   core:
     path: ../../packages/core

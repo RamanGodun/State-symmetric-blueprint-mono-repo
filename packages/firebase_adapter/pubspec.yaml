@@ -18,8 +18,8 @@ environment:
 # =============================
 dependencies:
   # App bootstrap contracts (IRemoteDataBase, env config, etc.)
-  app_bootstrap_and_config:
-    path: ../app_bootstrap_and_config
+  app_bootstrap:
+    path: ../app_bootstrap
 
   # Firebase Firestore SDK (centralized here only)
   cloud_firestore: ^6.0.0

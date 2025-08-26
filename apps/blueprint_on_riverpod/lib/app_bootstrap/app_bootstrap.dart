@@ -1,7 +1,6 @@
-import 'package:app_bootstrap_and_config/contracts/bootstrap.dart';
-import 'package:app_bootstrap_and_config/contracts/local_storage.dart';
-import 'package:app_bootstrap_and_config/contracts/remote_database.dart';
-import 'package:app_bootstrap_and_config/platform_validation.dart';
+import 'package:app_bootstrap/bootstrap_contracts/contracts_barrel.dart'
+    show IAppBootstrap, ILocalStorage, IRemoteDataBase;
+import 'package:app_bootstrap/utils/platform_validation.dart';
 import 'package:blueprint_on_riverpod/app_bootstrap/di_config_sync.dart';
 import 'package:blueprint_on_riverpod/app_bootstrap/local_storage_init.dart';
 import 'package:core/base_modules/localization/core_of_module/init_localization.dart';

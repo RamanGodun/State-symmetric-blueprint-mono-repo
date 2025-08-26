@@ -1,4 +1,4 @@
-import 'package:app_bootstrap_and_config/enums_and_constants/flavor_config.dart';
+import 'package:app_bootstrap/configs/flavor.dart';
 
 /// 🌐 [Environment] — Enum that defines app runtime modes.
 ///

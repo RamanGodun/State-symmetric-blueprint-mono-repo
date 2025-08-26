@@ -1,5 +1,5 @@
-import 'package:app_bootstrap_and_config/app_runner.dart';
-import 'package:app_bootstrap_and_config/enums_and_constants/flavor_config.dart';
+import 'package:app_bootstrap/app_launcher.dart';
+import 'package:app_bootstrap/configs/flavor.dart' show AppFlavor, FlavorConfig;
 import 'package:blueprint_on_riverpod/app_bootstrap/app_bootstrap.dart'
     show DefaultAppBootstrap;
 import 'package:blueprint_on_riverpod/root_shell.dart'

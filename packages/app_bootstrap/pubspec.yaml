@@ -1,0 +1,41 @@
+name: app_bootstrap
+description: >
+  Application bootstrap & environment configuration (flavors, platform validation)
+  with clean contracts for local/remote stacks.
+
+version: 0.1.0+1
+publish_to: none
+
+# =============================
+# ENVIRONMENT
+# =============================
+environment:
+  flutter: ">=3.22.0"
+  sdk: ^3.8.0
+
+# =============================
+# DEPENDENCIES
+# =============================
+dependencies:
+  # Platform info for runtime checks (Android/iOS versions, etc.)
+  device_info_plus: ^11.5.0
+
+  # Flutter SDK
+  flutter:
+    sdk: flutter
+
+# =============================
+# DEV DEPENDENCIES
+# =============================
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+  very_good_analysis: ^9.0.0
+
+# =============================
+# FLUTTER CONFIG
+# =============================
+flutter:
+  # Немає активів/шрифтів. Тільки код та контракти.
+  generate: true
