@@ -14,6 +14,8 @@ import 'package:core/base_modules/theme/widgets_and_utils/box_decorations/_box_d
 import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:riverpod_adapter/base_modules/overlays_module/overlay_dispatcher_provider.dart';
+import 'package:riverpod_adapter/di/read_di_x_on_context.dart';
 
 /// 🍎 [IOSAppDialog] — Animated glass-style Cupertino dialog for iOS/macOS
 /// - Fade + scale animation
@@ -52,8 +54,8 @@ final class IOSAppDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    // final dispatcher = context.readDI(overlayDispatcherProvider);
-    final dispatcher = di<OverlayDispatcher>();
+    final dispatcher = context.readDI(overlayDispatcherProvider);
+    // final dispatcher = di<OverlayDispatcher>();
     //
     final isDark = context.isDarkMode;
     final colorScheme = context.colorScheme;

@@ -17,6 +17,8 @@ import 'package:core/shared_presentation_layer/widgets_shared/divider.dart';
 import 'package:core/utils_shared/extensions/context_extensions/_context_extensions.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:flutter/material.dart';
+import 'package:riverpod_adapter/base_modules/overlays_module/overlay_dispatcher_provider.dart';
+import 'package:riverpod_adapter/di/read_di_x_on_context.dart';
 
 /// 💬 [AndroidDialog] — Platform-aware Material dialog with animation
 /// - Built for Android: uses [AlertDialog] + entrance animation via [AnimationEngine]
@@ -55,8 +57,8 @@ final class AndroidDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final dispatcher = di<OverlayDispatcher>();
-    // final dispatcher = context.readDI(overlayDispatcherProvider);
+    // final dispatcher = di<OverlayDispatcher>();
+    final dispatcher = context.readDI(overlayDispatcherProvider);
     //
     final isDark = context.isDarkMode;
     final colorScheme = context.colorScheme;

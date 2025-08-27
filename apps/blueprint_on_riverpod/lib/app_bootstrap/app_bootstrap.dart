@@ -40,6 +40,9 @@ final class DefaultAppBootstrap implements IAppBootstrap {
     debugPrint('🚀 [Bootstrap] Starting full initialization...');
     await startUp();
     //
+    /// Initializes remote database (currently, Firebase).
+    await initRemoteDataBase();
+    //
     await initGlobalDIContainer();
     //
     /// Ensures EasyLocalization is initialized before runApp.
@@ -47,9 +50,6 @@ final class DefaultAppBootstrap implements IAppBootstrap {
     //
     /// Initializes local storage (currently, GetStorage).
     await initLocalStorage();
-    //
-    /// Initializes remote database (currently, Firebase).
-    await initRemoteDataBase();
     //
     /// Initializes optional/miscellaneous services.
     initOptionalMiscServices();

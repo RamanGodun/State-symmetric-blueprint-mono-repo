@@ -7,6 +7,8 @@ import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
 import 'package:core/base_modules/overlays/overlays_presentation/overlay_presets/overlay_presets.dart';
 import 'package:flutter/material.dart';
+import 'package:riverpod_adapter/base_modules/overlays_module/overlay_dispatcher_provider.dart';
+import 'package:riverpod_adapter/di/read_di_x_on_context.dart';
 
 /// 🎯 [ContextXForOverlays] — Unified extension for overlay DSL and dispatcher access
 /// ✅ Use `context.showSnackbar(...)` / `context.showBanner(...)` directly
@@ -15,8 +17,8 @@ extension ContextXForOverlays on BuildContext {
   ///----------------------------------------
   //
   /// 🔌 Lazily access the shared [OverlayDispatcher] via DI container
-  // OverlayDispatcher get dispatcher => readDI(overlayDispatcherProvider);
-  OverlayDispatcher get dispatcher => di<OverlayDispatcher>();
+  OverlayDispatcher get dispatcher => readDI(overlayDispatcherProvider);
+  // OverlayDispatcher get dispatcher => di<OverlayDispatcher>();
   //
 
   /// 🧠 Handles displaying [FailureUIEntity] as banner/snackbar/dialog
