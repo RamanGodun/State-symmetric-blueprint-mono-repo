@@ -25,7 +25,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
-  flutter_dotenv: ^5.2.1
   flutter_hooks: ^0.21.3
   flutter_localizations:
     sdk: flutter

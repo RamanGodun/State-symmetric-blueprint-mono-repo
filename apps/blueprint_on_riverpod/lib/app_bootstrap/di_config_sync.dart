@@ -1,4 +1,5 @@
-import 'package:blueprint_on_riverpod/core/base_modules/navigation/module_core/go_router__provider.dart';
+import 'package:blueprint_on_riverpod/core/base_modules/navigation/module_core/go_router__provider.dart'
+    show buildGoRouter, goRouter;
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
 import 'package:firebase_adapter/constants/firebase_constants.dart';
 import 'package:firebase_adapter/gateways/firebase_auth_gateway.dart'
@@ -10,8 +11,6 @@ import 'package:riverpod_adapter/base_modules/overlays_module/overlay_dispatcher
 import 'package:riverpod_adapter/base_modules/theme_module/theme_provider.dart';
 import 'package:riverpod_adapter/di/i_di_config.dart';
 import 'package:riverpod_adapter/utils/auth/auth_stream_adapter.dart';
-import 'package:riverpod_adapter/utils/auth/firebase_providers.dart'
-    show firebaseAuthProvider, usersCollectionProvider;
 
 /// 🛠️ [DIConfiguration] — Default DI configuration for the app.
 ///     Sets up storage, theme, navigation, overlays, and profile repo.
@@ -47,18 +46,18 @@ final class DIConfiguration implements IDIConfig {
     /// 📤 Overlay dispatcher for toasts/dialogs/etc.
     overlayDispatcherProvider.overrideWith(
       (ref) => OverlayDispatcher(
+        // 🧹 Keep overlay state in sync with navigation
         onOverlayStateChanged: ref.read(overlayStatusProvider.notifier).update,
       ),
     ),
 
-    ///
-    authGatewayProvider.overrideWith(
-      (ref) => FirebaseAuthGateway(FirebaseConstants.fbAuthInstance),
-    ),
-    firebaseAuthProvider.overrideWithValue(FirebaseConstants.fbAuthInstance),
-    usersCollectionProvider.overrideWithValue(
-      FirebaseConstants.usersCollection,
-    ),
+    /// 🔐 Auth gateway (Firebase) with proper lifecycle handling
+    authGatewayProvider.overrideWith((ref) {
+      final g = FirebaseAuthGateway(FirebaseConstants.fbAuthInstance);
+      // ♻️ Prevent leaks: close internal subjects on provider disposal
+      ref.onDispose(g.dispose);
+      return g;
+    }),
 
     //
   ];

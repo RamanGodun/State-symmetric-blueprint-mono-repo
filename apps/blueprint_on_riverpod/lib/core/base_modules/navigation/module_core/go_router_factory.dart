@@ -12,7 +12,7 @@ GoRouter buildGoRouter(Ref ref) {
   // Mark "resolved once" when we see any non-loading state
   ref.listen(authSnapshotsProvider, (prev, next) {
     final s = next.valueOrNull;
-    if (s is AuthFailure || s is AuthReady) {
+    if (s case AuthFailure() || AuthReady()) {
       ref.read(authResolvedOnceProvider.notifier).state = true;
     }
   });

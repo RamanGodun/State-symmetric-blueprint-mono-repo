@@ -11,12 +11,11 @@ abstract interface class AuthGateway {
   /// - Emits [AuthLoading], [AuthFailure], or [AuthReady]
   /// - Consumed by presentation/state layers to react to auth flow
   Stream<AuthSnapshot> get snapshots$;
-
+  //
   /// 🚪 Sign out current user (optional, depends on app needs)
   // Future<void> signOut();
-
+  //
   /// 🔄 Refresh authentication session/tokens (optional)
-  // Future<void> refresh();
-
+  Future<void> refresh();
   //
 }

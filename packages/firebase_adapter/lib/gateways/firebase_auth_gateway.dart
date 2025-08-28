@@ -1,65 +1,65 @@
-//
-// ignore_for_file: public_member_api_docs
-
 import 'package:core/utils_shared/auth/auth_gateway.dart';
 import 'package:core/utils_shared/auth/auth_snapshot.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:rxdart/rxdart.dart';
 
+/// 🔐 [FirebaseAuthGateway] — Firebase-backed implementation of [AuthGateway]
 final class FirebaseAuthGateway implements AuthGateway {
+  ///------------------------------------------------
+  /// Initializes with a FirebaseAuth instance
   FirebaseAuthGateway(this._auth);
   final fb.FirebaseAuth _auth;
 
-  // тригер для ручного оновлення (після reload)
+  // 🔁 Manual tick to force re-evaluation after explicit reload()
   final _tick$ = PublishSubject<void>();
 
+  /// 🌐 Stream of normalized auth snapshots (loading/failure/ready)
   @override
   Stream<AuthSnapshot> get snapshots$ =>
       Rx.merge([
-            _auth.userChanges().map((_) => null),
-            _tick$.map((_) => null),
+            _auth.userChanges().map((_) => null), // provider-driven changes
+            _tick$.map((_) => null), // manual refresh
           ])
-          .map<AuthSnapshot>((_) {
-            final u = _auth.currentUser;
-            return AuthReady(
-              AuthSession(
-                uid: u?.uid,
-                email: u?.email,
-                emailVerified: u?.emailVerified ?? false,
-                isAnonymous: u?.isAnonymous ?? false,
-              ),
-            );
-          })
-          .distinct((prev, next) {
-            if (prev is AuthReady && next is AuthReady) {
-              final a = prev.session;
-              final b = next.session;
-              return a.uid == b.uid &&
-                  a.emailVerified == b.emailVerified &&
-                  a.isAnonymous == b.isAnonymous;
-            }
-            return false;
-          })
+          .map<AuthSnapshot>((_) => _current())
+          .distinct(_equal) // avoid redundant UI rebuilds
           .onErrorReturnWith(AuthFailure.new)
-          .startWith(const AuthLoading());
+          .startWith(_current()); // instant seed
 
-  // @override
-  // Future<void> refresh() async {
-  //   await _auth.currentUser?.reload();
-  //   _tick$.add(null);
-  // }
+  /// 🔎 Returns current auth state as [AuthSnapshot]
+  AuthSnapshot _current() {
+    final u = _auth.currentUser;
+    return AuthReady(
+      AuthSession(
+        uid: u?.uid,
+        email: u?.email,
+        emailVerified: u?.emailVerified ?? false,
+        isAnonymous: u?.isAnonymous ?? false,
+      ),
+    );
+  }
+
+  /// ⚖️ Equality comparator for distinct snapshot emissions
+  static bool _equal(AuthSnapshot a, AuthSnapshot b) {
+    if (a is AuthReady && b is AuthReady) {
+      final x = a.session;
+      final y = b.session;
+      return x.uid == y.uid &&
+          x.email == y.email &&
+          x.emailVerified == y.emailVerified &&
+          x.isAnonymous == y.isAnonymous;
+    }
+    return a.runtimeType == b.runtimeType;
+  }
+
+  /// 🔄 Reloads user and triggers snapshot refresh
+  @override
+  Future<void> refresh() async {
+    await _auth.currentUser?.reload();
+    _tick$.add(null);
+  }
+
+  /// 🧹 Closes internal streams to prevent leaks
+  void dispose() => _tick$.close();
+
+  //
 }
-
-/*
-
-	4.	FirebaseAuthGateway.distinct(...)
-	•	Порівнює uid, emailVerified, isAnonymous, але не email. Якщо email було змінено (наприклад, лінкований), стейт може не емінитись. Навмисно? Якщо ні — додати email у компаратор.
-	5.	_tick$ у FirebaseAuthGateway
-	•	PublishSubject не закривається. Якщо гейтвей живе весь runtime — не критично, але краще мати dispose() (і викликати з DI-диспоуз) для чистоти.
-
-
- Так само варто подумати, чи не потрібен isAnonymous. Зараз rebuild Authcubit не відбудеться при зміні емейла.
-
-
-FirebaseAuthGateway._tick$ не закривається. Ти це зафіксував — просто нагадую тримати це на радарі разом із DI-диспоузом для модулів.
- */

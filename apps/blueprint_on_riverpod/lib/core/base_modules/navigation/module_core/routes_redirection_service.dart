@@ -7,16 +7,12 @@ typedef Path = String;
 ////
 ////
 
-/// 🧭🚦 [computeRedirect] — centralized redirect logic for GoRouter
-/// 🔐 Dynamically handles navigation based on normalized auth state ([AuthSnapshot]):
-///   - 🚪 `/signin` if unauthenticated
-///   - 🧪 `/verifyEmail` if email is not verified
-///   - 🧯 `/signin` on auth failure (optionally map to a dedicated error page)
-///   - ⏳ `/splash` while initial loading (first auth resolution)
-///   - ✅ `/home` when fully authenticated and verified
+/// 🧭🚦 [computeRedirect] — pure, idempotent redirection logic
+/// - works the same across Riverpod/Bloc
+/// - uses normalized [AuthSnapshot] (infra-agnostic)
 ///
-/// 🧲 Hysteresis: After the first non-loading auth state,
-///    transient `Loading` does NOT force navigation to `/splash`.
+/// Hysteresis (Riverpod-версія):
+///   After first non-loading (Ready/Failure), transient Loading won't force /splash.
 //
 Path? computeRedirect({
   required Path currentPath,

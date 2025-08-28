@@ -41,7 +41,7 @@ final class AppViewShell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ///
     // 🔀 Watch GoRouter only if instance changes
-    final router = ref.watch(routerProvider.select((r) => r));
+    final router = ref.watch(routerProvider);
 
     // 🎯 Watch only theme
     final themeConfig = ref.watch(themeProvider.select((t) => t));
