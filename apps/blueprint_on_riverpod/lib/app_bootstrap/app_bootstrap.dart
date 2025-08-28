@@ -2,10 +2,10 @@ import 'package:app_bootstrap/bootstrap_contracts/contracts_barrel.dart'
     show IAppBootstrap, ILocalStorage, IRemoteDataBase;
 import 'package:app_bootstrap/utils/platform_validation.dart';
 import 'package:blueprint_on_riverpod/app_bootstrap/di_config_sync.dart';
+import 'package:blueprint_on_riverpod/app_bootstrap/firebase_initializer.dart';
 import 'package:blueprint_on_riverpod/app_bootstrap/local_storage_init.dart';
 import 'package:core/base_modules/localization/core_of_module/init_localization.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_adapter/bootstrap/firebase_initializer.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/material.dart' show WidgetsFlutterBinding;
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;

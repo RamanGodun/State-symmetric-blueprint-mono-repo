@@ -2,6 +2,7 @@ import 'package:core/base_modules/errors_handling/core_of_module/_errors_handlin
 import 'package:core/utils_shared/type_definitions.dart' show ResultFuture;
 import 'package:features/email_verification/data/remote_database_contract.dart';
 import 'package:features/email_verification/domain/repo_contract.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 
 /// 🧩 [IUserValidationRepoImpl] — Repo for email verification, applies error mapping and delegates to [IUserValidationRemoteDataSource]
 //
@@ -13,8 +14,10 @@ final class IUserValidationRepoImpl implements IUserValidationRepo {
 
   /// 📧 Sends verification email via [IUserValidationRemoteDataSource]
   @override
-  ResultFuture<void> sendEmailVerification() =>
-      _remote.sendVerificationEmail.runWithErrorHandling();
+  ResultFuture<void> sendEmailVerification() {
+    debugPrint('[Repo] sendEmailVerification()');
+    return _remote.sendVerificationEmail.runWithErrorHandling();
+  }
 
   /// 🔁 Reloads current user from [IUserValidationRemoteDataSource]
   @override

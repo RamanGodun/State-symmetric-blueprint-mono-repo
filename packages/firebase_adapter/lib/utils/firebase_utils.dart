@@ -1,53 +1,74 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
-/// 🧩 [SafeFirebaseInit] — helper for Firebase state checks & safe initialization
+/// 🧩 [SafeFirebaseInit] — helper class for safe, idempotent Firebase initialization.
+///
+/// Why?
+/// - Prevents double-initialization (e.g. when native auto-config is used with .env-based options).
+/// - Ensures the **correct Firebase project** is used for the given flavor.
+/// - Provides detailed debug logs for all initialized Firebase apps.
+/// - Throws a hard error if a wrong project is initialized (fail-fast).
+///
 abstract final class SafeFirebaseInit {
-  ///----------------------------
+  ///-------------------------------
   const SafeFirebaseInit._();
-  //
 
-  /// ✅ Checks if the DEFAULT Firebase app is already initialized.
+  /// ✅ Checks whether the default Firebase app is already initialized.
   static bool get isDefaultAppInitialized =>
       Firebase.apps.any((app) => app.name == defaultFirebaseAppName);
 
-  /// 🧾 Logs all initialized Firebase apps.
+  /// 🧾 Logs all currently initialized Firebase apps (with projectId).
   static void _logAllApps() {
     for (final app in Firebase.apps) {
       debugPrint('🧩 Firebase App: ${app.name} (${app.options.projectId})');
     }
   }
 
-  /// 🛡️ Initializes Firebase once (idempotent).
+  /// 🛡️ Initializes Firebase in a safe and idempotent way.
   ///
-  /// - If [options] provided → initializes with options (works for web and mobile w/o GoogleService files).
-  /// - If [options] is null → tries default `Firebase.initializeApp()` (works when GoogleService files are present).
+  /// - [options] must always be passed (no fallback to native auto-init).
+  /// - If a Firebase app is already initialized:
+  ///   - ✅ Same project → only logs, no re-init.
+  ///   - ❌ Different project → throws [StateError] (fail-fast).
+  /// - Logs all initialized apps when [logApps] is `true`.
+  ///
   static Future<void> run({
-    FirebaseOptions? options,
+    required FirebaseOptions options,
     bool logApps = true,
   }) async {
     if (isDefaultAppInitialized) {
-      debugPrint('⚠️ Firebase already initialized (checked manually)');
+      final app = Firebase.app();
+      final actual = app.options.projectId;
+      final expected = options.projectId;
+
+      if (actual != expected) {
+        final msg =
+            '❌ Firebase already initialized with WRONG project.\n'
+            '   actual="$actual"\n'
+            '   expected="$expected".\n'
+            '👉 Remove/replace GoogleService-Info.plist (iOS) or google-services.json (Android),\n'
+            '   or disable native auto-config to avoid conflicts.';
+
+        // Debug + assert for development mode
+        debugPrint(msg);
+        assert(false, msg);
+
+        // Throw in release mode to avoid silently running against wrong backend
+        throw StateError(msg);
+      } else {
+        debugPrint('⚠️ Firebase already initialized (project OK: $actual)');
+      }
+
       if (logApps) _logAllApps();
       return;
     }
 
     try {
-      if (kIsWeb) {
-        assert(
-          options != null,
-          'On Web you must pass FirebaseOptions.',
-        );
-        await Firebase.initializeApp(options: options);
-      } else if (options != null) {
-        await Firebase.initializeApp(options: options);
-      } else {
-        await Firebase.initializeApp();
-      }
-      debugPrint('🔥 Firebase initialized!');
+      await Firebase.initializeApp(options: options);
+      debugPrint('🔥 Firebase initialized with project: ${options.projectId}');
     } on FirebaseException catch (e) {
       if (e.code == 'duplicate-app') {
-        debugPrint('⚠️ Firebase already initialized, skipping...');
+        debugPrint('⚠️ Firebase already initialized, skipping…');
       } else {
         rethrow;
       }

@@ -2,6 +2,7 @@ import 'package:blueprint_on_riverpod/core/base_modules/navigation/module_core/r
 import 'package:blueprint_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
 import 'package:blueprint_on_riverpod/core/shared_presentation/pages/page_not_found.dart';
 import 'package:core/base_modules/overlays/utils/overlays_cleaner_within_navigation.dart';
+import 'package:core/utils_shared/auth/auth_snapshot.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_adapter/utils/auth/auth_stream_adapter.dart';

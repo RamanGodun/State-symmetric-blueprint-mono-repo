@@ -1,6 +1,7 @@
 import 'package:app_bootstrap/bootstrap_contracts/_remote_database.dart'
     show IRemoteDataBase;
 import 'package:app_bootstrap/configs/env.dart' show EnvConfig, EnvFileName;
+import 'package:app_bootstrap/configs/flavor.dart' show FlavorConfig;
 import 'package:firebase_adapter/bootstrap/dotenv_options.dart';
 import 'package:firebase_adapter/utils/firebase_utils.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
@@ -17,11 +18,15 @@ final class FirebaseRemoteDataBase implements IRemoteDataBase {
     //📀 Loads environment configuration (.env file), based on current environment
     await dotenv.load(fileName: EnvConfig.currentEnv.fileName);
     debugPrint('✅ Loaded env file: ${EnvConfig.currentEnv.fileName}');
+    // у FirebaseRemoteDataBase.init()
+    debugPrint('🔥 Flavor: ${FlavorConfig.name}');
+    debugPrint('🔥 Env file: ${EnvConfig.currentEnv.fileName}');
+
+    ///
+    final opts = DotenvFirebaseOptions.currentPlatform;
 
     /// 🛡️ Initializes Firebase once (idempotent).
-    await SafeFirebaseInit.run(
-      options: DotenvFirebaseOptions.currentPlatform,
-    );
+    await SafeFirebaseInit.run(options: opts);
   }
 
   //

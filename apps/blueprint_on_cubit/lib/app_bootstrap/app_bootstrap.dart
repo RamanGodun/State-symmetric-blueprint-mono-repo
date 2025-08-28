@@ -5,12 +5,11 @@ import 'package:app_bootstrap/bootstrap_contracts/contracts_barrel.dart'
 import 'package:app_bootstrap/utils/platform_validation.dart';
 import 'package:bloc_adapter/base_modules/observer/bloc_observer.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/di_container_init.dart';
+import 'package:blueprint_on_cubit/app_bootstrap/firebase_initializer.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/local_storage_init.dart'
     show HydratedLocalStorage, ILocalStorage;
 import 'package:core/base_modules/localization/core_of_module/init_localization.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_adapter/bootstrap/firebase_initializer.dart'
-    show FirebaseRemoteDataBase;
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/material.dart' show WidgetsFlutterBinding;
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;

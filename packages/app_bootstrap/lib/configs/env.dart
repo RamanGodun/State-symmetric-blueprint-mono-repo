@@ -41,7 +41,7 @@ extension EnvFileName on Environment {
 /// Used for: API base URLs, Feature toggles, Logging flags
 //
 final class EnvConfig {
-  ///-----------------
+  ///---------------
   EnvConfig._();
   //
 

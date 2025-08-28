@@ -1,4 +1,3 @@
-// packages/core/lib/utils_shared/riverpod_specific/auth_stream_adapter.dart
 import 'package:core/utils_shared/auth/auth_gateway.dart';
 import 'package:core/utils_shared/auth/auth_snapshot.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,3 +12,9 @@ AuthGateway authGateway(Ref ref) => throw UnimplementedError(); // ! override in
 @riverpod
 Stream<AuthSnapshot> authSnapshots(Ref ref) =>
     ref.watch(authGatewayProvider).snapshots$;
+
+////
+////
+
+// Tracks if auth has ever resolved to non-loading (Ready/Failure)
+final authResolvedOnceProvider = StateProvider<bool>((_) => false);

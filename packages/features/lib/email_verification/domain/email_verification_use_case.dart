@@ -1,6 +1,7 @@
 import 'package:core/utils_shared/auth/auth_gateway.dart';
 import 'package:core/utils_shared/type_definitions.dart' show ResultFuture;
 import 'package:features/email_verification/domain/repo_contract.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 
 /// 📦 [EmailVerificationUseCase] — encapsulates email verification logic
 //
@@ -16,7 +17,10 @@ final class EmailVerificationUseCase {
   //
 
   /// 📧 Sends verification email
-  ResultFuture<void> sendVerificationEmail() => repo.sendEmailVerification();
+  ResultFuture<void> sendVerificationEmail() {
+    debugPrint('[UseCase] sendVerificationEmail()');
+    return repo.sendEmailVerification();
+  }
 
   /// 📧 Sends verification email
   ResultFuture<void> reloadUser() => repo.reloadUser();

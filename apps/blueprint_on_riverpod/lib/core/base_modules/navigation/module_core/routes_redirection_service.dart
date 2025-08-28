@@ -4,31 +4,60 @@ import 'package:core/utils_shared/auth/auth_snapshot.dart';
 ///
 typedef Path = String;
 
+////
+////
+
+/// 🧭🚦 [computeRedirect] — centralized redirect logic for GoRouter
+/// 🔐 Dynamically handles navigation based on normalized auth state ([AuthSnapshot]):
+///   - 🚪 `/signin` if unauthenticated
+///   - 🧪 `/verifyEmail` if email is not verified
+///   - 🧯 `/signin` on auth failure (optionally map to a dedicated error page)
+///   - ⏳ `/splash` while initial loading (first auth resolution)
+///   - ✅ `/home` when fully authenticated and verified
 ///
+/// 🧲 Hysteresis: After the first non-loading auth state,
+///    transient `Loading` does NOT force navigation to `/splash`.
+//
 Path? computeRedirect({
   required Path currentPath,
   required AuthSnapshot snapshot,
+  required bool hasResolvedOnce,
 }) {
+  // 🗝️ Public routes — accessible without authentication
   const publicRoutes = {
     RoutesPaths.signIn,
     RoutesPaths.signUp,
     RoutesPaths.resetPassword,
   };
 
+  // 📍 Route flags
   final isOnPublic = publicRoutes.contains(currentPath);
   final isOnVerify = currentPath == RoutesPaths.verifyEmail;
   final isOnSplash = currentPath == RoutesPaths.splash;
 
+  // 🔄 Decisions
   return switch (snapshot) {
-    AuthLoading() => isOnSplash ? null : RoutesPaths.splash,
-    AuthFailure() => RoutesPaths.signIn, // або сторінка помилки
+    // ⏳ Loading:
+    // - before first resolution → show splash
+    // - after first resolution → stay where you are (avoid bouncing to /home later)
+    AuthLoading() =>
+      hasResolvedOnce ? null : (isOnSplash ? null : RoutesPaths.splash),
+
+    // ❌ Failure → go to SignIn (or a dedicated error route)
+    AuthFailure() => RoutesPaths.signIn,
+
+    // ✅ Ready → check authentication and verification flags
     AuthReady(:final session) => () {
       final authed = session.isAuthenticated;
       final verified = session.emailVerified;
 
+      // 🚪 Not authenticated → allow only public routes
       if (!authed) return isOnPublic ? null : RoutesPaths.signIn;
+
+      // 🧪 Not verified → stay on /verifyEmail or redirect there
       if (!verified) return isOnVerify ? null : RoutesPaths.verifyEmail;
 
+      // 🏠 If authenticated & verified and currently on splash/public/verify → go home
       const restricted = {
         RoutesPaths.splash,
         RoutesPaths.verifyEmail,
@@ -39,107 +68,14 @@ Path? computeRedirect({
       if (shouldGoHome && currentPath != RoutesPaths.home)
         return RoutesPaths.home;
 
-      return null; // no redirect
+      // ➖ No redirect
+      return null;
     }(),
   };
 }
 
-/*
-
-
-/// 🧭🚦 [RoutesRedirectionService] — centralized redirect logic for GoRouter
-/// 🔐 Dynamically handles redirection based on Firebase auth state:
-///   - 🚪 `/signin` if unauthenticated
-///   - 🧪 `/verifyEmail` if email is not verified
-///   - 🧯 `/firebaseError` if an auth error occurs
-///   - ⏳ `/splash` while loading
-///   - ✅ `/home` if fully authenticated and verified
-//
-abstract final class RoutesRedirectionService {
-  ///----------------------------------------
-  RoutesRedirectionService._();
-
-  /// 🗝️ Publicly accessible routes (no authentication required)
-  static const Set<String> _publicRoutes = {
-    RoutesPaths.signIn,
-    RoutesPaths.signUp,
-    RoutesPaths.resetPassword,
-  };
-
-  //
-
-  /// 🔁 Maps current router state + auth state to a redirect route (if needed)
-  static String? from(
-    BuildContext context,
-    GoRouterState goRouterState,
-    AsyncValue<User?> authState,
-  ) {
-    ///
-    // 🔄 Error/Loading State, directly from state
-    final isLoading = authState is AsyncLoading<User?>;
-    final isAuthError = authState is AsyncError<User?>;
-
-    // User
-    final user = authState.valueOrNull;
-    final isAuthenticated = user != null;
-    final isEmailVerified = user?.emailVerified ?? false;
-
-    // 🔄 CurrentPath
-    final currentPath = goRouterState.matchedLocation;
-
-    // 📍 Route flags
-    final isOnPublicPages = _publicRoutes.contains(currentPath);
-    final isOnVerifyPage = currentPath == RoutesPaths.verifyEmail;
-    final isOnSplashPage = currentPath == RoutesPaths.splash;
-
-    //
-    // ⏳ Redirect to splash while loading
-    if (isLoading) return isOnSplashPage ? null : RoutesPaths.splash;
-
-    // ❌ Error state → redirect to SignIn (optional logic)
-    if (isAuthError) return RoutesPaths.signIn;
-
-    // 🚪 Unauthenticated → allow only public routes
-    if (!isAuthenticated) return isOnPublicPages ? null : RoutesPaths.signIn;
-
-    // 🧪 Not verified → redirect to verify page
-    if (!isEmailVerified)
-      return isOnVerifyPage ? null : RoutesPaths.verifyEmail;
-
-    // ✅ List of pages, that restricted to redirection
-    const restrictedToRedirect = {
-      RoutesPaths.splash,
-      RoutesPaths.verifyEmail,
-      ..._publicRoutes,
-    };
-
-    // ✅ Redirect to /home if already authenticated and on splash/public/verify
-    final shouldRedirectHome =
-        restrictedToRedirect.contains(currentPath) &&
-        isAuthenticated &&
-        isEmailVerified;
-
-    // ✅ Prevent double redirect
-    if (shouldRedirectHome && currentPath != RoutesPaths.home) {
-      if (kDebugMode) {
-        debugPrint(
-          '[🔁 Redirect] currentPath: $currentPath | status: $authState | verified: $isEmailVerified',
-        );
-      }
-      return RoutesPaths.home;
-    }
-
-    // 🔁 Prevent redundant redirect
-    if (currentPath == RoutesPaths.home && isAuthenticated && isEmailVerified) {
-      return null;
-    }
-
-    // ➖ No redirect
-    return null;
-  }
-
-  //
-}
+////
+////
 
 /*
 ? for debugging:
@@ -149,7 +85,4 @@ abstract final class RoutesRedirectionService {
           '[🔁 Redirect] $currentPath → $target (authStatus: unknown)',
         );
       }
- */
-
-
  */

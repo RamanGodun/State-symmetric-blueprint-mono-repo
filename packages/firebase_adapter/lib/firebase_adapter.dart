@@ -3,7 +3,7 @@
 //
 // ---- bootstrap
 export 'bootstrap/dotenv_options.dart';
-export 'bootstrap/firebase_initializer.dart';
+export '../../../apps/blueprint_on_riverpod/lib/app_bootstrap/firebase_initializer.dart';
 
 // ---- constants
 export 'constants/firebase_constants.dart';
