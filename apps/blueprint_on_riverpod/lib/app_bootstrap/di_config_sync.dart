@@ -7,6 +7,7 @@ import 'package:firebase_adapter/gateways/firebase_auth_gateway.dart'
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart' show GetStorage;
 import 'package:riverpod_adapter/base_modules/observing/riverpod_observer.dart';
+import 'package:riverpod_adapter/base_modules/overlays_module/overlay_activity_port_riverpod.dart';
 import 'package:riverpod_adapter/base_modules/overlays_module/overlay_dispatcher_provider.dart';
 import 'package:riverpod_adapter/base_modules/theme_module/theme_provider.dart';
 import 'package:riverpod_adapter/di/i_di_config.dart';
@@ -44,12 +45,10 @@ final class DIConfiguration implements IDIConfig {
     goRouter.overrideWith(buildGoRouter),
 
     /// 📤 Overlay dispatcher for toasts/dialogs/etc.
-    overlayDispatcherProvider.overrideWith(
-      (ref) => OverlayDispatcher(
-        // 🧹 Keep overlay state in sync with navigation
-        onOverlayStateChanged: ref.read(overlayStatusProvider.notifier).update,
-      ),
-    ),
+    overlayDispatcherProvider.overrideWith((ref) {
+      final port = RiverpodOverlayActivityPort(ref);
+      return OverlayDispatcher(activityPort: port);
+    }),
 
     /// 🔐 Auth gateway (Firebase) with proper lifecycle handling
     authGatewayProvider.overrideWith((ref) {

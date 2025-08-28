@@ -1,8 +1,8 @@
 name: core
 description: >
   Shared codebase for all apps in the monorepo. Reusable base modules
-  (Animations, Errors, Localization, Navigation, Overlays, Theme, etc.)
-  with layered architecture (Data/Domain/Presentation).
+  (Animations, Errors, Localization, Navigation, Overlays, Theme, etc.) with
+  layered architecture (Data/Domain/Presentation).
 
 version: 0.1.0+1
 publish_to: none
@@ -18,43 +18,22 @@ environment:
 # DEPENDENCIES
 # =============================
 dependencies:
-  # Shared BLoC-specific utilities for apps using Cubit/BLoC
   bloc_adapter:
     path: ../../packages/bloc_adapter
-  # i18n runtime: locale management, string translation, pluralization
   easy_localization: ^3.0.8
-
-  # Lightweight value equality for Dart objects/entities
   equatable: ^2.0.7
-
-  # Firebase bridge used by core
   firebase_adapter:
     path: ../../packages/firebase_adapter
-
-  # Flutter SDK UI framework
   flutter:
     sdk: flutter
-
-  # Hooks for widget-side utilities (e.g., FocusNode lifecycle)
+  flutter_bloc: ^9.1.1
   flutter_hooks: ^0.21.3+1
-
-  # Riverpod DI/state primitives used by core providers/adapters
   flutter_riverpod: ^2.6.1
-
-  # Form input models & validation pipeline
   formz: ^0.8.0
-
-  # Declarative navigation (Router API) and URL integration
   go_router: ^16.2.0
-
-  # Annotations and compile-time hints (e.g., @immutable)
   meta: ^1.12.0
-
-  # Shared Riverpod-specific utilities for apps using Riverpod
   riverpod_adapter:
     path: ../../packages/riverpod_adapter
-
-  # Common validators for form fields (email, password, etc.)
   validators: ^3.0.0
 
 # =============================

@@ -5,11 +5,15 @@ import 'package:blueprint_on_riverpod/app_bootstrap/di_config_sync.dart';
 import 'package:blueprint_on_riverpod/app_bootstrap/firebase_initializer.dart';
 import 'package:blueprint_on_riverpod/app_bootstrap/local_storage_init.dart';
 import 'package:core/base_modules/localization/core_of_module/init_localization.dart';
+import 'package:core/base_modules/overlays/utils/ports/overlay_dispatcher_locator.dart'
+    show setGlobalOverlayDispatcherResolver, setOverlayDispatcherResolver;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/material.dart' show WidgetsFlutterBinding;
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_adapter/base_modules/overlays_module/overlay_dispatcher_provider.dart'
+    show overlayDispatcherProvider;
 import 'package:riverpod_adapter/di/di_container.dart';
 import 'package:riverpod_adapter/di/i_di_config.dart';
 
@@ -89,6 +93,14 @@ final class DefaultAppBootstrap implements IAppBootstrap {
     );
     //
     GlobalDIContainer.initialize(getGlobalContainer);
+    // 🔗 Context-aware resolver (for BuildContext-based calls)
+    setOverlayDispatcherResolver((_) {
+      return GlobalDIContainer.instance.read(overlayDispatcherProvider);
+    });
+    // 🌐 Global resolver (for navigation observers, background tasks)
+    setGlobalOverlayDispatcherResolver(() {
+      return GlobalDIContainer.instance.read(overlayDispatcherProvider);
+    });
     debugPrint('✅ [DI] Dependency container ready.');
   }
 

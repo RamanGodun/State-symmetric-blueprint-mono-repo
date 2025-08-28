@@ -1,8 +1,7 @@
-import 'package:bloc_adapter/di/core/di.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
+import 'package:core/base_modules/overlays/utils/ports/overlay_dispatcher_locator.dart'
+    show resolveOverlayDispatcherGlobal;
 import 'package:flutter/widgets.dart';
-import 'package:riverpod_adapter/base_modules/overlays_module/overlay_dispatcher_provider.dart';
-import 'package:riverpod_adapter/di/di_container.dart';
 
 /// 🧭 [OverlaysCleanerWithinNavigation] — Clears all overlays on navigation events
 /// ✅ Ensures that overlays (banners, snackbars, dialogs) do not persist
@@ -10,20 +9,17 @@ import 'package:riverpod_adapter/di/di_container.dart';
 //
 final class OverlaysCleanerWithinNavigation extends NavigatorObserver {
   ///--------------------------------------------------------
+  OverlaysCleanerWithinNavigation();
 
   /// 📦 Reference to the overlay dispatcher (via DI)
-  OverlayDispatcher get overlaysDispatcher =>
-      GlobalDIContainer.instance.read(overlayDispatcherProvider);
-
-  /// 📦 Reference to the overlay dispatcher (via GetIt)
-  // OverlayDispatcher get overlaysDispatcher => di<OverlayDispatcher>();
+  OverlayDispatcher get _overlaysDispatcher => resolveOverlayDispatcherGlobal();
   ////
 
   /// 🔁 Called when a new route is pushed onto the navigator
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
-    overlaysDispatcher.dismissCurrent(
+    _overlaysDispatcher.dismissCurrent(
       force: true,
       clearQueue: true,
     ); // 🧹 Clear overlay on push
@@ -33,7 +29,7 @@ final class OverlaysCleanerWithinNavigation extends NavigatorObserver {
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPop(route, previousRoute);
-    overlaysDispatcher.dismissCurrent(
+    _overlaysDispatcher.dismissCurrent(
       force: true,
       clearQueue: true,
     ); // 🧹 Clear overlay on pop
@@ -43,7 +39,7 @@ final class OverlaysCleanerWithinNavigation extends NavigatorObserver {
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didRemove(route, previousRoute);
-    overlaysDispatcher.dismissCurrent(
+    _overlaysDispatcher.dismissCurrent(
       force: true,
       clearQueue: true,
     ); // 🧹 Clear overlay on remove
@@ -53,7 +49,7 @@ final class OverlaysCleanerWithinNavigation extends NavigatorObserver {
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    overlaysDispatcher.dismissCurrent(
+    _overlaysDispatcher.dismissCurrent(
       force: true,
       clearQueue: true,
     ); // 🧹 Clear overlay on replace

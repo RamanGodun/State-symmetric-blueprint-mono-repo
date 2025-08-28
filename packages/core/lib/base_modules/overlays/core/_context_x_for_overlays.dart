@@ -1,4 +1,3 @@
-import 'package:bloc_adapter/di/core/di.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/failure_ui_entity.dart';
 import 'package:core/base_modules/localization/core_of_module/init_localization.dart';
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart';
@@ -6,9 +5,9 @@ import 'package:core/base_modules/overlays/core/_overlay_base_methods.dart';
 import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
 import 'package:core/base_modules/overlays/overlays_presentation/overlay_presets/overlay_presets.dart';
+import 'package:core/base_modules/overlays/utils/ports/overlay_dispatcher_locator.dart'
+    show resolveOverlayDispatcher;
 import 'package:flutter/material.dart';
-import 'package:riverpod_adapter/base_modules/overlays_module/overlay_dispatcher_provider.dart';
-import 'package:riverpod_adapter/di/read_di_x_on_context.dart';
 
 /// 🎯 [ContextXForOverlays] — Unified extension for overlay DSL and dispatcher access
 /// ✅ Use `context.showSnackbar(...)` / `context.showBanner(...)` directly
@@ -17,7 +16,8 @@ extension ContextXForOverlays on BuildContext {
   ///----------------------------------------
   //
   /// 🔌 Lazily access the shared [OverlayDispatcher] via DI container
-  OverlayDispatcher get dispatcher => readDI(overlayDispatcherProvider);
+  OverlayDispatcher get dispatcher => resolveOverlayDispatcher(this);
+  // OverlayDispatcher get dispatcher => readDI(overlayDispatcherProvider);
   // OverlayDispatcher get dispatcher => di<OverlayDispatcher>();
   //
 

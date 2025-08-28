@@ -5,6 +5,7 @@ import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart';
 import 'package:core/base_modules/overlays/core/tap_through_overlay_barrier.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_entries/_overlay_entries_registry.dart';
 import 'package:core/base_modules/overlays/utils/overlay_logger.dart';
+import 'package:core/base_modules/overlays/utils/ports/overlay_activity_port.dart';
 import 'package:core/utils_shared/timing_control/debouncer.dart';
 import 'package:core/utils_shared/timing_control/timing_config.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +20,10 @@ part 'policy_resolver.dart';
 //
 final class OverlayDispatcher {
   ///------------------------
-  OverlayDispatcher({this.onOverlayStateChanged});
+  OverlayDispatcher({OverlayActivityPort? activityPort})
+    : _activityPort = activityPort;
   //
-  ///
-  final void Function({required bool isActive})? onOverlayStateChanged;
+  final OverlayActivityPort? _activityPort;
 
   ////
 
@@ -38,6 +39,9 @@ final class OverlayDispatcher {
   /// 🔓 Whether the current overlay can be dismissed externally.
   bool get canBeDismissedExternally =>
       _activeRequest?.dismissPolicy == OverlayDismissPolicy.dismissible;
+  //
+  ///
+  void _notify(bool isActive) => _activityPort?.setActive(isActive: isActive);
   //
 
   /// 📥 Adds a new request to the queue, resolves replacement/drop strategy
@@ -99,7 +103,8 @@ final class OverlayDispatcher {
     _activeRequest = item.request;
     //
     /// 🧠 Notify listeners overlay is shown
-    onOverlayStateChanged?.call(isActive: true);
+    // onOverlayStateChanged?.call(isActive: true);
+    _notify(true);
     //
     final widget = item.request.buildWidget();
     //
@@ -155,7 +160,8 @@ final class OverlayDispatcher {
     _activeRequest = null;
     //
     /// 🧠 Notify listeners overlay was dismissed
-    onOverlayStateChanged?.call(isActive: false);
+    // onOverlayStateChanged?.call(isActive: false);
+    _notify(false);
   }
 
   /// 🔁 Removes pending duplicates by type & category to avoid stacking

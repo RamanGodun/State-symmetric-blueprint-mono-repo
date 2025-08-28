@@ -1,21 +1,20 @@
 // 📌 No need for public API docs.
 // ignore_for_file: public_member_api_docs
 
-import 'package:bloc_adapter/di/core/di.dart';
 import 'package:core/base_modules/animations/module_core/animation__engine.dart';
 import 'package:core/base_modules/animations/overlays_animation/animation_wrapper/animated_overlay_shell.dart';
 import 'package:core/base_modules/localization/module_widgets/text_widget.dart';
 import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
 import 'package:core/base_modules/overlays/overlays_presentation/overlay_presets/overlay_preset_props.dart';
+import 'package:core/base_modules/overlays/utils/ports/overlay_dispatcher_locator.dart'
+    show resolveOverlayDispatcher;
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/barrier_filter.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/box_decorations/_box_decorations_factory.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:riverpod_adapter/base_modules/overlays_module/overlay_dispatcher_provider.dart';
-import 'package:riverpod_adapter/di/read_di_x_on_context.dart';
 
 /// 🍎 [IOSAppDialog] — Animated glass-style Cupertino dialog for iOS/macOS
 /// - Fade + scale animation
@@ -54,8 +53,9 @@ final class IOSAppDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final dispatcher = context.readDI(overlayDispatcherProvider);
+    // final dispatcher = context.readDI(overlayDispatcherProvider);
     // final dispatcher = di<OverlayDispatcher>();
+    final dispatcher = resolveOverlayDispatcher(context);
     //
     final isDark = context.isDarkMode;
     final colorScheme = context.colorScheme;
