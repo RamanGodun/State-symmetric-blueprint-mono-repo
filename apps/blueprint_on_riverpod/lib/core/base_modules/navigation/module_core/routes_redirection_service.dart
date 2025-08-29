@@ -1,5 +1,4 @@
-import 'package:blueprint_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:core/utils_shared/auth/auth_snapshot.dart';
+part of 'go_router_factory.dart';
 
 ///
 typedef Path = String;

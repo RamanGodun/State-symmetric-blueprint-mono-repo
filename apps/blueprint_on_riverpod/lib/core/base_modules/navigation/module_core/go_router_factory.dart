@@ -1,11 +1,21 @@
-part of 'go_router__provider.dart';
+import 'package:blueprint_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
+import 'package:blueprint_on_riverpod/core/shared_presentation/pages/page_not_found.dart';
+import 'package:core/base_modules/overlays/utils/overlays_cleaner_within_navigation.dart';
+import 'package:core/utils_shared/auth/auth_snapshot.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:riverpod_adapter/base_modules/navigation_module/redirect_state.dart';
+import 'package:riverpod_adapter/utils/auth/auth_stream_adapter.dart'
+    show authSnapshotsProvider;
+
+part 'routes_redirection_service.dart';
 
 /// 🧭🚦[buildGoRouter] — GoRouter factory. Returns fully constructed [GoRouter] instance
 /// ✅ Declaratively creates router in dependence of actual [authSnapshotsProvider].
 //
 GoRouter buildGoRouter(Ref ref) {
   // 🧩 Local state holder (no rebuilds for GoRouter)
-  final redirectState = _AuthRedirectState()..attach(ref);
+  final redirectState = AuthRedirectState()..attach(ref);
   ////
 
   return GoRouter(

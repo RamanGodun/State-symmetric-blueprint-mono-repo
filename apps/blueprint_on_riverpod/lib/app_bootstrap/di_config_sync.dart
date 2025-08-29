@@ -1,5 +1,6 @@
-import 'package:blueprint_on_riverpod/core/base_modules/navigation/module_core/go_router__provider.dart'
-    show buildGoRouter, goRouter;
+import 'package:blueprint_on_riverpod/core/base_modules/navigation/module_core/go_router_factory.dart'
+    show buildGoRouter;
+import 'package:blueprint_on_riverpod/core/base_modules/navigation/module_core/router_provider.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
 import 'package:firebase_adapter/constants/firebase_constants.dart';
 import 'package:firebase_adapter/gateways/firebase_auth_gateway.dart'

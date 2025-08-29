@@ -1,4 +1,4 @@
-import 'package:blueprint_on_riverpod/core/base_modules/navigation/module_core/go_router__provider.dart';
+import 'package:blueprint_on_riverpod/core/base_modules/navigation/module_core/router_provider.dart';
 import 'package:core/base_modules/localization/core_of_module/localization_wrapper.dart'
     show LocalizationWrapper;
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
