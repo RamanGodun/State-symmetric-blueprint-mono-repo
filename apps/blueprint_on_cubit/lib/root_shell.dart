@@ -104,6 +104,9 @@ final class _AppRootView extends StatelessWidget {
       darkTheme: darkTheme,
       themeMode: themeMode,
 
+      /// To right catch of system text scale/locale/etc
+      useInheritedMediaQuery: true,
+
       /// 🔁 Router setup for declarative navigation
       routerConfig: router,
 

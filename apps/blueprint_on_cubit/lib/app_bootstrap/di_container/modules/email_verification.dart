@@ -29,7 +29,7 @@ final class EmailVerificationModule implements DIModule {
     //
     /// Data sources
     di
-      ..registerLazySingletonIfAbsent<IUserValidationRemoteDataSource>(
+      ..registerFactoryIfAbsent<IUserValidationRemoteDataSource>(
         () => IUserValidationRemoteDataSourceImpl(
           di<FirebaseAuth>(instanceName: kFbAuthInstance),
         ),

@@ -46,13 +46,13 @@ final class AuthModule implements DIModule {
       //
       ..registerFactoryIfAbsent<ISignInRepo>(() => SignInRepoImpl(di()))
       ..registerFactoryIfAbsent<ISignOutRepo>(() => SignOutRepoImpl(di()))
-      ..registerLazySingletonIfAbsent<ISignUpRepo>(() => SignUpRepoImpl(di()))
+      ..registerFactoryIfAbsent<ISignUpRepo>(() => SignUpRepoImpl(di()))
       //
       /// Use Cases
       //
       ..registerFactoryIfAbsent(() => SignInUseCase(di()))
       ..registerFactoryIfAbsent(() => SignUpUseCase(di()))
-      ..registerLazySingletonIfAbsent(() => SignOutUseCase(di()))
+      ..registerFactoryIfAbsent(() => SignOutUseCase(di()))
       //
       /// AuthStreamCubit
       //

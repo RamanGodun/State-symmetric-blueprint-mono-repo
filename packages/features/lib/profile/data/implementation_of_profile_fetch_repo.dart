@@ -10,8 +10,7 @@ import 'package:core/shared_data_layer/user_data_transfer_objects/user_dto_facto
 import 'package:core/shared_data_layer/user_data_transfer_objects/user_dto_x.dart';
 import 'package:core/shared_domain_layer/shared_entities/_user_entity.dart'
     show UserEntity;
-import 'package:core/utils_shared/cash_manager/cache_manager.dart'
-    show CacheManager, CacheStats;
+import 'package:core/utils_shared/cache_manager/cache_manager.dart';
 import 'package:core/utils_shared/timing_control/timing_config.dart'
     show AppDurations;
 import 'package:core/utils_shared/type_definitions.dart' show ResultFuture;

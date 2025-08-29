@@ -100,6 +100,9 @@ final class _AppRootView extends StatelessWidget {
       darkTheme: darkTheme,
       themeMode: themeMode,
 
+      /// To right catch of system text scale/locale/etc
+      useInheritedMediaQuery: true,
+
       // 🧩 Gesture handler to dismiss overlays and keyboard
       builder: (context, child) => GlobalOverlayHandler(child: child!),
     );

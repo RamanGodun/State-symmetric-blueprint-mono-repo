@@ -24,12 +24,10 @@ final class EmailVerificationCubit extends Cubit<EmailVerificationState> {
   ///------------------------------------------------------------------
   EmailVerificationCubit(this._useCase)
     : super(const EmailVerificationState()) {
-    _startPolling();
+    // _startPolling();
   }
   //
   final EmailVerificationUseCase _useCase;
-  // final Authcubit _authcubit;
-
   //
 
   Timer? _pollingTimer;

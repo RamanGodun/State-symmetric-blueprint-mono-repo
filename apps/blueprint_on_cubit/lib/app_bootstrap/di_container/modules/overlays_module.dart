@@ -2,6 +2,7 @@ import 'package:bloc_adapter/base_modules/overlays_module/overlay_activity_port_
 import 'package:bloc_adapter/base_modules/overlays_module/overlay_status_cubit.dart';
 import 'package:bloc_adapter/di/core/di.dart';
 import 'package:bloc_adapter/di/core/di_module_interface.dart';
+import 'package:bloc_adapter/di/x_on_get_it.dart';
 import 'package:blueprint_on_cubit/app_bootstrap/di_container/modules/theme_module.dart';
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart'
     show OverlayDispatcher;
@@ -23,14 +24,14 @@ final class OverlaysModule implements DIModule {
   @override
   Future<void> register() async {
     di
-      ..registerLazySingleton(OverlayStatusCubit.new)
-      ..registerLazySingleton(
+      ..registerFactoryIfAbsent(OverlayStatusCubit.new)
+      ..registerFactoryIfAbsent(
         () => OverlayDispatcher(
           activityPort: BlocOverlayActivityPort(di<OverlayStatusCubit>()),
         ),
       );
 
-    // 🔌 Wire CORE resolvers (і контекстний, і глобальний можуть повертати один і той же інстанс)
+    // 🔌 Wire CORE resolvers (context-aware as a global can return the same instance)
     setOverlayDispatcherResolver((_) => di<OverlayDispatcher>());
     setGlobalOverlayDispatcherResolver(di.call);
   }

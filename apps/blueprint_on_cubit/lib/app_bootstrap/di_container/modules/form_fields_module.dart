@@ -19,7 +19,7 @@ final class FormFieldsModule implements DIModule {
   ///
   @override
   Future<void> register() async {
-    di.registerLazySingletonIfAbsent(() => const FormValidationService());
+    di.registerFactoryIfAbsent(() => const FormValidationService());
   }
 
   ///

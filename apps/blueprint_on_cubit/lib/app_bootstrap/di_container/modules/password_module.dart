@@ -30,7 +30,7 @@ final class PasswordModule implements DIModule {
     //
     di
       // 📡 Remote Database (inject FirebaseAuth from DI)
-      ..registerLazySingletonIfAbsent<IPasswordRemoteDatabase>(
+      ..registerFactoryIfAbsent<IPasswordRemoteDatabase>(
         () => PasswordRemoteDatabaseImpl(
           di<FirebaseAuth>(instanceName: kFbAuthInstance),
         ),
