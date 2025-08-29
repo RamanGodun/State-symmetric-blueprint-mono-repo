@@ -43,7 +43,8 @@ final class AppViewShell extends StatelessWidget {
     return BlocSelector<AuthCubit, AuthViewState, AuthViewState>(
       selector: (state) => state,
       builder: (context, authState) {
-        final router = buildGoRouter(authState);
+        final authCubit = context.read<AuthCubit>();
+        final router = buildGoRouter(authCubit);
 
         /// Listen to current theme preferences from [AppThemeCubit].
         return BlocSelector<AppThemeCubit, ThemePreferences, ThemePreferences>(
