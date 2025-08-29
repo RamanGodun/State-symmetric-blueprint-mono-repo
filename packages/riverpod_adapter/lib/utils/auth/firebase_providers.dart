@@ -6,10 +6,15 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'firebase_providers.g.dart';
 
-///
-@riverpod
+/// 🔑 FirebaseAuth handle (env binding)
+//
+@Riverpod(keepAlive: true)
 FirebaseAuth firebaseAuth(Ref ref) => FirebaseConstants.fbAuthInstance;
 
-///
-@riverpod
+////
+////
+
+/// 🗃️ Firestore users collection (env binding)
+//
+@Riverpod(keepAlive: true)
 UsersCollection usersCollection(Ref ref) => FirebaseConstants.usersCollection;

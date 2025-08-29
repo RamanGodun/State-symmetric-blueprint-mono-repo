@@ -14,8 +14,6 @@ abstract final class OverlayUtils {
     //
     return () {
       resolveOverlayDispatcher(context);
-      // context.readDI(overlayDispatcherProvider).dismissCurrent(force: true);
-      // di<OverlayDispatcher>().dismissCurrent(force: true);
       action.call();
     };
   }

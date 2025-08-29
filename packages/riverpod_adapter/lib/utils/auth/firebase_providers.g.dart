@@ -6,13 +6,13 @@ part of 'firebase_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$firebaseAuthHash() => r'b0fca1027efa1610317041dd6205440cd0b60978';
+String _$firebaseAuthHash() => r'10d006c9d33c7cf76efb60f341fe74a14a0b1452';
 
-///
+/// 🔑 FirebaseAuth handle (env binding)
 ///
 /// Copied from [firebaseAuth].
 @ProviderFor(firebaseAuth)
-final firebaseAuthProvider = AutoDisposeProvider<FirebaseAuth>.internal(
+final firebaseAuthProvider = Provider<FirebaseAuth>.internal(
   firebaseAuth,
   name: r'firebaseAuthProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -24,14 +24,15 @@ final firebaseAuthProvider = AutoDisposeProvider<FirebaseAuth>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef FirebaseAuthRef = AutoDisposeProviderRef<FirebaseAuth>;
-String _$usersCollectionHash() => r'869a2c12ac88832cd4696c9c85e55c217d556c07';
-
-///
+typedef FirebaseAuthRef = ProviderRef<FirebaseAuth>;
+String _$usersCollectionHash() =>
+    r'e077cf52d8472e8857ff691fe5eff82b253770ce'; ////
+////
+/// 🗃️ Firestore users collection (env binding)
 ///
 /// Copied from [usersCollection].
 @ProviderFor(usersCollection)
-final usersCollectionProvider = AutoDisposeProvider<UsersCollection>.internal(
+final usersCollectionProvider = Provider<UsersCollection>.internal(
   usersCollection,
   name: r'usersCollectionProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -43,6 +44,6 @@ final usersCollectionProvider = AutoDisposeProvider<UsersCollection>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef UsersCollectionRef = AutoDisposeProviderRef<UsersCollection>;
+typedef UsersCollectionRef = ProviderRef<UsersCollection>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -6,13 +6,13 @@ part of 'auth_stream_adapter.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authGatewayHash() => r'b9e8ff3b66528d7d4ffbb67c56524e3ff40ddb07';
+String _$authGatewayHash() => r'84f5efe5052acf2fbce30330ae706739f294365b';
 
-///
+/// 🔌 [authGatewayProvider] — DI token for [AuthGateway] (overridden in app layer)
 ///
 /// Copied from [authGateway].
 @ProviderFor(authGateway)
-final authGatewayProvider = AutoDisposeProvider<AuthGateway>.internal(
+final authGatewayProvider = Provider<AuthGateway>.internal(
   authGateway,
   name: r'authGatewayProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -24,14 +24,15 @@ final authGatewayProvider = AutoDisposeProvider<AuthGateway>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef AuthGatewayRef = AutoDisposeProviderRef<AuthGateway>;
-String _$authSnapshotsHash() => r'0fc1d29112e0a255f0ce2517a3997a2009b308d8';
-
-///
+typedef AuthGatewayRef = ProviderRef<AuthGateway>;
+String _$authSnapshotsHash() =>
+    r'bb6883de9b6f9c9ef93480dbb2411365fd60f29e'; ////
+////
+/// 🌐 [authSnapshotsProvider] — reactive stream of [AuthSnapshot] from [AuthGateway]
 ///
 /// Copied from [authSnapshots].
 @ProviderFor(authSnapshots)
-final authSnapshotsProvider = AutoDisposeStreamProvider<AuthSnapshot>.internal(
+final authSnapshotsProvider = StreamProvider<AuthSnapshot>.internal(
   authSnapshots,
   name: r'authSnapshotsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -43,6 +44,6 @@ final authSnapshotsProvider = AutoDisposeStreamProvider<AuthSnapshot>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef AuthSnapshotsRef = AutoDisposeStreamProviderRef<AuthSnapshot>;
+typedef AuthSnapshotsRef = StreamProviderRef<AuthSnapshot>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

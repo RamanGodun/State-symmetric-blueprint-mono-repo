@@ -4,19 +4,8 @@ part of 'go_router__provider.dart';
 /// ✅ Declaratively creates router in dependence of actual [authSnapshotsProvider].
 //
 GoRouter buildGoRouter(Ref ref) {
-  // final authState = ref.watch(authStateStreamProvider);
-  final snapshot = ref.watch(authSnapshotsProvider);
-
-  ////
-
-  // Mark "resolved once" when we see any non-loading state
-  ref.listen(authSnapshotsProvider, (prev, next) {
-    final s = next.valueOrNull;
-    if (s case AuthFailure() || AuthReady()) {
-      ref.read(authResolvedOnceProvider.notifier).state = true;
-    }
-  });
-
+  // 🧩 Local state holder (no rebuilds for GoRouter)
+  final redirectState = _AuthRedirectState()..attach(ref);
   ////
 
   return GoRouter(
@@ -39,18 +28,19 @@ GoRouter buildGoRouter(Ref ref) {
 
     ////
 
-    /// 🧭 Global redirect handler — routes user depending on auth state
+    /// 🧭 Global redirect handler — routes user depending on auth state (reads cached values only)
     redirect: (context, state) {
-      final s = snapshot.valueOrNull;
-      if (s == null) return null;
       //
-      final hasResolvedOnce = ref.read(authResolvedOnceProvider);
+      final s = redirectState.current;
+      if (s == null) return null;
+      final currentPath = state.matchedLocation.isNotEmpty
+          ? state.matchedLocation
+          : state.uri.toString();
+
       return computeRedirect(
-        currentPath: state.matchedLocation.isNotEmpty
-            ? state.matchedLocation
-            : state.uri.toString(),
+        currentPath: currentPath,
         snapshot: s,
-        hasResolvedOnce: hasResolvedOnce,
+        hasResolvedOnce: redirectState.resolvedOnce,
       );
     },
   );

@@ -29,9 +29,10 @@ final emailVerificationRepoProvider =
 // ignore: unused_element
 typedef EmailVerificationRepoRef = AutoDisposeProviderRef<IUserValidationRepo>;
 String _$userValidationRemoteDataSourceHash() =>
-    r'd2193022a401cccff4ebbb2813ae532f857c4c4d';
+    r'f65758a1f6a07b950a8e79ede6130127e0ae56e8';
 
-/// 🛰️ [userValidationRemoteDataSourceProvider] — provides Firebase-based remote source
+/// 🔌 [userValidationRemoteDataSourceProvider] — Remote DS for email verification
+/// 🧠 Injects FirebaseAuth via [firebaseAuthProvider]
 ///
 /// Copied from [userValidationRemoteDataSource].
 @ProviderFor(userValidationRemoteDataSource)

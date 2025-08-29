@@ -7,10 +7,10 @@ part of 'data_layer_providers.dart';
 // **************************************************************************
 
 String _$passwordRemoteDatabaseHash() =>
-    r'66171cb14415dd20c6f7d93ccfc1fb62ed12047c';
+    r'5cf2ccb169962ff6d183c89d4ea7c6987d0ec9bb';
 
-/// 🧩 [passwordRemoteDatabaseProvider] — provides implementation of [IPasswordRemoteDatabase]
-/// ✅ Low-level data access for password-related Firebase actions
+/// 🔌 [passwordRemoteDatabaseProvider] — low-level remote access (FirebaseAuth injected)
+/// ⛓️ Keeps `features` backend-agnostic.
 ///
 /// Copied from [passwordRemoteDatabase].
 @ProviderFor(passwordRemoteDatabase)
@@ -31,9 +31,7 @@ typedef PasswordRemoteDatabaseRef =
     AutoDisposeProviderRef<IPasswordRemoteDatabase>;
 String _$passwordRepoHash() => r'338ba4c9638bafeb73dc156b6376fa113f6e209e';
 
-/// 🧩 [passwordRepoProvider] — provides implementation of [IPasswordRepo]
-/// 🧼 Adds failure mapping on top of remote data source
-/// ✅ Used by domain layer use cases
+/// 🧩 [passwordRepoProvider] — adds failure mapping and domain boundary
 ///
 /// Copied from [passwordRepo].
 @ProviderFor(passwordRepo)

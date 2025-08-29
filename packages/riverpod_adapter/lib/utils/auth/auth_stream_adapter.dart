@@ -7,7 +7,7 @@ part 'auth_stream_adapter.g.dart';
 
 /// 🔌 [authGatewayProvider] — DI token for [AuthGateway] (overridden in app layer)
 //
-@riverpod
+@Riverpod(keepAlive: true)
 AuthGateway authGateway(Ref ref) => throw UnimplementedError();
 
 ////
@@ -15,13 +15,6 @@ AuthGateway authGateway(Ref ref) => throw UnimplementedError();
 
 /// 🌐 [authSnapshotsProvider] — reactive stream of [AuthSnapshot] from [AuthGateway]
 //
-@riverpod
+@Riverpod(keepAlive: true)
 Stream<AuthSnapshot> authSnapshots(Ref ref) =>
     ref.watch(authGatewayProvider).snapshots$;
-
-////
-////
-
-/// 🧭 Tracks whether auth has resolved at least once (Ready/Failure)
-//
-final authResolvedOnceProvider = StateProvider<bool>((_) => false);

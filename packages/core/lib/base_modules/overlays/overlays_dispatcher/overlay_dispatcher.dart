@@ -40,7 +40,9 @@ final class OverlayDispatcher {
   bool get canBeDismissedExternally =>
       _activeRequest?.dismissPolicy == OverlayDismissPolicy.dismissible;
   //
-  ///
+  /// 📡 Notifies the [OverlayActivityPort] about overlay activity changes.
+  /// - `true`  → overlay became active (inserted into tree)
+  /// - `false` → overlay was dismissed / no active overlays
   void _notify(bool isActive) => _activityPort?.setActive(isActive: isActive);
   //
 

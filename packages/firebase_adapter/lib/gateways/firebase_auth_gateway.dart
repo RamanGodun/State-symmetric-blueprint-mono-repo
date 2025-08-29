@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:rxdart/rxdart.dart';
 
 /// 🔐 [FirebaseAuthGateway] — Firebase-backed implementation of [AuthGateway]
+//
 final class FirebaseAuthGateway implements AuthGateway {
   ///------------------------------------------------
   /// Initializes with a FirebaseAuth instance

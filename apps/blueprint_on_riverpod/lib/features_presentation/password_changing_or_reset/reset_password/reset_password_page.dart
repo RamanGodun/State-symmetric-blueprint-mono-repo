@@ -24,7 +24,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' show HookConsumerWidget;
-import 'package:riverpod_adapter/base_modules/overlays_module/overlay_activity_port_riverpod.dart';
+import 'package:riverpod_adapter/base_modules/overlays_module/overlay_status_x.dart';
 
 part 'widgets_for_reset_password_page.dart';
 part 'x_on_ref_for_reset_password.dart';

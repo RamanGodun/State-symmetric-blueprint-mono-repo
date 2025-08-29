@@ -8,51 +8,65 @@ part of 'theme_variants.dart';
 extension ThemeVariantX on ThemeVariantsEnum {
   ///--------------------------------------
   //
+  /// 🔖 Quick check if the current variant is AMOLED
+  bool get isAmoled => this == ThemeVariantsEnum.amoled;
+
   /// 🏗️ Builds [ThemeData] for the given [ThemeVariantsEnum] (light, dark, amoled).
   /// - Optionally injects a custom font via [AppFontFamily]
   /// - Uses design tokens and color scheme for visual consistency across the app
   /// - Configures app bars, buttons, cards, text styles, etc.
+  //
   ThemeData build({AppFontFamily? font}) {
+    //
+    /// 🔤 Base text theme generated from factory
+    final baseText = TextThemeFactory.from(
+      colorScheme,
+      font: font ?? AppFontFamily.inter, // Inter as base font
+      accentFont: AppFontFamily.montserrat, // Montserrat as accent font
+    );
+
+    ///
     return ThemeData(
+      //
       useMaterial3: true,
 
-      /// Theme core palette
+      /// 🎨 Core palette configuration
       brightness: brightness,
       scaffoldBackgroundColor: background,
       primaryColor: primaryColor,
       colorScheme: colorScheme.copyWith(
-        //normalization on* values, if set
+        // ✅ Normalize on* values if defined in palette
         onPrimary: colorScheme.onPrimary,
         onSecondary: colorScheme.onSecondary,
         onBackground: colorScheme.onBackground,
         onSurface: colorScheme.onSurface,
       ),
 
-      /// AppBar configuration: transparent, with custom text and icon colors
+      /// 🧭 AppBar — minimalistic, transparent with custom text/icon colors
       appBarTheme: AppBarTheme(
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: contrastColor,
         actionsIconTheme: IconThemeData(color: primaryColor),
-        titleTextStyle: TextThemeFactory.from(
-          colorScheme,
-          font: font,
-        ).titleSmall,
+        titleTextStyle: baseText.titleSmall,
         centerTitle: false,
       ),
 
-      /// Buttons: consistent paddings, radius, elevation, and colors
+      /// 🔘 Filled buttons — consistent style across themes
+      /// AMOLED uses near-solid primary for glossy look
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: colorScheme.primary.withOpacity(
-            isDark ? 0.37 : 0.72,
-          ),
+          backgroundColor: isAmoled
+              ? colorScheme.primary.withOpacity(0.95)
+              : colorScheme.primary.withOpacity(isDark ? 0.37 : 0.72),
           foregroundColor: colorScheme.onPrimary,
-          disabledBackgroundColor: isDark
-              ? AppColors.white10
-              : AppColors.black12,
+          disabledBackgroundColor: isAmoled
+              ? const Color(0x24000000) // ~14% чорного
+              : (isDark ? AppColors.white10 : AppColors.black12),
           disabledForegroundColor: AppColors.white24,
-          surfaceTintColor: AppColors.transparent,
+          surfaceTintColor: isAmoled
+              ? Colors.transparent
+              : AppColors.transparent,
           shadowColor: AppColors.shadow,
           padding: const EdgeInsets.symmetric(
             vertical: AppSpacing.xm,
@@ -61,7 +75,9 @@ extension ThemeVariantX on ThemeVariantsEnum {
           shape: RoundedRectangleBorder(
             borderRadius: UIConstants.borderRadius8,
             side: BorderSide(
-              color: isDark ? AppColors.black5 : AppColors.darkBorder,
+              color: isAmoled
+                  ? AppColors.amoledOutline
+                  : (isDark ? AppColors.black5 : AppColors.darkBorder),
               width: isDark ? 0.05 : 0.05,
             ),
           ),
@@ -74,9 +90,9 @@ extension ThemeVariantX on ThemeVariantsEnum {
         ),
       ),
 
-      /// Cards: unified radius, background, shadow
+      /// 🧱 Cards — unified radius, with AMOLED using deeper black
       cardTheme: CardThemeData(
-        color: cardColor,
+        color: isAmoled ? AppColors.amoledCard : cardColor,
         shape: const RoundedRectangleBorder(
           borderRadius: UIConstants.commonBorderRadius,
         ),
@@ -84,12 +100,23 @@ extension ThemeVariantX on ThemeVariantsEnum {
         elevation: 0,
       ),
 
-      /// Typography: generated via factory using current palette & font
-      textTheme: TextThemeFactory.from(
-        colorScheme,
-        font: font ?? AppFontFamily.inter, // Inter as base font
-        accentFont: AppFontFamily.montserrat, // Montserrat as accent font
+      /// 🎯 Icon theme — slightly brighter on AMOLED for readability
+      iconTheme: IconThemeData(
+        color: isAmoled ? AppColors.amoledOnSurface : colorScheme.onSurface,
       ),
+
+      /// ── Dividers — AMOLED gets stronger outline for better contrast
+      dividerTheme: DividerThemeData(
+        color: isAmoled
+            ? AppColors.amoledOutline
+            : (isDark ? AppColors.darkBorder : AppColors.lightBorder),
+        thickness: 0.6,
+        space: 0,
+      ),
+
+      /// 🅰️ Typography (generated via factory using current palette & font)
+      textTheme: baseText,
+
       //
     );
   }

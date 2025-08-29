@@ -21,7 +21,7 @@ import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barre
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_adapter/base_modules/errors_handling_module/show_dialog_when_error_x.dart';
-import 'package:riverpod_adapter/base_modules/overlays_module/overlay_activity_port_riverpod.dart';
+import 'package:riverpod_adapter/base_modules/overlays_module/overlay_status_x.dart';
 
 part 'sign_up_input_fields.dart';
 part 'widgets_for_sign_up_page.dart';
