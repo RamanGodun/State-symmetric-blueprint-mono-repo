@@ -6,38 +6,46 @@ import 'package:blueprint_on_cubit/core/shared_presentation/pages/page_not_found
 import 'package:core/base_modules/overlays/utils/overlays_cleaner_within_navigation.dart'
     show OverlaysCleanerWithinNavigation;
 import 'package:core/utils_shared/auth/auth_snapshot.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:go_router/go_router.dart';
 
 part 'routes_redirection_service.dart';
 
-/// 🧭🚦[buildGoRouter] — GoRouter factory. Returns fully constructed [GoRouter] instance
-/// ✅ Declaratively creates router in dependence of [AuthCubit].
+/// 🧭🚦 [buildGoRouter] — central GoRouter factory
+/// ✅ Builds router declaratively with auth-driven redirect logic
+/// ✅ Plugs in overlays cleaner and 404 fallback
 //
 GoRouter buildGoRouter(AuthCubit authCubit) {
+  ///
   final resolvedOnce = ResolvedOnceCache(authCubit.stream);
   //
   return GoRouter(
-    /// 👁️ Observers — navigation side-effects (e.g., dismissing overlays)
+    //
+    /// 👁️ Navigation observers (side effects like overlay cleanup)
     observers: [OverlaysCleanerWithinNavigation()],
-
-    /// 🐞 Enable verbose logging for GoRouter (only active in debug mode)
-    debugLogDiagnostics: true,
+    //
+    /// 🐞 Verbose GoRouter logging in debug mode only
+    debugLogDiagnostics: kDebugMode,
 
     ////
 
-    /// ⏳ Initial route shown on app launch (Splash Screen)
+    /// ⏳ Splash as initial route
     initialLocation: RoutesPaths.splash,
 
-    /// 🗺️ Route definitions used across the app
+    /// 🗺️ Full route table
     routes: AppRoutes.all,
 
-    /// ❌ Fallback UI for unknown/unmatched routes
+    /// ❌ Fallback for unknown routes
     errorBuilder: (context, state) =>
         PageNotFound(errorMessage: state.error.toString()),
     //
 
-    /// 🧭 Global redirect handler — routes user depending on auth state
+    ////
+
+    /// 🧭 Global redirect hook
     redirect: (context, state) {
+      //
+      /// Normalize Cubit state → AuthSnapshot
       final snap = switch (authCubit.state) {
         AuthViewLoading() => const AuthLoading(),
         AuthViewError(:final error) => AuthFailure(error),
@@ -48,6 +56,7 @@ GoRouter buildGoRouter(AuthCubit authCubit) {
           ? state.matchedLocation
           : state.uri.toString();
 
+      // Pure, idempotent redirect logic
       return computeRedirect(
         currentPath: currentPath,
         snapshot: snap,

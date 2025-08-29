@@ -1,7 +1,4 @@
 import 'package:bloc_adapter/base_modules/theme_module/theme_cubit.dart';
-import 'package:bloc_adapter/utils/user_auth_cubit/auth_stream_cubit.dart';
-import 'package:blueprint_on_cubit/core/base_modules/navigation/module_core/go_router_factory.dart'
-    show buildGoRouter;
 import 'package:core/base_modules/localization/core_of_module/localization_wrapper.dart';
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart';
 import 'package:core/base_modules/overlays/core/global_overlay_handler.dart';
@@ -21,7 +18,7 @@ final class AppLocalizationShell extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// Injects localization context into the widget tree (provides all supported locales and translation assets)
-    return LocalizationWrapper.configure(const AppViewShell());
+    return LocalizationWrapper.configure(const _AppViewShell());
   }
 }
 
@@ -29,35 +26,29 @@ final class AppLocalizationShell extends StatelessWidget {
 
 ////
 
-/// 🌳🧩 [AppViewShell] — Top-level reactive widget listening to [AppThemeCubit].
+/// 🌳🧩 [_AppViewShell] — Top-level reactive widget listening to [AppThemeCubit].
 /// ✅ Rebuilds GoRouter reactively on any AuthState change.
 //
-final class AppViewShell extends StatelessWidget {
+final class _AppViewShell extends StatelessWidget {
   ///------------------------------------------------
-  const AppViewShell({super.key});
+  const _AppViewShell();
 
   @override
   Widget build(BuildContext context) {
     //
-    /// Listen to navigation state (GoRouter) from [AuthCubit].
-    return BlocSelector<AuthCubit, AuthViewState, AuthViewState>(
-      selector: (state) => state,
-      builder: (context, authState) {
-        final authCubit = context.read<AuthCubit>();
-        final router = buildGoRouter(authCubit);
+    /// 🧭 Listen to stable [GoRouter] instance
+    final router = context.read<GoRouter>();
 
-        /// Listen to current theme preferences from [AppThemeCubit].
-        return BlocSelector<AppThemeCubit, ThemePreferences, ThemePreferences>(
-          selector: (config) => config,
-          builder: (context, config) {
-            // Pass all resolved config (router + theme) to root view.
-            return _AppRootView(
-              router: router,
-              lightTheme: config.buildLight(),
-              darkTheme: config.buildDark(),
-              themeMode: config.mode,
-            );
-          },
+    /// Listen to current theme preferences from [AppThemeCubit].
+    return BlocSelector<AppThemeCubit, ThemePreferences, ThemePreferences>(
+      selector: (config) => config,
+      builder: (context, config) {
+        // Pass all resolved config (router + theme) to root view.
+        return _AppRootView(
+          router: router,
+          lightTheme: config.buildLight(),
+          darkTheme: config.buildDark(),
+          themeMode: config.mode,
         );
       },
     );

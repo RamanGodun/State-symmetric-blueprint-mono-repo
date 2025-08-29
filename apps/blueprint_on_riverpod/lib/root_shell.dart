@@ -22,7 +22,7 @@ final class AppLocalizationShell extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// Injects localization context into the widget tree (provides all supported locales and translation assets)
-    return LocalizationWrapper.configure(const AppViewShell());
+    return LocalizationWrapper.configure(const _AppViewShell());
   }
 }
 
@@ -30,12 +30,12 @@ final class AppLocalizationShell extends StatelessWidget {
 
 ////
 
-/// 🧩 [AppViewShell] — Combines both Theme and Router configuration
+/// 🧩 [_AppViewShell] — Combines both Theme and Router configuration
 /// ✅ Ensures minimal rebuilds using selective `ref.watch(...)`
 //
-final class AppViewShell extends ConsumerWidget {
+final class _AppViewShell extends ConsumerWidget {
   ///------------------------------------------------
-  const AppViewShell({super.key});
+  const _AppViewShell();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

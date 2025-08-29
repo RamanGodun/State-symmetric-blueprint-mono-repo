@@ -2,29 +2,29 @@ import 'dart:async' show StreamSubscription;
 
 import 'package:bloc_adapter/utils/user_auth_cubit/auth_stream_cubit.dart';
 
-/// 🗝️ [ResolvedOnceCache] — caches the "resolved at least once" flag
-/// without triggering GoRouter rebuilds.
-///
-/// ✅ Becomes `true` after first [AuthViewError] or [AuthViewReady].
-/// ✅ Useful for hysteresis in routing (avoid bouncing back to `/splash`).
+/// 🗝️ [ResolvedOnceCache] — one-shot flag tracker for auth resolution
+/// ✅ Becomes `true` after first [AuthViewError] or [AuthViewReady]
+/// ✅ Prevents GoRouter from bouncing back to `/splash` after initial load
+//
 final class ResolvedOnceCache {
-  /// Initializes the cache and subscribes to [AuthViewState] stream.
+  ///-----------------------
+  /// Subscribes to [AuthViewState] stream and flips `_resolvedOnce` once stable
   ResolvedOnceCache(Stream<AuthViewState> stream) {
     _sub = stream.listen((s) {
       if (s is AuthViewError || s is AuthViewReady) _resolvedOnce = true;
     });
   }
 
-  /// 🔗 Active subscription to [AuthViewState] stream.
+  /// 🔗 Active subscription to auth state stream
   late final StreamSubscription<AuthViewState> _sub;
 
-  /// ⏳ Internal flag, becomes `true` after first non-loading state.
+  /// ⏳ Flag set after first non-loading state
   bool _resolvedOnce = false;
 
-  /// 👁️ Read-only access to the resolved flag.
+  /// 👁️ Exposed read-only flag
   bool get value => _resolvedOnce;
 
-  /// 🧹 Cancels underlying subscription.
+  /// 🧹 Cancel subscription when cache is disposed
   void dispose() => _sub.cancel();
 
   //

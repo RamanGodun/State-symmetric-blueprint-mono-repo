@@ -41,8 +41,11 @@ final class AppThemeCubit extends HydratedCubit<ThemePreferences> {
       );
       final font = _parseFont(json['font']?.toString());
       return ThemePreferences(theme: theme, font: font);
-    } on Object {
-      return null;
+    } on Exception {
+      return const ThemePreferences(
+        theme: ThemeVariantsEnum.light,
+        font: AppFontFamily.inter,
+      );
     }
   }
 

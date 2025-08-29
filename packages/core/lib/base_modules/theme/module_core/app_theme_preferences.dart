@@ -1,6 +1,6 @@
+import 'package:core/base_modules/theme/module_core/theme_cache_mixin.dart';
 import 'package:core/base_modules/theme/module_core/theme_variants.dart';
 import 'package:core/base_modules/theme/text_theme/text_theme_factory.dart';
-import 'package:core/base_modules/theme/widgets_and_utils/theme_cache_mixin.dart';
 import 'package:flutter/material.dart';
 
 /// 🎨 [ThemePreferences] — Lightweight configuration for theme and font

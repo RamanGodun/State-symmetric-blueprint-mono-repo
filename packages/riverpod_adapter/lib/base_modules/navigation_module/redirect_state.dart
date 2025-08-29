@@ -45,5 +45,11 @@ final class AuthRedirectState {
   /// has been observed, ensuring redirect logic won’t bounce back to `/splash`.
   bool get resolvedOnce => resolvedOnceVN.value;
 
+  /// 🔄 Resets cached snapshot and resolution flag.
+  void reset() {
+    authSnapshotVN.value = null;
+    resolvedOnceVN.value = false;
+  }
+
   //
 }

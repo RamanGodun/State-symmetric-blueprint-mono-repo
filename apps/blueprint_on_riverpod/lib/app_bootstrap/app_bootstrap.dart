@@ -10,7 +10,7 @@ import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/material.dart' show WidgetsFlutterBinding;
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_adapter/base_modules/overlays_module/overlay_wiring.dart.dart';
+import 'package:riverpod_adapter/base_modules/overlays_module/overlay_wiring.dart';
 import 'package:riverpod_adapter/di/di_container.dart';
 import 'package:riverpod_adapter/di/i_di_config.dart';
 
@@ -90,11 +90,13 @@ final class DefaultAppBootstrap implements IAppBootstrap {
     );
     //
     GlobalDIContainer.initialize(getGlobalContainer);
-    // 🔗 Wire both (can be set only one):
-    //    🌐  Context-aware resolver (for BuildContext-based calls)
-    //        Global resolver (for navigation observers, background tasks)
+    //
+    // 🔌 Wire resolvers (currently both):
+    //    - Context-aware resolver (BuildContext)
+    //    - Global context-agnostic resolver (background tasks, infra)
     OverlayResolverWiring.wire(
       container: getGlobalContainer,
+      // scope: OverlayWiringScope.both, // (optional) make it explicit
     );
     debugPrint('✅ [DI] Dependency container ready.');
   }

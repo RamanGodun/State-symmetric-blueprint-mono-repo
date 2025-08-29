@@ -55,3 +55,18 @@ enum OverlayBlurLevel {
   medium, // Balanced blur for dialogs/snackbars
   strong, // Strong blur for attention-grabbing modals
 }
+
+////
+////
+
+/// 🎛️ [OverlayWiringScope] — defines which resolvers should be wired
+enum OverlayWiringScope {
+  /// Wire only context-aware resolver (BuildContext → GlobalDI)
+  contextOnly,
+  //
+  /// Wire only global resolver (outside of BuildContext)
+  globalOnly,
+  //
+  /// Wire both resolvers (default)
+  both,
+}

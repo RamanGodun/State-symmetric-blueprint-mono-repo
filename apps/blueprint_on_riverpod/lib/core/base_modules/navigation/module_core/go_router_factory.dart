@@ -2,6 +2,7 @@ import 'package:blueprint_on_riverpod/core/base_modules/navigation/routes/app_ro
 import 'package:blueprint_on_riverpod/core/shared_presentation/pages/page_not_found.dart';
 import 'package:core/base_modules/overlays/utils/overlays_cleaner_within_navigation.dart';
 import 'package:core/utils_shared/auth/auth_snapshot.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_adapter/base_modules/navigation_module/redirect_state.dart';
@@ -10,46 +11,51 @@ import 'package:riverpod_adapter/utils/auth/auth_stream_adapter.dart'
 
 part 'routes_redirection_service.dart';
 
-/// 🧭🚦[buildGoRouter] — GoRouter factory. Returns fully constructed [GoRouter] instance
-/// ✅ Declaratively creates router in dependence of actual [authSnapshotsProvider].
+/// 🧭🚦 [buildGoRouter] — GoRouter factory (Riverpod version)
+/// ✅ Creates router declaratively, driven by [authSnapshotsProvider]
+/// ✅ Keeps redirect logic pure/idempotent (delegated to [computeRedirect])
 //
 GoRouter buildGoRouter(Ref ref) {
-  // 🧩 Local state holder (no rebuilds for GoRouter)
+  // 🧩 Local redirect state holder (no GoRouter rebuilds on auth updates)
   final redirectState = AuthRedirectState()..attach(ref);
+
   ////
 
   return GoRouter(
     //
-    /// 👁️ Observers — navigation side-effects (e.g., dismissing overlays)
+    /// 👁️ Navigation observers (side effects like overlay cleanup)
     observers: [OverlaysCleanerWithinNavigation()],
+    //
+    /// 🐞 Verbose GoRouter logging in debug mode only
+    debugLogDiagnostics: kDebugMode,
 
-    /// 🐞 Enable verbose logging for GoRouter (only active in debug mode)
-    debugLogDiagnostics: true,
+    ////
 
-    /// ⏳ Initial route shown on app launch (Splash Screen)
+    /// ⏳ Splash as initial route
     initialLocation: RoutesPaths.splash,
 
-    /// 🗺️ Route definitions used across the app
+    /// 🗺️ Full route table
     routes: AppRoutes.all,
 
-    /// ❌ Fallback UI for unknown/unmatched routes
+    /// ❌ Fallback for unknown routes
     errorBuilder: (context, state) =>
         PageNotFound(errorMessage: state.error.toString()),
 
     ////
 
-    /// 🧭 Global redirect handler — routes user depending on auth state (reads cached values only)
+    /// 🧭 Global redirect hook
     redirect: (context, state) {
       //
-      final s = redirectState.current;
-      if (s == null) return null;
+      final snap = redirectState.current;
+      if (snap == null) return null;
+      //
       final currentPath = state.matchedLocation.isNotEmpty
           ? state.matchedLocation
           : state.uri.toString();
 
       return computeRedirect(
         currentPath: currentPath,
-        snapshot: s,
+        snapshot: snap,
         hasResolvedOnce: redirectState.resolvedOnce,
       );
     },

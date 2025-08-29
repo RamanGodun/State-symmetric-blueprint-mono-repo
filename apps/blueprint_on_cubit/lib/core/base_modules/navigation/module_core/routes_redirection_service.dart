@@ -1,58 +1,55 @@
 part of 'go_router_factory.dart';
 
-///
+/// 📍 Route path alias
 typedef Path = String;
 
 ////
 ////
 
-/// 🧭🚦 [computeRedirect] — pure, idempotent redirection logic
-/// - works the same across Riverpod/Bloc
-/// - uses normalized [AuthSnapshot] (infra-agnostic)
-///
-/// Hysteresis (Riverpod-версія):
-///   After first non-loading (Ready/Failure), transient Loading won't force /splash.
+/// 🧭🚦 [computeRedirect] — pure function for redirect decisions
+/// ✅ Shared across Riverpod and Bloc
+/// ✅ Hysteresis: after first resolution, transient Loading won’t push `/splash`
 //
 Path? computeRedirect({
   required Path currentPath,
   required AuthSnapshot snapshot,
   required bool hasResolvedOnce,
 }) {
-  // 🗝️ Public routes — accessible without authentication
+  /// 🗝️ Public routes — accessible without authentication
   const publicRoutes = {
     RoutesPaths.signIn,
     RoutesPaths.signUp,
     RoutesPaths.resetPassword,
   };
 
-  // 📍 Route flags
+  /// 📍 Route flags
   final isOnPublic = publicRoutes.contains(currentPath);
   final isOnVerify = currentPath == RoutesPaths.verifyEmail;
   final isOnSplash = currentPath == RoutesPaths.splash;
 
-  // 🔄 Decisions
+  ////
+
+  /// 🔄 Decision tree
   return switch (snapshot) {
-    // ⏳ Loading:
-    // - before first resolution → show splash
-    // - after first resolution → stay where you are (avoid bouncing to /home later)
+    /// ⏳ Loading → splash before first resolution, otherwise stay put
     AuthLoading() =>
       hasResolvedOnce ? null : (isOnSplash ? null : RoutesPaths.splash),
 
-    // ❌ Failure → go to SignIn (or a dedicated error route)
+    /// ❌ Failure → force SignIn
     AuthFailure() => RoutesPaths.signIn,
 
-    // ✅ Ready → check authentication and verification flags
+    /// ✅ Ready → enforce authentication + verification
     AuthReady(:final session) => () {
       final authed = session.isAuthenticated;
       final verified = session.emailVerified;
 
-      // 🚪 Not authenticated → allow only public routes
+      /// 🚪 Not authenticated → only public routes allowed
       if (!authed) return isOnPublic ? null : RoutesPaths.signIn;
 
-      // 🧪 Not verified → stay on /verifyEmail or redirect there
+      /// 🧪 Email not verified → lock to verify page
       if (!verified) return isOnVerify ? null : RoutesPaths.verifyEmail;
 
-      // 🏠 If authenticated & verified and currently on splash/public/verify → go home
+      /// 🏠 Fully authed + verified → home if on restricted routes
       const restricted = {
         RoutesPaths.splash,
         RoutesPaths.verifyEmail,

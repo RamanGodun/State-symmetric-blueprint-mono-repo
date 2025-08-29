@@ -12,8 +12,9 @@ abstract final class OverlayUtils {
   /// 🔁 Dismisses the currently visible overlay (if any) and executes [action]
   static VoidCallback dismissAndRun(VoidCallback action, BuildContext context) {
     //
-    return () {
-      resolveOverlayDispatcher(context);
+    return () async {
+      final d = resolveOverlayDispatcher(context);
+      await d.dismissCurrent(force: true);
       action.call();
     };
   }

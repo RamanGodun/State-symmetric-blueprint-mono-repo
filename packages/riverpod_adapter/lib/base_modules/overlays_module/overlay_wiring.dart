@@ -1,24 +1,11 @@
+import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart'
+    show OverlayWiringScope;
 import 'package:core/base_modules/overlays/utils/ports/overlay_dispatcher_locator.dart'
     show setGlobalOverlayDispatcherResolver, setOverlayDispatcherResolver;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/base_modules/overlays_module/overlay_adapters_providers.dart'
     show overlayDispatcherProvider;
 import 'package:riverpod_adapter/di/di_container.dart' show GlobalDIContainer;
-
-/// 🎛️ [OverlayWiringScope] — defines which resolvers should be wired
-enum OverlayWiringScope {
-  /// Wire only context-aware resolver (BuildContext → GlobalDI)
-  contextOnly,
-  //
-  /// Wire only global resolver (outside of BuildContext)
-  globalOnly,
-  //
-  /// Wire both resolvers (default)
-  both,
-}
-
-////
-////
 
 /// 🔌 [OverlayResolverWiring] — utility class to centralize resolver wiring.
 /// - `wire(container: ...)` attaches resolvers for the given container
