@@ -4,7 +4,7 @@ export 'base_modules/form_fields/form_fields_barrel.dart';
 export 'base_modules/localization/localization_barrel.dart';
 export 'base_modules/navigation/navigation_barrel.dart';
 export 'base_modules/overlays/overlays_barrel.dart';
-export 'base_modules/theme/theme.dart';
+export 'base_modules/theme/theme_barrel.dart';
 export 'shared_data_layer/shared_data_layer_barrel.dart';
 export 'shared_domain_layer/shared_domain_layer_barrel.dart';
 export 'shared_presentation_layer/shared_presentation_layer_barrel.dart';

@@ -28,13 +28,14 @@ final class ThemePreferences with ThemeCacheMixin {
 
   /// Returns light [ThemeData] using cache
   ThemeData buildLight() => cachedTheme(ThemeVariantsEnum.light, font);
-  // ThemeData buildLight() =>
-  //     cachedTheme(ThemeVariantsEnum.light, ThemeVariantsEnum.light.font);
 
   /// Returns dark [ThemeData] using cache
-  ThemeData buildDark() => cachedTheme(ThemeVariantsEnum.dark, font);
-  // ThemeData buildDark() => cachedTheme(theme, ThemeVariantsEnum.dark.font);
-  //
+  ThemeData buildDark() {
+    final variant = theme == ThemeVariantsEnum.amoled
+        ? ThemeVariantsEnum.amoled
+        : ThemeVariantsEnum.dark;
+    return cachedTheme(variant, font);
+  }
 
   /// Creates a copy with updated fields
   ThemePreferences copyWith({ThemeVariantsEnum? theme, AppFontFamily? font}) {

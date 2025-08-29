@@ -47,6 +47,18 @@ abstract final class AppColors {
   static const Color lightCard = Color(0xFFFFFFFF);
   static const Color lightGlassBackground = Color(0x80FFFFFF); // 50% white
 
+  /// ─────────────────────────────
+  /// 🖤 AMOLED (modern glossy Android)
+  static const Color amoledBackground = Color(0xFF000000);
+  static const Color amoledSurface = Color(0xFF0B0B0B);
+  static const Color amoledCard = Color(0xFF101010);
+  static const Color amoledOutline = Color(0xFF1E1E1E);
+  static const Color amoledPrimary = Color(0xFF00E5C3);
+  static const Color amoledAccent = Color(0xFF7C4DFF);
+  static const Color amoledOnPrimary = Color(0xFF001A17); // very dark teal/ink
+  static const Color amoledOnSurface = Color(0xFFE6E6E6);
+  static const Color amoledOnSecondary = Color(0xFFF2F2F2);
+
   /// ──────────────────
   /// 🌈 Overlay colors
   // ───────────────────
@@ -73,6 +85,11 @@ abstract final class AppColors {
   static const Color dividerLightOpacity = Color(0x1FFFFFFF); // 12% white
   static const Color snackbarLight = Color(0xFAFFFFFF); //  98%
   static const Color androidDialogShadowLight = Color(0x33000000); // ~20%
+
+  /// Translucent overlays for “gloss” effects
+  static const Color amoledOverlay = Color(0xB3000000); // 70% black
+  static const Color amoledHighlight = Color(0x26FFFFFF); // 15% white
+  static const Color amoledLowLight = Color(0x14000000); // 8% black
 
   /// ───────────────
   /// BUTTON COLORS

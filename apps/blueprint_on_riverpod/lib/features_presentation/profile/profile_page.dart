@@ -12,8 +12,6 @@ import 'package:core/base_modules/theme/ui_constants/_app_constants.dart'
     show AppSpacing;
 import 'package:core/base_modules/theme/widgets_and_utils/blur_wrapper.dart'
     show BlurContainer;
-import 'package:core/base_modules/theme/widgets_and_utils/theme_toggle_widgets/theme_picker.dart';
-import 'package:core/base_modules/theme/widgets_and_utils/theme_toggle_widgets/theme_toggler.dart';
 import 'package:core/shared_domain_layer/shared_entities/_user_entity.dart'
     show UserEntity;
 import 'package:core/shared_presentation_layer/widgets_shared/app_bar.dart';
@@ -27,6 +25,8 @@ import 'package:firebase_adapter/constants/firebase_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/base_modules/errors_handling_module/show_dialog_when_error_x.dart';
+import 'package:riverpod_adapter/base_modules/theme_module/theme_toggle_widgets/theme_picker.dart';
+import 'package:riverpod_adapter/base_modules/theme_module/theme_toggle_widgets/theme_toggler.dart';
 
 part 'widgets_for_profile_page.dart';
 

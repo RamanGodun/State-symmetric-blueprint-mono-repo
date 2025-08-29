@@ -1,3 +1,5 @@
+import 'package:bloc_adapter/base_modules/theme_module/theme_toggle_widgets/theme_picker.dart';
+import 'package:bloc_adapter/base_modules/theme_module/theme_toggle_widgets/theme_toggler.dart';
 import 'package:bloc_adapter/di/core/di.dart';
 import 'package:bloc_adapter/utils/user_auth_cubit/auth_stream_cubit.dart';
 import 'package:blueprint_on_cubit/core/base_modules/navigation/routes/app_routes.dart';
@@ -14,8 +16,6 @@ import 'package:core/base_modules/navigation/utils/extensions/navigation_x_on_co
 import 'package:core/base_modules/overlays/core/_context_x_for_overlays.dart';
 import 'package:core/base_modules/theme/ui_constants/_app_constants.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/blur_wrapper.dart';
-import 'package:core/base_modules/theme/widgets_and_utils/theme_toggle_widgets/theme_picker.dart';
-import 'package:core/base_modules/theme/widgets_and_utils/theme_toggle_widgets/theme_toggler.dart';
 import 'package:core/shared_domain_layer/shared_entities/_user_entity.dart';
 import 'package:core/shared_presentation_layer/widgets_shared/app_bar.dart';
 import 'package:core/shared_presentation_layer/widgets_shared/buttons/filled_button.dart';
@@ -49,13 +49,13 @@ final class ProfilePage extends StatelessWidget {
     // 🛑 Guard: If user is not available, return empty widget
     if (uid == null) return const SizedBox.shrink();
 
-    // щоб не тригерити loadProfile на кожен rebuild:
-    final profilecubit = context.read<ProfileCubit>();
-    if (profilecubit.state is! ProfileLoaded) {
-      profilecubit.loadProfile(uid);
+    // to avoid loadProfile triggering on each rebuild:
+    final profileCubit = context.read<ProfileCubit>();
+    if (profileCubit.state is! ProfileLoaded) {
+      profileCubit.loadProfile(uid);
     }
 
-    /// 🧩♻️ Injects [Profilecubit] and [SignOutcubit] with DI and loads profile on init
+    /// 🧩♻️ Injects [ProfileCubit] and [SignOutCubit] with DI and loads profile on init
     return BlocProvider<SignOutCubit>(
       create: (_) => di<SignOutCubit>(),
 
