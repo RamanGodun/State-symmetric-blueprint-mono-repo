@@ -5,6 +5,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 /// 🎨 [AppThemeCubit] — manages [ThemePreferences] (theme variant + font)
 /// ✅ Uses [HydratedCubit] for state persistence
+//
 final class AppThemeCubit extends HydratedCubit<ThemePreferences> {
   ///---------------------------------------------------------
   AppThemeCubit()
@@ -25,13 +26,13 @@ final class AppThemeCubit extends HydratedCubit<ThemePreferences> {
   void setThemeAndFont(ThemeVariantsEnum theme, AppFontFamily font) =>
       emit(ThemePreferences(theme: theme, font: font));
 
-  /// 💾 Serialize state to JSON for persistence
+  /// 💾 Serialize state to JSON
   @override
   Map<String, dynamic>? toJson(ThemePreferences state) {
     return {'theme': state.theme.name, 'font': state.font.name};
   }
 
-  /// 💾 Deserialize state from JSON (with legacy migration for 'sfPro')
+  /// 💾 Deserialize state from JSON (з безпечним дефолтом)
   @override
   ThemePreferences? fromJson(Map<String, dynamic> json) {
     try {
@@ -39,9 +40,12 @@ final class AppThemeCubit extends HydratedCubit<ThemePreferences> {
         (e) => e.name == json['theme'],
         orElse: () => ThemeVariantsEnum.light,
       );
-      final font = _parseFont(json['font']?.toString());
+      final font = parseAppFontFamily(
+        json['font']?.toString(),
+      ); // ⟵ спільний парсер
       return ThemePreferences(theme: theme, font: font);
-    } on Exception {
+    } on Exception catch (_) {
+      // «soft» recovery
       return const ThemePreferences(
         theme: ThemeVariantsEnum.light,
         font: AppFontFamily.inter,
@@ -49,29 +53,24 @@ final class AppThemeCubit extends HydratedCubit<ThemePreferences> {
     }
   }
 
-  /// 🔁 Legacy-safe parser for stored font names
-  static AppFontFamily _parseFont(String? raw) {
-    switch (raw) {
-      case 'sfPro': // legacy
-        return AppFontFamily.inter;
-      case 'inter':
-      case 'Inter':
-        return AppFontFamily.inter;
-      case 'montserrat':
-      case 'Montserrat':
-        return AppFontFamily.montserrat;
-      default:
-        return AppFontFamily.inter;
-    }
-  }
-
-  /// 🔁 Toggle
+  /// 🔁 Toggle light ↔ dark (як було)
   void toggleTheme() {
     final next = state.theme == ThemeVariantsEnum.dark
         ? ThemeVariantsEnum.light
         : ThemeVariantsEnum.dark;
     emit(state.copyWith(theme: next));
   }
+
+  /// 🔁 Опційно: циклічний toggle light → dark → amoled → light
+  void toggleThemeCycled() {
+    emit(state.copyWith(theme: _cycleThemeVariant(state.theme)));
+  }
+
+  ThemeVariantsEnum _cycleThemeVariant(ThemeVariantsEnum t) => switch (t) {
+    ThemeVariantsEnum.light => ThemeVariantsEnum.dark,
+    ThemeVariantsEnum.dark => ThemeVariantsEnum.amoled,
+    ThemeVariantsEnum.amoled => ThemeVariantsEnum.light,
+  };
 
   //
 }

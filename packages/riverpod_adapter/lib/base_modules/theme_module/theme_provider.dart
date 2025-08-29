@@ -39,7 +39,6 @@ final class ThemeConfigNotifier extends StateNotifier<ThemePreferences> {
 
   /// 🧩 Load saved theme from storage
   static ThemeVariantsEnum _loadTheme(GetStorage storage) {
-    //
     final stored = storage.read<String>(_themeKey);
     return ThemeVariantsEnum.values.firstWhere(
       (e) => e.name == stored,
@@ -47,59 +46,52 @@ final class ThemeConfigNotifier extends StateNotifier<ThemePreferences> {
     );
   }
 
-  /// 🔤 Load saved font (with legacy migration: 'sfPro' -> Inter)
+  /// 🔤 Load saved font (з legacy-міграцією)
   static AppFontFamily _loadFont(GetStorage storage) {
     final stored = storage.read<String>(_fontKey);
-    return _parseFont(stored);
-  }
-
-  /// 🔁 Legacy-safe parser for stored font names
-  static AppFontFamily _parseFont(String? raw) {
-    switch (raw) {
-      case 'inter':
-      case 'Inter':
-        return AppFontFamily.inter;
-      case 'montserrat':
-      case 'Montserrat':
-        return AppFontFamily.montserrat;
-      default:
-        return AppFontFamily.inter; // default
-    }
+    return parseAppFontFamily(stored); // ⟵ спільний парсер
   }
 
   /// 🌓 Update theme only
   void setTheme(ThemeVariantsEnum theme) {
-    //
     state = ThemePreferences(theme: theme, font: state.font);
     _storage.write(_themeKey, theme.name);
   }
 
-  /// 🌓 Toggles between light and dark themes
+  /// 🌓 Toggle light ↔ dark (залишає AMOLED поза циклом — як і було)
   void toggleTheme() {
     final isCurrentlyDark = state.theme.isDark;
-    // Light if dark, otherwise dark
     final nextTheme = isCurrentlyDark
         ? ThemeVariantsEnum.light
         : ThemeVariantsEnum.dark;
-    // Apply theme and persist
     setTheme(nextTheme);
+  }
+
+  /// 🌓 Опційно: циклічне перемикання light → dark → amoled → light
+  void toggleThemeCycled() {
+    setTheme(_cycleThemeVariant(state.theme));
   }
 
   /// 🔤 Update font only
   void setFont(AppFontFamily font) {
-    //
     state = ThemePreferences(theme: state.theme, font: font);
     _storage.write(_fontKey, font.name);
   }
 
   /// 🧩 Update both at once
   void setThemeAndFont(ThemeVariantsEnum theme, AppFontFamily font) {
-    //
     state = ThemePreferences(theme: theme, font: font);
     _storage
       ..write(_themeKey, theme.name)
       ..write(_fontKey, font.name);
   }
+
+  ///
+  ThemeVariantsEnum _cycleThemeVariant(ThemeVariantsEnum t) => switch (t) {
+    ThemeVariantsEnum.light => ThemeVariantsEnum.dark,
+    ThemeVariantsEnum.dark => ThemeVariantsEnum.amoled,
+    ThemeVariantsEnum.amoled => ThemeVariantsEnum.light,
+  };
 
   //
 }

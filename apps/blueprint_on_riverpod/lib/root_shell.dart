@@ -5,6 +5,10 @@ import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
     show LocaleKeys;
 import 'package:core/base_modules/overlays/core/global_overlay_handler.dart'
     show GlobalOverlayHandler;
+import 'package:core/base_modules/theme/module_core/app_theme_preferences.dart'
+    show ThemePreferences;
+import 'package:core/base_modules/theme/module_core/theme_variants.dart'
+    show ThemeVariantsEnum;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,8 +34,9 @@ final class AppLocalizationShell extends StatelessWidget {
 
 ////
 
-/// 🧩 [_AppViewShell] — Combines both Theme and Router configuration
-/// ✅ Ensures minimal rebuilds using selective `ref.watch(...)`
+/// 🌳🧩 [_AppViewShell] — reactive entry shell
+/// ✅ Listens to [themeProvider] for theme changes
+/// ✅ Keeps router instance stable across rebuilds
 //
 final class _AppViewShell extends ConsumerWidget {
   ///------------------------------------------------
@@ -40,22 +45,31 @@ final class _AppViewShell extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ///
-    // 🔀 Watch GoRouter only if instance changes
+    /// 🧭 Stable GoRouter instance (updates only if replaced in DI)
     final router = ref.watch(routerProvider);
 
-    // 🎯 Watch only theme
-    final themeConfig = ref.watch(themeProvider.select((t) => t));
+    /// 🎯 Select only precise theme dependencies
+    final themeMode = ref.watch(themeProvider.select((p) => p.mode));
+    final font = ref.watch(themeProvider.select((p) => p.font));
+    final themeVariant = ref.watch(themeProvider.select((p) => p.theme));
 
-    // 🌓 Build modes and themes based on cached methods
-    final lightTheme = themeConfig.buildLight();
-    final darkTheme = themeConfig.buildDark();
-    final themeMode = themeConfig.mode;
+    /// 🌓 Build themes through cache (without catching the whole prefs object)
+    final lightTheme = ThemePreferences(
+      theme: ThemeVariantsEnum.light,
+      font: font,
+    ).buildLight();
+
+    final darkTheme = ThemePreferences(
+      theme: themeVariant,
+      font: font,
+    ).buildDark();
+    //
 
     return _AppRootView(
+      router: router,
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: themeMode,
-      router: router,
     );
   }
 }

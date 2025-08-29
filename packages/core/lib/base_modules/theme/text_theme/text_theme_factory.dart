@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 part 'font_family_enum.dart';
+part 'font_parser.dart';
 
 /// 🧩 [TextThemeFactory] — Entry point for accessing themed [TextTheme] & [CupertinoTextThemeData]
 /// ✅ Centralized typography resolver used across both Material & Cupertino widgets

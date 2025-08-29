@@ -15,14 +15,14 @@ final class ThemeTogglerIcon extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /// 🎯 Watch current theme state
-    final prefs = ref.watch(themeProvider);
+    final isDark = ref.watch(themeProvider.select((p) => p.theme.isDark));
 
     /// 🔌 Read notifier for callback
     final notifier = ref.read(themeProvider.notifier);
 
     /// 🔌 Pass state + callback into the stateless view
     return ThemeTogglerIconView(
-      isDark: prefs.theme.isDark,
+      isDark: isDark,
       onToggle: () async => notifier.toggleTheme(),
     );
   }

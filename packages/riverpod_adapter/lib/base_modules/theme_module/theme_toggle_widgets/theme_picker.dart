@@ -16,14 +16,14 @@ final class ThemePicker extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /// 🎯 Watch current preferences from provider
-    final prefs = ref.watch(themeProvider);
+    final current = ref.watch(themeProvider.select((p) => p.theme));
 
     /// 🔌 Read notifier for callbacks
     final notifier = ref.read(themeProvider.notifier);
 
     /// 🔌 Pass state + handler into the stateless view
     return ThemePickerView(
-      current: prefs.theme,
+      current: current,
       onChanged: (ThemeVariantsEnum t) async => notifier.setTheme(t),
     );
   }

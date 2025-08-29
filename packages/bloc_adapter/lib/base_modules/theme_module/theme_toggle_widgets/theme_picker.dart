@@ -16,11 +16,13 @@ final class ThemePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /// 🎯 Watch current preferences from Cubit
-    final prefs = context.watch<AppThemeCubit>().state;
+    final current = context.select<AppThemeCubit, ThemeVariantsEnum>(
+      (c) => c.state.theme,
+    );
 
     /// 🔌 Forward state + callback into the stateless view
     return ThemePickerView(
-      current: prefs.theme,
+      current: current,
       onChanged: (ThemeVariantsEnum t) async =>
           context.read<AppThemeCubit>().setTheme(t),
     );
