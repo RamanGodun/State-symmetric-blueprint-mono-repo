@@ -90,6 +90,15 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+
+	<!-- Localization -->
+	<key>CFBundleLocalizations</key>
+	<array>
+   	<string>en</string>
+   	<string>uk</string>
+		<string>pl</string>
+	</array>
+
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
