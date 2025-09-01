@@ -36,6 +36,7 @@ dependencies:
 dev_dependencies:
   bloc_test: ^10.0.0
   # dart_code_metrics: ^5.7.6
+  flutter_launcher_icons: ^0.14.1
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.4
@@ -47,3 +48,4 @@ flutter:
     - .env.staging
   # generate: true
   uses-material-design: true
+  #

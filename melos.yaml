@@ -143,3 +143,36 @@ scripts:
 
   # ---------- Versioning (per-package releases if ever needed) ----------
   release: melos version
+
+  # --- App icons (blueprint_on_cubit) ---
+  icons:blueprint:dev:
+    melos exec --scope="blueprint_on_cubit" --concurrency=1 -- \
+    "flutter pub run flutter_launcher_icons -f pubspec_dev.yaml"
+
+  icons:blueprint:stg:
+    melos exec --scope="blueprint_on_cubit" --concurrency=1 -- \
+    "flutter pub run flutter_launcher_icons -f pubspec_stg.yaml"
+
+  icons:blueprint:all: |
+    melos run icons:blueprint:dev
+    melos run icons:blueprint:stg
+
+  # --- App icons (blueprint_on_riverpod) ---
+  icons:riverpod:dev:
+    melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- \
+    "flutter pub run flutter_launcher_icons -f pubspec_dev.yaml"
+
+  icons:riverpod:stg:
+    melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- \
+    "flutter pub run flutter_launcher_icons -f pubspec_stg.yaml"
+
+  icons:riverpod:all: |
+    melos run icons:riverpod:dev
+    melos run icons:riverpod:stg
+
+  # --- One-shot for both apps & both flavors ---
+  icons:all: |
+    melos run icons:blueprint:dev
+    melos run icons:blueprint:stg
+    melos run icons:riverpod:dev
+    melos run icons:riverpod:stg
