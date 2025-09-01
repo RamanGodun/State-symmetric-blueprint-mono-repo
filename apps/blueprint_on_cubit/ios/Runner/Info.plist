@@ -29,6 +29,7 @@
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
 	<array>
+	<!-- Firebase auto-generated URL scheme (DEV) -->
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
@@ -39,6 +40,9 @@
 				<string>app-1-215897575173-ios-c74bd68f1869763c2fb16c</string>
 			</array>
 		</dict>
+
+
+		<!-- Firebase auto-generated URL scheme (STG) -->
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
@@ -49,6 +53,19 @@
 				<string>app-1-629834199879-ios-01c03a4e19329547c91262</string>
 			</array>
 		</dict>
+
+		<!-- Firebase auto-generated URL scheme (DEV) -->
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.romangodun.blueprint_on_cubit.dev</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app-1-215897575173-ios-c74bd68f1869763c2fb16c</string>
+			</array>
+		</dict>
+
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
@@ -72,6 +89,15 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
+	<!-- Localization -->
+	<key>CFBundleLocalizations</key>
+	<array>
+   	<string>en</string>
+   	<string>uk</string>
+		<string>pl</string>
+	</array>
+
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
