@@ -170,3 +170,7 @@ scripts:
     melos run icons:blueprint:stg
     melos run icons:riverpod:dev
     melos run icons:riverpod:stg
+
+# after icons changes rundart run flutter_launcher_icons -f pubspec_dev.yaml
+# dart run flutter_launcher_icons -f pubspec_stg.yaml
+# dart run flutter_launcher_icons -f pubspec_prod.yaml

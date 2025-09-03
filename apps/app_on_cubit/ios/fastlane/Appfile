@@ -1,0 +1,4 @@
+# Заповниш пізніше, якщо потрібно для App Store Connect
+# apple_id("your-apple-id@example.com")
+# team_id("YOUR_TEAM_ID")
+# itc_team_id("YOUR_ITC_TEAM_ID")

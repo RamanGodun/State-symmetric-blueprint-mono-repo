@@ -1,0 +1,7 @@
+source "https://rubygems.org"
+
+# Ruby 3.4 виніс частину stdlib у gems — додамо ці залежності, щоб fastlane не падав
+gem "abbrev"
+gem "mutex_m"
+
+gem "fastlane"
