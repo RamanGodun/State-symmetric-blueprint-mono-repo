@@ -111,7 +111,9 @@ Checklist.md
 **/CHANGELOG.md
 package-lock.json
 node_modules
-
+ios/vendor/
+ios/vendor/bundle/
+**/vendor/
 
 
 
