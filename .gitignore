@@ -59,7 +59,7 @@ firebase_options.dart
 firebase.json
 
 # ⚫ VS Code
-.vscode/
+# .vscode/
 
 # 🟠 Xcode
 *.xcconfig

@@ -1,5 +1,4 @@
-# Uncomment this line to define a global platform for your project
-# platform :ios, '13.0'
+platform :ios, '15.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -37,7 +36,30 @@ target 'Runner' do
 end
 
 post_install do |installer|
+  # існуюче — не чіпаємо
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+    end
+  end
+
+  # 👇 Додаємо автопідстановку AppIcon per flavor на основний проект Runner
+  installer.aggregate_targets.each do |aggregate_target|
+    project = aggregate_target.user_project
+    project.targets.each do |t|
+      next unless t.name == 'Runner'
+      t.build_configurations.each do |config|
+        name = config.name.downcase
+        if name.include?('development')
+          config.build_settings['ASSETCATALOG_COMPILER_APPICON_NAME'] = 'AppIcon-dev'
+        elsif name.include?('staging')
+          config.build_settings['ASSETCATALOG_COMPILER_APPICON_NAME'] = 'AppIcon-stg'
+        else
+          config.build_settings['ASSETCATALOG_COMPILER_APPICON_NAME'] = 'AppIcon'
+        end
+      end
+    end
+    project.save
   end
 end

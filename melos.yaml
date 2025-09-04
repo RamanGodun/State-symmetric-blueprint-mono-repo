@@ -64,17 +64,17 @@ scripts:
 
   # ---------- Run (per app & flavor) ----------
 
-  # ---------- Run (Blueprint on Riverpod) ----------
-  run:rp:dev: melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- "flutter run --flavor development -t lib/main_development.dart"
-  run:rp:stg: melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- "flutter run --flavor staging     -t lib/main_staging.dart"
+  # ---------- Run (App on Riverpod) ----------
+  run:rp:dev: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter run --flavor development -t lib/main_development.dart"
+  run:rp:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter run --flavor staging     -t lib/main_staging.dart"
 
-  # ---------- Build (Blueprint on Riverpod) ----------
-  build:rp:apk:dev: melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- "flutter build apk       --flavor development -t lib/main_development.dart"
-  build:rp:aab:stg: melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- "flutter build appbundle --flavor staging     -t lib/main_staging.dart"
+  # ---------- Build (App on Riverpod) ----------
+  build:rp:apk:dev: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build apk       --flavor development -t lib/main_development.dart"
+  build:rp:aab:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build appbundle --flavor staging     -t lib/main_staging.dart"
 
   # iOS ipa (коли буде підпис)
-  build:ios:rp:dev: melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor development -t lib/main_development.dart"
-  build:ios:rp:stg: melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor staging     -t lib/main_staging.dart"
+  build:ios:rp:dev: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor development -t lib/main_development.dart"
+  build:ios:rp:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor staging     -t lib/main_staging.dart"
 
   # ---------- Run app_on_bloc ----------
   run:blueprint:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
@@ -135,13 +135,11 @@ scripts:
     melos run icons:blueprint:dev
     melos run icons:blueprint:stg
 
-  # --- App icons (blueprint_on_riverpod) ---
-  icons:riverpod:dev:
-    melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- \
+  # --- App icons (app_on_riverpod) ---
+  icons:riverpod:dev: melos exec --scope="app_on_riverpod" --concurrency=1 -- \
     "flutter pub run flutter_launcher_icons -f pubspec_dev.yaml"
 
-  icons:riverpod:stg:
-    melos exec --scope="blueprint_on_riverpod" --concurrency=1 -- \
+  icons:riverpod:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- \
     "flutter pub run flutter_launcher_icons -f pubspec_stg.yaml"
 
   icons:riverpod:all: |
@@ -155,6 +153,6 @@ scripts:
     melos run icons:riverpod:dev
     melos run icons:riverpod:stg
 
-# after icons changes rundart run flutter_launcher_icons -f pubspec_dev.yaml
+# after icons changes run:
 icons:aob:dev: melos exec --scope="app_on_bloc" -- "flutter pub run flutter_launcher_icons -f pubspec_dev.yaml"
 icons:aob:stg: melos exec --scope="app_on_bloc" -- "flutter pub run flutter_launcher_icons -f pubspec_stg.yaml"

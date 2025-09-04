@@ -3,8 +3,8 @@ include: pubspec.yaml
 flutter_launcher_icons:
   ios: true
   android: true
-  image_path: assets/icon/prod_icon.png
-  adaptive_icon_foreground: assets/icon/prod_icon_foreground.png
+  image_path: assets/icons/prod_icon.png
+  adaptive_icon_foreground: assets/icons/prod_icon.png
   adaptive_icon_background: "#FFFFFF"
   ios_assets_name: "AppIcon"
   remove_alpha_ios: true

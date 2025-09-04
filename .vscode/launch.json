@@ -1,0 +1,125 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    // ---- CUBIT ----
+    {
+      "name": "iPhone (cubit app - dev)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/app_on_bloc",
+      "program": "lib/main_development.dart",
+      "args": ["--flavor", "development"],
+      "deviceId": "BBDFD907-B7B0-4471-9B9C-A091053B81C9"
+    },
+    {
+      "name": "Android (cubit app - dev)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/app_on_bloc",
+      "program": "lib/main_development.dart",
+      "args": ["--flavor", "development"],
+      "deviceId": "emulator-5554"
+    },
+    {
+      "name": "iPhone (cubit app - stg)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/app_on_bloc",
+      "program": "lib/main_staging.dart",
+      "args": ["--flavor", "staging"],
+      "deviceId": "BBDFD907-B7B0-4471-9B9C-A091053B81C9"
+    },
+    {
+      "name": "Android (cubit app - stg)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/app_on_bloc",
+      "program": "lib/main_staging.dart",
+      "args": ["--flavor", "staging"],
+      "deviceId": "emulator-5554"
+    },
+
+    // ---- RIVERPOD ----
+    {
+      "name": "iPhone (riverpod dev)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/app_on_riverpod",
+      "program": "lib/main_development.dart",
+      "args": ["--flavor", "development"],
+      "deviceId": "BBDFD907-B7B0-4471-9B9C-A091053B81C9"
+    },
+    {
+      "name": "Android (riverpod dev)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/app_on_riverpod",
+      "program": "lib/main_development.dart",
+      "args": ["--flavor", "development"],
+      "deviceId": "emulator-5554"
+    },
+    {
+      "name": "iPhone (riverpod stg)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/app_on_riverpod",
+      "program": "lib/main_staging.dart",
+      "args": ["--flavor", "staging"],
+      "deviceId": "BBDFD907-B7B0-4471-9B9C-A091053B81C9"
+    },
+    {
+      "name": "Android (riverpod stg)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/app_on_riverpod",
+      "program": "lib/main_staging.dart",
+      "args": ["--flavor", "staging"],
+      "deviceId": "emulator-5554"
+    },
+
+    // ---- OPTIONAL: WEB & macOS for швидких перевірок ----
+    {
+      "name": "Web (riverpod dev)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/app_on_riverpod",
+      "program": "lib/main_development.dart",
+      // "toolArgs": ["--flavor", "development"],
+      "deviceId": "chrome"
+    },
+    {
+      "name": "macOS (riverpod dev)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/app_on_riverpod",
+      "program": "lib/main_development.dart",
+      // "toolArgs": ["--flavor", "development"],
+      "deviceId": "macos"
+    }
+  ],
+
+  "compounds": [
+    {
+      "name": "Cubit (all - dev)",
+      "configurations": [
+        "iPhone (cubit app - dev)",
+        "Android (cubit app - dev)"
+      ]
+    },
+    {
+      "name": "Cubit (all - stg)",
+      "configurations": [
+        "iPhone (cubit app - stg)",
+        "Android (cubit app - stg)"
+      ]
+    },
+    {
+      "name": "Riverpod (all - dev)",
+      "configurations": ["iPhone (riverpod dev)", "Android (riverpod dev)"]
+    },
+    {
+      "name": "Riverpod (all - stg)",
+      "configurations": ["iPhone (riverpod stg)", "Android (riverpod stg)"]
+    }
+  ]
+}

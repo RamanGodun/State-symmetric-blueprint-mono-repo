@@ -1,0 +1,190 @@
+{
+  // -------- Flutter/Dart UX --------
+  "dart.previewFlutterUiGuides": true,
+  "editor.foldingImportsByDefault": true,
+
+  // Less noise by default (enable manually for diagnostics)
+  "dart.showWidgetRebuilds": false,
+  "dart.showWidgetBuildTime": false,
+
+  // -------- Formatting & Fixes --------
+  // Language-scoped rules guarantee Dart formatter is used
+  "[dart]": {
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.formatOnSave": true,
+    // Format the whole file on save (more consistent than "modificationsIfAvailable")
+    "editor.formatOnSaveMode": "file",
+    // Your VS Code expects strings here; "explicit" = run only on explicit save (Cmd/Ctrl+S)
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    }
+  },
+
+  // Dart-level helpers still okay to keep
+  "dart.organizeImports": true,
+  "dart.lineLength": 120,
+  "dart.enableSuperKey": true,
+
+  // Hot reload / hot restart behavior
+  "dart.flutterHotReloadOnSave": "all",
+
+  // Auto-run `pub get` on pubspec changes
+  "dart.runPubGetOnPubspecChanges": "always",
+
+  // Dart analyzer configuration
+  "dart.analysisServerVmArgs": [
+    "--enable-asserts",
+    "--max-old-space-size=4096"
+  ],
+
+  // SDK setup: choose either PATH or FVM.
+  // If you use FVM, uncomment:
+  // "dart.flutterSdkPath": ".fvm/flutter_sdk",
+
+  // -------- Editor readability --------
+  "editor.lineHeight": 15,
+
+  // -------- File nesting --------
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "pubspec.yaml": "pubspec.lock, .packages, .metadata, analysis_options.yaml, *.iml",
+    "README.md": "*.md",
+    // Group generated files under their base .dart file
+    "*.dart": "${capture}.g.dart, ${capture}.freezed.dart, ${capture}.mocks.dart, ${capture}.gen.dart"
+  },
+
+  // -------- Performance on large repos --------
+  "files.watcherExclude": {
+    "**/.dart_tool/**": true,
+    "**/build/**": true,
+    "**/coverage/**": true,
+    "**/node_modules/**": true,
+    "**/.fvm/**": true
+  },
+  "search.exclude": {
+    "**/.dart_tool/**": true,
+    "**/build/**": true,
+    "**/coverage/**": true,
+    "**/node_modules/**": true,
+    "**/.fvm/**": true
+  },
+
+  // -------- File hygiene --------
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 500,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.eol": "\n",
+
+  // -------- Debugging UX --------
+  "debug.toolBarLocation": "docked",
+  "debug.allowBreakpointsEverywhere": true,
+
+  // -------- LSP & Analysis --------
+  "dart.useLsp": true,
+  "dart.analysisWarningsLimit": 100,
+
+  // -------- Spell checker dictionary --------
+  "cSpell.language": "en,uk,pl",
+  "cSpell.words": [
+    "автодиспозних",
+    "автодиспозного",
+    "вилогінені",
+    "випадаючого",
+    "Геттер",
+    "Гласморфізм",
+    "гласморфізмом",
+    "Дебаунс",
+    "десеріалізація",
+    "доставки",
+    "інстанс",
+    "Інтерсептори",
+    "існуючі",
+    "кастомним",
+    "Кастомні",
+    "кастомної",
+    "кодогенерації",
+    "коміти",
+    "комітів",
+    "коміту",
+    "лоадер",
+    "лоадера",
+    "лоадером",
+    "логувати",
+    "макос",
+    "мінімалістих",
+    "напр",
+    "Об’єднуй",
+    "очистіть",
+    "Очистка",
+    "папку",
+    "перерендерює",
+    "роутів",
+    "роуту",
+    "скидка",
+    "скидок",
+    "скоупи",
+    "скролу",
+    "тротл",
+    "фічі",
+    "форках",
+    "шейп",
+    "шейпу",
+    "юзер",
+    "aeonik",
+    "amannn",
+    "amoled",
+    "androiddebugkey",
+    "ASTRODES",
+    "autofocus",
+    "Bootstrapper",
+    "debouncer",
+    "Debouncers",
+    "definal",
+    "dotenv",
+    "DTOX",
+    "eithers",
+    "fdata",
+    "flutterfire",
+    "flutterhooks",
+    "Fontelico",
+    "formfield",
+    "Formz",
+    "Glassmorphic",
+    "Glassmorphism",
+    "keypass",
+    "keytool",
+    "marocchino",
+    "MEDIAQUERY",
+    "MORPHISM",
+    "MVVM",
+    "myapp",
+    "openai",
+    "opsz",
+    "Overengineering",
+    "pipefail",
+    "polski",
+    "qubit",
+    "realpath",
+    "Retryability",
+    "rivne",
+    "rxdart",
+    "storepass",
+    "Streamable",
+    "subosito",
+    "ternopil",
+    "textfields",
+    "unregisters",
+    "usecase",
+    "VAGO",
+    "wght",
+    "xcworkspace",
+    "xxxm",
+    "xxxs",
+    "xxxxl",
+    "zipcode",
+    "Zmień"
+  ]
+}
