@@ -1,0 +1,12 @@
+include: pubspec.yaml
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/icon/stg_icon.png
+  adaptive_icon_background: "#1C1C1E"
+  adaptive_icon_foreground: assets/icon/stg_icon.png
+  flavor: staging
+  remove_alpha_ios: true
+  ios_assets_name: "AppIcon-stg"
+  min_sdk_android: 23 # ?

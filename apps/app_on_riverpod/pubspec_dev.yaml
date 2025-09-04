@@ -1,0 +1,12 @@
+include: pubspec.yaml
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/icons/dev_icon.png
+  adaptive_icon_background: "#1C1C1E"
+  adaptive_icon_foreground: assets/icons/dev_icon.png
+  flavor: development
+  ios_assets_name: "AppIcon-dev"
+  remove_alpha_ios: true
+  min_sdk_android: 23

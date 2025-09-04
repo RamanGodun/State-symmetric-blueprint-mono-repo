@@ -9,7 +9,3 @@ flutter_launcher_icons:
   flavor: development
   remove_alpha_ios: true
   min_sdk_android: 21
-  #
-# flutter pub run flutter_launcher_icons:main -f pubspec_dev.yaml
-# flutter pub run flutter_launcher_icons:main -f apps/app_on_cubit/pubspec_dev.yaml
-
