@@ -120,6 +120,10 @@ scripts:
   # ---------- Versioning (per-package releases if ever needed) ----------
   release: melos version
 
+  #
+  #
+  #
+
   # --- App icons (app_on_bloc) ---
   icons:blueprint:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
     "flutter pub run flutter_launcher_icons -f pubspec_dev.yaml"
