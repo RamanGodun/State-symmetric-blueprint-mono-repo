@@ -30,7 +30,7 @@ android {
     defaultConfig {
         applicationId = "com.example.verygoodcore.app_on_bloc"
 
-        minSdk = maxOf(23, flutter.minSdkVersion)
+        minSdk = maxOf(24, flutter.minSdkVersion)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

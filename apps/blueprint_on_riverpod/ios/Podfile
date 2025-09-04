@@ -56,7 +56,6 @@ post_install do |installer|
         elsif name.include?('staging')
           config.build_settings['ASSETCATALOG_COMPILER_APPICON_NAME'] = 'AppIcon-stg'
         else
-          # production / інші
           config.build_settings['ASSETCATALOG_COMPILER_APPICON_NAME'] = 'AppIcon'
         end
       end

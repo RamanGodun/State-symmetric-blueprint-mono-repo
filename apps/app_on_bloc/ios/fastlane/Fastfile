@@ -1,0 +1,42 @@
+default_platform(:ios)
+
+# ⬇️ Це важливо для Bundler
+require 'bundler'
+
+platform :ios do
+  # helper: тимчасово відв’язати команди від bundler-ENV
+  def in_clean_env(&block)
+    if defined?(Bundler)
+      Bundler.with_unbundled_env { yield }
+    else
+      yield
+    end
+  end
+
+  # корінь Flutter-проєкту (на рівень вище за ios/)
+  ROOT = File.expand_path('..', __dir__)
+
+  desc "Build iOS (Development flavor)"
+  lane :dev do
+    in_clean_env do
+      sh "cd #{ROOT} && flutter clean"
+      sh "cd #{ROOT} && flutter pub get"
+      sh "cd #{ROOT}/ios && pod install"
+      # діагностика: переконайся, що береться pod з rbenv
+      sh "which pod && pod --version && ruby -v"
+      sh "cd #{ROOT} && flutter build ios --flavor development -t lib/main_development.dart"
+    end
+  end
+
+  desc "Build iOS (Staging flavor)"
+  lane :stg do
+    in_clean_env do
+      sh "cd #{ROOT} && flutter clean"
+      sh "cd #{ROOT} && flutter pub get"
+      sh "cd #{ROOT}/ios && pod install"
+      # діагностика
+      sh "which pod && pod --version && ruby -v"
+      sh "cd #{ROOT} && flutter build ios --flavor staging -t lib/main_staging.dart"
+    end
+  end
+end
