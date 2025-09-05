@@ -61,9 +61,10 @@ extension ThemeVariantX on ThemeVariantsEnum {
               : colorScheme.primary.withOpacity(isDark ? 0.37 : 0.72),
           foregroundColor: colorScheme.onPrimary,
           disabledBackgroundColor: isAmoled
-              ? const Color(0x24000000) // ~14% чорного
+              ? AppColors.black5
               : (isDark ? AppColors.white10 : AppColors.black12),
-          disabledForegroundColor: AppColors.white24,
+          // disabledForegroundColor: AppColors.white24,
+          disabledForegroundColor: colorScheme.onSurface.withOpacity(0.38),
           surfaceTintColor: isAmoled
               ? Colors.transparent
               : AppColors.transparent,

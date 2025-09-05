@@ -60,10 +60,10 @@ final class _AppViewShell extends StatelessWidget {
           router: router,
 
           /// 🌞 Light theme always based on [light] + current font
-          lightTheme: const ThemePreferences(
+          lightTheme: ThemePreferences(
             theme: ThemeVariantsEnum.light,
-            font: AppFontFamily.inter,
-          ).copyWith(font: font).buildLight(),
+            font: font,
+          ).buildLight(),
 
           /// 🌙 Dark/AMOLED based on current variant
           darkTheme: prefs.buildDark(),
