@@ -1,12 +1,4 @@
-import 'package:core/base_modules/errors_management.dart'
-    show Consumable, ConsumableX, Failure, FailureLogger, ResultHandler;
-import 'package:core/base_modules/forms.dart'
-    show
-        ConfirmPasswordInputValidation,
-        FormValidationService,
-        FormzStatusX,
-        PasswordInputValidation;
-import 'package:core/utils.dart' show AppDurations, Debouncer;
+import 'package:core/core.dart';
 import 'package:equatable/equatable.dart';
 import 'package:features/features.dart' show PasswordRelatedUseCases;
 import 'package:flutter/foundation.dart' show debugPrint;

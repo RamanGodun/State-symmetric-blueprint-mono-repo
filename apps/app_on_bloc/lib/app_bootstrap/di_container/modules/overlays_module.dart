@@ -1,5 +1,4 @@
-import 'package:app_on_bloc/app_bootstrap/di_container/modules/theme_module.dart'
-    show ThemeModule;
+import 'package:app_on_bloc/app_bootstrap/di_container/modules/theme_module.dart';
 import 'package:bloc_adapter/bloc_adapter.dart'
     show
         BlocOverlayActivityPort,

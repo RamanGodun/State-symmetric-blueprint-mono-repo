@@ -1,10 +1,5 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:core/base_modules/localization.dart'
-    show LocaleKeys, TextType, TextWidget;
-import 'package:core/base_modules/navigation.dart';
-import 'package:core/base_modules/ui_design.dart' show AppSpacing;
-import 'package:core/shared_layers/presentation.dart' show CustomAppBar;
-import 'package:core/utils.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
 /// 🏠 [HomePage] — the main landing screen after login.

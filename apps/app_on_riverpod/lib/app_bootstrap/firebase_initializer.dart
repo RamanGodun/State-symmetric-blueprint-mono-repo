@@ -1,7 +1,5 @@
-import 'package:app_bootstrap/app_bootstrap.dart'
-    show EnvConfig, EnvFileName, FlavorConfig, IRemoteDataBase;
-import 'package:firebase_adapter/firebase_adapter.dart'
-    show EnvLoader, FirebaseEnvOptions, FirebaseInitGuard;
+import 'package:app_bootstrap/app_bootstrap.dart';
+import 'package:firebase_adapter/firebase_adapter.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 
 /// 🧩🔥 [FirebaseRemoteDataBase] — Current implementation of [IRemoteDataBase], with Firebase+Env initialization logic

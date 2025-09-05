@@ -1,17 +1,6 @@
-import 'package:core/base_modules/errors_management.dart'
-    show Consumable, Failure;
-import 'package:core/base_modules/forms.dart'
-    show EmailInputValidation, PasswordInputValidation;
-import 'package:core/core.dart'
-    show
-        AppDurations,
-        ConsumableX,
-        Debouncer,
-        FailureLogger,
-        FormValidationService,
-        ResultHandler;
+import 'package:core/core.dart';
 import 'package:equatable/equatable.dart';
-import 'package:features/features.dart' show SignInUseCase;
+import 'package:features/features.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 

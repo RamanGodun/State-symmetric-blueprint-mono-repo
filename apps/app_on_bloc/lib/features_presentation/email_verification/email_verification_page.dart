@@ -1,19 +1,10 @@
-import 'package:app_on_bloc/app_bootstrap/di_container/modules/firebase_module.dart';
-import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart'
-    show RoutesNames;
-import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_cubit/sign_out_cubit.dart'
-    show SignOutCubit, SignOutState, SignOutStatus;
+import 'package:app_on_bloc/app_bootstrap/di_container/modules/firebase_module.dart'
+    show kFbAuthInstance;
+import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart';
+import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';
 import 'package:app_on_bloc/features_presentation/email_verification/email_verification_cubit/email_verification_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart' show di;
-import 'package:core/base_modules/errors_management.dart';
-import 'package:core/base_modules/localization.dart'
-    show LocaleKeys, TextType, TextWidget;
-import 'package:core/base_modules/navigation.dart';
-import 'package:core/base_modules/overlays.dart';
-import 'package:core/base_modules/ui_design.dart';
-import 'package:core/shared_layers/presentation.dart'
-    show AppLoader, AppTextButton;
-import 'package:core/utils.dart';
+import 'package:bloc_adapter/bloc_adapter.dart';
+import 'package:core/core.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseAuth;
 import 'package:flutter/material.dart';

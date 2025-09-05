@@ -4,8 +4,7 @@ import 'package:app_on_riverpod/features_presentation/password_changing_or_reset
 import 'package:core/core.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart' show HookConsumerWidget;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart';
 
 part 'widgets_for_reset_password_page.dart';

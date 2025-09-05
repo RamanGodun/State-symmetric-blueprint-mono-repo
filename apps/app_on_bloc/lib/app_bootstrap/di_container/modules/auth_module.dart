@@ -1,12 +1,9 @@
 import 'package:app_on_bloc/app_bootstrap/di_container/modules/firebase_module.dart';
 import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart'
-    show AuthCubit, DIModule, SafeRegistration, di;
-import 'package:core/utils.dart' show AuthGateway;
-import 'package:features/features_barrels/auth/auth.dart';
-import 'package:features/features_barrels/auth/auth_infra.dart';
-import 'package:firebase_adapter/firebase_adapter.dart'
-    show FirebaseAuth, FirebaseAuthGateway, UsersCollection;
+import 'package:bloc_adapter/bloc_adapter.dart';
+import 'package:core/core.dart';
+import 'package:features/features.dart';
+import 'package:firebase_adapter/firebase_adapter.dart';
 
 ///
 final class AuthModule implements DIModule {

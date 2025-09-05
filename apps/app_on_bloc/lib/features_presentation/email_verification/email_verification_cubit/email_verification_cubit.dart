@@ -1,11 +1,9 @@
-import 'dart:async';
+import 'dart:async' show Timer;
 
-import 'package:core/base_modules/errors_management.dart'
-    show Consumable, ConsumableX, EmailVerificationTimeoutFailureType, Failure;
-import 'package:core/utils.dart' show AppDurations;
+import 'package:core/core.dart';
 import 'package:equatable/equatable.dart';
-import 'package:features/features.dart' show EmailVerificationUseCase;
-import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseUser;
+import 'package:features/features_barrels/email_verification/email_verification.dart';
+import 'package:firebase_adapter/firebase_adapter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'email_verification_state.dart';

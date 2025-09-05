@@ -1,24 +1,10 @@
-import 'package:app_on_riverpod/core/base_modules/navigation/module_core/go_router_factory.dart'
-    show buildGoRouter;
-import 'package:app_on_riverpod/core/base_modules/navigation/module_core/router_provider.dart'
-    show goRouter;
-import 'package:core/base_modules/overlays.dart' show OverlayDispatcher;
-import 'package:firebase_adapter/firebase_adapter.dart'
-    show FirebaseAuthGateway, FirebaseRefs;
+import 'package:app_on_riverpod/core/base_modules/navigation/module_core/go_router_factory.dart';
+import 'package:app_on_riverpod/core/base_modules/navigation/module_core/router_provider.dart';
+import 'package:core/core.dart';
+import 'package:firebase_adapter/firebase_adapter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_storage/get_storage.dart' show GetStorage;
-import 'package:riverpod_adapter/riverpod_adapter.dart'
-    show
-        IDIConfig,
-        ProviderDebugObserver,
-        RiverpodOverlayActivityPort,
-        ThemeConfigNotifier,
-        authGatewayProvider,
-        firebaseAuthProvider,
-        overlayDispatcherProvider,
-        themeProvider,
-        themeStorageProvider,
-        usersCollectionProvider;
+import 'package:get_storage/get_storage.dart';
+import 'package:riverpod_adapter/riverpod_adapter.dart';
 
 /// 🛠️ [DIConfiguration] — default DI setup for the app runtime
 /// Wires core subsystems (theme, routing, overlays) and feature stacks (auth/profile).

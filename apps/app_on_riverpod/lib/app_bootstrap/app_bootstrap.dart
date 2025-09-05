@@ -1,5 +1,4 @@
-import 'package:app_bootstrap/app_bootstrap.dart'
-    show IAppBootstrap, ILocalStorage, IRemoteDataBase, PlatformValidationUtil;
+import 'package:app_bootstrap/app_bootstrap.dart';
 import 'package:app_on_riverpod/app_bootstrap/di_config_sync.dart';
 import 'package:app_on_riverpod/app_bootstrap/firebase_initializer.dart';
 import 'package:app_on_riverpod/app_bootstrap/local_storage_init.dart';
@@ -9,8 +8,7 @@ import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/material.dart' show WidgetsFlutterBinding;
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_adapter/riverpod_adapter.dart'
-    show GlobalDIContainer, IDIConfig, OverlayResolverWiring;
+import 'package:riverpod_adapter/riverpod_adapter.dart';
 
 /// 🧰 [DefaultAppBootstrap] — Handles all critical bootstrapping (with injectable stacks for testing/mocks).
 //

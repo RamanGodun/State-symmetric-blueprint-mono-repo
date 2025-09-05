@@ -1,12 +1,10 @@
 import 'package:app_on_bloc/app_bootstrap/di_container/modules/auth_module.dart';
 import 'package:app_on_bloc/app_bootstrap/di_container/modules/firebase_module.dart';
 import 'package:app_on_bloc/features_presentation/email_verification/email_verification_cubit/email_verification_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart'
-    show DIModule, SafeDispose, SafeRegistration, di;
-import 'package:core/utils.dart' show AuthGateway;
-import 'package:features/features_barrels/email_verification/email_verification.dart';
-import 'package:features/features_barrels/email_verification/email_verification_infra.dart';
-import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseAuth;
+import 'package:bloc_adapter/bloc_adapter.dart';
+import 'package:core/core.dart';
+import 'package:features/features.dart';
+import 'package:firebase_adapter/firebase_adapter.dart';
 
 ///
 final class EmailVerificationModule implements DIModule {

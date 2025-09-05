@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:core/base_modules/errors_management.dart';
-import 'package:core/shared_layers/domain.dart' show UserEntity;
+import 'package:core/core.dart';
 import 'package:features/features.dart' show FetchProfileUseCase;
 import 'package:flutter_bloc/flutter_bloc.dart';
 

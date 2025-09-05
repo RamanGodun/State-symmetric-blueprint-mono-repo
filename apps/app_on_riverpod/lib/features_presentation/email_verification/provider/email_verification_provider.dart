@@ -4,8 +4,7 @@ import 'package:core/core.dart';
 import 'package:features/features.dart' show EmailVerificationUseCase;
 import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseRefs;
 import 'package:flutter/foundation.dart' show debugPrint;
-import 'package:riverpod_adapter/riverpod_adapter.dart'
-    show SafeAsyncState, authGatewayProvider, emailVerificationUseCaseProvider;
+import 'package:riverpod_adapter/riverpod_adapter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'email_verification_provider.g.dart';

@@ -1,10 +1,7 @@
-import 'package:app_on_bloc/app_bootstrap/di_container/modules/firebase_module.dart'
-    show FirebaseModule, kFbAuthInstance;
-import 'package:bloc_adapter/bloc_adapter.dart'
-    show DIModule, SafeRegistration, di;
-import 'package:features/features_barrels/password_changing_or_reset/password_changing_or_reset.dart';
-import 'package:features/features_barrels/password_changing_or_reset/password_changing_or_reset_infra.dart';
-import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseAuth;
+import 'package:app_on_bloc/app_bootstrap/di_container/modules/firebase_module.dart';
+import 'package:bloc_adapter/bloc_adapter.dart';
+import 'package:features/features.dart';
+import 'package:firebase_adapter/firebase_adapter.dart';
 
 /// 🔐 [PasswordModule] — Registers dependencies for password-related features
 /// ⛓️ Depends on [FirebaseModule] to get `FirebaseAuth` instance via DI.
