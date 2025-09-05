@@ -34,7 +34,6 @@ final class ThemePickerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = Localizations.localeOf(context);
-    final showUserBanner = context.showUserBanner;
 
     return DropdownButton<ThemeVariantsEnum>(
       key: ValueKey(locale.languageCode),
@@ -44,6 +43,7 @@ final class ThemePickerView extends StatelessWidget {
 
       /// 🔄 User picked a theme
       onChanged: (ThemeVariantsEnum? selected) async {
+        final showUserBanner = context.showUserBanner;
         if (selected == null) return;
         await onChanged(selected);
 

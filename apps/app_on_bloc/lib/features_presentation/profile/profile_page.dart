@@ -5,7 +5,7 @@ import 'package:app_on_bloc/features_presentation/profile/cubit/profile_page_cub
 import 'package:bloc_adapter/base_modules/theme_module/theme_toggle_widgets/theme_picker.dart';
 import 'package:bloc_adapter/base_modules/theme_module/theme_toggle_widgets/theme_toggler.dart';
 import 'package:bloc_adapter/di/core/di.dart';
-import 'package:bloc_adapter/utils/user_auth_cubit/auth_stream_cubit.dart';
+import 'package:bloc_adapter/utils/user_auth_cubit/auth_cubit.dart';
 import 'package:cached_network_image/cached_network_image.dart'
     show CachedNetworkImage;
 import 'package:core/base_modules/errors_handling/core_of_module/failure_ui_mapper.dart';

@@ -101,41 +101,61 @@ final class OverlayDispatcher {
     if (_isProcessing || _queue.isEmpty) return;
     _isProcessing = true;
     //
-    final item = _queue.removeFirst();
-    _activeRequest = item.request;
-    //
-    /// 🧠 Notify listeners overlay is shown
-    // onOverlayStateChanged?.call(isActive: true);
-    _notify(true);
-    //
-    final widget = item.request.buildWidget();
-    //
-    /// 🧠 Apply centralized dismiss handling if AnimatedOverlayWrapper is used
-    final processedWidget = widget.withDispatcherOverlayControl(
-      onDismiss: () async {
-        OverlayLogger.autoDismissed(_activeRequest);
-        _activeRequest?.onAutoDismissed();
-        await dismissCurrent(force: true);
+    try {
+      final item = _queue.removeFirst();
+      _activeRequest = item.request;
+      //
+      /// 🧠 Notify listeners overlay is shown
+      // onOverlayStateChanged?.call(isActive: true);
+      _notify(true);
+      //
+      final widget = item.request.buildWidget();
+      //
+      /// 🧠 Apply centralized dismiss handling if AnimatedOverlayWrapper is used
+      final processedWidget = widget.withDispatcherOverlayControl(
+        onDismiss: () async {
+          OverlayLogger.autoDismissed(_activeRequest);
+          _activeRequest?.onAutoDismissed();
+          await dismissCurrent(force: true);
+          _isProcessing = false;
+          _tryProcessQueue();
+        },
+      );
+      //
+      /// Inserts new OverlayEntry with tap-through barrier.
+      _activeEntry = OverlayEntry(
+        builder: (ctx) => TapThroughOverlayBarrier(
+          enablePassthrough: item.request.tapPassthroughEnabled,
+          onTapOverlay: () {
+            if (item.request.dismissPolicy ==
+                OverlayDismissPolicy.dismissible) {
+              dismissCurrent();
+            }
+          },
+          child: processedWidget,
+        ),
+      );
+      //
+      item.overlay.insert(_activeEntry!);
+      OverlayLogger.inserted(_activeRequest);
+    } on Object catch (e, stack) {
+      OverlayLogger.dismissAnimationError(
+        _activeRequest,
+        error: e,
+        stackTrace: stack,
+      );
+      // ensure we don’t stick in a busy state
+      _activeEntry = null;
+      _activeRequest = null;
+      _notify(false);
+    } finally {
+      // do not reset here on normal path: onDismiss handler advances the queue.
+      // but if there was nothing inserted (caught above), allow processing to continue
+      if (_activeEntry == null) {
         _isProcessing = false;
         _tryProcessQueue();
-      },
-    );
-    //
-    /// Inserts new OverlayEntry with tap-through barrier.
-    _activeEntry = OverlayEntry(
-      builder: (ctx) => TapThroughOverlayBarrier(
-        enablePassthrough: item.request.tapPassthroughEnabled,
-        onTapOverlay: () {
-          if (item.request.dismissPolicy == OverlayDismissPolicy.dismissible) {
-            dismissCurrent();
-          }
-        },
-        child: processedWidget,
-      ),
-    );
-    //
-    item.overlay.insert(_activeEntry!);
-    OverlayLogger.inserted(_activeRequest);
+      }
+    }
   }
   //
 

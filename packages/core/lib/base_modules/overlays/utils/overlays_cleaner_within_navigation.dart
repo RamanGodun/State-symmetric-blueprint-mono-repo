@@ -1,57 +1,55 @@
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
 import 'package:core/base_modules/overlays/utils/ports/overlay_dispatcher_locator.dart'
     show resolveOverlayDispatcherGlobal;
-import 'package:flutter/scheduler.dart' show SchedulerBinding;
 import 'package:flutter/widgets.dart';
 
-/// 🧭 [OverlaysCleanerWithinNavigation] — Clears all overlays on navigation events
-/// ✅ Ensures that overlays (banners, snackbars, dialogs) are cleared
-///    whenever navigation stack changes, preventing “overlay leakage” across screens.
-/// ✅ Works with GoRouter, Navigator 2.0, or traditional Navigator
+/// 🧭 [OverlaysCleanerWithinNavigation] — Navigator observer that resets overlays
+/// ✅ Ensures overlays (banners, dialogs, snackbars) never "leak" between screens
+/// ✅ Clears only on page-level transitions (push/pop/remove/replace)
+/// ❌ Ignores popup routes (dropdowns, dialogs) — avoids killing useful banners
 //
 final class OverlaysCleanerWithinNavigation extends NavigatorObserver {
-  ///--------------------------------------------------------
+  ///---------------------------------------------------------------
   OverlaysCleanerWithinNavigation();
 
-  /// 📦 Reference to the overlay dispatcher (via DI)
-  OverlayDispatcher get _overlaysDispatcher => resolveOverlayDispatcherGlobal();
+  /// 📦 Reference to global overlay dispatcher (wired via DI)
+  OverlayDispatcher get _dispatcher => resolveOverlayDispatcherGlobal();
 
-  ////
+  /// 🔎 Filter: only clear overlays when real page routes are changing
+  bool _isPageLevel(Route<dynamic>? r) => r is PageRoute;
 
-  /// 🧹 Schedule overlay cleanup after the frame is committed
-  /// Avoids modifying UI during build/transition phase.
-  void _deferClear() {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      _overlaysDispatcher.dismissCurrent(force: true, clearQueue: true);
-    });
+  /// 🧹 Safely clears queued overlays (but never kills the current one)
+  void _maybeClearQueue(Route<dynamic>? r) {
+    if (!_isPageLevel(r)) return;
+    _dispatcher.clearAll();
   }
 
-  /// 🔁 Triggered after a new route is pushed
+  /// 🔁 Fired when a new route is pushed onto the stack
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
-    _deferClear();
+    _maybeClearQueue(route);
   }
 
-  /// 🔁 Triggered after a route is popped
+  /// 🔁 Fired when a route is popped off the stack
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPop(route, previousRoute);
-    _deferClear();
+    _maybeClearQueue(route); // Important: check popped route, not previous
   }
 
-  /// 🔁 Triggered when a route is removed
+  /// 🔁 Fired when a route is removed without completion
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didRemove(route, previousRoute);
-    _deferClear();
+    _maybeClearQueue(route);
   }
 
-  /// 🔁 Triggered when a route is replaced
+  /// 🔁 Fired when a route is replaced
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    _deferClear();
+    _maybeClearQueue(newRoute);
   }
 
   //

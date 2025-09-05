@@ -65,9 +65,17 @@ abstract final class OverlayLogger {
   }
 
   /// ❗ Called when dismiss animation fails
-  static void dismissAnimationError(OverlayUIEntry? entry) {
+  static void dismissAnimationError(
+    OverlayUIEntry? entry, {
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
     final type = entry?.runtimeType.toString() ?? 'Unknown';
-    debugPrint('[Overlay][$type] ❌ Failed to reverse dismiss animation.');
+    _printWithErrorPrefix(
+      prefix: '[Overlay][$type] ❌ Failed to reverse dismiss animation',
+      error: error,
+      stackTrace: stackTrace,
+    );
   }
 
   /// ⏳ Called when overlay is auto-dismissed (e.g., timeout)
@@ -80,6 +88,25 @@ abstract final class OverlayLogger {
       'category: ${strategy?.category.name ?? 'n/a'}, '
       'policy: ${strategy?.policy.name ?? 'n/a'}',
     );
+  }
+
+  ////
+
+  /// Helper to print a base message + optional error/stack details.
+  static void _printWithErrorPrefix({
+    required String prefix,
+    String? body,
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
+    final base = (body == null || body.isEmpty) ? prefix : '$prefix → $body';
+    if (error == null && stackTrace == null) {
+      debugPrint(base);
+      return;
+    }
+    final errLine = error == null ? '' : '\n  error: $error';
+    final stLine = stackTrace == null ? '' : '\n  stackTrace: $stackTrace';
+    debugPrint('$base$errLine$stLine');
   }
 
   //
