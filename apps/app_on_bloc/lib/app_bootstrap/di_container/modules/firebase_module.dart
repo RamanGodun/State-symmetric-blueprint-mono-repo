@@ -1,7 +1,6 @@
 import 'package:bloc_adapter/bloc_adapter.dart'
     show DIModule, SafeRegistration, di;
-import 'package:features/profile/data/remote_database_contract.dart';
-import 'package:features/profile/data/remote_database_impl.dart';
+import 'package:features/features_barrels/profile/profile_infra.dart';
 import 'package:firebase_adapter/constants/firebase_constants.dart';
 import 'package:firebase_adapter/firebase_typedefs.dart'
     show FirebaseAuth, UsersCollection;

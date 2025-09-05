@@ -5,9 +5,7 @@ import 'package:core/base_modules/errors_handling/core_of_module/failure_type.da
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
     show LocaleKeys;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:features/password_changing_or_reset/domain/password_actions_use_case.dart'
-    show PasswordRelatedUseCases;
-// import '../../../../../core/base_modules/errors_handling/extensible_part/failure_types/_failure_codes.dart';
+import 'package:features/features.dart' show PasswordRelatedUseCases;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/features_providers/password_changing_or_reset/domain_layer_providers/use_cases_provider.dart'
     show passwordUseCasesProvider;

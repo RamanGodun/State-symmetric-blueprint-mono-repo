@@ -1,13 +1,10 @@
-import 'package:features/auth/data/auth_repo_implementations/sign_in_repo_impl.dart';
-import 'package:features/auth/data/auth_repo_implementations/sign_out_repo_impl.dart';
-import 'package:features/auth/data/auth_repo_implementations/sign_up_repo_impl.dart';
-import 'package:features/auth/data/remote_database_contract.dart';
-import 'package:features/auth/data/remote_database_impl.dart';
-import 'package:features/auth/domain/repo_contracts.dart';
+import 'package:features/features_barrels/auth/auth.dart';
+import 'package:features/features_barrels/auth/auth_infra.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/utils/auth/firebase_providers.dart'
     show firebaseAuthProvider, usersCollectionProvider;
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart'
+    show Riverpod, riverpod;
 
 part 'data_layer_providers.g.dart';
 

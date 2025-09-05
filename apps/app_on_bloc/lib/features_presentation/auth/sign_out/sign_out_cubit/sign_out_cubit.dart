@@ -6,7 +6,7 @@ import 'package:core/base_modules/errors_handling/core_of_module/core_utils/spec
 import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
     show Failure;
 import 'package:equatable/equatable.dart';
-import 'package:features/auth/domain/use_cases/sign_out.dart';
+import 'package:features/features.dart' show SignOutUseCase;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'sign_out_state.dart';

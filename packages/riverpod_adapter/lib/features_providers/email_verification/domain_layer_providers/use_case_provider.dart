@@ -1,4 +1,4 @@
-import 'package:features/email_verification/domain/email_verification_use_case.dart';
+import 'package:features/features.dart' show EmailVerificationUseCase;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/features_providers/email_verification/data_layer_providers/data_layer_providers.dart'
     show emailVerificationRepoProvider;

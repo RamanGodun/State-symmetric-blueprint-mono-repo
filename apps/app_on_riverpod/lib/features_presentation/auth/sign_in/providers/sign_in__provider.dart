@@ -1,4 +1,4 @@
-import 'package:features/auth/domain/use_cases/sign_in.dart' show SignInUseCase;
+import 'package:features/features.dart' show SignInUseCase;
 import 'package:riverpod_adapter/features_providers/auth/domain_layer_providers/use_cases_providers.dart'
     show signInUseCaseProvider;
 import 'package:riverpod_adapter/utils/safe_async_state.dart';

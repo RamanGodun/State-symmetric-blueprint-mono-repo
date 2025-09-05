@@ -1,7 +1,5 @@
-import 'package:features/password_changing_or_reset/data/password_actions_repo_impl.dart';
-import 'package:features/password_changing_or_reset/data/remote_database_contract.dart';
-import 'package:features/password_changing_or_reset/data/remote_database_impl.dart';
-import 'package:features/password_changing_or_reset/domain/repo_contract.dart';
+import 'package:features/features_barrels/password_changing_or_reset/password_changing_or_reset.dart';
+import 'package:features/features_barrels/password_changing_or_reset/password_changing_or_reset_infra.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/utils/auth/firebase_providers.dart'
     show firebaseAuthProvider;

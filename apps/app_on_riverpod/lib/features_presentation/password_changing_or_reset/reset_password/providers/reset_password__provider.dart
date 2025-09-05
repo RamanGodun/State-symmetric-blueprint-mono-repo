@@ -1,7 +1,6 @@
 import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
     show Failure;
-import 'package:features/password_changing_or_reset/domain/password_actions_use_case.dart'
-    show PasswordRelatedUseCases;
+import 'package:features/features.dart' show PasswordRelatedUseCases;
 import 'package:riverpod_adapter/features_providers/password_changing_or_reset/domain_layer_providers/use_cases_provider.dart'
     show passwordUseCasesProvider;
 import 'package:riverpod_adapter/utils/safe_async_state.dart';

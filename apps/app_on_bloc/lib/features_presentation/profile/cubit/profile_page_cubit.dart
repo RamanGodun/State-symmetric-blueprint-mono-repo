@@ -7,7 +7,7 @@ import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.
     show Failure;
 import 'package:core/shared_domain_layer/shared_entities/_user_entity.dart'
     show UserEntity;
-import 'package:features/profile/domain/fetch_profile_use_case.dart';
+import 'package:features/features.dart' show FetchProfileUseCase;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'profile_page_state.dart';

@@ -3,15 +3,8 @@ import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_cubit/s
 import 'package:bloc_adapter/bloc_adapter.dart'
     show AuthCubit, DIModule, SafeRegistration, di;
 import 'package:core/utils_shared/auth/auth_gateway.dart';
-import 'package:features/auth/data/auth_repo_implementations/sign_in_repo_impl.dart';
-import 'package:features/auth/data/auth_repo_implementations/sign_out_repo_impl.dart';
-import 'package:features/auth/data/auth_repo_implementations/sign_up_repo_impl.dart';
-import 'package:features/auth/data/remote_database_contract.dart';
-import 'package:features/auth/data/remote_database_impl.dart';
-import 'package:features/auth/domain/repo_contracts.dart';
-import 'package:features/auth/domain/use_cases/sign_in.dart';
-import 'package:features/auth/domain/use_cases/sign_out.dart';
-import 'package:features/auth/domain/use_cases/sign_up.dart';
+import 'package:features/features_barrels/auth/auth.dart';
+import 'package:features/features_barrels/auth/auth_infra.dart';
 import 'package:firebase_adapter/firebase_typedefs.dart'
     show FirebaseAuth, UsersCollection;
 import 'package:firebase_adapter/gateways/firebase_auth_gateway.dart';

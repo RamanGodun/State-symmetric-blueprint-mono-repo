@@ -15,7 +15,7 @@ import 'package:core/utils_shared/timing_control/debouncer.dart' show Debouncer;
 import 'package:core/utils_shared/timing_control/timing_config.dart'
     show AppDurations;
 import 'package:equatable/equatable.dart';
-import 'package:features/password_changing_or_reset/domain/password_actions_use_case.dart';
+import 'package:features/features.dart' show PasswordRelatedUseCases;
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';

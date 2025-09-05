@@ -41,21 +41,64 @@ import 'package:features/features_barrel.dart';
 
 ```
 features/lib
-├─ README (this file)
+├─ features.dart                                 # 🌐 Root barrel (one extra API)
 │
-├─ features_barrel.dart
+├─ features_barrels/                             # 🧰 Public barrels per feature
+│  ├─ auth/
+│  │   ├─ auth.dart                              #   Domain API: contracts + use cases
+│  │   └─ auth_infra.dart                        #   Infra API: repo + remote DB
+│  ├─ email_verification/
+│  │   ├─ email_verification.dart                #   Domain API
+│  │   └─ email_verification_infra.dart          #   Infra API
+│  ├─ password_changing_or_reset/
+│  │   ├─ password_changing_or_reset.dart        #   Domain API
+│  │   └─ password_changing_or_reset_infra.dart  #   Infra API
+│  └─ profile/
+│      ├─ profile.dart                           #   Domain API
+│      └─ profile_infra.dart                     #   Infra API
 │
-├─ auth/
-│   └─ auth_feature_barrel.dart
-│
-├─ email_verification/
-│   └─ email_verification_feature_barrel.dart
-│
-├─ password_changing_or_reset/
-│   └─ password_changing_or_reset_feature_barrel.dart
-│
-└─ profile/
-    └─ profile_feature_barrel.dart
+└─ src/                                          # 🧱 Internal sources (not for export)
+   ├─ auth/
+   │  ├─ domain/
+   │  │   ├─ repo_contracts.dart                 #     Domain contracts
+   │  │   └─ use_cases/
+   │  │       ├─ sign_in.dart
+   │  │       ├─ sign_out.dart
+   │  │       └─ sign_up.dart
+   │  └─ data/
+   │      ├─ remote_database_contract.dart
+   │      ├─ remote_database_impl.dart
+   │      └─ auth_repo_implementations/
+   │          ├─ sign_in_repo_impl.dart
+   │          ├─ sign_out_repo_impl.dart
+   │          └─ sign_up_repo_impl.dart
+   │
+   ├─ email_verification/
+   │  ├─ domain/
+   │  │   ├─ email_verification_use_case.dart
+   │  │   └─ repo_contract.dart
+   │  └─ data/
+   │      ├─ remote_database_contract.dart
+   │      ├─ remote_database_impl.dart
+   │      └─ email_verification_repo_impl.dart
+   │
+   ├─ password_changing_or_reset/
+   │  ├─ domain/
+   │  │   ├─ password_actions_use_case.dart
+   │  │   └─ repo_contract.dart
+   │  └─ data/
+   │      ├─ remote_database_contract.dart
+   │      ├─ remote_database_impl.dart
+   │      └─ password_actions_repo_impl.dart
+   │
+   └─ profile/
+      ├─ domain/
+      │   ├─ fetch_profile_use_case.dart
+      │   └─ repo_contract.dart
+      └─ data/
+          ├─ remote_database_contract.dart
+          ├─ remote_database_impl.dart
+          └─ implementation_of_profile_fetch_repo.dart
 ```
 
 ---

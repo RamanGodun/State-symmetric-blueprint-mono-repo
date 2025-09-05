@@ -19,7 +19,7 @@ import 'package:core/utils_shared/timing_control/debouncer.dart' show Debouncer;
 import 'package:core/utils_shared/timing_control/timing_config.dart'
     show AppDurations;
 import 'package:equatable/equatable.dart';
-import 'package:features/auth/domain/use_cases/sign_up.dart';
+import 'package:features/features.dart' show SignUpUseCase;
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';

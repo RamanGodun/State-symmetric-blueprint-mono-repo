@@ -1,4 +1,4 @@
-import 'package:features/password_changing_or_reset/domain/password_actions_use_case.dart';
+import 'package:features/features.dart' show PasswordRelatedUseCases;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/features_providers/password_changing_or_reset/data_layer_providers/data_layer_providers.dart'
     show passwordRepoProvider;

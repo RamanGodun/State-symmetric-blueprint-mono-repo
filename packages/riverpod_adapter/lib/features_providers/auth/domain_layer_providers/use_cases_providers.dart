@@ -1,6 +1,5 @@
-import 'package:features/auth/domain/use_cases/sign_in.dart';
-import 'package:features/auth/domain/use_cases/sign_out.dart';
-import 'package:features/auth/domain/use_cases/sign_up.dart';
+import 'package:features/features_barrels/auth/auth.dart'
+    show SignInUseCase, SignOutUseCase, SignUpUseCase;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/features_providers/auth/data_layer_providers/data_layer_providers.dart'
     show signInRepoProvider, signOutRepoProvider, signUpRepoProvider;

@@ -28,7 +28,7 @@ import 'package:core/utils_shared/extensions/context_extensions/_context_extensi
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:core/utils_shared/type_definitions.dart' show FieldUiState;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:features/password_changing_or_reset/domain/password_actions_use_case.dart';
+import 'package:features/features.dart' show PasswordRelatedUseCases;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

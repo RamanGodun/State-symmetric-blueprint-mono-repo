@@ -1,7 +1,6 @@
 import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
     show Failure;
-import 'package:features/auth/domain/use_cases/sign_out.dart'
-    show SignOutUseCase;
+import 'package:features/features.dart' show SignOutUseCase;
 import 'package:riverpod_adapter/features_providers/auth/domain_layer_providers/use_cases_providers.dart'
     show signOutUseCaseProvider;
 import 'package:riverpod_adapter/features_providers/profile/data_layers_providers/data_layer_providers.dart'
