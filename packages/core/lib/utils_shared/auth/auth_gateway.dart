@@ -1,20 +1,29 @@
-import 'package:core/utils_shared/auth/auth_snapshot.dart';
+import 'package:core/utils_shared/auth/auth_snapshot.dart'
+    show AuthFailure, AuthLoading, AuthReady, AuthSnapshot;
+import 'package:firebase_adapter/firebase_adapter.dart'
+    show FirebaseAuthGateway;
+import 'package:firebase_adapter/gateways/firebase_auth_gateway.dart'
+    show FirebaseAuthGateway;
 
-/// 🛡️ [AuthGateway] — абстракція шару автентифікації
-/// - Дає єдиний стрім [AuthSnapshot] як джерело істини
-/// - Декуплює UI/бізнес-логіку від конкретного провайдера (Firebase/Auth0/…)
-/// - Реалізація в інфра-шарі (напр., FirebaseAuthGateway)
+/// 🛡️ [AuthGateway] — authentication abstraction
+/// - Provides a single [AuthSnapshot] stream as the source of truth
+/// - Decouples UI/business logic from specific providers (Firebase, Auth0, …)
+/// - Concrete implementations live in the infrastructure layer (e.g. [FirebaseAuthGateway])
 //
 abstract interface class AuthGateway {
-  /// 🌐 Безперервний стрім станів автентифікації:
+  ///------------------------------
+  //
+  /// 🌐 Continuous stream of authentication states:
   ///   [AuthLoading] | [AuthFailure] | [AuthReady]
-  /// Споживається презент. шаром для реакції на зміну авторизації
+  /// Consumed by the presentation layer to react to auth changes.
   Stream<AuthSnapshot> get snapshots$;
 
-  /// 📊 Поточний (синхронний) snapshot
-  /// Використовується у GoRouter.redirect для детермінованих рішень
+  /// 📊 Current synchronous snapshot
+  /// Used inside `GoRouter.redirect` for deterministic decisions.
   AuthSnapshot get currentSnapshot;
 
-  /// 🔄 Примусовий “refresh” сесії/токенів (опційно)
+  /// 🔄 Manual refresh (e.g., reload tokens or user session)
   Future<void> refresh();
+
+  //
 }

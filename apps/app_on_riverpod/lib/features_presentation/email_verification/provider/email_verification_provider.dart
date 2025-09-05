@@ -5,6 +5,7 @@ import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.
     show Failure;
 import 'package:core/base_modules/errors_handling/core_of_module/failure_type.dart'
     show EmailVerificationTimeoutFailureType;
+import 'package:core/utils_shared/auth/auth_gateway.dart' show AuthGateway;
 import 'package:core/utils_shared/timing_control/timing_config.dart'
     show AppDurations;
 import 'package:features/email_verification/domain/email_verification_use_case.dart';
@@ -18,38 +19,55 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'email_verification_provider.g.dart';
 
-/// 🧩 [EmailVerificationNotifier] — керує відправкою + polling верифікації пошти
-/// ✅ Після підтвердження виконує reload + gateway.refresh() → миттєвий редірект
+/// 🧩 [EmailVerificationNotifier] — orchestrates email verification flow
+/// - Immediately sends a verification email on creation
+/// - Polls every 3s for up to 1min until the email is verified
+/// - On success: reloads Firebase user + triggers [AuthGateway.refresh]
+/// - Exposes async state for UI feedback
 //
 @riverpod
 final class EmailVerificationNotifier extends _$EmailVerificationNotifier
     with SafeAsyncState<void> {
   ///-------------------------------------------------------------
 
+  /// ⏱ Timer for periodic polling
   Timer? _timer;
+
+  /// ⏱ Max allowed polling duration before timeout
   static const Duration _maxPollingDuration = AppDurations.min1;
+
+  /// ⏱ Stopwatch to track elapsed time
   final Stopwatch _stopwatch = Stopwatch();
+
+  /// 📦 Injected use case for email verification operations
   late final EmailVerificationUseCase _emailVerificationUseCase;
 
-  /// 🧱 Initializes verification logic
+  /// 🏗 Initializes notifier:
+  /// - Reads the use case from DI
+  /// - Sends verification email
+  /// - Starts polling loop
   @override
   FutureOr<void> build() {
     _emailVerificationUseCase = ref.read(emailVerificationUseCaseProvider);
     initSafe();
     debugPrint('VerificationNotifier: build() called...');
 
-    // ✉️ Одразу шлемо лист та стартуємо polling
+    // ✉️ Fire off email immediately and start polling
     unawaited(_emailVerificationUseCase.sendVerificationEmail());
     _startPolling();
 
+    // 🔌 Ensure timer is cleaned up on dispose
     ref.onDispose(() => _timer?.cancel());
   }
 
-  /// 🔁 Перевірка кожні 3 секунди (до 1 хв)
+  ////
+
+  /// 🔁 Polls every 3 seconds until verified or timeout reached
   void _startPolling() {
     _stopwatch.start();
     _timer = Timer.periodic(AppDurations.sec3, (_) {
       if (_stopwatch.elapsed > _maxPollingDuration) {
+        // ⏳ Timeout — stop polling and emit failure
         _timer?.cancel();
         final timeoutFailure = const Failure(
           type: EmailVerificationTimeoutFailureType(),
@@ -62,7 +80,13 @@ final class EmailVerificationNotifier extends _$EmailVerificationNotifier
     });
   }
 
-  /// ✅ Коли e-mail підтверджено — робимо reload + gateway.refresh()
+  /// ✅ Checks email verification status:
+  /// - If not verified → continue polling
+  /// - If verified:
+  ///   1) Cancel polling
+  ///   2) Reload Firebase user
+  ///   3) Trigger [AuthGateway.refresh] to notify router
+  ///   4) Mark notifier state as success
   Future<void> _checkEmailVerified() async {
     debugPrint('EmailVerificationNotifier: checking email verification…');
     final result = await _emailVerificationUseCase.checkIfEmailVerified();
@@ -70,12 +94,13 @@ final class EmailVerificationNotifier extends _$EmailVerificationNotifier
     await result.fold((_) => null, (isVerified) async {
       if (!isVerified) return;
 
+      // 🛑 Stop polling
       _timer?.cancel();
 
-      // 1) Перечитати юзера з Firebase
+      // 🔄 Reload current Firebase user
       await _emailVerificationUseCase.reloadUser();
 
-      // 2) Синхронно “стукнути” у gateway, щоб GoRouter негайно оновився
+      // 📢 Trigger gateway refresh to update GoRouter redirect instantly
       final gateway = ref.read(authGatewayProvider);
       await gateway.refresh();
 
@@ -84,7 +109,7 @@ final class EmailVerificationNotifier extends _$EmailVerificationNotifier
         '🔁 After reload + refresh: emailVerified=${refreshed?.emailVerified}',
       );
 
-      // 3) Завершити нотифайер “успіхом”
+      // 🎉 Mark state as success
       state = const AsyncData(null);
     });
   }

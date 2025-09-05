@@ -3,17 +3,24 @@ import 'package:core/utils_shared/auth/auth_snapshot.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:rxdart/rxdart.dart';
 
-/// 🔐 [FirebaseAuthGateway] — реалізація [AuthGateway] поверх Firebase
-//
+/// 🔐 [FirebaseAuthGateway] — Firebase-based implementation of [AuthGateway]
+/// ✅ Normalizes FirebaseAuth state into [AuthSnapshot]
+/// ✅ Provides both a reactive stream and synchronous snapshot access
+///
 final class FirebaseAuthGateway implements AuthGateway {
-  ///----------------------------------------------
+  ///------------------------------------------------
+  /// 🔑 Underlying FirebaseAuth instance (injected from DI)
   FirebaseAuthGateway(this._auth);
   final fb.FirebaseAuth _auth;
 
-  // 🔁 Ручний “тик” для форс-оновлення після reload/refresh
+  /// 🔁 Manual "tick" stream for forcing refresh after reload
   final _tick$ = PublishSubject<void>();
 
-  /// 🌊 Стрім нормалізованих snapshot-ів (із початковим Loading)
+  /// 🌊 Stream of normalized [AuthSnapshot] values
+  /// - Merges FirebaseAuth userChanges + manual refresh signals
+  /// - Starts with [AuthLoading] before the first resolution
+  /// - Distinct to prevent unnecessary rebuilds
+  /// - Converts any errors into [AuthFailure]
   @override
   Stream<AuthSnapshot> get snapshots$ =>
       Rx.merge(<Stream<void>>[
@@ -21,16 +28,15 @@ final class FirebaseAuthGateway implements AuthGateway {
             _tick$.map((_) {}), // manual refresh signal
           ])
           .map<AuthSnapshot>((_) => _buildSnapshot())
-          .distinct(_equal) // фільтр зайвих емісій
-          .onErrorReturnWith(AuthFailure.new) // any error -> Failure
-          // ⏳ Починаємо з Loading, наступна емісія — реальний стан
+          .distinct(_equal)
+          .onErrorReturnWith(AuthFailure.new)
           .startWith(const AuthLoading());
 
-  /// 📊 Синхронний знімок поточного стану
+  /// 📊 Current synchronous snapshot of authentication state
   @override
   AuthSnapshot get currentSnapshot => _buildSnapshot();
 
-  /// 🔎 Збір поточного стану у [AuthSnapshot]
+  /// 🔎 Internal helper — build [AuthSnapshot] from current Firebase user
   AuthSnapshot _buildSnapshot() {
     final u = _auth.currentUser;
     return AuthReady(
@@ -43,7 +49,7 @@ final class FirebaseAuthGateway implements AuthGateway {
     );
   }
 
-  /// ⚖️ Порівняння для distinct: мінімізує зайві rebuild-и
+  /// ⚖️ Equality check used by 'distinct' to minimize rebuilds
   static bool _equal(AuthSnapshot a, AuthSnapshot b) {
     if (a is AuthReady && b is AuthReady) {
       final x = a.session;
@@ -56,13 +62,15 @@ final class FirebaseAuthGateway implements AuthGateway {
     return a.runtimeType == b.runtimeType;
   }
 
-  /// 🔄 Reload юзера + повідомити слухачів
+  /// 🔄 Reloads current user and emits a manual refresh signal
   @override
   Future<void> refresh() async {
     await _auth.currentUser?.reload();
     _tick$.add(null);
   }
 
-  /// 🧹 Закриття внутр. стрімів
+  /// 🧹 Dispose internal streams to avoid memory leaks
   void dispose() => _tick$.close();
+
+  //
 }

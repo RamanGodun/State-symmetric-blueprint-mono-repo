@@ -5,12 +5,18 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_stream_adapter.g.dart';
 
-/// 🔌 [authGatewayProvider] — DI-токен для [AuthGateway] (override в app-шарі)
+/// 🔌 [authGatewayProvider] — DI token for [AuthGateway]
+/// ✅ Overridden in the application layer with a concrete implementation (e.g. FirebaseAuthGateway)
 //
 @Riverpod(keepAlive: true)
 AuthGateway authGateway(Ref ref) => throw UnimplementedError();
 
-/// 🌐 Стрім [AuthSnapshot] із gateway (може знадобитись у відж.)
+////
+////
+
+/// 🌐 [authSnapshotsProvider] — stream of [AuthSnapshot] from the gateway
+/// ✅ Can be consumed directly in widgets to react to authentication changes
+//
 @Riverpod(keepAlive: true)
 Stream<AuthSnapshot> authSnapshots(Ref ref) =>
     ref.watch(authGatewayProvider).snapshots$;

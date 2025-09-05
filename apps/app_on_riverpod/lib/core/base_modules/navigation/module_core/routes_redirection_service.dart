@@ -1,6 +1,6 @@
 part of 'go_router_factory.dart';
 
-/// 📍 Route path alias
+/// 📍 Path alias for readability
 typedef Path = String;
 
 ////
@@ -8,6 +8,7 @@ typedef Path = String;
 
 /// 🧭🚦 [computeRedirect] — pure function for redirect decisions
 /// ✅ Shared across Riverpod and Bloc
+/// ✅ Ensures deterministic, idempotent decisions
 /// ✅ Hysteresis: after first resolution, transient Loading won’t push `/splash`
 //
 Path? computeRedirect({
@@ -22,32 +23,32 @@ Path? computeRedirect({
     RoutesPaths.resetPassword,
   };
 
-  // 📍 Route flags
+  /// 📍 Route classification flags
   final isOnPublic = publicRoutes.contains(currentPath);
   final isOnVerify = currentPath == RoutesPaths.verifyEmail;
   final isOnSplash = currentPath == RoutesPaths.splash;
 
   /// 🔄 Decision tree
   return switch (snapshot) {
-    /// ⏳ Loading → splash before first resolution, otherwise stay put
+    /// ⏳ Loading → splash before first resolution, otherwise no redirect
     AuthLoading() =>
       hasResolvedOnce ? null : (isOnSplash ? null : RoutesPaths.splash),
 
-    /// ❌ Failure → force SignIn
+    /// ❌ Failure → force redirect to SignIn
     AuthFailure() => RoutesPaths.signIn,
 
-    /// ✅ Ready → enforce authentication + verification
+    /// ✅ Ready → evaluate authentication and verification status
     AuthReady(:final session) => () {
       final authed = session.isAuthenticated;
       final verified = session.emailVerified;
 
-      /// 🚪 Not authenticated → only public routes allowed
+      /// 🚪 Not authenticated → restrict to public routes
       if (!authed) return isOnPublic ? null : RoutesPaths.signIn;
 
-      /// 🧪 Email not verified → lock to verify page
+      /// 🧪 Not verified → restrict to verify page
       if (!verified) return isOnVerify ? null : RoutesPaths.verifyEmail;
 
-      /// 🏠 Fully authed + verified → home if on restricted routes
+      /// 🏠 Authenticated + verified → force home if on restricted routes
       const restricted = {
         RoutesPaths.splash,
         RoutesPaths.verifyEmail,
