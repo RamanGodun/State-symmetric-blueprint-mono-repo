@@ -4,7 +4,7 @@ flutter_launcher_icons:
   android: true
   ios: false
   image_path: assets/icons/stg_icon.png
-  adaptive_icon_foreground: assets/icons/dev_icon.png
+  adaptive_icon_foreground: assets/icons/stg_icon.png
   adaptive_icon_background: "#1C1C1E"
   ios_assets_name: "AppIcon-stg"
   remove_alpha_ios: true
