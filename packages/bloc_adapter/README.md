@@ -30,27 +30,34 @@ If you prefer direct imports, use the paths shown in **Public API & Structure**.
 
 ```
 bloc_adapter/lib/
-├─ base_modules/
-│  ├─ observer/
-│  │   └─ bloc_observer.dart          # Global BlocObserver
-│  ├─ overlays/
-│  │   └─ overlay_status_cubit.dart   # Tracks overlay/dialog visibility
-│  └─ theme/
-│      └─ theme_cubit.dart            # HydratedCubit<ThemePreferences>
-│
-├─ di/                                 # GetIt-based modular DI
-│  ├─ di.dart                          # Global GetIt instance + reset helper
-│  ├─ di_extensions.dart               # Safe registration / disposal helpers
-│  └─ di_module_{interface,manager}.dart
-│
-├─ presentation/
-│  ├─ presentation_barrel.dart
-│  └─ widgets/
-│      └─ form/
-│          └─ form_submit_button.dart  # Bloc-aware submit button
-│
-└─ utils/
-   └─ (optional utilities)
+├─ bloc_adapter.dart                  # 🧱 Single public barrel (facade API)
+└─ src/
+   ├─ base_modules/
+   │  ├─ observer/
+   │  │   └─ bloc_observer.dart      # Global BLoC observer (logging/diagnostics)
+   │  ├─ overlays_module/
+   │  │   ├─ overlay_status_cubit.dart   # Overlay visibility state (active/inactive)
+   │  │   ├─ overlay_activity_port_bloc.dart # Bridge: dispatcher ⇄ bloc status port
+   │  │   └─ overlay_resolver_wiring.dart   # Wiring overlays into app lifecycle (DI hook)
+   │  └─ theme_module/
+   │      ├─ theme_cubit.dart        # Theme state (persisted), API used in UI
+   │      └─ theme_toggle_widgets/
+   │          ├─ theme_toggler.dart  # Thin adapter widget (toggle dark/light)
+   │          └─ theme_picker.dart   # Thin adapter widget (pick ThemeVariant)
+   │
+   ├─ di/
+   │  ├─ core/
+   │  │   ├─ di.dart                 # Global GetIt accessor (di), base registrations
+   │  │   ├─ di_module_interface.dart# DIModule contract (register/dispose)
+   │  │   └─ di_module_manager.dart  # ModuleManager (batch register + lifecycle)
+   │  ├─ x_on_get_it.dart            # Safe helpers: registerIfAbsent, etc.
+   │  └─ docs/                       # (internal) notes, guides — not exported
+   │
+   └─ presentation_shared/
+      ├─ cubits/
+      │   └─ auth_cubit.dart         # Thin auth view-state Cubit (AuthReady/Loading/Error)
+      └─ widgets_shared/
+          └─ form_submit_button.dart # Reusable, bloc-aware submit button
 ```
 
 > Tip: keep a single public barrel `bloc_adapter.dart` that re-exports the pieces you consider public.

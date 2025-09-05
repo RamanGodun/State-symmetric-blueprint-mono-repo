@@ -1,8 +1,6 @@
 import 'package:app_on_bloc/features_presentation/profile/cubit/profile_page_cubit.dart';
-import 'package:bloc_adapter/base_modules/overlays_module/overlay_status_cubit.dart';
-import 'package:bloc_adapter/base_modules/theme_module/theme_cubit.dart';
-import 'package:bloc_adapter/di/core/di.dart';
-import 'package:bloc_adapter/utils/user_auth_cubit/auth_cubit.dart';
+import 'package:bloc_adapter/bloc_adapter.dart'
+    show AppThemeCubit, AuthCubit, OverlayStatusCubit, di;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart' show GoRouter;

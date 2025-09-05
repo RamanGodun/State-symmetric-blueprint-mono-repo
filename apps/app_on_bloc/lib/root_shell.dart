@@ -1,4 +1,4 @@
-import 'package:bloc_adapter/base_modules/theme_module/theme_cubit.dart';
+import 'package:bloc_adapter/bloc_adapter.dart' show AppThemeCubit;
 import 'package:core/base_modules/localization/core_of_module/localization_wrapper.dart';
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart';
 import 'package:core/base_modules/overlays/core/global_overlay_handler.dart';

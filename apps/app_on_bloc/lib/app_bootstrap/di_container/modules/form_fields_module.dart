@@ -1,6 +1,5 @@
-import 'package:bloc_adapter/di/core/di.dart';
-import 'package:bloc_adapter/di/core/di_module_interface.dart';
-import 'package:bloc_adapter/di/x_on_get_it.dart';
+import 'package:bloc_adapter/bloc_adapter.dart'
+    show DIModule, SafeRegistration, di;
 import 'package:core/base_modules/form_fields/utils/form_validation_service.dart'
     show FormValidationService;
 

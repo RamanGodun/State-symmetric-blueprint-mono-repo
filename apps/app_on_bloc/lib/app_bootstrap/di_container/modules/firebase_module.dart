@@ -1,6 +1,5 @@
-import 'package:bloc_adapter/di/core/di.dart';
-import 'package:bloc_adapter/di/core/di_module_interface.dart';
-import 'package:bloc_adapter/di/x_on_get_it.dart';
+import 'package:bloc_adapter/bloc_adapter.dart'
+    show DIModule, SafeRegistration, di;
 import 'package:features/profile/data/remote_database_contract.dart';
 import 'package:features/profile/data/remote_database_impl.dart';
 import 'package:firebase_adapter/constants/firebase_constants.dart';

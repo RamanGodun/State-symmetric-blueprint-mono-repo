@@ -1,9 +1,8 @@
 import 'package:app_on_bloc/app_bootstrap/di_container/modules/auth_module.dart';
 import 'package:app_on_bloc/app_bootstrap/di_container/modules/firebase_module.dart';
 import 'package:app_on_bloc/features_presentation/profile/cubit/profile_page_cubit.dart';
-import 'package:bloc_adapter/di/core/di.dart';
-import 'package:bloc_adapter/di/core/di_module_interface.dart';
-import 'package:bloc_adapter/di/x_on_get_it.dart';
+import 'package:bloc_adapter/bloc_adapter.dart'
+    show DIModule, SafeRegistration, di;
 import 'package:features/profile/data/implementation_of_profile_fetch_repo.dart';
 import 'package:features/profile/domain/fetch_profile_use_case.dart';
 import 'package:features/profile/domain/repo_contract.dart';

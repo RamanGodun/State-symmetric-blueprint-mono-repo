@@ -1,8 +1,7 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart';
 import 'package:app_on_bloc/features_presentation/auth/sign_in/cubit/sign_in_page_cubit.dart';
-import 'package:bloc_adapter/base_modules/overlays_module/overlay_status_cubit.dart';
-import 'package:bloc_adapter/di/core/di.dart';
-import 'package:bloc_adapter/presentation_shared/widgets_shared/form_submit_button.dart';
+import 'package:bloc_adapter/bloc_adapter.dart'
+    show FormSubmitButton, OverlayStatusCubit, di;
 import 'package:core/base_modules/errors_handling/core_of_module/failure_ui_mapper.dart';
 import 'package:core/base_modules/errors_handling/extensible_part/failure_extensions/failure_led_retry_x.dart';
 import 'package:core/base_modules/form_fields/_form_field_factory.dart'

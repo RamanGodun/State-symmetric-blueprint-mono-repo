@@ -1,8 +1,7 @@
 import 'package:app_on_bloc/app_bootstrap/di_container/modules/firebase_module.dart'
     show FirebaseModule, kFbAuthInstance;
-import 'package:bloc_adapter/di/core/di.dart';
-import 'package:bloc_adapter/di/core/di_module_interface.dart';
-import 'package:bloc_adapter/di/x_on_get_it.dart';
+import 'package:bloc_adapter/bloc_adapter.dart'
+    show DIModule, SafeRegistration, di;
 import 'package:features/password_changing_or_reset/data/password_actions_repo_impl.dart';
 import 'package:features/password_changing_or_reset/data/remote_database_contract.dart';
 import 'package:features/password_changing_or_reset/data/remote_database_impl.dart';

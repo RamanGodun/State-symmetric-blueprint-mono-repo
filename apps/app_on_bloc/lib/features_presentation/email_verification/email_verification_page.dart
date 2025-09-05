@@ -4,7 +4,7 @@ import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart'
 import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_cubit/sign_out_cubit.dart'
     show SignOutCubit, SignOutState, SignOutStatus;
 import 'package:app_on_bloc/features_presentation/email_verification/email_verification_cubit/email_verification_cubit.dart';
-import 'package:bloc_adapter/di/core/di.dart';
+import 'package:bloc_adapter/bloc_adapter.dart' show di;
 import 'package:core/base_modules/errors_handling/core_of_module/failure_ui_mapper.dart';
 import 'package:core/base_modules/localization/generated/locale_keys.g.dart';
 import 'package:core/base_modules/localization/module_widgets/text_widget.dart';

@@ -1,8 +1,7 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart'
     show RoutesNames;
 import 'package:app_on_bloc/features_presentation/password_changing_or_reset/reset_password/cubits/reset_password_cubit.dart';
-import 'package:bloc_adapter/di/core/di.dart';
-import 'package:bloc_adapter/presentation_shared/widgets_shared/form_submit_button.dart';
+import 'package:bloc_adapter/bloc_adapter.dart' show FormSubmitButton, di;
 import 'package:core/base_modules/errors_handling/core_of_module/failure_ui_mapper.dart';
 import 'package:core/base_modules/form_fields/_form_field_factory.dart'
     show InputFieldFactory;

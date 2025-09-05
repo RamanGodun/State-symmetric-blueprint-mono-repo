@@ -1,7 +1,5 @@
-import 'package:bloc_adapter/base_modules/theme_module/theme_cubit.dart';
-import 'package:bloc_adapter/di/core/di.dart';
-import 'package:bloc_adapter/di/core/di_module_interface.dart';
-import 'package:bloc_adapter/di/x_on_get_it.dart';
+import 'package:bloc_adapter/bloc_adapter.dart'
+    show AppThemeCubit, DIModule, SafeRegistration, di;
 
 /// 🎨 Registers theme cubit for loader (and later, the main app).
 //

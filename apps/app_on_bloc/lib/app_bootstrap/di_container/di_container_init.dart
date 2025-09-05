@@ -7,7 +7,7 @@ import 'package:app_on_bloc/app_bootstrap/di_container/modules/overlays_module.d
 import 'package:app_on_bloc/app_bootstrap/di_container/modules/password_module.dart';
 import 'package:app_on_bloc/app_bootstrap/di_container/modules/profile_module.dart';
 import 'package:app_on_bloc/app_bootstrap/di_container/modules/theme_module.dart';
-import 'package:bloc_adapter/di/core/di_module_manager.dart';
+import 'package:bloc_adapter/bloc_adapter.dart' show ModuleManager;
 import 'package:flutter/foundation.dart' show debugPrint;
 
 /// 🚀 [DIContainer] — centralized entry point for dependency registration

@@ -2,10 +2,8 @@ import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart'
 import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';
 import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_widget.dart';
 import 'package:app_on_bloc/features_presentation/profile/cubit/profile_page_cubit.dart';
-import 'package:bloc_adapter/base_modules/theme_module/theme_toggle_widgets/theme_picker.dart';
-import 'package:bloc_adapter/base_modules/theme_module/theme_toggle_widgets/theme_toggler.dart';
-import 'package:bloc_adapter/di/core/di.dart';
-import 'package:bloc_adapter/utils/user_auth_cubit/auth_cubit.dart';
+import 'package:bloc_adapter/bloc_adapter.dart'
+    show AuthCubit, AuthViewReady, ThemePicker, ThemeTogglerIcon, di;
 import 'package:cached_network_image/cached_network_image.dart'
     show CachedNetworkImage;
 import 'package:core/base_modules/errors_handling/core_of_module/failure_ui_mapper.dart';

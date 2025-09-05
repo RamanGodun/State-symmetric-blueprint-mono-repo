@@ -1,10 +1,14 @@
-import 'package:app_on_bloc/app_bootstrap/di_container/modules/theme_module.dart';
-import 'package:bloc_adapter/base_modules/overlays_module/overlay_activity_port_bloc.dart';
-import 'package:bloc_adapter/base_modules/overlays_module/overlay_resolver_wiring.dart';
-import 'package:bloc_adapter/base_modules/overlays_module/overlay_status_cubit.dart';
-import 'package:bloc_adapter/di/core/di.dart';
-import 'package:bloc_adapter/di/core/di_module_interface.dart';
-import 'package:bloc_adapter/di/x_on_get_it.dart';
+import 'package:app_on_bloc/app_bootstrap/di_container/modules/theme_module.dart'
+    show ThemeModule;
+import 'package:bloc_adapter/bloc_adapter.dart'
+    show
+        BlocOverlayActivityPort,
+        DIModule,
+        OverlayResolverWiringBloc,
+        OverlayStatusCubit,
+        SafeDispose,
+        SafeRegistration,
+        di;
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart'
     show OverlayDispatcher;
 

@@ -1,4 +1,4 @@
-import 'package:bloc_adapter/base_modules/theme_module/theme_cubit.dart';
+import 'package:bloc_adapter/src/base_modules/theme_module/theme_cubit.dart';
 import 'package:core/base_modules/theme/module_core/theme_variants.dart';
 import 'package:core/base_modules/theme/widgets_and_utils/theme_switchers/theme_picker.dart';
 import 'package:flutter/material.dart';

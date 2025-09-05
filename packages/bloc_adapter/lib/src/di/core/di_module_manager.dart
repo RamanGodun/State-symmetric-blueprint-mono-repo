@@ -1,4 +1,4 @@
-import 'package:bloc_adapter/di/core/di_module_interface.dart';
+import 'package:bloc_adapter/src/di/core/di_module_interface.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 
 /// 📦 Enhanced Module Manager with better error handling

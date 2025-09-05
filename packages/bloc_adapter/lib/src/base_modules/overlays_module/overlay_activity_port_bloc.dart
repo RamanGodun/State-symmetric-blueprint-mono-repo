@@ -1,4 +1,4 @@
-import 'package:bloc_adapter/base_modules/overlays_module/overlay_status_cubit.dart';
+import 'package:bloc_adapter/src/base_modules/overlays_module/overlay_status_cubit.dart';
 import 'package:core/base_modules/overlays/overlays_barrel.dart'
     show OverlayDispatcher;
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart'
