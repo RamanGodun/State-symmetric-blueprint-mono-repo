@@ -68,7 +68,7 @@ final class DIConfiguration implements IDIConfig {
     // 🔐 Auth gateway: ensure proper disposal on provider teardown
     authGatewayProvider.overrideWith((ref) {
       final auth = FirebaseAuthGateway(FirebaseConstants.fbAuthInstance);
-      ref.onDispose(auth.dispose); // prevent subject leaks
+      ref.onDispose(auth.dispose);
       return auth;
     }),
     //

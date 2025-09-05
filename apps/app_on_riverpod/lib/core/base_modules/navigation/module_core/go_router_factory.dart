@@ -2,22 +2,30 @@ import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.d
 import 'package:app_on_riverpod/core/shared_presentation/pages/page_not_found.dart';
 import 'package:core/base_modules/overlays/utils/overlays_cleaner_within_navigation.dart';
 import 'package:core/utils_shared/auth/auth_snapshot.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:core/utils_shared/stream_change_notifier.dart';
+import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:riverpod_adapter/base_modules/navigation_module/redirect_state.dart';
 import 'package:riverpod_adapter/utils/auth/auth_stream_adapter.dart'
-    show authSnapshotsProvider;
+    show authGatewayProvider;
 
 part 'routes_redirection_service.dart';
 
-/// 🧭🚦 [buildGoRouter] — GoRouter factory (Riverpod version)
-/// ✅ Creates router declaratively, driven by [authSnapshotsProvider]
-/// ✅ Keeps redirect logic pure/idempotent (delegated to [computeRedirect])
+/// 🧭🚦 [buildGoRouter] — фабрика GoRouter (Riverpod edition)
+/// ✅ Один інстанс GoRouter у DI
+/// ✅ Реактивність через "refreshListenable" (стрім auth-станів)
+/// ✅ Рішення редіректів по синхронному `gateway.currentSnapshot`
 //
 GoRouter buildGoRouter(Ref ref) {
-  // 🧩 Local redirect state holder (no GoRouter rebuilds on auth updates)
-  final redirectState = AuthRedirectState()..attach(ref);
+  // 🔒 Важливо: беремо gateway через read — GoRouter не “зав’язується” реактивно
+  final gateway = ref.read(authGatewayProvider);
+
+  // 🔔 Робимо GoRouter реактивним до змін auth через ChangeNotifier-міст
+  final authChange = StreamChangeNotifier<AuthSnapshot>(gateway.snapshots$);
+  ref.onDispose(authChange.dispose);
+
+  // ⛳️ Гістерезис: після першого не-loading викидаємо splash-цикли
+  var hasResolvedOnce = false;
 
   ////
 
@@ -43,21 +51,33 @@ GoRouter buildGoRouter(Ref ref) {
 
     ////
 
+    // ♻️ Реактивність редіректів — кожна подія у стрімі тригерить перевірку
+    refreshListenable: authChange,
+
     /// 🧭 Global redirect hook
     redirect: (context, state) {
-      //
-      final snap = redirectState.current;
-      if (snap == null) return null;
-      //
+      // 📊 Синхронно беремо актуальний snapshot
+      final snap = gateway.currentSnapshot;
+
+      // позначаємо, що перше реальне вирішення вже було
+      if (snap is! AuthLoading) hasResolvedOnce = true;
+
+      // поточний шлях
       final currentPath = state.matchedLocation.isNotEmpty
           ? state.matchedLocation
           : state.uri.toString();
 
-      return computeRedirect(
+      // чиста функція рішень
+      final target = computeRedirect(
         currentPath: currentPath,
         snapshot: snap,
-        hasResolvedOnce: redirectState.resolvedOnce,
+        hasResolvedOnce: hasResolvedOnce,
       );
+
+      if (kDebugMode && target != null) {
+        debugPrint('🧭 Redirect: $currentPath → $target (${snap.runtimeType})');
+      }
+      return target;
     },
   );
 
