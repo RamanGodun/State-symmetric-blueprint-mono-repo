@@ -1,19 +1,12 @@
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/errors_observing/loggers/failure_logger_x.dart';
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/result_handler.dart'
-    show ResultHandler;
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/specific_for_bloc/consumable.dart'
-    show Consumable;
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/specific_for_bloc/consumable_extensions.dart';
-import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
-    show Failure;
-import 'package:core/base_modules/form_fields/input_validation/validation_enums.dart'
-    show ConfirmPasswordInputValidation, PasswordInputValidation;
-import 'package:core/base_modules/form_fields/input_validation/x_on_forms_submission_status.dart';
-import 'package:core/base_modules/form_fields/utils/form_validation_service.dart'
-    show FormValidationService;
-import 'package:core/utils_shared/timing_control/debouncer.dart' show Debouncer;
-import 'package:core/utils_shared/timing_control/timing_config.dart'
-    show AppDurations;
+import 'package:core/base_modules/errors_management.dart'
+    show Consumable, ConsumableX, Failure, FailureLogger, ResultHandler;
+import 'package:core/base_modules/forms.dart'
+    show
+        ConfirmPasswordInputValidation,
+        FormValidationService,
+        FormzStatusX,
+        PasswordInputValidation;
+import 'package:core/utils.dart' show AppDurations, Debouncer;
 import 'package:equatable/equatable.dart';
 import 'package:features/features.dart' show PasswordRelatedUseCases;
 import 'package:flutter/foundation.dart' show debugPrint;

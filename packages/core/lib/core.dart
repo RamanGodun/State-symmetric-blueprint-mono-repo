@@ -1,0 +1,12 @@
+export 'base_modules/animations.dart';
+export 'base_modules/errors_management.dart';
+export 'base_modules/forms.dart';
+export 'base_modules/localization.dart';
+export 'base_modules/navigation.dart';
+export 'base_modules/overlays.dart';
+export 'base_modules/ui_design.dart';
+export 'shared_layers/data.dart';
+export 'shared_layers/domain.dart';
+export 'shared_layers/presentation.dart';
+export 'src/utils_shared/timing_control/timing_control_barrel.dart';
+export 'utils.dart';

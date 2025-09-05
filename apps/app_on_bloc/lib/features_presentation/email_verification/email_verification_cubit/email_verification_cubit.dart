@@ -1,14 +1,8 @@
 import 'dart:async';
 
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/specific_for_bloc/consumable.dart'
-    show Consumable;
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/specific_for_bloc/consumable_extensions.dart';
-import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
-    show Failure;
-import 'package:core/base_modules/errors_handling/core_of_module/failure_type.dart'
-    show EmailVerificationTimeoutFailureType;
-import 'package:core/utils_shared/timing_control/timing_config.dart'
-    show AppDurations;
+import 'package:core/base_modules/errors_management.dart'
+    show Consumable, ConsumableX, EmailVerificationTimeoutFailureType, Failure;
+import 'package:core/utils.dart' show AppDurations;
 import 'package:equatable/equatable.dart';
 import 'package:features/features.dart' show EmailVerificationUseCase;
 import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseUser;

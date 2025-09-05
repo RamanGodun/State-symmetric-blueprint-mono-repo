@@ -1,5 +1,5 @@
 import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/change_password/providers/change_password_form_state.dart';
-import 'package:core/base_modules/form_fields/input_validation/validation_enums.dart'
+import 'package:core/base_modules/forms.dart'
     show ConfirmPasswordInputValidation, PasswordInputValidation;
 import 'package:flutter_riverpod/flutter_riverpod.dart' show StateNotifier;
 import 'package:hooks_riverpod/hooks_riverpod.dart' show StateNotifier;

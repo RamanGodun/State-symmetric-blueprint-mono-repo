@@ -37,21 +37,44 @@ core/lib
 ├─ README (core package)
 |
 ├─ base_modules/
-|   ├─ animations/        ── animation_barrel.dart
-|   ├─ errors_handling/   ── errors_handling_barrel.dart
-|   ├─ form_fields/       ── form_fields_barrel.dart
-|   ├─ localization/      ── localization_barrel.dart
-|   ├─ logging/           ── (barrel when needed)
-|   ├─ navigation/        ── navigation_barrel.dart
-|   ├─ overlays/          ── overlays_barrel.dart
-|   └─ theme/             ── theme_barrel.dart
+|   ├─ animations.dart
+|   ├─ errors_management.dart
+|   ├─ forms.dart
+|   ├─ localization.dart
+|   ├─ navigation.dart
+|   ├─ overlays.dart
+|   └─ ui_design.dart
 |
+├─ shared_layers/
+|   ├─ data.dart
+|   ├─ domain.dart
+|   └─ presentation.dart
+|
+├─ utils.dart
+└─ core.dart
+
+# Internal Sources (all implementations live here)
+
+src/
+├─ base_modules/
+│   ├─ animations/
+│   ├─ errors_management/
+│   ├─ forms/
+│   ├─ localization/
+│   ├─ navigation/
+│   ├─ overlays/
+│   └─ ui_design/
+│
 ├─ shared_data_layer/
 ├─ shared_domain_layer/
 ├─ shared_presentation_layer/
-├─ utils_shared/
-└─core_barrel.dart
+└─ utils_shared/
 ```
+
+> **Rule of thumb:**
+>
+> - `base_modules/`, `shared_layers/`, `utils.dart`, and `core.dart` = **barrels only** (public API).
+> - `src/` = **all real source files** (implementations).
 
 ---
 

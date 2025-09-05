@@ -1,12 +1,18 @@
 import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
 import 'package:app_on_riverpod/core/shared_presentation/pages/page_not_found.dart';
-import 'package:core/base_modules/overlays/utils/overlays_cleaner_within_navigation.dart';
-import 'package:core/utils_shared/auth/auth_snapshot.dart';
-import 'package:core/utils_shared/stream_change_notifier.dart';
+import 'package:core/base_modules/overlays.dart'
+    show OverlaysCleanerWithinNavigation;
+import 'package:core/utils.dart'
+    show
+        AuthFailure,
+        AuthLoading,
+        AuthReady,
+        AuthSnapshot,
+        StreamChangeNotifier;
 import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:riverpod_adapter/utils/auth/auth_stream_adapter.dart'
+import 'package:riverpod_adapter/riverpod_adapter.dart'
     show authGatewayProvider;
 
 part 'routes_redirection_service.dart';

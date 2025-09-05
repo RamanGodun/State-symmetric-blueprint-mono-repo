@@ -1,5 +1,5 @@
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/errors_observing/result_loggers/result_logger_x.dart';
-import 'package:core/utils_shared/type_definitions.dart' show ResultFuture;
+import 'package:core/base_modules/errors_management.dart';
+import 'package:core/utils.dart' show ResultFuture;
 import 'package:features/src/auth/domain/repo_contracts.dart';
 
 /// 📦 [SignOutUseCase] — Handles sign-out logic via [ISignOutRepo]

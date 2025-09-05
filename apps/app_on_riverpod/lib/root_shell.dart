@@ -1,21 +1,17 @@
 import 'package:app_on_riverpod/core/base_modules/navigation/module_core/router_provider.dart'
     show routerProvider;
-import 'package:core/base_modules/localization/core_of_module/localization_wrapper.dart'
-    show LocalizationWrapper;
-import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
-    show LocaleKeys;
-import 'package:core/base_modules/overlays/core/global_overlay_handler.dart'
-    show GlobalOverlayHandler;
-import 'package:core/base_modules/theme/module_core/app_theme_preferences.dart'
-    show ThemePreferences;
-import 'package:core/base_modules/theme/module_core/theme_variants.dart'
-    show ThemeVariantsEnum;
+import 'package:core/core.dart'
+    show
+        GlobalOverlayHandler,
+        LocaleKeys,
+        LocalizationWrapper,
+        ThemePreferences,
+        ThemeVariantsEnum;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart' show GoRouter;
-import 'package:riverpod_adapter/base_modules/theme_module/theme_provider.dart'
-    show themeProvider;
+import 'package:riverpod_adapter/riverpod_adapter.dart' show themeProvider;
 
 /// 🌍✅ [AppLocalizationShell] — Ensures the entire app tree is properly localized before rendering the root UI.
 //

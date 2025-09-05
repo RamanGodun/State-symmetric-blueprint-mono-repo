@@ -1,4 +1,4 @@
-import 'package:core/utils_shared/type_definitions.dart' show ResultFuture;
+import 'package:core/utils.dart' show ResultFuture;
 
 /// 🔐 [ISignInRepo] — contract for signing in user with email/password
 //

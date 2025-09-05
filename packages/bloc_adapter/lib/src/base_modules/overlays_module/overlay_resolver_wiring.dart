@@ -1,8 +1,9 @@
-import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart'
-    show OverlayWiringScope;
-import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
-import 'package:core/base_modules/overlays/utils/ports/overlay_dispatcher_locator.dart'
-    show setGlobalOverlayDispatcherResolver, setOverlayDispatcherResolver;
+import 'package:core/base_modules/overlays.dart'
+    show
+        OverlayDispatcher,
+        OverlayWiringScope,
+        setGlobalOverlayDispatcherResolver,
+        setOverlayDispatcherResolver;
 import 'package:get_it/get_it.dart' show GetIt;
 
 /// 🔌 Centralized overlay resolvers wiring for GetIt/BLoC apps

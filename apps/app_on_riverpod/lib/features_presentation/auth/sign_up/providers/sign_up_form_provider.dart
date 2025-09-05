@@ -1,10 +1,5 @@
 import 'package:app_on_riverpod/features_presentation/auth/sign_up/providers/sign_up_form_state.dart';
-import 'package:core/base_modules/form_fields/input_validation/validation_enums.dart'
-    show
-        ConfirmPasswordInputValidation,
-        EmailInputValidation,
-        NameInputValidation,
-        PasswordInputValidation;
+import 'package:core/base_modules/forms.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' show StateNotifier;
 import 'package:hooks_riverpod/hooks_riverpod.dart' show StateNotifier;
 import 'package:riverpod_annotation/riverpod_annotation.dart';

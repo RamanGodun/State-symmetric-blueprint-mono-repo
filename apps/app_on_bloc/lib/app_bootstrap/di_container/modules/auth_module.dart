@@ -2,7 +2,7 @@ import 'package:app_on_bloc/app_bootstrap/di_container/modules/firebase_module.d
 import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart'
     show AuthCubit, DIModule, SafeRegistration, di;
-import 'package:core/utils_shared/auth/auth_gateway.dart';
+import 'package:core/utils.dart' show AuthGateway;
 import 'package:features/features_barrels/auth/auth.dart';
 import 'package:features/features_barrels/auth/auth_infra.dart';
 import 'package:firebase_adapter/firebase_adapter.dart'

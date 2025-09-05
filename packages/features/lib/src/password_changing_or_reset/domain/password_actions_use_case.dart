@@ -1,4 +1,4 @@
-import 'package:core/utils_shared/type_definitions.dart' show ResultFuture;
+import 'package:core/utils.dart' show ResultFuture;
 import 'package:features/src/password_changing_or_reset/domain/repo_contract.dart';
 
 /// 📦 [PasswordRelatedUseCases] — encapsulates password related logic

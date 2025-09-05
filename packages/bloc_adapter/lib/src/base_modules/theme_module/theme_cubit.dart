@@ -1,6 +1,5 @@
-import 'package:core/base_modules/theme/module_core/app_theme_preferences.dart';
-import 'package:core/base_modules/theme/module_core/theme_variants.dart';
-import 'package:core/base_modules/theme/text_theme/text_theme_factory.dart';
+import 'package:core/base_modules/ui_design.dart'
+    show AppFontFamily, ThemePreferences, ThemeVariantsEnum, parseAppFontFamily;
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 /// 🎨 [AppThemeCubit] — manages [ThemePreferences] (theme variant + font)

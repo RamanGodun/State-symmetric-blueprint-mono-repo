@@ -9,8 +9,7 @@ import 'package:bloc_adapter/bloc_adapter.dart'
         SafeDispose,
         SafeRegistration,
         di;
-import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart'
-    show OverlayDispatcher;
+import 'package:core/base_modules/overlays.dart' show OverlayDispatcher;
 
 /// 📤 [OverlaysModule] — wires overlay system into DI
 /// ✅ Registers overlay state + dispatcher

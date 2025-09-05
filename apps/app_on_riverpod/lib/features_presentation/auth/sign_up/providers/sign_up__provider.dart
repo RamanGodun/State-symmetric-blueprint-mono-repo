@@ -1,6 +1,5 @@
-import 'package:riverpod_adapter/features_providers/auth/domain_layer_providers/use_cases_providers.dart'
-    show signUpUseCaseProvider;
-import 'package:riverpod_adapter/utils/safe_async_state.dart';
+import 'package:riverpod_adapter/riverpod_adapter.dart'
+    show SafeAsyncState, signUpUseCaseProvider;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sign_up__provider.g.dart';

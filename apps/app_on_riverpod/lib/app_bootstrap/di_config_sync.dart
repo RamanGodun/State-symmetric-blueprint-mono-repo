@@ -2,19 +2,23 @@ import 'package:app_on_riverpod/core/base_modules/navigation/module_core/go_rout
     show buildGoRouter;
 import 'package:app_on_riverpod/core/base_modules/navigation/module_core/router_provider.dart'
     show goRouter;
-import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
+import 'package:core/base_modules/overlays.dart' show OverlayDispatcher;
 import 'package:firebase_adapter/firebase_adapter.dart'
     show FirebaseAuthGateway, FirebaseRefs;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart' show GetStorage;
-import 'package:riverpod_adapter/base_modules/observing/riverpod_observer.dart';
-import 'package:riverpod_adapter/base_modules/overlays_module/overlay_adapters_providers.dart'
-    show RiverpodOverlayActivityPort, overlayDispatcherProvider;
-import 'package:riverpod_adapter/base_modules/theme_module/theme_provider.dart';
-import 'package:riverpod_adapter/di/i_di_config.dart';
-import 'package:riverpod_adapter/utils/auth/auth_stream_adapter.dart';
-import 'package:riverpod_adapter/utils/auth/firebase_providers.dart'
-    show firebaseAuthProvider, usersCollectionProvider;
+import 'package:riverpod_adapter/riverpod_adapter.dart'
+    show
+        IDIConfig,
+        ProviderDebugObserver,
+        RiverpodOverlayActivityPort,
+        ThemeConfigNotifier,
+        authGatewayProvider,
+        firebaseAuthProvider,
+        overlayDispatcherProvider,
+        themeProvider,
+        themeStorageProvider,
+        usersCollectionProvider;
 
 /// 🛠️ [DIConfiguration] — default DI setup for the app runtime
 /// Wires core subsystems (theme, routing, overlays) and feature stacks (auth/profile).
@@ -98,7 +102,7 @@ final class DIConfiguration implements IDIConfig {
   /// 🧭 Observability — logs provider lifecycle/events in dev
   /// Keep the list small to avoid noisy logs.
   @override
-  List<ProviderObserver> get observers => [RiverpodLogger()];
+  List<ProviderObserver> get observers => [const ProviderDebugObserver()];
 
   //
 }

@@ -1,13 +1,10 @@
-import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
-    show Failure;
-import 'package:core/base_modules/errors_handling/core_of_module/failure_type.dart'
-    show RequiresRecentLoginFirebaseFailureType;
-import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
-    show LocaleKeys;
+import 'package:core/base_modules/errors_management.dart'
+    show Failure, RequiresRecentLoginFirebaseFailureType;
+import 'package:core/base_modules/localization.dart' show LocaleKeys;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:features/features.dart' show PasswordRelatedUseCases;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_adapter/features_providers/password_changing_or_reset/domain_layer_providers/use_cases_provider.dart'
+import 'package:riverpod_adapter/riverpod_adapter.dart'
     show passwordUseCasesProvider;
 
 part 'change_password__state.dart';

@@ -1,19 +1,9 @@
-import 'package:core/base_modules/errors_handling/core_of_module/_errors_handling_entry_point.dart';
-import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
-    show Failure;
-import 'package:core/base_modules/errors_handling/core_of_module/failure_type.dart'
-    show UserMissingFirebaseFailureType, UserNotFoundFirebaseFailureType;
-import 'package:core/shared_data_layer/user_data_transfer_objects/_user_dto.dart'
-    show UserDTO;
-import 'package:core/shared_data_layer/user_data_transfer_objects/user_dto_factories_x.dart'
-    show UserDTOFactories;
-import 'package:core/shared_data_layer/user_data_transfer_objects/user_dto_x.dart';
-import 'package:core/shared_domain_layer/shared_entities/_user_entity.dart'
-    show UserEntity;
-import 'package:core/utils_shared/cache_manager/cache_manager.dart';
-import 'package:core/utils_shared/timing_control/timing_config.dart'
-    show AppDurations;
-import 'package:core/utils_shared/type_definitions.dart' show ResultFuture;
+import 'package:core/base_modules/errors_management.dart';
+import 'package:core/shared_layers/data.dart'
+    show UserDTO, UserDTOFactories, UserDTOX;
+import 'package:core/shared_layers/domain.dart' show UserEntity;
+import 'package:core/utils.dart'
+    show AppDurations, CacheManager, CacheStats, ResultFuture;
 import 'package:features/src/profile/data/remote_database_contract.dart';
 import 'package:features/src/profile/domain/repo_contract.dart';
 

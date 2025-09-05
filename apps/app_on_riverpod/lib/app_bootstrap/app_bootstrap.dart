@@ -3,15 +3,14 @@ import 'package:app_bootstrap/app_bootstrap.dart'
 import 'package:app_on_riverpod/app_bootstrap/di_config_sync.dart';
 import 'package:app_on_riverpod/app_bootstrap/firebase_initializer.dart';
 import 'package:app_on_riverpod/app_bootstrap/local_storage_init.dart';
-import 'package:core/base_modules/localization/core_of_module/init_localization.dart';
+import 'package:core/base_modules/localization.dart' show AppLocalizer;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/material.dart' show WidgetsFlutterBinding;
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_adapter/base_modules/overlays_module/overlay_wiring.dart';
-import 'package:riverpod_adapter/di/di_container.dart';
-import 'package:riverpod_adapter/di/i_di_config.dart';
+import 'package:riverpod_adapter/riverpod_adapter.dart'
+    show GlobalDIContainer, IDIConfig, OverlayResolverWiring;
 
 /// 🧰 [DefaultAppBootstrap] — Handles all critical bootstrapping (with injectable stacks for testing/mocks).
 //
@@ -93,7 +92,7 @@ final class DefaultAppBootstrap implements IAppBootstrap {
     // 🔌 Wire resolvers (currently both):
     //    - Context-aware resolver (BuildContext)
     //    - Global context-agnostic resolver (background tasks, infra)
-    OverlayResolverWiring.wire(
+    OverlayResolverWiring.install(
       container: getGlobalContainer,
       // scope: OverlayWiringScope.both, // (optional) make it explicit
     );

@@ -1,8 +1,6 @@
-import 'package:core/base_modules/errors_handling/core_of_module/_errors_handling_entry_point.dart';
-import 'package:core/shared_data_layer/user_data_transfer_objects/user_dto_factories_x.dart'
-    show UserDTOFactories;
-import 'package:core/shared_data_layer/user_data_transfer_objects/user_dto_x.dart';
-import 'package:core/utils_shared/type_definitions.dart' show ResultFuture;
+import 'package:core/base_modules/errors_management.dart';
+import 'package:core/shared_layers/data.dart' show UserDTOFactories, UserDTOX;
+import 'package:core/utils.dart' show ResultFuture;
 import 'package:features/src/auth/data/remote_database_contract.dart'
     show IAuthRemoteDatabase;
 import 'package:features/src/auth/domain/repo_contracts.dart' show ISignUpRepo;

@@ -1,5 +1,11 @@
-import 'package:core/utils_shared/auth/auth_gateway.dart';
-import 'package:core/utils_shared/auth/auth_snapshot.dart';
+import 'package:core/utils.dart'
+    show
+        AuthFailure,
+        AuthGateway,
+        AuthLoading,
+        AuthReady,
+        AuthSession,
+        AuthSnapshot;
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:rxdart/rxdart.dart';
 

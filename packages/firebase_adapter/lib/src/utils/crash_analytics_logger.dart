@@ -1,5 +1,5 @@
-import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart';
-import 'package:core/base_modules/errors_handling/extensible_part/failure_extensions/failure_diagnostics_x.dart';
+import 'package:core/base_modules/errors_management.dart'
+    show Failure, FailureX;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
 

@@ -1,12 +1,12 @@
 import 'package:bloc_adapter/bloc_adapter.dart' show AppThemeCubit;
-import 'package:core/base_modules/localization/core_of_module/localization_wrapper.dart';
-import 'package:core/base_modules/localization/generated/locale_keys.g.dart';
-import 'package:core/base_modules/overlays/core/global_overlay_handler.dart';
-import 'package:core/base_modules/theme/module_core/app_theme_preferences.dart';
-import 'package:core/base_modules/theme/module_core/theme_variants.dart'
-    show ThemeVariantsEnum;
-import 'package:core/base_modules/theme/text_theme/text_theme_factory.dart'
-    show AppFontFamily;
+import 'package:core/core.dart'
+    show
+        AppFontFamily,
+        GlobalOverlayHandler,
+        LocaleKeys,
+        LocalizationWrapper,
+        ThemePreferences,
+        ThemeVariantsEnum;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

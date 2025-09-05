@@ -1,12 +1,7 @@
 //
 // ignore_for_file: public_member_api_docs
 
-import 'package:core/base_modules/form_fields/input_validation/validation_enums.dart'
-    show
-        ConfirmPasswordInputValidation,
-        EmailInputValidation,
-        NameInputValidation,
-        PasswordInputValidation;
+import 'package:core/base_modules/forms.dart';
 import 'package:equatable/equatable.dart' show Equatable;
 import 'package:formz/formz.dart';
 

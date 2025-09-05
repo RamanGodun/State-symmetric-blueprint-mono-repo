@@ -5,19 +5,15 @@ import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_cubit/s
     show SignOutCubit, SignOutState, SignOutStatus;
 import 'package:app_on_bloc/features_presentation/email_verification/email_verification_cubit/email_verification_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart' show di;
-import 'package:core/base_modules/errors_handling/core_of_module/failure_ui_mapper.dart';
-import 'package:core/base_modules/localization/generated/locale_keys.g.dart';
-import 'package:core/base_modules/localization/module_widgets/text_widget.dart';
-import 'package:core/base_modules/navigation/utils/extensions/navigation_x_on_context.dart';
-import 'package:core/base_modules/overlays/core/_context_x_for_overlays.dart';
-import 'package:core/base_modules/theme/ui_constants/_app_constants.dart'
-    show AppSpacing;
-import 'package:core/base_modules/theme/ui_constants/app_colors.dart'
-    show AppColors;
-import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dart';
-import 'package:core/shared_presentation_layer/widgets_shared/buttons/text_button.dart';
-import 'package:core/shared_presentation_layer/widgets_shared/loader.dart';
-import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
+import 'package:core/base_modules/errors_management.dart';
+import 'package:core/base_modules/localization.dart'
+    show LocaleKeys, TextType, TextWidget;
+import 'package:core/base_modules/navigation.dart';
+import 'package:core/base_modules/overlays.dart';
+import 'package:core/base_modules/ui_design.dart';
+import 'package:core/shared_layers/presentation.dart'
+    show AppLoader, AppTextButton;
+import 'package:core/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseAuth;
 import 'package:flutter/material.dart';

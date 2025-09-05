@@ -1,5 +1,4 @@
-import 'package:core/base_modules/form_fields/input_validation/validation_enums.dart'
-    show EmailInputValidation;
+import 'package:core/base_modules/forms.dart' show EmailInputValidation;
 import 'package:equatable/equatable.dart' show Equatable;
 import 'package:formz/formz.dart';
 

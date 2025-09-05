@@ -1,10 +1,6 @@
-import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
-    show Failure;
-import 'package:core/shared_domain_layer/shared_entities/_user_entity.dart'
-    show UserEntity;
-import 'package:riverpod_adapter/features_providers/profile/domain_layer_providers/use_case_provider.dart'
-    show fetchProfileUseCaseProvider;
-import 'package:riverpod_adapter/utils/safe_async_state.dart';
+import 'package:core/core.dart' show Failure, UserEntity;
+import 'package:riverpod_adapter/riverpod_adapter.dart'
+    show SafeAsyncState, fetchProfileUseCaseProvider;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'profile_provider.g.dart';

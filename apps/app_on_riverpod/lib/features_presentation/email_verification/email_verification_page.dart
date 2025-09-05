@@ -1,21 +1,11 @@
 import 'package:app_on_riverpod/features_presentation/auth/sign_out/sign_out_provider.dart';
 import 'package:app_on_riverpod/features_presentation/email_verification/provider/email_verification_provider.dart';
-import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
-    show LocaleKeys;
-import 'package:core/base_modules/localization/module_widgets/text_widget.dart';
-import 'package:core/base_modules/theme/ui_constants/_app_constants.dart'
-    show AppSpacing;
-import 'package:core/base_modules/theme/ui_constants/app_colors.dart'
-    show AppColors;
-import 'package:core/base_modules/theme/widgets_and_utils/extensions/theme_x.dart';
-import 'package:core/shared_presentation_layer/widgets_shared/buttons/text_button.dart';
-import 'package:core/shared_presentation_layer/widgets_shared/loader.dart';
-import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
+import 'package:core/core.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseRefs;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_adapter/base_modules/errors_handling_module/show_dialog_when_error_x.dart';
+import 'package:riverpod_adapter/riverpod_adapter.dart';
 
 part 'widgets_for_email_verification_page.dart';
 

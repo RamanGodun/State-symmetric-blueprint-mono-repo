@@ -1,11 +1,17 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart';
 import 'package:app_on_bloc/core/shared_presentation/pages/page_not_found.dart'
     show PageNotFound;
-import 'package:core/base_modules/overlays/utils/overlays_cleaner_within_navigation.dart'
+import 'package:core/base_modules/overlays.dart'
     show OverlaysCleanerWithinNavigation;
-import 'package:core/utils_shared/auth/auth_gateway.dart';
-import 'package:core/utils_shared/auth/auth_snapshot.dart';
-import 'package:core/utils_shared/stream_change_notifier.dart';
+import 'package:core/utils.dart'
+    show
+        AuthFailure,
+        AuthGateway,
+        AuthLoading,
+        AuthReady,
+        AuthSnapshot,
+        StreamChangeNotifier;
+
 import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
 import 'package:go_router/go_router.dart';
 

@@ -1,7 +1,13 @@
 import 'dart:async';
 
-import 'package:core/utils_shared/auth/auth_gateway.dart';
-import 'package:core/utils_shared/auth/auth_snapshot.dart';
+import 'package:core/utils.dart'
+    show
+        AuthFailure,
+        AuthGateway,
+        AuthLoading,
+        AuthReady,
+        AuthSession,
+        AuthSnapshot;
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

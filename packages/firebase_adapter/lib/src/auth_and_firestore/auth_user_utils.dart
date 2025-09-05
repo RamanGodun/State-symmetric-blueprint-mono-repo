@@ -1,7 +1,5 @@
-import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
-    show Failure;
-import 'package:core/base_modules/errors_handling/core_of_module/failure_type.dart'
-    show UserMissingFirebaseFailureType;
+import 'package:core/base_modules/errors_management.dart'
+    show Failure, UserMissingFirebaseFailureType;
 import 'package:firebase_adapter/src/auth_and_firestore/firebase_refs.dart';
 import 'package:firebase_auth/firebase_auth.dart' show User;
 

@@ -1,6 +1,5 @@
 import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/reset_password/providers/reset_password_form_state.dart';
-import 'package:core/base_modules/form_fields/input_validation/validation_enums.dart'
-    show EmailInputValidation;
+import 'package:core/base_modules/forms.dart' show EmailInputValidation;
 import 'package:flutter_riverpod/flutter_riverpod.dart' show StateNotifier;
 import 'package:hooks_riverpod/hooks_riverpod.dart' show StateNotifier;
 import 'package:riverpod_annotation/riverpod_annotation.dart';

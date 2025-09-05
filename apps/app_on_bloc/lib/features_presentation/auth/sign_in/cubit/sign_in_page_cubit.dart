@@ -1,19 +1,15 @@
-import 'dart:async';
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/errors_observing/loggers/failure_logger_x.dart';
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/result_handler.dart'
-    show ResultHandler;
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/specific_for_bloc/consumable.dart'
-    show Consumable;
-import 'package:core/base_modules/errors_handling/core_of_module/core_utils/specific_for_bloc/consumable_extensions.dart';
-import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
-    show Failure;
-import 'package:core/base_modules/form_fields/input_validation/validation_enums.dart'
+import 'package:core/base_modules/errors_management.dart'
+    show Consumable, Failure;
+import 'package:core/base_modules/forms.dart'
     show EmailInputValidation, PasswordInputValidation;
-import 'package:core/base_modules/form_fields/utils/form_validation_service.dart'
-    show FormValidationService;
-import 'package:core/utils_shared/timing_control/debouncer.dart' show Debouncer;
-import 'package:core/utils_shared/timing_control/timing_config.dart'
-    show AppDurations;
+import 'package:core/core.dart'
+    show
+        AppDurations,
+        ConsumableX,
+        Debouncer,
+        FailureLogger,
+        FormValidationService,
+        ResultHandler;
 import 'package:equatable/equatable.dart';
 import 'package:features/features.dart' show SignInUseCase;
 import 'package:flutter_bloc/flutter_bloc.dart';

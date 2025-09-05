@@ -1,6 +1,6 @@
 import 'package:bloc_adapter/src/base_modules/theme_module/theme_cubit.dart';
-import 'package:core/base_modules/theme/module_core/theme_variants.dart';
-import 'package:core/base_modules/theme/widgets_and_utils/theme_switchers/theme_picker.dart';
+import 'package:core/base_modules/ui_design.dart'
+    show ThemePickerView, ThemeVariantsEnum;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

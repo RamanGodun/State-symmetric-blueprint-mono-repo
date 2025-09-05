@@ -1,5 +1,5 @@
 import 'package:app_on_riverpod/features_presentation/auth/sign_in/providers/sign_in_form_fields_state.dart';
-import 'package:core/base_modules/form_fields/input_validation/validation_enums.dart'
+import 'package:core/base_modules/forms.dart'
     show EmailInputValidation, PasswordInputValidation;
 import 'package:flutter_riverpod/flutter_riverpod.dart' show StateNotifier;
 // import 'package:hooks_riverpod/hooks_riverpod.dart' show StateNotifier;

@@ -2,36 +2,22 @@ import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart'
 import 'package:app_on_bloc/features_presentation/auth/sign_in/cubit/sign_in_page_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart'
     show FormSubmitButton, OverlayStatusCubit, di;
-import 'package:core/base_modules/errors_handling/core_of_module/failure_ui_mapper.dart';
-import 'package:core/base_modules/errors_handling/extensible_part/failure_extensions/failure_led_retry_x.dart';
-import 'package:core/base_modules/form_fields/_form_field_factory.dart'
-    show InputFieldFactory;
-import 'package:core/base_modules/form_fields/input_validation/validation_enums.dart'
-    show InputFieldType;
-import 'package:core/base_modules/form_fields/input_validation/x_on_forms_submission_status.dart';
-import 'package:core/base_modules/form_fields/utils/form_validation_service.dart';
-import 'package:core/base_modules/form_fields/utils/use_auth_focus_nodes.dart'
-    show useSignInFocusNodes;
-import 'package:core/base_modules/form_fields/widgets/password_visibility_icon.dart'
-    show ObscureToggleIcon;
-import 'package:core/base_modules/localization/core_of_module/init_localization.dart'
-    show AppLocalizer;
-import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
-    show LocaleKeys;
-import 'package:core/base_modules/navigation/utils/extensions/navigation_x_on_context.dart';
-import 'package:core/base_modules/overlays/core/_context_x_for_overlays.dart';
-import 'package:core/base_modules/overlays/core/enums_for_overlay_module.dart'
-    show ShowAs;
-import 'package:core/base_modules/overlays/utils/overlay_utils.dart'
-    show OverlayUtils;
-import 'package:core/base_modules/theme/ui_constants/_app_constants.dart'
-    show AppSpacing;
-import 'package:core/base_modules/theme/ui_constants/app_colors.dart'
-    show AppColors;
-import 'package:core/shared_presentation_layer/widgets_shared/buttons/text_button.dart';
-import 'package:core/utils_shared/extensions/context_extensions/_context_extensions.dart';
-import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
-import 'package:core/utils_shared/spider/app_images_paths.dart';
+import 'package:core/base_modules/errors_management.dart';
+import 'package:core/base_modules/forms.dart'
+    show
+        FormValidationService,
+        FormzStatusX,
+        InputFieldFactory,
+        InputFieldType,
+        ObscureToggleIcon,
+        useSignInFocusNodes;
+import 'package:core/base_modules/localization.dart'
+    show AppLocalizer, LocaleKeys;
+import 'package:core/base_modules/navigation.dart';
+import 'package:core/base_modules/overlays.dart';
+import 'package:core/base_modules/ui_design.dart' show AppColors, AppSpacing;
+import 'package:core/shared_layers/presentation.dart' show AppTextButton;
+import 'package:core/utils.dart';
 import 'package:features/features.dart' show SignInUseCase;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

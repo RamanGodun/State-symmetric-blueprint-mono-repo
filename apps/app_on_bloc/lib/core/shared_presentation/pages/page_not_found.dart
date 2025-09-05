@@ -1,12 +1,10 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:core/base_modules/localization/generated/locale_keys.g.dart'
-    show LocaleKeys;
-import 'package:core/base_modules/localization/module_widgets/text_widget.dart';
-import 'package:core/base_modules/navigation/utils/extensions/navigation_x_on_context.dart';
-import 'package:core/base_modules/theme/ui_constants/_app_constants.dart'
-    show AppSpacing;
-import 'package:core/shared_presentation_layer/widgets_shared/buttons/filled_button.dart';
-import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
+import 'package:core/base_modules/localization.dart'
+    show LocaleKeys, TextType, TextWidget;
+import 'package:core/base_modules/navigation.dart';
+import 'package:core/base_modules/ui_design.dart' show AppSpacing;
+import 'package:core/shared_layers/presentation.dart' show CustomFilledButton;
+import 'package:core/utils.dart';
 import 'package:flutter/material.dart';
 
 /// 🧭 [PageNotFound] — generic 404 fallback UI for unknown routes

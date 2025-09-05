@@ -1,7 +1,6 @@
 import 'package:bloc_adapter/bloc_adapter.dart'
     show DIModule, SafeRegistration, di;
-import 'package:core/base_modules/form_fields/utils/form_validation_service.dart'
-    show FormValidationService;
+import 'package:core/base_modules/forms.dart' show FormValidationService;
 
 ///  🔐 Registers form validation service
 //

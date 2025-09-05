@@ -2,9 +2,9 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:bloc_adapter/src/base_modules/overlays_module/overlay_status_cubit.dart';
-import 'package:core/base_modules/form_fields/input_validation/x_on_forms_submission_status.dart';
-import 'package:core/shared_presentation_layer/widgets_shared/buttons/filled_button.dart';
-import 'package:core/utils_shared/type_definitions.dart';
+import 'package:core/base_modules/forms.dart';
+import 'package:core/shared_layers/presentation.dart' show CustomFilledButton;
+import 'package:core/utils.dart' show SubmitCallback;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';

@@ -1,11 +1,7 @@
-import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart'
-    show Failure;
+import 'package:core/base_modules/errors_management.dart' show Failure;
 import 'package:features/features.dart' show SignOutUseCase;
-import 'package:riverpod_adapter/features_providers/auth/domain_layer_providers/use_cases_providers.dart'
-    show signOutUseCaseProvider;
-import 'package:riverpod_adapter/features_providers/profile/data_layers_providers/data_layer_providers.dart'
-    show profileRepoProvider;
-import 'package:riverpod_adapter/utils/safe_async_state.dart';
+import 'package:riverpod_adapter/riverpod_adapter.dart'
+    show SafeAsyncState, profileRepoProvider, signOutUseCaseProvider;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sign_out_provider.g.dart';
