@@ -1,6 +1,6 @@
 import 'package:features/src/auth/data/remote_database_contract.dart'
     show IAuthRemoteDatabase;
-import 'package:firebase_adapter/firebase_typedefs.dart'
+import 'package:firebase_adapter/firebase_adapter.dart'
     show FirebaseAuth, UsersCollection;
 
 /// 🛠️ [AuthRemoteDatabaseImpl] — low-level Firebase access (Auth + users collection)

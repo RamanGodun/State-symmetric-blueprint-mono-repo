@@ -1,17 +1,22 @@
 //
-// ignore_for_file: directives_ordering
-//
-// ---- bootstrap
-export 'bootstrap/dotenv_options.dart';
+// ignore_for_file: directives_ordering, dangling_library_doc_comments
 
-// ---- constants
-export 'constants/firebase_constants.dart';
+/// 📦 Firebase Adapter — Public API
+/// ✅ Provides bootstrap, references, gateways, typedefs & utils
+///
 
-// ---- gateways
-export 'gateways/firebase_auth_gateway.dart';
+/// --- Bootstrap (init & env options)
+export 'src/bootstrap/env_loader.dart';
+export 'src/bootstrap/firebase_env_options.dart';
+export 'src/bootstrap/firebase_init.dart';
 
-// ---- typedefs (див. пункт 2 нижче)
-export 'firebase_typedefs.dart'
+/// --- Auth & Firestore
+export 'src/auth_and_firestore/auth_user_utils.dart';
+export 'src/auth_and_firestore/firebase_auth_gateway.dart';
+export 'src/auth_and_firestore/firebase_refs.dart';
+
+/// --- Typedefs
+export 'src/typedefs.dart'
     show
         CollectionReference,
         FBException,
@@ -19,6 +24,5 @@ export 'firebase_typedefs.dart'
         FirebaseUser,
         UsersCollection;
 
-// ---- utils
-export 'utils/auth_user_utils.dart';
-export 'utils/crash_analytics_logger.dart';
+/// --- Utilities
+export 'src/utils/crash_analytics_logger.dart';

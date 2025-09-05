@@ -6,7 +6,7 @@ import 'package:bloc_adapter/bloc_adapter.dart'
 import 'package:core/utils_shared/auth/auth_gateway.dart';
 import 'package:features/features_barrels/email_verification/email_verification.dart';
 import 'package:features/features_barrels/email_verification/email_verification_infra.dart';
-import 'package:firebase_adapter/firebase_typedefs.dart' show FirebaseAuth;
+import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseAuth;
 
 ///
 final class EmailVerificationModule implements DIModule {

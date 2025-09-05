@@ -19,7 +19,7 @@ import 'package:core/shared_presentation_layer/widgets_shared/buttons/text_butto
 import 'package:core/shared_presentation_layer/widgets_shared/loader.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_adapter/firebase_typedefs.dart' show FirebaseAuth;
+import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseAuth;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

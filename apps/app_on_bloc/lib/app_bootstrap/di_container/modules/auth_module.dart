@@ -5,9 +5,8 @@ import 'package:bloc_adapter/bloc_adapter.dart'
 import 'package:core/utils_shared/auth/auth_gateway.dart';
 import 'package:features/features_barrels/auth/auth.dart';
 import 'package:features/features_barrels/auth/auth_infra.dart';
-import 'package:firebase_adapter/firebase_typedefs.dart'
-    show FirebaseAuth, UsersCollection;
-import 'package:firebase_adapter/gateways/firebase_auth_gateway.dart';
+import 'package:firebase_adapter/firebase_adapter.dart'
+    show FirebaseAuth, FirebaseAuthGateway, UsersCollection;
 
 ///
 final class AuthModule implements DIModule {

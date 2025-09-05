@@ -8,13 +8,13 @@ import 'package:core/base_modules/errors_handling/core_of_module/core_utils/exte
 import 'package:core/base_modules/errors_handling/core_of_module/either.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/failure_entity.dart';
 import 'package:core/base_modules/errors_handling/core_of_module/failure_type.dart';
-import 'package:firebase_adapter/firebase_typedefs.dart' show FBException;
+import 'package:firebase_adapter/firebase_adapter.dart' show FBException;
 import 'package:flutter/services.dart'
     show MissingPluginException, PlatformException;
 
 part '../extensible_part/exceptions_to_failure_mapping/_exceptions_to_failures_mapper_x.dart';
-part '../extensible_part/exceptions_to_failure_mapping/firebase_exceptions_mapper.dart';
 part '../extensible_part/exceptions_to_failure_mapping/dio_exceptions_mapper.dart';
+part '../extensible_part/exceptions_to_failure_mapping/firebase_exceptions_mapper.dart';
 
 /// [ResultFutureExtension] - Extension for async function types.
 /// Provides a declarative way to wrap any async operation

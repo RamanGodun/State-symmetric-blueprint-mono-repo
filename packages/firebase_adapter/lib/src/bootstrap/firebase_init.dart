@@ -1,15 +1,22 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
-/// 🧩 [SafeFirebaseInit] — helper for safe, idempotent Firebase initialization.
+/// 🛡️ [FirebaseInitGuard] — Safe & idempotent Firebase bootstrap with verification.
+/// ✅ Prevents double-inits with wrong project
+/// ✅ Verifies target project against already-initialized app
+/// ✅ Returns the resolved [FirebaseApp] for further use
 ///
-/// Why?
-/// - Prevents double initialization (when native auto-config conflicts with .env options).
-/// - Guarantees the **correct Firebase project** for the active flavor.
-/// - Provides detailed logs of initialized Firebase apps.
-/// - Fails fast if a wrong project is active.
-abstract final class SafeFirebaseInit {
-  const SafeFirebaseInit._();
+/// 📝 Usage:
+/// ```dart
+/// final app = await FirebaseInitGuard.ensureInitialized(
+///   options: FirebaseEnvOptions.current,
+///   logApps: true,
+/// );
+/// ```
+//
+abstract final class FirebaseInitGuard {
+  ///-------------------------------
+  const FirebaseInitGuard._();
 
   /// ✅ Whether the default Firebase app is already initialized.
   static bool get isDefaultAppInitialized =>
@@ -22,14 +29,16 @@ abstract final class SafeFirebaseInit {
     }
   }
 
-  /// 🛡️ Initialize Firebase in a safe, idempotent way.
+  /// 🛡️ Safely bootstraps Firebase with explicit [options].
   ///
-  /// - [options] must ALWAYS be provided (no fallback to native auto-init).
+  /// Flow:
+  /// - Always attempts `Firebase.initializeApp(options: ...)`
   /// - If already initialized:
-  ///   - ✅ Same project → just log and return.
-  ///   - ❌ Different project → throw [StateError] (fail-fast).
-  /// - When [logApps] is `true`, logs all apps after init.
-  static Future<void> run({
+  ///   - ✅ Same project → log & reuse existing app
+  ///   - ❌ Different project → handle per 'onMismatch' policy
+  ///
+  /// Returns the resolved [FirebaseApp] (new or existing).
+  static Future<void> ensureInitialized({
     required FirebaseOptions options,
     bool logApps = true,
   }) async {

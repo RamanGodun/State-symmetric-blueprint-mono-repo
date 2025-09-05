@@ -1,6 +1,9 @@
+import 'package:equatable/equatable.dart' show Equatable;
+
 /// 🔐 [AuthSnapshot] — sealed union representing the authentication state
 //
-sealed class AuthSnapshot {
+sealed class AuthSnapshot extends Equatable {
+  ///-------------------------------------
   const AuthSnapshot();
 }
 
@@ -12,6 +15,8 @@ sealed class AuthSnapshot {
 final class AuthLoading extends AuthSnapshot {
   ///--------------------------------------
   const AuthLoading();
+  @override
+  List<Object?> get props => const [];
 }
 
 ////
@@ -28,6 +33,13 @@ final class AuthFailure extends AuthSnapshot {
   //
   ///
   final StackTrace? stackTrace;
+  //
+  @override
+  List<Object?> get props => <Object?>[
+    error.runtimeType,
+    error.toString(),
+    // stackTrace — miss to avoid noise
+  ];
 }
 
 ////
@@ -37,23 +49,26 @@ final class AuthFailure extends AuthSnapshot {
 final class AuthReady extends AuthSnapshot {
   ///--------------------------------------
   const AuthReady(this._session);
+  final AuthSession _session;
   //
   ///
   AuthSession get session => _session;
-  final AuthSession _session;
+  //
+  @override
+  List<Object?> get props => [session];
 }
 
 ////
 ////
 
 /// 👤 [AuthSession] — normalized user session (UID/email/flags)
-final class AuthSession {
-  ///-----------------
+final class AuthSession extends Equatable {
+  ///-----------------------------------
   const AuthSession({
-    required this.uid,
-    required this.email,
     required this.emailVerified,
     required this.isAnonymous,
+    this.uid,
+    this.email,
   });
   //
   ///
@@ -70,4 +85,8 @@ final class AuthSession {
   //
   /// 🟢 User is considered authenticated if UID is non-null
   bool get isAuthenticated => uid != null;
+  //
+  @override
+  List<Object?> get props => [uid, email, emailVerified, isAnonymous];
+  //
 }

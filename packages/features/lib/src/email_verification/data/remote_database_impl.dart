@@ -1,5 +1,5 @@
 import 'package:features/src/email_verification/data/remote_database_contract.dart';
-import 'package:firebase_adapter/firebase_typedefs.dart' show FirebaseAuth;
+import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseAuth;
 import 'package:flutter/foundation.dart' show debugPrint;
 
 /// 🛠️ [IUserValidationRemoteDataSourceImpl] — low-level Firebase access (Auth only)

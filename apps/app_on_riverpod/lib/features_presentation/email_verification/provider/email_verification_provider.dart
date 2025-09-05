@@ -9,8 +9,7 @@ import 'package:core/utils_shared/auth/auth_gateway.dart' show AuthGateway;
 import 'package:core/utils_shared/timing_control/timing_config.dart'
     show AppDurations;
 import 'package:features/features.dart' show EmailVerificationUseCase;
-
-import 'package:firebase_adapter/constants/firebase_constants.dart';
+import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseRefs;
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:riverpod_adapter/features_providers/email_verification/domain_layer_providers/use_case_provider.dart';
 import 'package:riverpod_adapter/utils/auth/auth_stream_adapter.dart'
@@ -105,7 +104,7 @@ final class EmailVerificationNotifier extends _$EmailVerificationNotifier
       final gateway = ref.read(authGatewayProvider);
       await gateway.refresh();
 
-      final refreshed = FirebaseConstants.fbAuthInstance.currentUser;
+      final refreshed = FirebaseRefs.auth.currentUser;
       debugPrint(
         '🔁 After reload + refresh: emailVerified=${refreshed?.emailVerified}',
       );

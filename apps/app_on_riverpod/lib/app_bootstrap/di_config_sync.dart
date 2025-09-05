@@ -3,9 +3,8 @@ import 'package:app_on_riverpod/core/base_modules/navigation/module_core/go_rout
 import 'package:app_on_riverpod/core/base_modules/navigation/module_core/router_provider.dart'
     show goRouter;
 import 'package:core/base_modules/overlays/overlays_dispatcher/overlay_dispatcher.dart';
-import 'package:firebase_adapter/constants/firebase_constants.dart';
-import 'package:firebase_adapter/gateways/firebase_auth_gateway.dart'
-    show FirebaseAuthGateway;
+import 'package:firebase_adapter/firebase_adapter.dart'
+    show FirebaseAuthGateway, FirebaseRefs;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart' show GetStorage;
 import 'package:riverpod_adapter/base_modules/observing/riverpod_observer.dart';
@@ -68,19 +67,19 @@ final class DIConfiguration implements IDIConfig {
     //
     // 🔐 Auth gateway: ensure proper disposal on provider teardown
     authGatewayProvider.overrideWith((ref) {
-      final auth = FirebaseAuthGateway(FirebaseConstants.fbAuthInstance);
+      final auth = FirebaseAuthGateway(FirebaseRefs.auth);
       ref.onDispose(auth.dispose);
       return auth;
     }),
     //
     /// 🔐 FirebaseAuth instance
     firebaseAuthProvider.overrideWith(
-      (ref) => FirebaseConstants.fbAuthInstance,
+      (ref) => FirebaseRefs.auth,
     ),
     //
     /// 🗃️ Users collection (Firestore)
     usersCollectionProvider.overrideWith(
-      (ref) => FirebaseConstants.usersCollection,
+      (ref) => FirebaseRefs.usersCollectionRef,
     ),
   ];
 

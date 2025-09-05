@@ -1,9 +1,8 @@
 import 'package:bloc_adapter/bloc_adapter.dart'
     show DIModule, SafeRegistration, di;
 import 'package:features/features_barrels/profile/profile_infra.dart';
-import 'package:firebase_adapter/constants/firebase_constants.dart';
-import 'package:firebase_adapter/firebase_typedefs.dart'
-    show FirebaseAuth, UsersCollection;
+import 'package:firebase_adapter/firebase_adapter.dart'
+    show FirebaseAuth, FirebaseRefs, UsersCollection;
 
 ///
 final class FirebaseModule implements DIModule {
@@ -22,11 +21,11 @@ final class FirebaseModule implements DIModule {
     di
       // Base instances
       ..registerLazySingletonIfAbsent<FirebaseAuth>(
-        () => FirebaseConstants.fbAuthInstance,
+        () => FirebaseRefs.auth,
         instanceName: kFbAuthInstance,
       )
       ..registerLazySingletonIfAbsent<UsersCollection>(
-        () => FirebaseConstants.usersCollection,
+        () => FirebaseRefs.usersCollectionRef,
         instanceName: kUsersCollection,
       )
       ///

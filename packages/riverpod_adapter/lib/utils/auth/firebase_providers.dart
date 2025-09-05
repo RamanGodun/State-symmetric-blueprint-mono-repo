@@ -1,6 +1,5 @@
-import 'package:firebase_adapter/constants/firebase_constants.dart';
-import 'package:firebase_adapter/firebase_typedefs.dart'
-    show FirebaseAuth, UsersCollection;
+import 'package:firebase_adapter/firebase_adapter.dart'
+    show FirebaseAuth, FirebaseRefs, UsersCollection;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,7 +9,7 @@ part 'firebase_providers.g.dart';
 /// ✅ Provides the environment-specific FirebaseAuth instance
 //
 @Riverpod(keepAlive: true)
-FirebaseAuth firebaseAuth(Ref ref) => FirebaseConstants.fbAuthInstance;
+FirebaseAuth firebaseAuth(Ref ref) => FirebaseRefs.auth;
 
 ////
 ////
@@ -19,4 +18,4 @@ FirebaseAuth firebaseAuth(Ref ref) => FirebaseConstants.fbAuthInstance;
 /// ✅ Provides the environment-specific Firestore users collection reference
 //
 @Riverpod(keepAlive: true)
-UsersCollection usersCollection(Ref ref) => FirebaseConstants.usersCollection;
+UsersCollection usersCollection(Ref ref) => FirebaseRefs.usersCollectionRef;

@@ -46,27 +46,23 @@ import 'package:firebase_adapter/firebase_adapter.dart';
 
 ```
 firebase_adapter/lib
-├─ firebase_adapter.dart         # ← barrel (public API)
+├─ firebase_adapter.dart                 # ← Barrel (public API)
 │
-├─ bootstrap/
-│   ├─ dotenv_options.dart       # FirebaseOptions from .env (per-platform)
-│   └─ firebase_initializer.dart # Safe init (idempotent)
-│
-├─ constants/
-│   └─ firebase_constants.dart   # fbAuthInstance, usersCollection
-│
-├─ gateways/
-│   └─ firebase_auth_gateway.dart# AuthGateway implementation (Core contract)
-│
-├─ typedefs/
-│   └─ firebase.dart             # typedefs & selected type exports
-│
-├─ firebase_types.dart           # thin re-export of typedefs/firebase.dart
-│
-└─ utils/
-    ├─ auth_user_utils.dart      # currentUserOrThrow, uid/email helpers
-    ├─ crash_analytics_logger.dart
-    └─ firebase_utils.dart       # low-level helpers
+└─ src
+   ├─ bootstrap/
+   │   ├─ env_loader.dart                # 🧪 Load .env (throw on missing keys)
+   │   ├─ firebase_env_options.dart      # 🧭 FirebaseOptions from .env (per-platform)
+   │   └─ firebase_init.dart             # 🛡️ Safe init (idempotent, project verification)
+   │
+   ├─ auth_and_firestore/
+   │   ├─ auth_user_utils.dart           # 👤 currentUserOrThrow / uid / email / reload
+   │   ├─ firebase_auth_gateway.dart     # 🔐 AuthGateway impl over FirebaseAuth (+stream)
+   │   └─ firebase_refs.dart             # 📚 Strong refs for FirebaseAuth & Firestore collections
+   │
+   ├─ typedefs.dart                      # 🔤 Typedefs & curated type exports (FBException, etc.)
+   │
+   └─ utils/
+       └─ crash_analytics_logger.dart    # 🧰 Thin wrapper for crash/analytics logging
 ```
 
 > If `utils/firebase_utils.dart` duplicates initialization logic — fold it into `bootstrap/firebase_initializer.dart`

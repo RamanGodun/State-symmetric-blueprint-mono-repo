@@ -12,7 +12,7 @@ import 'package:core/shared_presentation_layer/widgets_shared/buttons/text_butto
 import 'package:core/shared_presentation_layer/widgets_shared/loader.dart';
 import 'package:core/utils_shared/extensions/extension_on_widget/_widget_x_barrel.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_adapter/constants/firebase_constants.dart';
+import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseRefs;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_adapter/base_modules/errors_handling_module/show_dialog_when_error_x.dart';

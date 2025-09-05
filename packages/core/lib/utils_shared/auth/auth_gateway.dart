@@ -2,8 +2,6 @@ import 'package:core/utils_shared/auth/auth_snapshot.dart'
     show AuthFailure, AuthLoading, AuthReady, AuthSnapshot;
 import 'package:firebase_adapter/firebase_adapter.dart'
     show FirebaseAuthGateway;
-import 'package:firebase_adapter/gateways/firebase_auth_gateway.dart'
-    show FirebaseAuthGateway;
 
 /// 🛡️ [AuthGateway] — authentication abstraction
 /// - Provides a single [AuthSnapshot] stream as the source of truth
