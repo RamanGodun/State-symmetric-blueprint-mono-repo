@@ -1,8 +1,5 @@
-import 'package:app_bootstrap/bootstrap_contracts/_remote_database.dart'
-    show IRemoteDataBase;
-import 'package:app_bootstrap/bootstrap_contracts/contracts_barrel.dart'
-    show IAppBootstrap;
-import 'package:app_bootstrap/utils/platform_validation.dart';
+import 'package:app_bootstrap/app_bootstrap.dart'
+    show IAppBootstrap, IRemoteDataBase, PlatformValidationUtil;
 import 'package:app_on_bloc/app_bootstrap/di_container/di_container_init.dart';
 import 'package:app_on_bloc/app_bootstrap/firebase_initializer.dart';
 import 'package:app_on_bloc/app_bootstrap/local_storage_init.dart';

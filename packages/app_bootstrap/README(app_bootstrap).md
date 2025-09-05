@@ -33,19 +33,19 @@ import 'package:app_bootstrap/app_bootstrap.dart';
 
 ```
 lib/
-├─ app_bootstrap_barrel.dart      # Single public barrel
-├─ app_launcher.dart              # Guarded app runner & error handling
-├─ bootstrap_contracts/
-│   ├─ _bootstrap.dart            # IAppBootstrap
-│   ├─ _local_storage.dart        # ILocalStorage
-│   ├─ _remote_database.dart      # IRemoteDataBase
-│   └─ contracts_barrel.dart      # Contracts barrel
-├─ configs/
-│   ├─ env.dart                   # Environment & EnvConfig
-│   ├─ flavor.dart                # AppFlavor & FlavorConfig
-│   └─ platform_requirements.dart # PlatformConstants (min versions)
-└─ utils/
-    └─ platform_validation.dart   # PlatformValidationUtil
+├─ app_bootstrap.dart                 # 🚀 Single public barrel (clean API)
+└─ src/
+   ├─ bootstrap_contracts/            # 📜 Contracts (pure abstractions)
+   │  ├─ bootstrap.dart               # IAppBootstrap
+   │  ├─ local_storage.dart           # ILocalStorage
+   │  └─ remote_database.dart         # IRemoteDataBase
+   ├─ configs/                        # ⚙️ Compile-time/runtime config
+   │  ├─ env.dart                     # Environment & EnvConfig
+   │  ├─ flavor.dart                  # AppFlavor & FlavorConfig
+   │  └─ platform_requirements.dart   # PlatformConstants (min versions)
+   └─ utils/                          # 🧰 Bootstrap helpers
+      ├─ app_launcher.dart            # Guarded app runner & error handling
+      └─ platform_validation.dart     # PlatformValidationUtil
 ```
 
 > The exact file names may evolve; this README describes the intended responsibilities and boundaries of each area.

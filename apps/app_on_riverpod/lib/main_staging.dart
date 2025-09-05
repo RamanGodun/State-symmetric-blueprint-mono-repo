@@ -1,5 +1,5 @@
-import 'package:app_bootstrap/app_launcher.dart';
-import 'package:app_bootstrap/configs/flavor.dart' show AppFlavor, FlavorConfig;
+import 'package:app_bootstrap/app_bootstrap.dart'
+    show AppFlavor, AppLauncher, FlavorConfig;
 import 'package:app_on_riverpod/app_bootstrap/app_bootstrap.dart'
     show DefaultAppBootstrap;
 import 'package:app_on_riverpod/root_shell.dart';

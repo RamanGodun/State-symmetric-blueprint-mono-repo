@@ -4,8 +4,8 @@
  * [LICENSE](../../../LICENSE).
  */
 
-import 'package:app_bootstrap/app_launcher.dart';
-import 'package:app_bootstrap/configs/flavor.dart';
+import 'package:app_bootstrap/app_bootstrap.dart'
+    show AppFlavor, AppLauncher, FlavorConfig;
 import 'package:app_on_bloc/app_bootstrap/app_bootstrap.dart';
 import 'package:app_on_bloc/app_bootstrap/di_container/global_di_container.dart';
 import 'package:app_on_bloc/root_shell.dart';

@@ -1,5 +1,5 @@
 import 'dart:io' show Platform;
-import 'package:app_bootstrap/configs/platform_requirements.dart';
+import 'package:app_bootstrap/src/configs/platform_requirements.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
 /// 🛡️ [PlatformValidationUtil] — Util for platform/environment pre-checks.

@@ -1,6 +1,5 @@
-import 'package:app_bootstrap/bootstrap_contracts/contracts_barrel.dart'
-    show IAppBootstrap, ILocalStorage, IRemoteDataBase;
-import 'package:app_bootstrap/utils/platform_validation.dart';
+import 'package:app_bootstrap/app_bootstrap.dart'
+    show IAppBootstrap, ILocalStorage, IRemoteDataBase, PlatformValidationUtil;
 import 'package:app_on_riverpod/app_bootstrap/di_config_sync.dart';
 import 'package:app_on_riverpod/app_bootstrap/firebase_initializer.dart';
 import 'package:app_on_riverpod/app_bootstrap/local_storage_init.dart';

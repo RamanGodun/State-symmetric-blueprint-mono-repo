@@ -1,7 +1,5 @@
-import 'package:app_bootstrap/bootstrap_contracts/_remote_database.dart'
-    show IRemoteDataBase;
-import 'package:app_bootstrap/configs/env.dart' show EnvConfig, EnvFileName;
-import 'package:app_bootstrap/configs/flavor.dart' show FlavorConfig;
+import 'package:app_bootstrap/app_bootstrap.dart'
+    show EnvConfig, EnvFileName, FlavorConfig, IRemoteDataBase;
 import 'package:firebase_adapter/bootstrap/dotenv_options.dart';
 import 'package:firebase_adapter/utils/env_loader.dart';
 import 'package:firebase_adapter/utils/firebase_utils.dart';
