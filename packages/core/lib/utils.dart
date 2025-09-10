@@ -32,5 +32,5 @@ export 'src/utils_shared/timing_control/timing_control_barrel.dart';
 export 'src/utils_shared/spider/app_images_paths.dart';
 
 // --- View state --------------------------------------------------------------
-export 'src/utils_shared/async/custom_async_value.dart';
-export 'src/utils_shared/async/like_async_value.dart';
+export 'src/utils_shared/async/async_state.dart';
+export 'src/utils_shared/async/async_state_view.dart';

@@ -11,7 +11,7 @@ part 'profile_provider.g.dart';
 //
 @riverpod
 final class Profile extends _$Profile {
-  //--------------------------------
+  ///--------------------------------
 
   @override
   Future<UserEntity> build(String uid) async {

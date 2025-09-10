@@ -1,4 +1,5 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart';
+import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';
 import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_widget.dart';
 import 'package:app_on_bloc/features_presentation/profile/cubit/profile_page_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart'; // CoreAsync + AsyncLike + extensions
@@ -11,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'widgets_for_profile_page.dart';
 
 /// 👤 [ProfilePage] — Declarative profile screen with reactive auth-driven loading
-/// ✅ Thin orchestration only: auth → load profile → render via AsyncLike
+/// ✅ Ultra-thin orchestration + AsyncStateView-based UI
 /// ✅ Errors surfaced centrally via overlays (no inline error UI)
 //
 final class ProfilePage extends StatelessWidget {
@@ -28,50 +29,29 @@ final class ProfilePage extends StatelessWidget {
       _ => null,
     };
 
-    /// 🛡️ Auth guard — keep UX consistent with Riverpod app
+    /// 🛡️ Guard — mirror Riverpod: if not authenticated, show nothing
     if (uid == null) return const SizedBox.shrink();
 
-    /// ♻️ Reactive load: whenever auth session (UID) resolves/changes — (re)load profile
-    /// No manual “if (!isData)” checks, no spamming: load is called only on Ready
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<AuthCubit, AuthViewState>(
-          listenWhen: (prev, curr) {
-            // fire only when UID actually changes to a non-null value
-            final prevUid = switch (prev) {
-              AuthViewReady(:final session) => session.uid,
-              _ => null,
-            };
-            final currUid = switch (curr) {
-              AuthViewReady(:final session) => session.uid,
-              _ => null,
-            };
-            return prevUid != currUid && currUid != null;
-          },
-          listener: (context, state) {
-            if (state is AuthViewReady && state.session.uid != null) {
-              context.read<ProfileCubit>().load(state.session.uid!);
-            }
-          },
-        ),
+    /// 🧩♻️ Inject sign-out actions; profile auto-loads inside ProfileCubit
+    return BlocProvider<SignOutCubit>(
+      create: (_) => di<SignOutCubit>(),
 
-        /// 📣 One-shot error feedback via overlays (centralized; no inline error widget)
-        BlocListener<ProfileCubit, CoreAsync<UserEntity>>(
-          listenWhen: (prev, curr) =>
-              prev is! CoreAsyncError<UserEntity> &&
-              curr is CoreAsyncError<UserEntity>,
-          listener: (context, state) {
-            final failure = (state as CoreAsyncError<UserEntity>).failure;
-            context.showError(failure.toUIEntity());
-          },
-        ),
-      ],
+      /// 📣 One-shot error feedback via overlays (centralized)
+      child: BlocListener<ProfileCubit, AsyncState<UserEntity>>(
+        listenWhen: (prev, curr) =>
+            prev is! AsyncStateError<UserEntity> &&
+            curr is AsyncStateError<UserEntity>,
+        listener: (context, state) {
+          final failure = (state as AsyncStateError<UserEntity>).failure;
+          context.showError(failure.toUIEntity());
+        },
 
-      /// 🔁 Stateless UI — consume AsyncLike and render in a single place
-      child: BlocBuilder<ProfileCubit, CoreAsync<UserEntity>>(
-        builder: (context, state) => ProfileView(
-          // 🔌 Adapt CoreAsync → AsyncLike and render shared UI
-          state: state.asAsyncLike(),
+        /// 🔁 Stateless UI — consume AsyncStateView and render
+        child: BlocBuilder<ProfileCubit, AsyncState<UserEntity>>(
+          builder: (context, state) => ProfileView(
+            // 🔌 Adapt AsyncState → AsyncStateView and render shared UI
+            state: state.asAsyncStateView(),
+          ),
         ),
       ),
     );
@@ -82,7 +62,7 @@ final class ProfilePage extends StatelessWidget {
 
 ////
 
-/// 📄 [ProfileView] — State-agnostic rendering via [AsyncLike]
+/// 📄 [ProfileView] — State-agnostic rendering via [AsyncStateView]
 /// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class ProfileView extends StatelessWidget {
@@ -90,7 +70,7 @@ final class ProfileView extends StatelessWidget {
   const ProfileView({required this.state, super.key});
 
   ///
-  final AsyncLike<UserEntity> state;
+  final AsyncStateView<UserEntity> state;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +83,7 @@ final class ProfileView extends StatelessWidget {
         loading: () => const AppLoader(),
 
         /// ✅ Data
-        data: (u) => _UserProfileCard(user: u),
+        data: (user) => _UserProfileCard(user: user),
 
         /// 🧨 Error — handled by overlay listener (silent here)
         error: (_) => const SizedBox.shrink(),

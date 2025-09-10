@@ -30,7 +30,6 @@ final class _UserProfileCard extends StatelessWidget {
   const _UserProfileCard({required this.user});
   //
   final UserEntity user;
-
   //
 
   @override

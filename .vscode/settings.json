@@ -142,6 +142,7 @@
     "Bootstrapper",
     "debouncer",
     "Debouncers",
+    "dedupe",
     "definal",
     "dotenv",
     "DTOX",

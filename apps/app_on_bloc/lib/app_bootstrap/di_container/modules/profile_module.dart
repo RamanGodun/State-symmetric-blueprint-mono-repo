@@ -2,7 +2,7 @@ import 'package:app_on_bloc/app_bootstrap/di_container/modules/auth_module.dart'
 import 'package:app_on_bloc/app_bootstrap/di_container/modules/firebase_module.dart';
 import 'package:app_on_bloc/features_presentation/profile/cubit/profile_page_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart'
-    show DIModule, SafeRegistration, di;
+    show AuthCubit, DIModule, SafeRegistration, di;
 import 'package:features/features_barrels/profile/profile.dart';
 import 'package:features/features_barrels/profile/profile_infra.dart';
 
@@ -29,7 +29,8 @@ final class ProfileModule implements DIModule {
       ..registerLazySingletonIfAbsent(() => FetchProfileUseCase(di()))
       // Global Profile cubit
       ..registerLazySingletonIfAbsent<ProfileCubit>(
-        () => ProfileCubit(di<FetchProfileUseCase>()),
+        () =>
+            ProfileCubit(di<FetchProfileUseCase>(), authCubit: di<AuthCubit>()),
       );
 
     //

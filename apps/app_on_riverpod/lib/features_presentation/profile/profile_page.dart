@@ -12,8 +12,10 @@ import 'package:riverpod_adapter/riverpod_adapter.dart';
 
 part 'widgets_for_profile_page.dart';
 
-/// 👤 [ProfilePage] — Displays user details, handles logout, navigation to password change, and provides theme/language toggling.
-/// Uses [profileProvider] for user data and listens for error overlays.
+/// 👤 [ProfilePage] — Declarative profile screen with reactive auth-driven loading
+/// ✅ Ultra-thin orchestration + AsyncLike-based UI
+/// ✅ Rebuild-optimized via select/buildWhen
+/// ✅ Errors surfaced centrally via overlays (no inline error UI)
 //
 final class ProfilePage extends ConsumerWidget {
   ///----------------------------------
@@ -41,7 +43,7 @@ final class ProfilePage extends ConsumerWidget {
 
 ////
 
-/// 📄 [ProfileView] — State-agnostic rendering via [AsyncLike]
+/// 📄 [ProfileView] — State-agnostic rendering via [AsyncStateView]
 /// ✅ Same widget used in Cubit/BLoC app for perfect parity
 //
 final class ProfileView extends StatelessWidget {
@@ -49,7 +51,7 @@ final class ProfileView extends StatelessWidget {
   const ProfileView({required this.state, super.key});
 
   ///
-  final AsyncLike<UserEntity> state;
+  final AsyncStateView<UserEntity> state;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +64,7 @@ final class ProfileView extends StatelessWidget {
         loading: () => const AppLoader(),
 
         /// ✅ Data
-        data: (u) => _UserProfileCard(user: u),
+        data: (user) => _UserProfileCard(user: user),
 
         /// 🧨 Error — handled by overlay listener (silent here)
         error: (_) => const SizedBox.shrink(),
