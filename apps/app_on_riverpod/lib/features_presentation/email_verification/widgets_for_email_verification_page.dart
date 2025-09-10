@@ -75,19 +75,19 @@ final class _VerifyEmailInfo extends StatelessWidget {
 
 ////
 
-/// ❌ [VerifyEmailCancelButton] — signs out from verification screen
+/// ❌ [_VerifyEmailCancelButton] — signs out from verification screen
 /// 🧼 Listens for errors via [signOutProvider]
 //
-final class VerifyEmailCancelButton extends ConsumerWidget {
-  ///----------------------------------------------------
-  const VerifyEmailCancelButton({super.key});
-
+final class _VerifyEmailCancelButton extends ConsumerWidget {
+  ///-----------------------------------------------------
+  const _VerifyEmailCancelButton();
+  //
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
     // ❗️ Shows (declarative) error state
     ref.listenFailure(signOutProvider, context);
-
+    // Button always is clickable (user can cancel polling in ane moment)
     return AppTextButton(
       onPressed: () => ref.read(signOutProvider.notifier).signOut(),
       label: LocaleKeys.buttons_cancel,

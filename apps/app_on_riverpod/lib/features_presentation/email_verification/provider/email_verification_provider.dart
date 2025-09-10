@@ -42,7 +42,10 @@ final class EmailVerificationNotifier extends _$EmailVerificationNotifier
     initSafe();
     debugPrint('VerificationNotifier: build() called...');
 
-    // ✉️ Fire off email immediately and start polling
+    ///
+    state = const AsyncLoading();
+
+    /// ✉️ Fire off email immediately and start polling
     unawaited(_emailVerificationUseCase.sendVerificationEmail());
     _startPolling();
 
@@ -55,6 +58,10 @@ final class EmailVerificationNotifier extends _$EmailVerificationNotifier
   /// 🔁 Polls every 3 seconds until verified or timeout reached
   void _startPolling() {
     _stopwatch.start();
+    //
+    /// When ticker starts — we in state "polling → loader"
+    state = const AsyncLoading();
+
     _timer = Timer.periodic(AppDurations.sec3, (_) {
       if (_stopwatch.elapsed > _maxPollingDuration) {
         // ⏳ Timeout — stop polling and emit failure
@@ -66,6 +73,9 @@ final class EmailVerificationNotifier extends _$EmailVerificationNotifier
         state = AsyncError(timeoutFailure, StackTrace.current);
         return;
       }
+      //
+      /// On each tick we give visualization: "active polling"
+      state = const AsyncLoading();
       _checkEmailVerified();
     });
   }

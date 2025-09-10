@@ -1,40 +1,27 @@
-import 'package:core/base_modules/errors_management.dart'
-    show Consumable, ConsumableX, Failure, ResultHandler;
-import 'package:equatable/equatable.dart';
+import 'package:bloc_adapter/bloc_adapter.dart';
+import 'package:core/core.dart' show AsyncState;
+import 'package:core/utils.dart' show AsyncState;
 import 'package:features/features.dart' show SignOutUseCase;
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'sign_out_state.dart';
-
-/// 🚪 [SignOutCubit] — Handles the user sign out logic
-/// ✅ Emits failure/success status (if needed)
+/// 🚪 [SignOutCubit] — sign out through unified [AsyncState]
+/// ✅ success => AsyncState.data(null)
+/// ✅ error   => AsyncState.error(Failure)
+/// ✅ loading => AsyncState.loading()
 //
-final class SignOutCubit extends Cubit<SignOutState> {
-  ///---------------------------------------------
-  SignOutCubit(this._signOutUseCase) : super(const SignOutState());
+final class SignOutCubit extends AsyncStateCubit<void> {
+  ///------------------------------------------------
+  SignOutCubit(this._signOutUseCase) : super();
   //
   final SignOutUseCase _signOutUseCase;
 
-  ///
+  /// ▶️ Launch sign out with unified scheme Loading/Data/Error
   Future<void> signOut() async {
-    emit(state.copyWith(status: SignOutStatus.loading));
-
-    final result = await _signOutUseCase();
-
-    if (isClosed) return;
-
-    ResultHandler(result)
-      ..onFailure((f) {
-        emit(
-          state.copyWith(
-            status: SignOutStatus.failure,
-            failure: f.asConsumable(),
-          ),
-        );
-      })
-      ..onSuccess((_) {
-        emit(state.copyWith(status: SignOutStatus.success));
-      })
-      ..log();
+    await loadTask(() async {
+      final result = await _signOutUseCase();
+      // converts Either → throw/return for loadTask
+      return result.fold((f) => throw f, (_) => null);
+    });
   }
+
+  //
 }

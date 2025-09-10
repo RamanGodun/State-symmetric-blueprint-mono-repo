@@ -1,116 +1,104 @@
 import 'dart:async' show Timer;
 
+import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
-import 'package:equatable/equatable.dart';
 import 'package:features/features_barrels/email_verification/email_verification.dart';
-import 'package:firebase_adapter/firebase_adapter.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'email_verification_state.dart';
-
-/// Handles the email verification flow, including sending the email,
-/// polling for verification, and timing out if necessary.
+/// 🧩 [EmailVerificationCubit] — orchestrates email verification flow (BLoC)
+/// ✅ Emits [AsyncState<void>] to mirror Riverpod's notifier
+/// ✅ Keeps polling/timeout logic + inline loader UX
 //
-final class EmailVerificationCubit extends Cubit<EmailVerificationState> {
-  ///------------------------------------------------------------------
-  EmailVerificationCubit(this._useCase)
-    : super(const EmailVerificationState()) {
-    // _startPolling();
-  }
+final class EmailVerificationCubit extends AsyncStateCubit<void> {
+  ///-----------------------------------------------
+  EmailVerificationCubit(this._useCase);
   //
   final EmailVerificationUseCase _useCase;
-  //
 
   Timer? _pollingTimer;
   final Stopwatch _stopwatch = Stopwatch();
   static const Duration _maxPollingDuration = AppDurations.min1;
   bool _started = false;
-  //
 
-  /// Initializes the verification flow once (send email + start polling).
+  /// ▶️ One-shot bootstrap: send email + start polling
   Future<void> initVerificationFlow() async {
     if (_started) return;
     _started = true;
-    await sendVerificationEmail();
-    _startPolling();
+    //
+    /// show inline loader while we kick things off
+    emit(const AsyncState.loading());
+    //
+    final sent = await _useCase.sendVerificationEmail();
+    sent.fold(
+      // show error overlay via listener
+      (f) => emit(AsyncState<void>.error(f)),
+      (_) => _startPolling(),
+    );
   }
 
-  /// Starts polling every 3 seconds to check if email is verified.
-  /// Stops polling if verification succeeds or timeout is reached.
+  /// 🔁 Poll every 3s; stop on verified or timeout
   void _startPolling() {
+    // ensure clean start
     _pollingTimer?.cancel();
     _stopwatch
       ..reset()
       ..start();
     //
+    /// keep loader visible during active polling
+    emit(const AsyncState.loading());
+    //
     _pollingTimer = Timer.periodic(AppDurations.sec3, (_) async {
+      // timeout → stop + error
       if (_stopwatch.elapsed >= _maxPollingDuration) {
         _stopPolling();
         emit(
-          state.copyWith(
-            status: EmailVerificationStatus.failure,
-            failure: const Failure(
+          const AsyncState<void>.error(
+            Failure(
               type: EmailVerificationTimeoutFailureType(),
               message: 'Timeout exceeded',
-            ).asConsumable(),
+            ),
           ),
         );
         return;
       }
-      //
-      await checkVerified();
+
+      await _checkVerified();
     });
   }
 
-  /// Stops polling and resets the stopwatch.
+  /// ✅ Check verification; on success → reload and emit data(null)
+  Future<void> _checkVerified() async {
+    // keep loader while checking
+    emit(const AsyncState.loading());
+    //
+    final result = await _useCase.checkIfEmailVerified();
+    result.fold(
+      (f) => emit(AsyncState<void>.error(f)),
+      (isVerified) async {
+        if (!isVerified) {
+          // still not verified → keep loader for inline spinner UX
+          emit(const AsyncState.loading());
+          return;
+        }
+        //
+        /// verified → reload + stop + signal success
+        await _useCase.reloadUser();
+        _stopPolling();
+        //
+        /// convention: success = AsyncState.data(null)
+        emit(const AsyncState<void>.data(null));
+      },
+    );
+  }
+
+  /// 🛑 Stops the polling loop and halts the stopwatch
+  /// ✅ Ensures no background timers keep running
   void _stopPolling() {
     _pollingTimer?.cancel();
     _stopwatch.stop();
   }
 
-  /// Checks if the user has verified their email.
-  /// If verified, reloads user and stops polling.
-  Future<void> checkVerified() async {
-    emit(state.copyWith(status: EmailVerificationStatus.loading));
-    //
-    final result = await _useCase.checkIfEmailVerified();
-    result.fold(
-      (failure) => emit(
-        state.copyWith(
-          status: EmailVerificationStatus.failure,
-          failure: failure.asConsumable(),
-        ),
-      ),
-      //
-      (isVerified) async {
-        if (isVerified) {
-          await _useCase.reloadUser();
-          _stopPolling();
-          emit(state.copyWith(status: EmailVerificationStatus.verified));
-        } else {
-          emit(state.copyWith(status: EmailVerificationStatus.unverified));
-        }
-      },
-    );
-  }
-
-  /// Sends the verification email to the user.
-  Future<void> sendVerificationEmail() async {
-    emit(state.copyWith(status: EmailVerificationStatus.loading));
-    //
-    final result = await _useCase.sendVerificationEmail();
-    result.fold(
-      (failure) => emit(
-        state.copyWith(
-          status: EmailVerificationStatus.failure,
-          failure: failure.asConsumable(),
-        ),
-      ),
-      (_) => emit(state.copyWith(status: EmailVerificationStatus.resent)),
-    );
-  }
-
-  /// Stops polling and disposes of the cubit.
+  /// 🧹 Dispose hook — cancels polling before closing Cubit
+  /// ✅ Prevents leaks and dangling timers
   @override
   Future<void> close() {
     _stopPolling();

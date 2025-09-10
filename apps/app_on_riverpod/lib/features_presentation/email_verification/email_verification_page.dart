@@ -10,7 +10,8 @@ import 'package:riverpod_adapter/riverpod_adapter.dart';
 part 'widgets_for_email_verification_page.dart';
 
 /// 🧼 [VerifyEmailPage] — screen that handles email verification polling
-/// Automatically redirects when email gets verified
+/// ✅ Automatically redirects when email gets verified
+/// ✅ Unified rendering via [VerifyEmailView] + AsyncStateView
 //
 final class VerifyEmailPage extends ConsumerWidget {
   ///--------------------------------------------
@@ -19,7 +20,7 @@ final class VerifyEmailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    /// ⛑️ Error listener
+    /// ⛑️ Centralized retry-aware error handling
     ref
       ..listenRetryAwareFailure(
         emailVerificationNotifierProvider,
@@ -27,11 +28,33 @@ final class VerifyEmailPage extends ConsumerWidget {
         ref: ref,
         onRetry: () => ref.invalidate(emailVerificationNotifierProvider),
       )
-      // 🎯 Trigger the polling logic
+      /// ▶️ Trigger polling (notifier starts flow in build)
       ..read(emailVerificationNotifierProvider);
 
-    final asyncValue = ref.watch(emailVerificationNotifierProvider);
+    /// 🔌 Bridge AsyncValue → AsyncStateView
+    final view = ref.watch(emailVerificationNotifierProvider).asAsyncLike();
 
+    /// ♻️ State-agnostic UI (identical to BLoC)
+    return VerifyEmailView(state: view);
+  }
+}
+
+////
+
+////
+
+/// 📄 [VerifyEmailView] — State-agnostic UI with inline loader
+/// ✅ Works with both Riverpod & BLoC via [AsyncStateView]
+//
+final class VerifyEmailView extends StatelessWidget {
+  ///---------------------------------------------
+  const VerifyEmailView({required this.state, super.key});
+  //
+  /// 🔌 Unified async facade
+  final AsyncStateView<void> state;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: DecoratedBox(
@@ -47,18 +70,22 @@ final class VerifyEmailPage extends ConsumerWidget {
             ],
           ),
 
-          child: asyncValue.when(
-            //
-            loading: () => const AppLoader(),
-            error: (_, _) => const VerifyEmailCancelButton(),
-
-            data: (_) => const Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [_VerifyEmailInfo(), VerifyEmailCancelButton()],
-            ).withPaddingSymmetric(h: AppSpacing.xl, v: AppSpacing.xxl),
-          ),
+          /// ℹ️ Instructions + inline loader OR cancel
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Main information/instructions for the user.
+              const _VerifyEmailInfo(),
+              // Show loader while polling
+              if (state.isLoading) const AppLoader(),
+              //  Show cancel button
+              const _VerifyEmailCancelButton().withPaddingTop(AppSpacing.l),
+            ],
+          ).withPaddingSymmetric(h: AppSpacing.xl, v: AppSpacing.xxl),
         ),
       ),
     );
   }
+
+  //
 }

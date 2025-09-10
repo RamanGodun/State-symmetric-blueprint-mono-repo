@@ -21,7 +21,7 @@ final class _VerifyEmailInfo extends StatelessWidget {
         const TextWidget(LocaleKeys.verify_email_sent, TextType.bodyMedium),
         const SizedBox(height: AppSpacing.xxs),
         TextWidget(
-          di<FirebaseAuth>(instanceName: kFbAuthInstance).currentUser?.email ??
+          FirebaseRefs.auth.currentUser?.email ??
               LocaleKeys.verify_email_unknown,
           TextType.bodyMedium,
           fontWeight: FontWeight.bold,
@@ -75,29 +75,25 @@ final class _VerifyEmailInfo extends StatelessWidget {
 
 ////
 
-/// ❌ [VerifyEmailCancelButton] — signs out from verification screen
-/// 🧼 Listens for errors via [SignOutCubit]
+/// ❌ [_VerifyEmailCancelButton] — signs out from verification screen (BLoC)
+/// ✅ Listens [AsyncState]: error → overlay, data → go signIn
 //
-final class VerifyEmailCancelButton extends StatelessWidget {
+final class _VerifyEmailCancelButton extends StatelessWidget {
   ///----------------------------------------------------
-  const VerifyEmailCancelButton({super.key});
-
+  const _VerifyEmailCancelButton();
+  //
   @override
   Widget build(BuildContext context) {
     //
-    return BlocListener<SignOutCubit, SignOutState>(
+    return BlocListener<SignOutCubit, AsyncState<void>>(
+      // 🔍 fire only when we *enter* the Error state
       listenWhen: (prev, curr) =>
-          prev.status != curr.status || curr.failure?.consume() != null,
-
+          prev is! AsyncStateError<void> && curr is AsyncStateError<void>,
       listener: (context, state) {
-        if (state.status == SignOutStatus.success) {
-          context.goTo(RoutesNames.signIn);
-        }
-        final failure = state.failure?.consume();
-        if (failure != null) {
-          context.showError(failure.toUIEntity());
-        }
+        final failure = (state as AsyncStateError<void>).failure;
+        context.showError(failure.toUIEntity());
       },
+      // Button always is clickable (user can cancel polling in ane moment)
       child: AppTextButton(
         label: LocaleKeys.buttons_cancel,
         onPressed: () => context.read<SignOutCubit>().signOut(),
