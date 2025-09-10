@@ -1,40 +1,27 @@
 import 'dart:async';
 
+import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
 import 'package:features/features.dart' show FetchProfileUseCase;
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'profile_page_state.dart';
-
-/// 🧩 [ProfileCubit] — State manager for profile loading and errors.
-/// ✅ Uses AZER (Async, Zero side effects, Error handling, Reactive) pattern.
+/// 👤 [ProfileCubit] — Thin orchestrator over use case (no business logic here)
+/// ✅ Emits [CoreAsync<UserEntity>] to keep UI state-agnostic
 //
-final class ProfileCubit extends Cubit<ProfileState> {
+final class ProfileCubit extends CoreAsyncCubit<UserEntity> {
   ///-----------------------------------------------
-  ProfileCubit(this._fetchProfileUsecase) : super(const ProfileInitial());
+  ProfileCubit(this._fetchProfileUsecase) : super();
   //
   final FetchProfileUseCase _fetchProfileUsecase;
 
   //
 
-  /// 🚀 Loads user profile by UID
-  Future<void> loadProfile(String uid) async {
-    //
-    emit(const ProfileLoading());
-
-    final result = await _fetchProfileUsecase(uid);
-
-    result.fold(
-      (f) => emit(ProfileError(f.asConsumable())),
-      (u) => emit(ProfileLoaded(u)),
-    );
-  }
-
-  /// 🧽 Clears failure after UI consumed it
-  void clearFailure() {
-    if (state is ProfileError) {
-      emit(const ProfileInitial());
-    }
+  /// 🚀 Load profile by UID using unified loader
+  Future<void> load(String uid) async {
+    await loadTask(() async {
+      final result = await _fetchProfileUsecase(uid);
+      // Throw Failure to hit `catch` in CoreAsyncCubit or unfold explicitly:
+      return result.fold((f) => throw f, (u) => u);
+    });
   }
 
   //

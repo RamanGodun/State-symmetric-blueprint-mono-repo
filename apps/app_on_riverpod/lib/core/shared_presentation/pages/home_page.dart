@@ -1,17 +1,16 @@
 import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 🏠 [HomePage] — the main landing screen after login.
 /// Displays a toggle for theme switching and navigates to profile/settings.
 //
-final class HomePage extends ConsumerWidget {
+final class HomePage extends StatelessWidget {
   ///----------------------------------
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     //
     return Scaffold(
       appBar: const CustomAppBar(

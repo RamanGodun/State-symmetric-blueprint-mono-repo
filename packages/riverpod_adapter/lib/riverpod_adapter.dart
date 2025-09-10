@@ -11,6 +11,7 @@ export 'src/utils/auth/auth_stream_adapter.dart';
 export 'src/utils/auth/firebase_providers.dart';
 export 'src/utils/safe_async_state.dart';
 export 'src/utils/typedefs.dart';
+export 'src/utils/async/view_state_adapter.dart';
 
 /// --- Base Modules: Errors
 export 'src/base_modules/errors_handling_module/async_value_failure_x.dart';

@@ -1,8 +1,7 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';
 import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_widget.dart';
 import 'package:app_on_bloc/features_presentation/profile/cubit/profile_page_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart';
+import 'package:bloc_adapter/bloc_adapter.dart'; // CoreAsync + AsyncLike + extensions
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -11,9 +10,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'widgets_for_profile_page.dart';
 
-/// 👤 [ProfilePage] — Shows user profile details and allows sign-out
-/// ✅ Uses [AuthCubit] to obtain UID and loads profile via [ProfileCubit]
-/// ✅ Injects [SignOutCubit] to trigger logout
+/// 👤 [ProfilePage] — Declarative profile screen with reactive auth-driven loading
+/// ✅ Thin orchestration only: auth → load profile → render via AsyncLike
+/// ✅ Errors surfaced centrally via overlays (no inline error UI)
 //
 final class ProfilePage extends StatelessWidget {
   ///------------------------------------
@@ -28,39 +27,52 @@ final class ProfilePage extends StatelessWidget {
       AuthViewReady(:final session) => session.uid,
       _ => null,
     };
-    // 🛑 Guard: If user is not available, return empty widget
+
+    /// 🛡️ Auth guard — keep UX consistent with Riverpod app
     if (uid == null) return const SizedBox.shrink();
 
-    // to avoid loadProfile triggering on each rebuild:
-    final profileCubit = context.read<ProfileCubit>();
-    if (profileCubit.state is! ProfileLoaded) {
-      profileCubit.loadProfile(uid);
-    }
-
-    /// 🧩♻️ Injects [ProfileCubit] and [SignOutCubit] with DI and loads profile on init
-    return BlocProvider<SignOutCubit>(
-      create: (_) => di<SignOutCubit>(),
-
-      /// Bloc listener for one-shot error feedback.
-      /// Uses `Consumable<FailureUIModel>` for single-use error overlays.
-      child: BlocListener<ProfileCubit, ProfileState>(
-        listenWhen: (prev, curr) =>
-            prev is! ProfileError && curr is ProfileError,
-
-        /// 📣 Show error once and reset failure
-        listener: (context, state) {
-          if (state is ProfileError) {
-            final failure = state.failure.consume();
-            if (failure != null) {
-              final failureUIEntity = failure.toUIEntity();
-              context.showError(failureUIEntity);
-              context.read<ProfileCubit>().clearFailure();
+    /// ♻️ Reactive load: whenever auth session (UID) resolves/changes — (re)load profile
+    /// No manual “if (!isData)” checks, no spamming: load is called only on Ready
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthCubit, AuthViewState>(
+          listenWhen: (prev, curr) {
+            // fire only when UID actually changes to a non-null value
+            final prevUid = switch (prev) {
+              AuthViewReady(:final session) => session.uid,
+              _ => null,
+            };
+            final currUid = switch (curr) {
+              AuthViewReady(:final session) => session.uid,
+              _ => null,
+            };
+            return prevUid != currUid && currUid != null;
+          },
+          listener: (context, state) {
+            if (state is AuthViewReady && state.session.uid != null) {
+              context.read<ProfileCubit>().load(state.session.uid!);
             }
-          }
-        },
+          },
+        ),
 
-        ///
-        child: const ProfileView(),
+        /// 📣 One-shot error feedback via overlays (centralized; no inline error widget)
+        BlocListener<ProfileCubit, CoreAsync<UserEntity>>(
+          listenWhen: (prev, curr) =>
+              prev is! CoreAsyncError<UserEntity> &&
+              curr is CoreAsyncError<UserEntity>,
+          listener: (context, state) {
+            final failure = (state as CoreAsyncError<UserEntity>).failure;
+            context.showError(failure.toUIEntity());
+          },
+        ),
+      ],
+
+      /// 🔁 Stateless UI — consume AsyncLike and render in a single place
+      child: BlocBuilder<ProfileCubit, CoreAsync<UserEntity>>(
+        builder: (context, state) => ProfileView(
+          // 🔌 Adapt CoreAsync → AsyncLike and render shared UI
+          state: state.asAsyncLike(),
+        ),
       ),
     );
   }
@@ -70,30 +82,31 @@ final class ProfilePage extends StatelessWidget {
 
 ////
 
-/// 📄 [ProfileView] — Handles state for loading, error, and loaded profile states
-/// ✅ Reacts to [ProfileCubit] and shows appropriate UI
+/// 📄 [ProfileView] — State-agnostic rendering via [AsyncLike]
+/// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class ProfileView extends StatelessWidget {
   ///------------------------------------------
-  const ProfileView({super.key});
+  const ProfileView({required this.state, super.key});
+
+  ///
+  final AsyncLike<UserEntity> state;
 
   @override
   Widget build(BuildContext context) {
-    //
     return Scaffold(
       appBar: const _ProfileAppBar(),
 
-      body: BlocBuilder<ProfileCubit, ProfileState>(
-        builder: (context, state) => switch (state) {
-          ProfileInitial() => const SizedBox.shrink(),
-          ProfileLoaded(:final user) => _UserProfileCard(user: user),
+      ///
+      body: state.when(
+        /// ⏳ Loading
+        loading: () => const AppLoader(),
 
-          ProfileLoading() =>
-            const AppLoader(), // Show loader while data is loading
+        /// ✅ Data
+        data: (u) => _UserProfileCard(user: u),
 
-          ProfileError() =>
-            const SizedBox.shrink(), // Show nothing, as overlay handles errors
-        },
+        /// 🧨 Error — handled by overlay listener (silent here)
+        error: (_) => const SizedBox.shrink(),
       ),
     );
   }

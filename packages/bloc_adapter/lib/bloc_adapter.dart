@@ -62,3 +62,9 @@ export 'src/presentation_shared/cubits/auth_cubit.dart'
 
 export 'src/presentation_shared/widgets_shared/form_submit_button.dart'
     show FormSubmitButton;
+
+/// ─────────────────────────────────────────────────────────────────────────
+/// 5) State adapters
+/// ─────────────────────────────────────────────────────────────────────────
+export 'src/utils/async/async_cubit.dart';
+export 'src/utils/async/like_core_async_implementation.dart';

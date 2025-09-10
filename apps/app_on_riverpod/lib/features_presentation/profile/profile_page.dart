@@ -32,20 +32,40 @@ final class ProfilePage extends ConsumerWidget {
     ref.listenFailure(profileProvider(uid), context);
 
     ///
+    // 🔌 Adapt AsyncValue → AsyncLike and render shared UI
+    return ProfileView(state: asyncUser.asAsyncLike());
+  }
+}
+
+////
+
+////
+
+/// 📄 [ProfileView] — State-agnostic rendering via [AsyncLike]
+/// ✅ Same widget used in Cubit/BLoC app for perfect parity
+//
+final class ProfileView extends StatelessWidget {
+  ///------------------------------------------
+  const ProfileView({required this.state, super.key});
+
+  ///
+  final AsyncLike<UserEntity> state;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: const _ProfileAppBar(),
 
-      /// User data loaded — render profile details
-      body: asyncUser.when(
-        data: (user) => _UserProfileCard(user: user),
-
-        /// Show loader while data is loading
+      ///
+      body: state.when(
+        /// ⏳ Loading
         loading: () => const AppLoader(),
 
-        /// Show nothing, as overlay handles errors
-        error: (_, _) => const SizedBox.shrink(),
+        /// ✅ Data
+        data: (u) => _UserProfileCard(user: u),
 
-        //
+        /// 🧨 Error — handled by overlay listener (silent here)
+        error: (_) => const SizedBox.shrink(),
       ),
     );
   }
