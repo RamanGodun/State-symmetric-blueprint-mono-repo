@@ -1,4 +1,4 @@
-import 'dart:async' show Timer;
+import 'dart:async' show Timer, scheduleMicrotask;
 
 import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
@@ -10,7 +10,12 @@ import 'package:features/features_barrels/email_verification/email_verification.
 //
 final class EmailVerificationCubit extends AsyncStateCubit<void> {
   ///-----------------------------------------------
-  EmailVerificationCubit(this._useCase);
+  EmailVerificationCubit(this._useCase) : super() {
+    // ▶️ Fire-and-forget bootstrap: starts polling flow after construction
+    //    - microtask guarantees init runs after listeners are attached
+    //    - guarded by [_started] flag to avoid double-start
+    scheduleMicrotask(_bootstrap);
+  }
   //
   final EmailVerificationUseCase _useCase;
 
@@ -20,7 +25,7 @@ final class EmailVerificationCubit extends AsyncStateCubit<void> {
   bool _started = false;
 
   /// ▶️ One-shot bootstrap: send email + start polling
-  Future<void> initVerificationFlow() async {
+  Future<void> _bootstrap() async {
     if (_started) return;
     _started = true;
     //

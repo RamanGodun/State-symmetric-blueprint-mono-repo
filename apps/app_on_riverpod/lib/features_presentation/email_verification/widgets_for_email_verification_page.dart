@@ -1,5 +1,53 @@
 part of 'email_verification_page.dart';
 
+/// 📄 [_VerifyEmailView] — renders state-agnostic verification UI
+/// ✅ Shows instructions, inline loader, and cancel button
+/// ✅ Works with both BLoC & Riverpod via [AsyncStateView]
+//
+final class _VerifyEmailView extends StatelessWidget {
+  ///---------------------------------------------
+  const _VerifyEmailView({required this.state});
+  //
+  /// 🔌 Unified async facade
+  final AsyncStateView<void> state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: AppColors.white.withOpacity(context.isDarkMode ? 0.05 : 0.9),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.07),
+                blurRadius: 20,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+
+          /// ℹ️ Info + loader + cancel
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const _VerifyEmailInfo(), // ℹ️ instructions
+              if (state.isLoading) const AppLoader(), // ⏳ loader
+              const VerifyEmailCancelButton(), // ❌ cancel
+            ],
+          ).withPaddingSymmetric(h: AppSpacing.xl, v: AppSpacing.xxl),
+        ),
+      ),
+    );
+  }
+
+  //
+}
+
+////
+////
+
 /// ℹ️ [_VerifyEmailInfo] — shows instructions about checking inbox / spam
 //
 final class _VerifyEmailInfo extends StatelessWidget {
@@ -67,30 +115,6 @@ final class _VerifyEmailInfo extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.xxxl),
       ],
-    );
-  }
-}
-
-////
-
-////
-
-/// ❌ [_VerifyEmailCancelButton] — signs out from verification screen
-/// 🧼 Listens for errors via [signOutProvider]
-//
-final class _VerifyEmailCancelButton extends ConsumerWidget {
-  ///-----------------------------------------------------
-  const _VerifyEmailCancelButton();
-  //
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    //
-    // ❗️ Shows (declarative) error state
-    ref.listenFailure(signOutProvider, context);
-    // Button always is clickable (user can cancel polling in ane moment)
-    return AppTextButton(
-      onPressed: () => ref.read(signOutProvider.notifier).signOut(),
-      label: LocaleKeys.buttons_cancel,
     );
   }
 }

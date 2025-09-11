@@ -54,6 +54,6 @@ final class AsyncStateViewForBloc<T> implements AsyncStateView<T> {
 extension AsyncStateAsViewX<T> on AsyncState<T> {
   ///-----------------------------------------
   /// 🔁 Convert `AsyncState<T>` to [AsyncStateView] facade.
-  AsyncStateView<T> asAsyncStateView() => AsyncStateViewForBloc<T>(this);
+  AsyncStateView<T> asCubitAsyncStateView() => AsyncStateViewForBloc<T>(this);
   //
 }

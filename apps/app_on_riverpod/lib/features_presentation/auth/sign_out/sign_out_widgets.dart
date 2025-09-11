@@ -1,0 +1,57 @@
+import 'package:app_on_riverpod/core/base_modules/navigation/module_core/go_router_factory.dart';
+import 'package:app_on_riverpod/features_presentation/auth/sign_in/sign_in_page.dart'
+    show SignInPage;
+import 'package:app_on_riverpod/features_presentation/auth/sign_out/sign_out_provider.dart';
+import 'package:core/base_modules/localization.dart' show LocaleKeys;
+import 'package:core/base_modules/ui_design.dart' show AppSpacing;
+import 'package:core/shared_layers/presentation.dart' show AppTextButton;
+import 'package:core/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_adapter/riverpod_adapter.dart';
+
+/// ❌ [SignOutIconButton] — triggers logout
+///     ✅ Listens [AsyncState]: error → overlay
+///     🔁 No manual navigation: success is handled by GoRouter ([buildGoRouter]) redirection to [SignInPage]
+//
+final class SignOutIconButton extends ConsumerWidget {
+  ///----------------------------------
+  const SignOutIconButton({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    //
+    // ❗️ Shows (declarative) error state
+    ref.listenFailure(signOutProvider, context);
+
+    return IconButton(
+      icon: const Icon(Icons.logout),
+      onPressed: () => ref.read(signOutProvider.notifier).signOut(),
+    ).withPaddingRight(AppSpacing.xxm);
+  }
+}
+
+////
+////
+
+/// ❌ [VerifyEmailCancelButton] — triggers logout
+///     ✅ Listens [AsyncState]: error → overlay
+///     🔁 No manual navigation: success is handled by GoRouter ([buildGoRouter]) redirection to [SignInPage]
+//
+final class VerifyEmailCancelButton extends ConsumerWidget {
+  ///-----------------------------------------------------
+  const VerifyEmailCancelButton({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    //
+    /// ⛑️ Declarative error overlay on any [AsyncError]
+    ref.listenFailure(signOutProvider, context);
+
+    /// Button always is clickable (user can cancel polling in ane moment)
+    return AppTextButton(
+      label: LocaleKeys.buttons_cancel,
+      onPressed: () => ref.read(signOutProvider.notifier).signOut(),
+    ).withPaddingTop(AppSpacing.m);
+  }
+}

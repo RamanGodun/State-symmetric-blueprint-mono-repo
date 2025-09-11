@@ -5,15 +5,17 @@ import 'package:core/core.dart';
 import 'package:features/features.dart' show FetchProfileUseCase;
 
 /// 👤 [ProfileCubit] — Thin orchestrator over use case (no business logic here)
-/// ✅ Auto-loads profile on auth changes (UI-driven)
-/// ✅ Emits [CoreAsync<UserEntity>] so UI stays state-agnostic
+///     ✅ Auto-loads profile on auth changes
+///     ✅ Seeds initial load via microtask to catch pre-ready auth state
+///     ✅ Emits [CoreAsync<UserEntity>] so UI stays state-agnostic
 //
 final class ProfileCubit extends AsyncStateCubit<UserEntity> {
-  ///-----------------------------------------------
+  ///-----------------------------------------------------
   ProfileCubit(
     this._fetchProfileUsecase, {
     required AuthCubit authCubit, // ← subscribe to auth changes
   }) : super() {
+    // 1) Subscribe to auth changes (reactive path)
     _authSub = authCubit.stream
         .map(
           (s) => switch (s) {
@@ -30,17 +32,37 @@ final class ProfileCubit extends AsyncStateCubit<UserEntity> {
             _lastUid = null;
             return;
           }
-
           // ✅ Logged in — auto-load profile
           _lastUid = uid;
           load(uid);
         });
+    //
+    // 2) Seed initial state (synchronous snapshot) after listeners attach
+    //    - covers case when AuthCubit is already Ready and stream is quiet
+    scheduleMicrotask(() => _seedFrom(authCubit.state));
   }
 
   //
   final FetchProfileUseCase _fetchProfileUsecase;
   late final StreamSubscription<String?> _authSub;
   String? _lastUid;
+  //
+
+  /// ▶️ One-shot seeding from current auth state
+  void _seedFrom(AuthViewState s) {
+    final uid = switch (s) {
+      AuthViewReady(:final session) => session.uid,
+      _ => null,
+    };
+    if (uid == null) {
+      // keep a predictable initial state for UI
+      emit(const AsyncState.loading());
+      _lastUid = null;
+      return;
+    }
+    _lastUid = uid;
+    load(uid);
+  }
 
   /// 🚀 Public API — manual explicit load (used by auth listener above)
   Future<void> load(String uid) async {

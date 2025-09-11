@@ -20,7 +20,6 @@ final class _ProfileAppBar extends StatelessWidget
 }
 
 ////
-
 ////
 
 /// 🧾 [_UserProfileCard] — Displays user information after successful fetch.

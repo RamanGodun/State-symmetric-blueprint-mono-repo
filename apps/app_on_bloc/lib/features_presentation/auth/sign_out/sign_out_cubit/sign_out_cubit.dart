@@ -1,12 +1,11 @@
 import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart' show AsyncState;
-import 'package:core/utils.dart' show AsyncState;
 import 'package:features/features.dart' show SignOutUseCase;
 
 /// 🚪 [SignOutCubit] — sign out through unified [AsyncState]
-/// ✅ success => AsyncState.data(null)
-/// ✅ error   => AsyncState.error(Failure)
-/// ✅ loading => AsyncState.loading()
+///     ✅ success => AsyncState.data(null)
+///     ✅ error   => AsyncState.error(Failure)
+///     ✅ loading => AsyncState.loading()
 //
 final class SignOutCubit extends AsyncStateCubit<void> {
   ///------------------------------------------------

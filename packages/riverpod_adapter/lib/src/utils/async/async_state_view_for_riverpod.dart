@@ -78,7 +78,7 @@ extension AsAsyncLike<T> on AsyncValue<T> {
   ///-----------------------------------
   //
   /// 🔁 Convert to AsyncLike facade
-  AsyncStateView<T> asAsyncLike({
+  AsyncStateView<T> asRiverpodAsyncStateView({
     Failure Function(Object, StackTrace)? map,
   }) => AsyncStateViewForRiverpod<T>(this, map ?? _defaultMap);
   //

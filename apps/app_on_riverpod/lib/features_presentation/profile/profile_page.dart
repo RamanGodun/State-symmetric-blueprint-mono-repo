@@ -1,5 +1,7 @@
 import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:app_on_riverpod/features_presentation/auth/sign_out/sign_out_buttons.dart';
+import 'package:app_on_riverpod/features_presentation/auth/sign_out/sign_out_provider.dart';
+import 'package:app_on_riverpod/features_presentation/auth/sign_out/sign_out_widgets.dart'
+    show SignOutIconButton;
 import 'package:app_on_riverpod/features_presentation/profile/providers/profile_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart'
     show CachedNetworkImage;
@@ -12,10 +14,9 @@ import 'package:riverpod_adapter/riverpod_adapter.dart';
 
 part 'widgets_for_profile_page.dart';
 
-/// 👤 [ProfilePage] — Declarative profile screen with reactive auth-driven loading
-/// ✅ Ultra-thin orchestration + AsyncLike-based UI
-/// ✅ Rebuild-optimized via select/buildWhen
-/// ✅ Errors surfaced centrally via overlays (no inline error UI)
+/// 👤 [ProfilePage] — profile with reactive auth-driven state
+///     ✅ Top-level error listeners (SignOut + Profile)
+///     ✅ State-agnostic UI ([_ProfileView]) via AsyncStateView
 //
 final class ProfilePage extends ConsumerWidget {
   ///----------------------------------
@@ -27,28 +28,38 @@ final class ProfilePage extends ConsumerWidget {
     //
     /// Get current user UID (null if not signed in)
     final uid = FirebaseRefs.auth.currentUser?.uid;
+
+    /// 🛡️ Guard — render nothing if unauthenticated
     if (uid == null) return const SizedBox();
+
     final asyncUser = ref.watch<AsyncValue<UserEntity>>(profileProvider(uid));
 
-    // ❗️ Listen and display any async errors as overlays
-    ref.listenFailure(profileProvider(uid), context);
+    /// 🔌 Adapt AsyncState → AsyncStateView
+    final profileViewState = asyncUser.asRiverpodAsyncStateView();
 
-    ///
-    // 🔌 Adapt AsyncValue → AsyncLike and render shared UI
-    return ProfileView(state: asyncUser.asAsyncLike());
+    /// ⛑️ Centralized (SignOut + Profile) one-shot error handling via overlays
+    ///    - OverlayDispatcher resolves conflicts/priority internally
+    return AsyncMultiErrorListenerRp(
+      providers: [
+        signOutProvider, // ⛑️ catch signOut errors
+        profileProvider(uid), // ⛑️ catch profile fetch errors
+      ],
+      //
+      /// 🔌 Adapt AsyncValue → AsyncLike and render shared UI (identical to same widget on app with Cubit/BLoC)
+      child: _ProfileView(state: profileViewState),
+    );
   }
 }
 
 ////
-
 ////
 
-/// 📄 [ProfileView] — State-agnostic rendering via [AsyncStateView]
+/// 📄 [_ProfileView] — State-agnostic rendering via [AsyncStateView]
 /// ✅ Same widget used in Cubit/BLoC app for perfect parity
 //
-final class ProfileView extends StatelessWidget {
+final class _ProfileView extends StatelessWidget {
   ///------------------------------------------
-  const ProfileView({required this.state, super.key});
+  const _ProfileView({required this.state});
 
   ///
   final AsyncStateView<UserEntity> state;
