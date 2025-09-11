@@ -9,7 +9,7 @@ part of 'overlay_adapters_providers.dart';
 String _$overlayDispatcherHash() =>
     r'52c43d0ab7935a92a7b6a14e542b41c788b6ee19'; ////
 ////
-/// 🧩 OverlayDispatcher DI with Riverpod port
+/// 🧩 DI binding: provides a process-wide [OverlayDispatcher].
 ///
 /// Copied from [overlayDispatcher].
 @ProviderFor(overlayDispatcher)
@@ -27,9 +27,9 @@ final overlayDispatcherProvider = Provider<OverlayDispatcher>.internal(
 // ignore: unused_element
 typedef OverlayDispatcherRef = ProviderRef<OverlayDispatcher>;
 String _$overlayStatusHash() =>
-    r'385af87e08acf6290e7a3ab8b267c90958180f01'; ////
+    r'a2c032f1d8177479af99a98e31584334af6a2a8f'; ////
 ////
-/// 🧠 OverlayStatus — global overlay activity flag (default: false)
+/// 🧠 Global overlay activity flag (default: false).
 ///
 /// Copied from [OverlayStatus].
 @ProviderFor(OverlayStatus)

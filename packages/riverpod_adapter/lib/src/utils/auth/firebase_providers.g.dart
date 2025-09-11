@@ -6,9 +6,10 @@ part of 'firebase_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$firebaseAuthHash() => r'10d006c9d33c7cf76efb60f341fe74a14a0b1452';
+String _$firebaseAuthHash() => r'53ac60fd2b217bd05f92df15b56fd6e30c769d9c';
 
-/// 🔑 FirebaseAuth handle (env binding)
+/// 🔑 [firebaseAuthProvider] — global binding to FirebaseAuth
+/// ✅ Provides the environment-specific FirebaseAuth instance
 ///
 /// Copied from [firebaseAuth].
 @ProviderFor(firebaseAuth)
@@ -26,9 +27,10 @@ final firebaseAuthProvider = Provider<FirebaseAuth>.internal(
 // ignore: unused_element
 typedef FirebaseAuthRef = ProviderRef<FirebaseAuth>;
 String _$usersCollectionHash() =>
-    r'e077cf52d8472e8857ff691fe5eff82b253770ce'; ////
+    r'6af4c8c8d2acce9770c896a68ceb93c0749499aa'; ////
 ////
-/// 🗃️ Firestore users collection (env binding)
+/// 🗃️ [usersCollectionProvider] — global binding to Firestore users collection
+/// ✅ Provides the environment-specific Firestore users collection reference
 ///
 /// Copied from [usersCollection].
 @ProviderFor(usersCollection)

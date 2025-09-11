@@ -16,6 +16,7 @@ final class ProfileCubit extends AsyncStateCubit<UserEntity> {
     required AuthCubit authCubit, // ← subscribe to auth changes
   }) : super() {
     // 1) Subscribe to auth changes (reactive path)
+    emit(const AsyncState<UserEntity>.loading());
     _authSub = authCubit.stream
         .map(
           (s) => switch (s) {
@@ -27,9 +28,12 @@ final class ProfileCubit extends AsyncStateCubit<UserEntity> {
         .listen((uid) {
           // ⛔️ Logged out / no UID — keep idle UI (like Riverpod guard)
           if (uid == null) {
-            // optional: reset to loading/initial depending on UX expectations
-            emit(const AsyncState.loading());
             _lastUid = null;
+            emit(
+              const AsyncState<UserEntity>.error(
+                Failure(type: UserMissingFirebaseFailureType()),
+              ),
+            );
             return;
           }
           // ✅ Logged in — auto-load profile
@@ -55,9 +59,12 @@ final class ProfileCubit extends AsyncStateCubit<UserEntity> {
       _ => null,
     };
     if (uid == null) {
-      // keep a predictable initial state for UI
-      emit(const AsyncState.loading());
       _lastUid = null;
+      emit(
+        const AsyncState<UserEntity>.error(
+          Failure(type: UserMissingFirebaseFailureType()),
+        ),
+      );
       return;
     }
     _lastUid = uid;

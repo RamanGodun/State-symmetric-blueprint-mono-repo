@@ -1,4 +1,5 @@
 import 'package:core/base_modules/errors_management.dart';
+import 'package:core/base_modules/localization.dart' show LocaleKeys;
 import 'package:core/shared_layers/data.dart'
     show UserDTO, UserDTOFactories, UserDTOX;
 import 'package:core/shared_layers/domain.dart' show UserEntity;
@@ -47,7 +48,7 @@ final class ProfileRepoImpl implements IProfileRepo {
     if (data == null)
       throw const Failure(
         type: UserNotFoundFirebaseFailureType(),
-        message: 'User not found',
+        message: LocaleKeys.failures_firebase_user_not_found,
       );
     final dto = UserDTOFactories.fromMap(data, id: uid);
     return dto.toEntity();
@@ -73,7 +74,7 @@ final class ProfileRepoImpl implements IProfileRepo {
     if (authData == null)
       throw const Failure(
         type: UserMissingFirebaseFailureType(),
-        message: 'No authorized user!',
+        message: LocaleKeys.failures_firebase_unauthorized,
       );
     //
     final dto = _buildUserDTO(authData, uid);

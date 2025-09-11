@@ -9,8 +9,8 @@ part of 'data_layer_providers.dart';
 String _$authRemoteDatabaseHash() =>
     r'c6487d47503926491c08b476f48bdc1f7aa795bd';
 
-/// 🔌 [authRemoteDatabaseProvider] — provides instance of [AuthRemoteDatabaseImpl]
-/// with injected infra (Auth + Users collection)
+/// 🔌 [authRemoteDatabaseProvider] — provides instance of [AuthRemoteDatabaseImpl],
+///    injected infra (Auth + Users collection)
 ///
 /// Copied from [authRemoteDatabase].
 @ProviderFor(authRemoteDatabase)
@@ -30,7 +30,8 @@ final authRemoteDatabaseProvider =
 typedef AuthRemoteDatabaseRef = AutoDisposeProviderRef<IAuthRemoteDatabase>;
 String _$signInRepoHash() => r'117f3a17f3e7837901155515a6910c34d4aa7150'; ////
 ////
-/// 🧩 [signInRepoProvider] — provides instance of [SignInRepoImpl], injects [IAuthRemoteDatabase] from [authRemoteDatabaseProvider]
+/// 🧩 [signInRepoProvider] — provides instance of [SignInRepoImpl],
+///    injects [IAuthRemoteDatabase] from [authRemoteDatabaseProvider]
 ///
 /// Copied from [signInRepo].
 @ProviderFor(signInRepo)
@@ -49,7 +50,8 @@ final signInRepoProvider = AutoDisposeProvider<ISignInRepo>.internal(
 typedef SignInRepoRef = AutoDisposeProviderRef<ISignInRepo>;
 String _$signOutRepoHash() => r'd046e96785d2f3cc5926ef731a55340e5cf9cebc'; ////
 ////
-/// 🧩 [signOutRepoProvider] — provides instance of [SignOutRepoImpl], injects [IAuthRemoteDatabase]
+/// 🧩 [signOutRepoProvider] — provides instance of [SignOutRepoImpl],
+///    injects [IAuthRemoteDatabase]
 ///
 /// Copied from [signOutRepo].
 @ProviderFor(signOutRepo)
@@ -68,7 +70,8 @@ final signOutRepoProvider = AutoDisposeProvider<ISignOutRepo>.internal(
 typedef SignOutRepoRef = AutoDisposeProviderRef<ISignOutRepo>;
 String _$signUpRepoHash() => r'd9f16483f051d722293a924734170361ab7a702a'; ////
 ////
-/// 🧩 [signUpRepoProvider] — provides instance of [SignUpRepoImpl], injects [IAuthRemoteDatabase]
+/// 🧩 [signUpRepoProvider] — provides instance of [SignUpRepoImpl],
+///    injects [IAuthRemoteDatabase]
 ///
 /// Copied from [signUpRepo].
 @ProviderFor(signUpRepo)

@@ -34,9 +34,54 @@ scripts:
   #
   #
   # ---------- Codegen (only where it's needed) ----------
-  gen: melos exec --fail-fast --depends-on build_runner -- "dart run build_runner build --delete-conflicting-outputs"
-  gen:watch: melos exec --fail-fast --depends-on build_runner -- "dart run build_runner watch --delete-conflicting-outputs"
-  gen:clean: melos exec --depends-on build_runner -- "dart run build_runner clean"
+  # 1) First en in lib/adapters, on which apps depend
+  gen:adapters:
+    run: |
+      melos exec --scope="riverpod_adapter" --concurrency=1 -- \
+        dart run build_runner build --delete-conflicting-outputs
+
+  # 2) Then gen packages, that need codegen
+  gen:packages:
+    run: |
+      melos exec --scope="features" --dir-exists="lib" --concurrency=1 -- \
+        dart run build_runner build --delete-conflicting-outputs || true
+      melos exec --scope="core" --dir-exists="lib" --concurrency=1 -- \
+        dart run build_runner build --delete-conflicting-outputs || true
+
+  # 3) Last apps
+  gen:apps:
+    run: |
+      melos exec --scope="app_on_riverpod" --concurrency=1 -- \
+        dart run build_runner build --delete-conflicting-outputs || true
+      melos exec --scope="app_on_bloc" --concurrency=1 -- \
+        dart run build_runner build --delete-conflicting-outputs || true
+
+  # One master scripts
+  gen:
+    run: melos run gen:adapters && melos run gen:packages && melos run gen:apps
+
+  # Clean for all
+  gen:clean:
+    run: |
+      melos exec --scope="riverpod_adapter" --concurrency=1 -- dart run build_runner clean || true
+      melos exec --scope="features" --concurrency=1 -- dart run build_runner clean || true
+      melos exec --scope="core" --concurrency=1 -- dart run build_runner clean || true
+      melos exec --scope="app_on_riverpod" --concurrency=1 -- dart run build_runner clean || true
+      melos exec --scope="app_on_bloc" --concurrency=1 -- dart run build_runner clean || true
+
+  # ---------- Watch (запускай у різних терміналах за потреби) ----------
+  watch:adapters:
+    run: melos exec --scope="riverpod_adapter" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
+
+  watch:packages:
+    run: |
+      melos exec --scope="features" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
+      melos exec --scope="core" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
+
+  watch:apps:
+    run: |
+      melos exec --scope="app_on_riverpod" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
+      melos exec --scope="app_on_bloc" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
 
   #
   #

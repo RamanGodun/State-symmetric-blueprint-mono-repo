@@ -7,7 +7,6 @@ import 'package:cached_network_image/cached_network_image.dart'
     show CachedNetworkImage;
 import 'package:core/core.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseRefs;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart';
@@ -15,8 +14,9 @@ import 'package:riverpod_adapter/riverpod_adapter.dart';
 part 'widgets_for_profile_page.dart';
 
 /// 👤 [ProfilePage] — profile with reactive auth-driven state
-///     ✅ Top-level error listeners (SignOut + Profile)
-///     ✅ State-agnostic UI ([_ProfileView]) via AsyncStateView
+///     ✅ Centralized top-level error listeners (SignOut + Profile)
+///     ✅ State-agnostic UI via [_ProfileView] + [AsyncStateView]
+///     ✅ Riverpod flavor: `AsyncValue<T>` adapted to `AsyncStateView<T>`
 //
 final class ProfilePage extends ConsumerWidget {
   ///----------------------------------
@@ -26,26 +26,21 @@ final class ProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    /// Get current user UID (null if not signed in)
-    final uid = FirebaseRefs.auth.currentUser?.uid;
+    /// 🖼️ Declarative UI bound to [profileProvider(uid)]
+    final asyncUser = ref.watch<AsyncValue<UserEntity>>(profileProvider);
 
-    /// 🛡️ Guard — render nothing if unauthenticated
-    if (uid == null) return const SizedBox();
-
-    final asyncUser = ref.watch<AsyncValue<UserEntity>>(profileProvider(uid));
-
-    /// 🔌 Adapt AsyncState → AsyncStateView
+    /// 🔌 Adapter: `AsyncValue<UserEntity>` → `AsyncStateView<UserEntity>` (for state-agnostic UI)
     final profileViewState = asyncUser.asRiverpodAsyncStateView();
 
     /// ⛑️ Centralized (SignOut + Profile) one-shot error handling via overlays
     ///    - OverlayDispatcher resolves conflicts/priority internally
-    return AsyncMultiErrorListenerRp(
+    return ErrorsListenerForAppOnRiverpod(
       providers: [
         signOutProvider, // ⛑️ catch signOut errors
-        profileProvider(uid), // ⛑️ catch profile fetch errors
+        profileProvider, // ⛑️ catch profile fetch errors
       ],
       //
-      /// 🔌 Adapt AsyncValue → AsyncLike and render shared UI (identical to same widget on app with Cubit/BLoC)
+      /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
       child: _ProfileView(state: profileViewState),
     );
   }
@@ -55,7 +50,7 @@ final class ProfilePage extends ConsumerWidget {
 ////
 
 /// 📄 [_ProfileView] — State-agnostic rendering via [AsyncStateView]
-/// ✅ Same widget used in Cubit/BLoC app for perfect parity
+///     ✅ Same widget used in Cubit/BLoc app for perfect parity
 //
 final class _ProfileView extends StatelessWidget {
   ///------------------------------------------

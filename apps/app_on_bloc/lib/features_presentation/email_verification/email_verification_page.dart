@@ -24,7 +24,7 @@ final class VerifyEmailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    /// Provide screen-scoped cubits (disposed on pop)
+    /// 🧩 Provide screen-scoped cubits (disposed on pop)
     return MultiBlocProvider(
       providers: [
         BlocProvider<EmailVerificationCubit>(
@@ -35,7 +35,7 @@ final class VerifyEmailPage extends StatelessWidget {
 
       /// ⛑️ Centralized (SignOut + EmailVerification) one-shot errors handling via overlays
       ///    - OverlayDispatcher resolves conflicts/priority internally
-      child: AsyncMultiErrorListener(
+      child: ErrorsListenerForAppOnCubit(
         resolveBlocs: (ctx) => [
           ctx.read<SignOutCubit>(), // ⛑️ catch SignOut errors
           ctx

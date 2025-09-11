@@ -13,8 +13,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'widgets_for_profile_page.dart';
 
 /// 👤 [ProfilePage] — profile screen with reactive auth-driven state
-///     ✅ Top-level error listeners (SignOut + Profile)
-///     ✅ State-agnostic UI ([_ProfileView]) via AsyncStateView
+///     ✅ Centralized top-level error listeners (SignOut + Profile)
+///     ✅ State-agnostic UI via [_ProfileView] + [AsyncStateView]
+///     ✅ BLoC flavor: `AsyncState<T>` adapted to `AsyncStateView<T>`
 //
 final class ProfilePage extends StatelessWidget {
   ///------------------------------------
@@ -24,35 +25,27 @@ final class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final auth = context.watch<AuthCubit>().state;
-    final uid = switch (auth) {
-      AuthViewReady(:final session) => session.uid,
-      _ => null,
-    };
-
-    /// 🛡️ Guard — render nothing if unauthenticated
-    if (uid == null) return const SizedBox.shrink();
-
-    /// 🧩♻️ Inject sign-out actions; profile auto-loads inside ProfileCubit
+    /// 🧩 Provide screen-scoped cubits (disposed on pop)
     return BlocProvider<SignOutCubit>(
-      // ✅ screen-scoped instance, will be closed automatically
       create: (_) => di<SignOutCubit>(),
 
       /// ⛑️ Centralized (SignOut + Profile) one-shot error handling via overlays
       ///    - OverlayDispatcher resolves conflicts/priority internally
-      child: AsyncMultiErrorListener(
+      child: ErrorsListenerForAppOnCubit(
         resolveBlocs: (ctx) => [
           ctx.read<SignOutCubit>(), // ⛑️ catch SignOut errors
           ctx.read<ProfileCubit>(), // ⛑️ catch EmailVerification errors
         ],
 
-        ///
+        /// 🖼️ Declarative UI bound to [ProfileCubit]
         child: BlocBuilder<ProfileCubit, AsyncState<UserEntity>>(
           builder: (context, state) {
-            /// 🔌 Adapt AsyncState → AsyncStateView and render shared UI
+            /// 🔌 Adapter: `AsyncState<UserEntity>` → `AsyncStateView<UserEntity>` (for state-agnostic UI)
             final profileViewState = state.asCubitAsyncStateView();
 
+            /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
             return _ProfileView(state: profileViewState);
+            //
           },
         ),
       ),
@@ -64,7 +57,7 @@ final class ProfilePage extends StatelessWidget {
 ////
 
 /// 📄 [_ProfileView] — State-agnostic rendering via [AsyncStateView]
-/// ✅ Same widget used in Riverpod app for perfect parity
+///     ✅ Same widget used in Riverpod app for perfect parity
 //
 final class _ProfileView extends StatelessWidget {
   ///------------------------------------------

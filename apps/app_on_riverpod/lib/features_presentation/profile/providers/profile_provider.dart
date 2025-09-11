@@ -1,30 +1,52 @@
+import 'package:core/base_modules/errors_management.dart'
+    show UserMissingFirebaseFailureType;
 import 'package:core/core.dart' show Failure, UserEntity;
 import 'package:riverpod_adapter/riverpod_adapter.dart'
-    show SafeAsyncState, fetchProfileUseCaseProvider;
+    show
+        ErrorsListenerForAppOnRiverpod,
+        SafeAsyncState,
+        authUidProvider,
+        fetchProfileUseCaseProvider;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'profile_provider.g.dart';
 
 /// 👤 [profileProvider] — async notifier that fetches user profile
-/// 🧼 Declarative-only approach, throws [Failure] and is handled in `.listenFailure(...)`
-/// 🧼 Compatible with `.family` and avoids breaking [SafeAsyncState] limitations
+/// 🧼 Declarative-only approach, throws [Failure] and is handled in [ErrorsListenerForAppOnRiverpod]
 //
 @riverpod
 final class Profile extends _$Profile {
   ///--------------------------------
 
   @override
-  Future<UserEntity> build(String uid) async {
+  Future<UserEntity> build() async {
+    //
+    final uid = await ref.watch(
+      authUidProvider.selectAsync(
+        (u) =>
+            u ?? (throw const Failure(type: UserMissingFirebaseFailureType())),
+      ),
+    );
+    //
     final useCase = ref.watch(fetchProfileUseCaseProvider);
     final result = await useCase(uid);
+    //
     return result.fold((f) => throw f, (user) => user);
   }
 
+  ////
+
   /// ♻️ Refetch user manually (e.g. pull-to-refresh)
   Future<void> refresh() async {
+    //
     state = const AsyncLoading();
+    //
+    final uid =
+        await ref.watch(authUidProvider.future) ??
+        (throw const Failure(type: UserMissingFirebaseFailureType()));
+    //
     final useCase = ref.read(fetchProfileUseCaseProvider);
-
+    //
     state = await AsyncValue.guard(() async {
       final result = await useCase(uid);
       return result.fold((f) => throw f, (user) => user);

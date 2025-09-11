@@ -1,4 +1,4 @@
-import 'package:core/utils.dart' show AuthGateway, AuthSnapshot;
+import 'package:core/utils.dart' show AuthGateway, AuthReady, AuthSnapshot;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -19,3 +19,14 @@ AuthGateway authGateway(Ref ref) => throw UnimplementedError();
 @Riverpod(keepAlive: true)
 Stream<AuthSnapshot> authSnapshots(Ref ref) =>
     ref.watch(authGatewayProvider).snapshots$;
+
+////
+////
+
+/// ✅ [authUidProvider] - stream from AuthGateway
+@Riverpod(keepAlive: true)
+Stream<String?> authUid(Ref ref) => ref
+    .watch(authGatewayProvider)
+    .snapshots$ // <— тут саме Stream<AuthSnapshot>
+    .map((s) => s is AuthReady ? s.session.uid : null)
+    .distinct();

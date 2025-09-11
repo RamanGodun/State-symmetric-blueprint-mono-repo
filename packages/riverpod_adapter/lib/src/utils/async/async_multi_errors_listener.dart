@@ -5,12 +5,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart' show AsyncValueFailureX;
 
-/// ⛑️ [AsyncMultiErrorListenerRp] — listen multiple AsyncValue providers at once
+/// ⛑️ [ErrorsListenerForAppOnRiverpod] — listen multiple AsyncValue providers at once
 /// ✅ Enter-only: reacts only on transition into AsyncError
 /// ✅ Reusable: accepts heterogeneous providers (payload type-agnostic)
-final class AsyncMultiErrorListenerRp extends ConsumerWidget {
+final class ErrorsListenerForAppOnRiverpod extends ConsumerWidget {
   ///--------------------------------------------------------------
-  const AsyncMultiErrorListenerRp({
+  const ErrorsListenerForAppOnRiverpod({
     required this.providers,
     required this.child,
     super.key,

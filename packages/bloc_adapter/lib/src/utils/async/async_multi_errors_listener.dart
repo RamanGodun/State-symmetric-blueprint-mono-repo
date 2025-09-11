@@ -5,13 +5,13 @@ import 'package:core/core.dart' show AsyncState, AsyncStateError;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// ⛑️ [AsyncMultiErrorListener] — listen multiple BLoC/Cubit sources at once
+/// ⛑️ [ErrorsListenerForAppOnCubit] — listen multiple BLoC/Cubit sources at once
 /// ✅ Enter-only: reacts only on transition into [AsyncStateError]
 /// ✅ Reusable: accepts heterogeneous cubits (payload type-agnostic via `dynamic`)
 //
-final class AsyncMultiErrorListener extends StatelessWidget {
+final class ErrorsListenerForAppOnCubit extends StatelessWidget {
   ///-----------------------------------------------------
-  const AsyncMultiErrorListener({
+  const ErrorsListenerForAppOnCubit({
     required this.resolveBlocs, // 🧠 lazy resolver
     required this.child,
     super.key,
