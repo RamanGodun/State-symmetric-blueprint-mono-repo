@@ -80,7 +80,7 @@ final class SignUpState extends Equatable {
 
 /// 🥉 [SignUpStateValidationX] — Adds validation and update utilities to [SignUpState]
 /// ✅ Simplifies state mutation and ensures validation is always up-to-date
-/// 🔐 Used in `SignUpcubit` for field-level updates with validation
+/// 🔐 Used in [SignUpCubit] for field-level updates with validation
 //
 extension SignUpStateValidationX on SignUpState {
   ///-----------------------------------------

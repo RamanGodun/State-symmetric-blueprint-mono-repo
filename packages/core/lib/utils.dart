@@ -34,3 +34,6 @@ export 'src/utils_shared/spider/app_images_paths.dart';
 // --- View state --------------------------------------------------------------
 export 'src/utils_shared/async/async_state.dart';
 export 'src/utils_shared/async/async_state_view.dart';
+
+// ---- Others -----------------------------------------------------------------
+export 'src/utils_shared/helpers.dart';

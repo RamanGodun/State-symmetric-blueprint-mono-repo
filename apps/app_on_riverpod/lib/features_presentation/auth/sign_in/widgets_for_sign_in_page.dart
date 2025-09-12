@@ -52,7 +52,7 @@ final class _SignInEmailInputField extends ConsumerWidget {
       focusNode: focus.email,
       errorText: form.email.uiErrorKey,
       onChanged: formNotifier.emailChanged,
-      onSubmitted: focus.password.requestFocus,
+      onSubmitted: goNext(focus.password),
     ).withPaddingBottom(AppSpacing.m);
   }
 }

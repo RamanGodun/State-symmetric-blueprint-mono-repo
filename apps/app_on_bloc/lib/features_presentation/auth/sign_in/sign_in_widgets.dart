@@ -69,11 +69,7 @@ final class _PasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<
-      SignInCubit,
-      SignInPageState,
-      ({String? errorText, bool isObscure})
-    >(
+    return BlocSelector<SignInCubit, SignInPageState, FieldUiState>(
       selector: (state) => (
         errorText: state.password.uiErrorKey,
         isObscure: state.isPasswordObscure,

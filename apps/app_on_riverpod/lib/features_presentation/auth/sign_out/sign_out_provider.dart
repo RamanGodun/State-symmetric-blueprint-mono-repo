@@ -22,14 +22,14 @@ final class SignOut extends _$SignOut with SafeAsyncState<void> {
   /// 💥 Throws [Failure] on error and clears cached profile on success
   Future<void> signOut() async {
     state = const AsyncLoading();
-
+    //
     final useCase = ref.watch(signOutUseCaseProvider);
     final result = await useCase();
-
+    //
     if (result.isRight) {
       ref.read(profileRepoProvider).clearCache();
     }
-
+    //
     state = result.fold((f) => throw f, (_) => const AsyncData(null));
   }
 

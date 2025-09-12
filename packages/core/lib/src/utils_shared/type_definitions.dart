@@ -1,6 +1,7 @@
 import 'package:core/src/base_modules/errors_management/core_of_module/either.dart';
 import 'package:core/src/base_modules/errors_management/core_of_module/failure_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:formz/formz.dart' show FormzSubmissionStatus;
 
 /// 🧩 [ResultFuture] — Represents async result with [Either<Failure, T>]
 typedef ResultFuture<T> = Future<Either<Failure, T>>;
@@ -17,11 +18,24 @@ typedef VoidEither = Either<Failure, void>;
 /// 📦 [DataMap] — For JSON-style dynamic map (used for DTO, serialization, Firestore docs...)
 typedef DataMap = Map<String, dynamic>;
 
+//------------- Form fields module ----------------
+
 /// 🧾 [FieldUiState] — Compact record for field visibility & error display
 typedef FieldUiState = ({String? errorText, bool isObscure});
 
+/// 🧾 [SubmitSlice] — Compact record for field validity & error forms submission status
+typedef SubmitSlice = ({bool isValid, FormzSubmissionStatus status});
+
+/// 🔁 Often used DTO for submissions
+typedef EmailAndPassword = ({String email, String password});
+
+/// 🔁 Often used DTO for submissions
+typedef NameEmailPassword = ({String name, String email, String password});
+
 /// 📤 [SubmitCallback] — Button or form submission callback
 typedef SubmitCallback = void Function(BuildContext context);
+
+//------------- Errors management module ----------------
 
 /// 📡 [ListenFailureCallback] — Optional handler when failure is caught
 typedef ListenFailureCallback = void Function(Failure failure);

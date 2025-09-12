@@ -21,6 +21,7 @@ dependencies:
     path: ../../packages/firebase_adapter
   flutter:
     sdk: flutter
+  flutter_hooks: ^0.21.3
   flutter_riverpod: ^2.6.1
   formz: ^0.8.0
   get_storage: ^2.1.1

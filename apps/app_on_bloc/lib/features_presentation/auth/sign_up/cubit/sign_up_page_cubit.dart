@@ -134,7 +134,7 @@ final class SignUpCubit extends Cubit<SignUpState> {
   /// 🧼 Fully resets form fields & validation
   void resetState() {
     _cancelDebouncers();
-    debugPrint('🧼 SignUpcubit → resetState()');
+    debugPrint('🧼 SignUpCubit → resetState()');
     emit(const SignUpState());
   }
 

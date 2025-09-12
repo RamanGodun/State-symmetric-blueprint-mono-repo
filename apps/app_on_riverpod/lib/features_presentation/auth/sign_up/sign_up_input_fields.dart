@@ -59,7 +59,7 @@ final class _EmailInputField extends ConsumerWidget {
       focusNode: focus.email,
       errorText: form.email.uiErrorKey,
       onChanged: formNotifier.emailChanged,
-      onSubmitted: focus.password.requestFocus,
+      onSubmitted: goNext(focus.password),
     ).withPaddingBottom(AppSpacing.m);
   }
 }
@@ -94,7 +94,7 @@ final class _PasswordInputField extends ConsumerWidget {
       errorText: form.password.uiErrorKey,
       isObscure: form.isPasswordObscure,
       onChanged: formNotifier.passwordChanged,
-      onSubmitted: focus.confirmPassword.requestFocus,
+      onSubmitted: goNext(focus.confirmPassword),
       suffixIcon: ObscureToggleIcon(
         isObscure: form.isPasswordObscure,
         onPressed: formNotifier.togglePasswordVisibility,

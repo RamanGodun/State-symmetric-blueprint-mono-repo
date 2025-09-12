@@ -67,7 +67,7 @@ final class _PasswordField extends ConsumerWidget {
       errorText: form.password.uiErrorKey,
       isObscure: form.isPasswordObscure,
       onChanged: notifier.passwordChanged,
-      onSubmitted: focus.confirmPassword.requestFocus,
+      onSubmitted: goNext(focus.confirmPassword),
       suffixIcon: ObscureToggleIcon(
         isObscure: form.isPasswordObscure,
         onPressed: notifier.togglePasswordVisibility,
@@ -138,4 +138,22 @@ final class _ChangePasswordSubmitButton extends ConsumerWidget {
           : null,
     );
   }
+}
+
+////
+////
+
+/// 🛡️ /// 📤 Submits the password change request (when the form is valid)
+//
+extension PasswordActionsRefX on WidgetRef {
+  ///------------------------------------
+  Future<void> submitChangePassword() async {
+    final form = watch(changePasswordFormProvider);
+    if (!form.isValid) return;
+    //
+    final notifier = read(changePasswordProvider.notifier);
+    await notifier.changePassword(form.password.value);
+  }
+
+  //
 }

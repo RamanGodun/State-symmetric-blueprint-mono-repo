@@ -63,7 +63,7 @@ final class SignInPageState extends Equatable {
 
 /// 🧩 [SignInStateValidationX] — Adds validation and update logic to [SignInPageState]
 /// ✅ Ensures clean and consistent field updates with auto-validation
-/// 🔐 Used inside `SignIncubit` to simplify `emit(...)` logic
+/// 🔐 Used inside [SignInCubit] to simplify `emit(...)` logic
 //
 extension SignInStateValidationX on SignInPageState {
   ///----------------------------------------------

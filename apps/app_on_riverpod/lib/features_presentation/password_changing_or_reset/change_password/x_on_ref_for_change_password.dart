@@ -16,6 +16,7 @@ extension PasswordChangeRefX on WidgetRef {
         // ✅ On success
         case ChangePasswordSuccess(:final message):
           context.showUserSnackbar(message: message);
+          // 🧭 Navigation after success
           context.goIfMounted(RoutesNames.home);
 
         /// 🔄 On reauth
@@ -32,17 +33,6 @@ extension PasswordChangeRefX on WidgetRef {
           break;
       }
     });
-  }
-
-  ////
-
-  /// 📤 Submits the password change request (when the form is valid)
-  Future<void> submitChangePassword() async {
-    final form = watch(changePasswordFormProvider);
-    if (!form.isValid) return;
-
-    final notifier = read(changePasswordProvider.notifier);
-    await notifier.changePassword(form.password.value);
   }
 
   //

@@ -5,6 +5,7 @@ import 'package:app_on_riverpod/features_presentation/password_changing_or_reset
 import 'package:core/core.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart';
 
@@ -23,6 +24,24 @@ final class ChangePasswordPage extends HookConsumerWidget {
     // 🔁 Declarative side-effect for ChangePassword
     ref.listenToPasswordChange(context);
 
+    return const _ChangePasswordView();
+  }
+
+  //
+}
+
+////
+////
+
+/// 🔐 [_ChangePasswordView] — Screen that allows the user to update their password.
+//
+final class _ChangePasswordView extends HookWidget {
+  ///-------------------------------------------------
+  const _ChangePasswordView();
+
+  @override
+  Widget build(BuildContext context) {
+    //
     final focus = useChangePasswordFocusNodes();
 
     return Scaffold(
@@ -47,6 +66,4 @@ final class ChangePasswordPage extends HookConsumerWidget {
       ),
     );
   }
-
-  //
 }

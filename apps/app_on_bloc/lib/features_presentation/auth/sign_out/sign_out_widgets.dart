@@ -9,28 +9,9 @@ import 'package:core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// ❌ [VerifyEmailCancelButton] — triggers logout
-///     🔁 No manual navigation: success is handled by GoRouter ([buildGoRouter]) redirection to [SignInPage]
-//
-final class VerifyEmailCancelButton extends StatelessWidget {
-  ///----------------------------------------------------
-  const VerifyEmailCancelButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    //
-    return AppTextButton(
-      label: LocaleKeys.buttons_cancel,
-      onPressed: () => context.read<SignOutCubit>().signOut(),
-    ).withPaddingTop(AppSpacing.xxm);
-  }
-}
-
-////
-////
-
 /// ❌ [SignOutIconButton] — triggers logout
-///     🔁 No manual navigation: success is handled by GoRouter ([buildGoRouter]) redirection to [SignInPage]
+///     🔁 No manual navigation: success is handled by GoRouter ([buildGoRouter])
+///        and perform redirection to [SignInPage]
 //
 final class SignOutIconButton extends StatelessWidget {
   ///--------------------------------------
@@ -42,6 +23,27 @@ final class SignOutIconButton extends StatelessWidget {
     return IconButton(
       icon: const Icon(AppIcons.logout),
       onPressed: () => context.read<SignOutCubit>().signOut(),
-    ).withPaddingRight(AppSpacing.m);
+    ).withPaddingRight(AppSpacing.xm);
+  }
+}
+
+////
+////
+
+/// ❌ [VerifyEmailCancelButton] — triggers logout
+///     🔁 No manual navigation: success is handled by GoRouter ([buildGoRouter])
+///        and perform redirection to [SignInPage]
+//
+final class VerifyEmailCancelButton extends StatelessWidget {
+  ///----------------------------------------------------
+  const VerifyEmailCancelButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    //
+    return AppTextButton(
+      label: LocaleKeys.buttons_cancel,
+      onPressed: () => context.read<SignOutCubit>().signOut(),
+    ).withPaddingTop(AppSpacing.xm);
   }
 }
