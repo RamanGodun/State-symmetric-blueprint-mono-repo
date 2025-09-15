@@ -6,7 +6,7 @@ part of 'profile_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$profileHash() => r'8c18d8323e245069a80eaca557e5c0e6f3568978';
+String _$profileHash() => r'b513d906379ccff85dc893bd9f75bb625e1f58b3';
 
 /// 👤 [profileProvider] — async notifier that fetches user profile
 /// 🧼 Declarative-only approach, throws [Failure] and is handled in [ErrorsListenerForAppOnRiverpod]

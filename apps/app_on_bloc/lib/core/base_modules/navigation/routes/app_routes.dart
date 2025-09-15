@@ -1,7 +1,7 @@
 import 'package:app_on_bloc/core/shared_presentation/pages/home_page.dart';
 import 'package:app_on_bloc/core/shared_presentation/pages/page_not_found.dart';
 import 'package:app_on_bloc/features_presentation/auth/sign_in/sign_in_page.dart';
-import 'package:app_on_bloc/features_presentation/auth/sign_up/sign_up_page.dart';
+import 'package:app_on_bloc/features_presentation/auth/sign_up/sign_up__page.dart';
 import 'package:app_on_bloc/features_presentation/email_verification/email_verification_page.dart';
 import 'package:app_on_bloc/features_presentation/password_changing_or_reset/change_password/change_password_page.dart';
 import 'package:app_on_bloc/features_presentation/password_changing_or_reset/reset_password/reset_password_page.dart';

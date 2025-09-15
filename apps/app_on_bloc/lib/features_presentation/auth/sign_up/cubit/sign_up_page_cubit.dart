@@ -12,11 +12,11 @@ part 'sign_up_page_state.dart';
 /// 🧠 [SignUpCubit] — Handles logic for sign-up form: validation, debouncing, and submission.
 /// ✅ Delegates actual sign-up to [SignUpUseCase]
 //
-final class SignUpCubit extends Cubit<SignUpState>
-    implements SubmissionActor<SignUpState> {
+final class SignUpCubit extends Cubit<SignUpPageState>
+    implements SubmissionActor<SignUpPageState> {
   ///-------------------------------------------
   SignUpCubit(this._signUpUseCase, this._validation)
-    : super(const SignUpState());
+    : super(const SignUpPageState());
   //
 
   final SignUpUseCase _signUpUseCase;
@@ -141,7 +141,7 @@ final class SignUpCubit extends Cubit<SignUpState>
   void resetState() {
     _cancelDebouncers();
     debugPrint('🧼 SignUpCubit → resetState()');
-    emit(const SignUpState());
+    emit(const SignUpPageState());
   }
 
   /// 🧼 Cleans up resources on close

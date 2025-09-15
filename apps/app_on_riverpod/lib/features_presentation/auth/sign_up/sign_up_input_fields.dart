@@ -1,10 +1,11 @@
 part of 'sign_up__page.dart';
 
-/// 🧩 [_NameInputField] — name input field
+/// 👤  [_UserNameInputField] — User name input field with localized validation
+/// ✅ Rebuilds only when `name.uiError` changes
 //
-final class _NameInputField extends ConsumerWidget {
+final class _UserNameInputField extends ConsumerWidget {
   ///--------------------------------------------
-  const _NameInputField(this.focus);
+  const _UserNameInputField(this.focusNodes);
   //
   final ({
     FocusNode name,
@@ -12,33 +13,35 @@ final class _NameInputField extends ConsumerWidget {
     FocusNode password,
     FocusNode confirmPassword,
   })
-  focus;
+  focusNodes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final form = ref.watch(signUpFormProvider);
+    final nameError = ref.watch(
+      signUpFormProvider.select((f) => f.email.uiErrorKey),
+    );
     final formNotifier = ref.read(signUpFormProvider.notifier);
 
     return InputFieldFactory.create(
       type: InputFieldType.name,
-      focusNode: focus.name,
-      errorText: form.name.uiErrorKey,
+      focusNode: focusNodes.name,
+      errorText: nameError,
       onChanged: formNotifier.nameChanged,
-      onSubmitted: focus.email.requestFocus,
-    ).withPaddingBottom(AppSpacing.m);
+      onSubmitted: focusNodes.email.requestFocus,
+    ).withPaddingBottom(AppSpacing.xm);
   }
 }
 
 ////
-
 ////
 
-/// 🧩 [_EmailInputField] — email input field
+/// 🧩 [_EmailInputField] — User email input field with localized validation
+/// ✅ Rebuilds only when `email.uiError` changes
 //
 final class _EmailInputField extends ConsumerWidget {
   ///---------------------------------------------
-  const _EmailInputField(this.focus);
+  const _EmailInputField(this.focusNodes);
   //
   final ({
     FocusNode name,
@@ -46,33 +49,35 @@ final class _EmailInputField extends ConsumerWidget {
     FocusNode password,
     FocusNode confirmPassword,
   })
-  focus;
+  focusNodes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final form = ref.watch(signUpFormProvider);
+    final nameError = ref.watch(
+      signUpFormProvider.select((f) => f.email.uiErrorKey),
+    );
     final formNotifier = ref.read(signUpFormProvider.notifier);
 
     return InputFieldFactory.create(
       type: InputFieldType.email,
-      focusNode: focus.email,
-      errorText: form.email.uiErrorKey,
+      focusNode: focusNodes.email,
+      errorText: nameError,
       onChanged: formNotifier.emailChanged,
-      onSubmitted: goNext(focus.password),
-    ).withPaddingBottom(AppSpacing.m);
+      onSubmitted: goNext(focusNodes.password),
+    ).withPaddingBottom(AppSpacing.xm);
   }
 }
 
 ////
-
 ////
 
-/// 🧩 [_PasswordInputField] — password input field
+/// 🔒 [_PasswordInputField] — Password input field with localized validation
+/// ✅ Rebuilds only when password error or visibility state changes
 //
 final class _PasswordInputField extends ConsumerWidget {
   ///------------------------------------------------
-  const _PasswordInputField(this.focus);
+  const _PasswordInputField(this.focusNodes);
   //
   final ({
     FocusNode name,
@@ -80,38 +85,43 @@ final class _PasswordInputField extends ConsumerWidget {
     FocusNode password,
     FocusNode confirmPassword,
   })
-  focus;
+  focusNodes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final form = ref.watch(signUpFormProvider);
+    final passwordError = ref.watch(
+      signUpFormProvider.select((f) => f.password.uiErrorKey),
+    );
+    final isObscure = ref.watch(
+      signUpFormProvider.select((f) => f.isPasswordObscure),
+    );
     final formNotifier = ref.read(signUpFormProvider.notifier);
 
     return InputFieldFactory.create(
       type: InputFieldType.password,
-      focusNode: focus.password,
-      errorText: form.password.uiErrorKey,
-      isObscure: form.isPasswordObscure,
+      focusNode: focusNodes.password,
+      errorText: passwordError,
+      isObscure: isObscure,
       onChanged: formNotifier.passwordChanged,
-      onSubmitted: goNext(focus.confirmPassword),
+      onSubmitted: goNext(focusNodes.confirmPassword),
       suffixIcon: ObscureToggleIcon(
-        isObscure: form.isPasswordObscure,
+        isObscure: isObscure,
         onPressed: formNotifier.togglePasswordVisibility,
       ),
-    ).withPaddingBottom(AppSpacing.m);
+    ).withPaddingBottom(AppSpacing.xm);
   }
 }
 
 ////
-
 ////
 
-/// 🧩 [_ConfirmPasswordInputField] — confirm password field
+/// 🔐 [_ConfirmPasswordInputField] — Confirm password input field with localized validation
+/// ✅ Rebuilds only when 'confirm password' error or visibility state changes
 //
 final class _ConfirmPasswordInputField extends ConsumerWidget {
   ///-------------------------------------------------------
-  const _ConfirmPasswordInputField(this.focus);
+  const _ConfirmPasswordInputField(this.focusNodes);
   //
   final ({
     FocusNode name,
@@ -119,25 +129,31 @@ final class _ConfirmPasswordInputField extends ConsumerWidget {
     FocusNode password,
     FocusNode confirmPassword,
   })
-  focus;
+  focusNodes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final form = ref.watch(signUpFormProvider);
+    final passwordError = ref.watch(
+      signUpFormProvider.select((f) => f.password.uiErrorKey),
+    );
+    final isObscure = ref.watch(
+      signUpFormProvider.select((f) => f.isPasswordObscure),
+    );
+    final isValid = ref.watch(signUpFormProvider.select((f) => f.isValid));
     final formNotifier = ref.read(signUpFormProvider.notifier);
 
     return InputFieldFactory.create(
       type: InputFieldType.confirmPassword,
-      focusNode: focus.confirmPassword,
-      errorText: form.confirmPassword.uiErrorKey,
-      isObscure: form.isConfirmPasswordObscure,
+      focusNode: focusNodes.confirmPassword,
+      errorText: passwordError,
+      isObscure: isObscure,
       onChanged: formNotifier.confirmPasswordChanged,
-      onSubmitted: form.isValid ? () => ref.submit() : null,
+      onSubmitted: isValid ? () => ref.submitSignUp() : null,
       suffixIcon: ObscureToggleIcon(
-        isObscure: form.isConfirmPasswordObscure,
+        isObscure: isObscure,
         onPressed: formNotifier.toggleConfirmPasswordVisibility,
       ),
-    ).withPaddingBottom(AppSpacing.xxxl);
+    ).withPaddingBottom(AppSpacing.xl);
   }
 }

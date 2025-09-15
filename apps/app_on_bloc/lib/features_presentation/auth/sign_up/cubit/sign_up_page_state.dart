@@ -3,12 +3,12 @@
 
 part of 'sign_up_page_cubit.dart';
 
-/// 🗞 [SignUpState] — Holds all field values and form status for [SignUpCubit]
+/// 🗞 [SignUpPageState] — Holds all field values and form status for [SignUpCubit]
 /// ✅ Centralized state object for validation, UI, and submission status
 //
-final class SignUpState extends Equatable implements FormSubmissionState {
+final class SignUpPageState extends Equatable implements FormSubmissionState {
   ///-----------------------------------
-  const SignUpState({
+  const SignUpPageState({
     this.name = const NameInputValidation.pure(),
     this.email = const EmailInputValidation.pure(),
     this.password = const PasswordInputValidation.pure(),
@@ -36,7 +36,7 @@ final class SignUpState extends Equatable implements FormSubmissionState {
 
   /// 🧱 Clones current state with optional overrides
   // ⚠️ Use only inside `updateWith(...)` to ensure validation is re-applied!
-  SignUpState _copyWith({
+  SignUpPageState _copyWith({
     NameInputValidation? name,
     EmailInputValidation? email,
     PasswordInputValidation? password,
@@ -48,7 +48,7 @@ final class SignUpState extends Equatable implements FormSubmissionState {
     bool? isConfirmPasswordObscure,
     bool clearFailure = false,
   }) {
-    return SignUpState(
+    return SignUpPageState(
       name: name ?? this.name,
       email: email ?? this.email,
       password: password ?? this.password,
@@ -82,11 +82,11 @@ final class SignUpState extends Equatable implements FormSubmissionState {
 ////
 ////
 
-/// 🥉 [SignUpStateValidationX] — Adds validation and update utilities to [SignUpState]
+/// 🥉 [SignUpStateValidationX] — Adds validation and update utilities to [SignUpPageState]
 /// ✅ Simplifies state mutation and ensures validation is always up-to-date
 /// 🔐 Used in [SignUpCubit] for field-level updates with validation
 //
-extension SignUpStateValidationX on SignUpState {
+extension SignUpStateValidationX on SignUpPageState {
   ///-----------------------------------------
 
   /// ✅ Validates form fields using Formz
@@ -107,7 +107,7 @@ extension SignUpStateValidationX on SignUpState {
 
   /// ➞ Returns a new state with updated values and revalidated form
   /// 📦 Supports field updates and UI controls like visibility or submission status
-  SignUpState updateWith({
+  SignUpPageState updateWith({
     NameInputValidation? name,
     EmailInputValidation? email,
     PasswordInputValidation? password,

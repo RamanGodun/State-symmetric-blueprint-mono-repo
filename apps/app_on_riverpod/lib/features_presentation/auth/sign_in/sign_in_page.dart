@@ -65,7 +65,7 @@ final class _SignInPageView extends HookWidget {
                     ///
                     child: ListView(
                       children: [
-                        /// 🖼️ Logo with Hero animation for smooth transitions
+                        /// 🖼️ Logo with Hero animation
                         const _SignInHeader(),
 
                         /// 📧 Email input field

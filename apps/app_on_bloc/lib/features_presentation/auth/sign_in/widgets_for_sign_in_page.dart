@@ -42,9 +42,9 @@ final class _SignInHeader extends StatelessWidget {
 //
 final class _SignInEmailInputField extends StatelessWidget {
   ///-----------------------------------------
-  const _SignInEmailInputField(this.focusNode);
+  const _SignInEmailInputField(this.focusNodes);
   //
-  final ({FocusNode email, FocusNode password}) focusNode;
+  final ({FocusNode email, FocusNode password}) focusNodes;
 
   //
 
@@ -56,11 +56,10 @@ final class _SignInEmailInputField extends StatelessWidget {
       builder: (context, errorText) {
         return InputFieldFactory.create(
           type: InputFieldType.email,
-          focusNode: focusNode.email,
+          focusNode: focusNodes.email,
           errorText: errorText,
           onChanged: context.read<SignInCubit>().emailChanged,
-          onSubmitted: () =>
-              FocusScope.of(context).requestFocus(focusNode.password),
+          onSubmitted: focusNodes.password.requestFocus,
         ).withPaddingBottom(AppSpacing.xm);
       },
     );
@@ -162,6 +161,7 @@ final class _WrapperForFooter extends StatelessWidget {
       builder: (context, isLoading) {
         final isEnabled = !isLoading && !isOverlayActive;
 
+        /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
         return _SignInPageFooter(isEnabled: isEnabled);
       },
     );

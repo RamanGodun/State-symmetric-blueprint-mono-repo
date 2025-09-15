@@ -85,9 +85,7 @@ final class _SignInPasswordInputField extends ConsumerWidget {
     final isObscure = ref.watch(
       signInFormProvider.select((f) => f.isPasswordObscure),
     );
-    final isValid = ref.watch(
-      signInFormProvider.select((f) => f.isValid),
-    );
+    final isValid = ref.watch(signInFormProvider.select((f) => f.isValid));
     final formNotifier = ref.read(signInFormProvider.notifier);
 
     return InputFieldFactory.create(
@@ -150,6 +148,7 @@ final class _WrapperForFooter extends ConsumerWidget {
     final isOverlayActive = ref.isOverlayActive;
     final isEnabled = !isLoading && !isOverlayActive;
 
+    /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
     return _SignInPageFooter(isEnabled: isEnabled);
   }
 }

@@ -1,15 +1,17 @@
+import 'package:app_on_riverpod/features_presentation/auth/sign_up/providers/sign_up_form_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart'
     show SafeAsyncState, signUpUseCaseProvider;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sign_up__provider.g.dart';
 
-/// 🧩 [signupProvider] — async notifier for user registration
-/// 🧼 Uses [SafeAsyncState] for lifecycle safety
-/// 🧼 Compatible with new declarative error handling (listenFailure)
+/// 🧩 [signUpProvider] — async notifier for user registration
+/// 🧼 Uses [SafeAsyncState] to prevent post-dispose state updates
+/// 🧼 Wraps logic in [AsyncValue.guard] for robust error handling
 //
 @Riverpod(keepAlive: false)
-final class Signup extends _$Signup with SafeAsyncState<void> {
+final class SignUp extends _$SignUp with SafeAsyncState<void> {
   ///------------------------------------------------------
 
   /// 🧱 Initializes safe lifecycle mechanism
@@ -41,3 +43,21 @@ final class Signup extends _$Signup with SafeAsyncState<void> {
 
   //
 }
+
+////
+////
+
+/// ✅ Returns form validity as primitive bool (minimal rebuilds)
+//
+@riverpod
+bool signUpFormIsValid(Ref ref) =>
+    ref.watch(signUpFormProvider.select((f) => f.isValid));
+
+////
+////
+
+/// ⏳ Returns loading state for submission (primitive bool)
+//
+@riverpod
+bool signUpSubmitIsLoading(Ref ref) =>
+    ref.watch(signUpProvider.select((a) => a.isLoading));

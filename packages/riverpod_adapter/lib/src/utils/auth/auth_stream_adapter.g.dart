@@ -49,7 +49,7 @@ final authSnapshotsProvider = StreamProvider<AuthSnapshot>.internal(
 typedef AuthSnapshotsRef = StreamProviderRef<AuthSnapshot>;
 String _$authUidHash() => r'4811d591e8fe184609f5cd547cb06d794032b3d2'; ////
 ////
-/// ✅ Будуємо стрім UID зі справжнього стріму AuthGateway (а не з AsyncValue)
+/// ✅ [authUidProvider] - stream from AuthGateway
 ///
 /// Copied from [authUid].
 @ProviderFor(authUid)

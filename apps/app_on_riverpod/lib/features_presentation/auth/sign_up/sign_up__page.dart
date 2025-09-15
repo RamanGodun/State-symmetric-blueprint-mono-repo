@@ -2,74 +2,34 @@ import 'package:app_on_riverpod/features_presentation/auth/sign_up/providers/sig
 import 'package:app_on_riverpod/features_presentation/auth/sign_up/providers/sign_up_form_provider.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart';
 
 part 'sign_up_input_fields.dart';
 part 'widgets_for_sign_up_page.dart';
 
-/// 🔐 [SignUpPage] — screen that allows user to register a new account.
+/// 🧾🔐 [SignUpPage] — Screen that allows user to register a new account.
 //
-final class SignUpPage extends HookConsumerWidget {
+final class SignUpPage extends ConsumerWidget {
   ///-----------------------------------
   const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    /// 🧠🔁 Intelligent failure listener (declarative side-effect for error displaying) with optional "Retry" logic.
+    /// 🔄 [ ref.listenRetryAwareFailure] — Ref listener for one-shot
+    ///    error handling (with optional "retry" logic) via overlays
+    /// 🧠 OverlayDispatcher resolves conflicts/priority internally
     ref.listenRetryAwareFailure(
-      signupProvider,
+      signUpProvider,
       context,
       ref: ref,
-      onRetry: () => ref.submit(),
+      onRetry: () => ref.submitSignUp(),
     );
 
-    final focus = useSignUpFocusNodes();
-
-    return Scaffold(
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: context.unfocusKeyboard,
-
-          /// used "LayoutBuilder + ConstrainedBox" pattern
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: FocusTraversalGroup(
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      /// 📋 Logo and welcome text
-                      const _SignupHeader(),
-
-                      /// 🔢 Name input field
-                      _NameInputField(focus),
-
-                      /// 🔢 Email input field
-                      _EmailInputField(focus),
-
-                      /// 🔢 Password input field
-                      _PasswordInputField(focus),
-
-                      /// 🔢 Confirm password field
-                      _ConfirmPasswordInputField(focus),
-
-                      /// 🔺 Submit button
-                      const _SignupSubmitButton(),
-
-                      /// 🔄 Redirect to sign in
-                      const _SignupFooter(),
-                    ],
-                  ).withPaddingHorizontal(AppSpacing.xxxm),
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
+    /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
+    return const _SignUpView();
   }
 
   //
@@ -78,20 +38,83 @@ final class SignUpPage extends HookConsumerWidget {
 ////
 ////
 
-/// 📩 Handles form validation and submission to [signupProvider].
+/// 🔐 [_SignUpView] — Main UI layout for the sign-in form
+///    Uses HookWidget for managing focus nodes & rebuild optimization
+/// ✅ Same widget used in BLoC app for perfect parity
+//
+final class _SignUpView extends HookWidget {
+  ///-----------------------------------------
+  const _SignUpView();
+
+  @override
+  Widget build(BuildContext context) {
+    //
+    // 📌 Shared focus nodes for form fields
+    final focusNodes = useSignUpFocusNodes();
+
+    return Scaffold(
+      body: SafeArea(
+        child: GestureDetector(
+          // 🔕 Dismiss keyboard on outside tap
+          onTap: context.unfocusKeyboard,
+
+          /// used "LayoutBuilder + ConstrainedBox" pattern
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: FocusTraversalGroup(
+                  ///d
+                  child: ListView(
+                    children: [
+                      /// 📋 Logo and welcome text
+                      const _SignUpHeader(),
+
+                      /// 👤 Name input field
+                      _UserNameInputField(focusNodes),
+
+                      /// 📧 Email input field
+                      _EmailInputField(focusNodes),
+
+                      /// 🔒 Password input field
+                      _PasswordInputField(focusNodes),
+
+                      /// 🔐 Confirm password input
+                      _ConfirmPasswordInputField(focusNodes),
+
+                      /// 🚀 Primary submit button
+                      const _SignUpSubmitButton(),
+
+                      /// 🔄 Redirect to sign in
+                      const _WrapperForFooter(),
+                    ],
+                  ).centered()..withPaddingHorizontal(AppSpacing.xxxm),
+                  //
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+////
+////
+
+/// 📩 Handles form validation and submission to [signUpProvider].
 //
 extension SignUpRefX on WidgetRef {
   ///-------------------------------
   //
   /// 📩 Triggers sign-up logic based on current form state
-  void submit() {
+  void submitSignUp() {
     final form = read(signUpFormProvider);
-    read(signupProvider.notifier).signup(
+    read(signUpProvider.notifier).signup(
       name: form.name.value,
       email: form.email.value,
       password: form.password.value,
     );
   }
-
-  //
 }
