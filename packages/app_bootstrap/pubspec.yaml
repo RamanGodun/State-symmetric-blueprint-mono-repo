@@ -18,7 +18,7 @@ environment:
 # =============================
 dependencies:
   # Platform info for runtime checks (Android/iOS versions, etc.)
-  device_info_plus: ^11.5.0
+  device_info_plus: ^12.1.0
 
   # Flutter SDK
   flutter:
