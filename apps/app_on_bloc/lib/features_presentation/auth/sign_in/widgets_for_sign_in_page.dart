@@ -204,7 +204,7 @@ final class _SignInPageFooter extends StatelessWidget {
           label: LocaleKeys.buttons_reset_password,
           foregroundColor: AppColors.forErrors,
           isEnabled: isEnabled,
-          onPressed: () => context.goTo(RoutesNames.resetPassword),
+          onPressed: () => context.goPushTo(RoutesNames.resetPassword),
         ),
       ],
     );
