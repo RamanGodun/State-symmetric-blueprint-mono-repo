@@ -2,6 +2,7 @@ part of 'sign_in_page.dart';
 
 /// 🖼️ [_SignInHeader] — app logo + welcome texts
 /// 📦 Contains branding, main header, and sub-header
+/// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _SignInHeader extends StatelessWidget {
   ///------------------------------------------
@@ -130,12 +131,12 @@ final class _SignInSubmitButton extends ConsumerWidget {
 ////
 ////
 
-/// 🔁 [_SignInFooter] — sign up & reset password links
+/// 🔁 [_WrapperForFooter] — sign up & reset password links
 /// ✅ Disabled during form submission or overlay
 //
-final class _SignInFooter extends ConsumerWidget {
+final class _WrapperForFooter extends ConsumerWidget {
   ///-------------------------------------------
-  const _SignInFooter();
+  const _WrapperForFooter();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -149,10 +150,28 @@ final class _SignInFooter extends ConsumerWidget {
     final isOverlayActive = ref.isOverlayActive;
     final isEnabled = !isLoading && !isOverlayActive;
 
+    return _SignInPageFooter(isEnabled: isEnabled);
+  }
+}
+
+////
+////
+
+/// 🔁 [_SignInPageFooter] — sign up & reset password links
+/// ✅ Same widget used in BLoC app for perfect parity
+//
+final class _SignInPageFooter extends StatelessWidget {
+  ///-----------------------------------------------
+  const _SignInPageFooter({required this.isEnabled});
+
+  final bool isEnabled;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        /// Redirect to [SignUpPage]
+        /// 🧭 Redirect to [SignUpPage]
         const TextWidget(
           LocaleKeys.buttons_redirect_to_sign_up,
           TextType.bodyLarge,
@@ -163,7 +182,7 @@ final class _SignInFooter extends ConsumerWidget {
           onPressed: () => context.goPushTo(RoutesNames.signUp),
         ).withPaddingBottom(AppSpacing.xxxm),
 
-        /// Redirect to [ResetPasswordPage]
+        /// 🧭 Redirect to [ResetPasswordPage]
         const TextWidget(
           LocaleKeys.sign_in_forgot_password,
           TextType.bodyLarge,

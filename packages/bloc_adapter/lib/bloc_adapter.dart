@@ -63,7 +63,7 @@ export 'src/utils/async/async_state_cubit.dart';
 export 'src/utils/async/async_state_view_for_bloc.dart';
 export 'src/utils/retry_aware_failure_listener.dart';
 export 'src/utils/i_submission_state.dart'
-    show SubmissionActor, SubmissionController, SubmissionState;
+    show FormSubmissionState, SubmissionActor, SubmissionController;
 
 /// ─────────────────────────────────────────────────────────────────────────
 /// 5) Others utils

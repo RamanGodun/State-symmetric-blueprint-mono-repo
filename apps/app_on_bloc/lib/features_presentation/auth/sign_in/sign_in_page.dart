@@ -20,13 +20,20 @@ final class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
+    /// 🧩 Provide screen-scoped cubits (disposed on pop)
     return BlocProvider(
-      create: (_) =>
-          SignInCubit(di<SignInUseCase>(), di<FormValidationService>()),
+      create: (_) => SignInCubit(
+        di<SignInUseCase>(),
+        di<FormValidationService>(),
+      ),
 
-      /// 🔄 [RetryAwareFailureListener] — Bloc listener for one-shot error feedback.
+      /// 🔄 [RetryAwareFailureListener] — Bloc listener for one-shot
+      ///    error handling (with optional "retry" logic) via overlays
+      /// 🧠 OverlayDispatcher resolves conflicts/priority internally
       child: FailureListenerForAppWithBloc<SignInPageState, SignInCubit>(
-        onRetry: (c) => c.submit(),
+        onRetry: (cubit) => cubit.submit(),
+
+        /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
         child: const _SignInPageView(),
       ),
     );
@@ -37,7 +44,8 @@ final class SignInPage extends StatelessWidget {
 ////
 
 /// 🔐 [_SignInPageView] — Main UI layout for the sign-in form
-/// ✅ Uses HookWidget for managing focus nodes & rebuild optimization
+///    Uses HookWidget for managing focus nodes & rebuild optimization
+/// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class _SignInPageView extends HookWidget {
   ///----------------------------------------------
@@ -77,7 +85,7 @@ final class _SignInPageView extends HookWidget {
                         const _SignInSubmitButton(),
 
                         /// 🔁 Links to redirect to sign-up or reset-password screen
-                        const _SignInFooter(),
+                        const _WrapperForFooter(),
                         //
                       ],
                     ).centered().withPaddingHorizontal(AppSpacing.xxxm),

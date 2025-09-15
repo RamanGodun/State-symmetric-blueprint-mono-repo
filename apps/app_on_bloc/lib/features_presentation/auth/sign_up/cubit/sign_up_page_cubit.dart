@@ -1,4 +1,5 @@
-import 'package:bloc_adapter/bloc_adapter.dart' show SubmissionState;
+import 'package:bloc_adapter/bloc_adapter.dart'
+    show FormSubmissionState, SubmissionActor;
 import 'package:core/core.dart';
 import 'package:equatable/equatable.dart';
 import 'package:features/features_barrels/auth/auth.dart';
@@ -11,11 +12,13 @@ part 'sign_up_page_state.dart';
 /// 🧠 [SignUpCubit] — Handles logic for sign-up form: validation, debouncing, and submission.
 /// ✅ Delegates actual sign-up to [SignUpUseCase]
 //
-final class SignUpCubit extends Cubit<SignUpState> {
+final class SignUpCubit extends Cubit<SignUpState>
+    implements SubmissionActor<SignUpState> {
   ///-------------------------------------------
   SignUpCubit(this._signUpUseCase, this._validation)
     : super(const SignUpState());
   //
+
   final SignUpUseCase _signUpUseCase;
   final FormValidationService _validation;
   final _debouncer = Debouncer(AppDurations.ms180);
@@ -119,9 +122,11 @@ final class SignUpCubit extends Cubit<SignUpState> {
   }
 
   /// 🧽 Resets the failure after it’s been consumed
-  void clearFailure() => emit(state._copyWith());
+  @override
+  void clearFailure() => emit(state._copyWith(clearFailure: true));
 
   /// ♻️ Resets only submission status (e.g. after dialog)
+  @override
   void resetStatus() {
     emit(state._copyWith(status: FormzSubmissionStatus.initial));
   }

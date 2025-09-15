@@ -1,8 +1,11 @@
 import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/sign_up_page_cubit.dart'
     show SignUpCubit, SignUpState;
 import 'package:bloc_adapter/bloc_adapter.dart'
-    show FormSubmitButtonForBlocApps, OverlayStatusCubit, di;
-import 'package:core/base_modules/errors_management.dart';
+    show
+        FailureListenerForAppWithBloc,
+        FormSubmitButtonForBlocApps,
+        OverlayStatusCubit,
+        di;
 import 'package:core/base_modules/forms.dart'
     show
         FormValidationService,
@@ -12,9 +15,8 @@ import 'package:core/base_modules/forms.dart'
         ObscureToggleIcon,
         useSignUpFocusNodes;
 import 'package:core/base_modules/localization.dart'
-    show AppLocalizer, LocaleKeys, TextType, TextWidget;
+    show LocaleKeys, TextType, TextWidget;
 import 'package:core/base_modules/navigation.dart';
-import 'package:core/base_modules/overlays.dart';
 import 'package:core/base_modules/ui_design.dart' show AppSpacing;
 import 'package:core/shared_layers/presentation.dart' show AppTextButton;
 import 'package:core/utils.dart';
@@ -35,44 +37,21 @@ final class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
+    /// 🧩 Provide screen-scoped cubits (disposed on pop)
     return BlocProvider(
-      create: (_) =>
-          SignUpCubit(di<SignUpUseCase>(), di<FormValidationService>()),
+      create: (_) => SignUpCubit(
+        di<SignUpUseCase>(),
+        di<FormValidationService>(),
+      ),
 
-      /// 🔄 [_SignUpListenerWrapper] — Bloc listener for one-shot error feedback.
-      /// ✅ Uses `Consumable<FailureUIModel>` for single-use error overlays.
-      child: BlocListener<SignUpCubit, SignUpState>(
-        listenWhen: (prev, curr) =>
-            prev.status != curr.status && curr.status.isSubmissionFailure,
+      /// 🔄 [RetryAwareFailureListener] — Bloc listener for one-shot
+      ///    error handling (with optional "retry" logic) via overlays
+      /// 🧠 OverlayDispatcher resolves conflicts/priority internally
+      child: FailureListenerForAppWithBloc<SignUpState, SignUpCubit>(
+        onRetry: (cubit) => cubit.submit(),
 
-        /// 📣 Show once retryable dialog if supported, otherwise info dialog
-        /// and then reset failure + status
-        listener: (context, state) {
-          final error = state.failure?.consume();
-          if (error != null) {
-            if (error.isRetryable) {
-              context.showError(
-                error.toUIEntity(),
-                showAs: ShowAs.dialog,
-                onConfirm: OverlayUtils.dismissAndRun(
-                  () => context.read<SignUpCubit>().submit(),
-                  context,
-                ),
-                confirmText: AppLocalizer.translateSafely(
-                  LocaleKeys.buttons_retry,
-                ),
-              );
-            } else {
-              context.showError(error.toUIEntity());
-            }
-
-            context.read<SignUpCubit>()
-              ..resetStatus()
-              ..clearFailure();
-          }
-        },
-
-        child: const SignUpView(),
+        ///
+        child: const _SignUpView(),
       ),
     );
   }
@@ -82,12 +61,13 @@ final class SignUpPage extends StatelessWidget {
 
 ////
 
-/// 🧾 [SignUpView] — Full UI layout for Sign Up screen
-/// ✅ Includes all form fields, interactions, and field focus handling
+/// 🔐 [_SignUpView] — Main UI layout for the sign-in form
+///    Uses HookWidget for managing focus nodes & rebuild optimization
+/// ✅ Same widget used in Riverpod app for perfect parity
 //
-final class SignUpView extends HookWidget {
+final class _SignUpView extends HookWidget {
   ///------------------------------------
-  const SignUpView({super.key});
+  const _SignUpView();
 
   @override
   Widget build(BuildContext context) {

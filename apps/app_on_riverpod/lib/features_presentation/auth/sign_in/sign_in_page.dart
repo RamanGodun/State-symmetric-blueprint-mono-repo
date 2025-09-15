@@ -18,7 +18,9 @@ final class SignInPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    /// 🧠🔁 Intelligent failure listener (declarative side-effect for error displaying) with optional "Retry" logic.
+    /// 🔄 [ref.listenRetryAwareFailure] — ref listener for one-shot
+    ///    error handling (with optional "retry" logic) via overlays
+    /// 🧠 OverlayDispatcher resolves conflicts/priority internally
     ref.listenRetryAwareFailure(
       signInProvider,
       context,
@@ -26,6 +28,7 @@ final class SignInPage extends ConsumerWidget {
       onRetry: () => ref.submitSignIn(),
     );
 
+    /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
     return const _SignInPageView();
   }
 }
@@ -34,7 +37,8 @@ final class SignInPage extends ConsumerWidget {
 ////
 
 /// 🔐 [_SignInPageView] — Main UI layout for the sign-in form
-/// ✅ Uses HookWidget for managing focus nodes & rebuild optimization
+///    Uses HookWidget for managing focus nodes & rebuild optimization
+/// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _SignInPageView extends HookWidget {
   ///----------------------------------------------
@@ -74,7 +78,7 @@ final class _SignInPageView extends HookWidget {
                         const _SignInSubmitButton(),
 
                         /// 🔁 Links to redirect to sign-up or reset-password screen
-                        const _SignInFooter(),
+                        const _WrapperForFooter(),
                         //
                       ],
                     ).centered().withPaddingHorizontal(AppSpacing.xxxm),

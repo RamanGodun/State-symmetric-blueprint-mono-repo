@@ -4,7 +4,7 @@ import 'package:formz/formz.dart';
 
 /// 📦 Read-only contract for submission UI state.
 //
-abstract interface class SubmissionState {
+abstract interface class FormSubmissionState {
   ///----------------------------------
   /// Current submission status (idle/inProgress/success/failure).
   FormzSubmissionStatus get status;
@@ -32,5 +32,5 @@ abstract interface class SubmissionController {
 
 /// Combined contract: streamable state + cleanup API.
 //
-abstract interface class SubmissionActor<TState extends SubmissionState>
+abstract interface class SubmissionActor<TState extends FormSubmissionState>
     implements StateStreamable<TState>, SubmissionController {}

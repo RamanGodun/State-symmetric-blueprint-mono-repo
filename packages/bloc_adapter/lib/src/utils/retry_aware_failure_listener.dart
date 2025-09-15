@@ -1,4 +1,4 @@
-import 'package:bloc_adapter/bloc_adapter.dart' show SubmissionState;
+import 'package:bloc_adapter/bloc_adapter.dart' show FormSubmissionState;
 import 'package:bloc_adapter/src/utils/i_submission_state.dart'
     show SubmissionActor;
 import 'package:core/core.dart';
@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// ✅ Calls `consume()` inside; default cleanup -> cubit.resetStatus/clearFailure().
 //
 final class FailureListenerForAppWithBloc<
-  TState extends SubmissionState,
+  TState extends FormSubmissionState,
   TCubit extends SubmissionActor<TState>
 >
     extends StatelessWidget {

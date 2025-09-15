@@ -6,7 +6,7 @@ part of 'sign_up_page_cubit.dart';
 /// 🗞 [SignUpState] — Holds all field values and form status for [SignUpCubit]
 /// ✅ Centralized state object for validation, UI, and submission status
 //
-final class SignUpState extends Equatable implements SubmissionState {
+final class SignUpState extends Equatable implements FormSubmissionState {
   ///-----------------------------------
   const SignUpState({
     this.name = const NameInputValidation.pure(),
@@ -46,6 +46,7 @@ final class SignUpState extends Equatable implements SubmissionState {
     Consumable<Failure>? failure,
     bool? isPasswordObscure,
     bool? isConfirmPasswordObscure,
+    bool clearFailure = false,
   }) {
     return SignUpState(
       name: name ?? this.name,
@@ -54,7 +55,7 @@ final class SignUpState extends Equatable implements SubmissionState {
       confirmPassword: confirmPassword ?? this.confirmPassword,
       status: status ?? this.status,
       isValid: isValid ?? this.isValid,
-      failure: failure,
+      failure: clearFailure ? null : (failure ?? this.failure),
       isPasswordObscure: isPasswordObscure ?? this.isPasswordObscure,
       isConfirmPasswordObscure:
           isConfirmPasswordObscure ?? this.isConfirmPasswordObscure,

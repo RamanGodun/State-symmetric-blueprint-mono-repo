@@ -2,6 +2,7 @@ part of 'sign_in_page.dart';
 
 /// 🖼️ [_SignInHeader] — app logo + welcome texts
 /// 📦 Contains branding, main header, and sub-header
+/// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class _SignInHeader extends StatelessWidget {
   ///------------------------------------------
@@ -138,15 +139,15 @@ final class _SignInSubmitButton extends StatelessWidget {
 }
 
 ////
-
 ////
 
-/// 🔁 [_SignInFooter] — sign up & reset password links
+/// 🔁 [_WrapperForFooter] — sign up & reset password links
 /// ✅ Disabled during form submission or overlay
+
 //
-final class _SignInFooter extends StatelessWidget {
+final class _WrapperForFooter extends StatelessWidget {
   ///------------------------------------------------------
-  const _SignInFooter();
+  const _WrapperForFooter();
 
   @override
   Widget build(BuildContext context) {
@@ -161,34 +162,52 @@ final class _SignInFooter extends StatelessWidget {
       builder: (context, isLoading) {
         final isEnabled = !isLoading && !isOverlayActive;
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            /// Redirect to [SignUpPage]
-            const TextWidget(
-              LocaleKeys.buttons_redirect_to_sign_up,
-              TextType.bodyLarge,
-            ).withPaddingBottom(AppSpacing.s),
-            AppTextButton(
-              label: LocaleKeys.buttons_sign_up,
-              isEnabled: isEnabled,
-              onPressed: () => context.goPushTo(RoutesNames.signUp),
-            ).withPaddingBottom(AppSpacing.xxxm),
-
-            /// Redirect to [ResetPasswordPage]
-            const TextWidget(
-              LocaleKeys.sign_in_forgot_password,
-              TextType.bodyLarge,
-            ).withPaddingBottom(AppSpacing.s),
-            AppTextButton(
-              label: LocaleKeys.buttons_reset_password,
-              foregroundColor: AppColors.forErrors,
-              isEnabled: isEnabled,
-              onPressed: () => context.goTo(RoutesNames.resetPassword),
-            ),
-          ],
-        );
+        return _SignInPageFooter(isEnabled: isEnabled);
       },
+    );
+  }
+}
+
+////
+////
+
+/// 🔁 [_SignInPageFooter] — sign up & reset password links
+/// ✅ Same widget used in Riverpod app for perfect parity
+//
+final class _SignInPageFooter extends StatelessWidget {
+  ///-----------------------------------------------
+  const _SignInPageFooter({required this.isEnabled});
+
+  final bool isEnabled;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        /// 🧭 Redirect to [SignUpPage]
+        const TextWidget(
+          LocaleKeys.buttons_redirect_to_sign_up,
+          TextType.bodyLarge,
+        ).withPaddingBottom(AppSpacing.s),
+        AppTextButton(
+          label: LocaleKeys.buttons_sign_up,
+          isEnabled: isEnabled,
+          onPressed: () => context.goPushTo(RoutesNames.signUp),
+        ).withPaddingBottom(AppSpacing.xxxm),
+
+        /// 🧭 Redirect to [ResetPasswordPage]
+        const TextWidget(
+          LocaleKeys.sign_in_forgot_password,
+          TextType.bodyLarge,
+        ).withPaddingBottom(AppSpacing.s),
+        AppTextButton(
+          label: LocaleKeys.buttons_reset_password,
+          foregroundColor: AppColors.forErrors,
+          isEnabled: isEnabled,
+          onPressed: () => context.goTo(RoutesNames.resetPassword),
+        ),
+      ],
     );
   }
 }

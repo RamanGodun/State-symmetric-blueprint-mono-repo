@@ -6,7 +6,7 @@ part of 'sign_in_page_cubit.dart';
 /// 📄 [SignInPageState] — Stores form field values and validation status
 /// ✅ Used by [SignInCubit] to manage UI state reactively
 //
-final class SignInPageState extends Equatable implements SubmissionState {
+final class SignInPageState extends Equatable implements FormSubmissionState {
   ///---------------------------------------
   // 🧱 Initial constructor with default values
   const SignInPageState({

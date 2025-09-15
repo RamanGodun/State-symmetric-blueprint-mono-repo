@@ -1,5 +1,5 @@
 import 'package:bloc_adapter/bloc_adapter.dart'
-    show SubmissionActor, SubmissionState;
+    show FormSubmissionState, SubmissionActor;
 import 'package:core/core.dart';
 import 'package:equatable/equatable.dart';
 import 'package:features/features.dart';
