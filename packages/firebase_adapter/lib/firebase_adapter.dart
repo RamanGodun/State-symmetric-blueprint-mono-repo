@@ -11,7 +11,7 @@ export 'src/bootstrap/firebase_env_options.dart';
 export 'src/bootstrap/firebase_init.dart';
 
 /// --- Auth & Firestore
-export 'src/auth_and_firestore/auth_user_utils.dart';
+export 'src/auth_and_firestore/guarded_fb_user.dart';
 export 'src/auth_and_firestore/firebase_auth_gateway.dart';
 export 'src/auth_and_firestore/firebase_refs.dart';
 

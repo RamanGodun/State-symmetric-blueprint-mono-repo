@@ -1,7 +1,3 @@
-/*
-
-? maybe can be used later
-
 import 'package:core/base_modules/errors_management.dart'
     show Failure, UserMissingFirebaseFailureType;
 import 'package:firebase_adapter/src/auth_and_firestore/firebase_refs.dart';
@@ -48,7 +44,3 @@ abstract final class GuardedFirebaseUser {
 
   // 🚧 Future extensions: ID token fetch, claims, forced refresh, etc.
 }
-
-
-
- */

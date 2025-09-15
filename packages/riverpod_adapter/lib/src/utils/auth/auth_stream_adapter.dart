@@ -27,6 +27,6 @@ Stream<AuthSnapshot> authSnapshots(Ref ref) =>
 @Riverpod(keepAlive: true)
 Stream<String?> authUid(Ref ref) => ref
     .watch(authGatewayProvider)
-    .snapshots$ // <— тут саме Stream<AuthSnapshot>
+    .snapshots$
     .map((s) => s is AuthReady ? s.session.uid : null)
     .distinct();

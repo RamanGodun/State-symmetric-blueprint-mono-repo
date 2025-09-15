@@ -12,7 +12,10 @@ final class _SignupHeader extends StatelessWidget {
     return const Column(
       children: [
         SizedBox(height: AppSpacing.xxl),
-        FlutterLogo(size: AppSpacing.massive),
+        Hero(
+          tag: 'Logo',
+          child: FlutterLogo(size: AppSpacing.massive),
+        ),
         SizedBox(height: AppSpacing.xxxm),
         TextWidget(LocaleKeys.pages_sign_up, TextType.headlineSmall),
         TextWidget(LocaleKeys.sign_up_sub_header, TextType.bodyMedium),

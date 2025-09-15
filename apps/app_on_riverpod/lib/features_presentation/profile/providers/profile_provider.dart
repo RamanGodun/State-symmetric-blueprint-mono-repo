@@ -1,12 +1,8 @@
-import 'package:core/base_modules/errors_management.dart'
-    show UserMissingFirebaseFailureType;
 import 'package:core/core.dart' show Failure, UserEntity;
+import 'package:firebase_adapter/firebase_adapter.dart'
+    show GuardedFirebaseUser;
 import 'package:riverpod_adapter/riverpod_adapter.dart'
-    show
-        ErrorsListenerForAppOnRiverpod,
-        SafeAsyncState,
-        authUidProvider,
-        fetchProfileUseCaseProvider;
+    show ErrorsListenerForAppOnRiverpod, fetchProfileUseCaseProvider;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'profile_provider.g.dart';
@@ -21,12 +17,13 @@ final class Profile extends _$Profile {
   @override
   Future<UserEntity> build() async {
     //
-    final uid = await ref.watch(
-      authUidProvider.selectAsync(
-        (u) =>
-            u ?? (throw const Failure(type: UserMissingFirebaseFailureType())),
-      ),
-    );
+
+    final uid = GuardedFirebaseUser.uid;
+    /*
+          ? if need reactive dependence, then:
+      final uid = await ref.watch(authUidProvider.future) ??
+                  (throw const Failure(type: UserMissingFirebaseFailureType()));
+ */
     //
     final useCase = ref.watch(fetchProfileUseCaseProvider);
     final result = await useCase(uid);
@@ -40,11 +37,8 @@ final class Profile extends _$Profile {
   Future<void> refresh() async {
     //
     state = const AsyncLoading();
-    //
-    final uid =
-        await ref.watch(authUidProvider.future) ??
-        (throw const Failure(type: UserMissingFirebaseFailureType()));
-    //
+
+    final uid = GuardedFirebaseUser.uid;
     final useCase = ref.read(fetchProfileUseCaseProvider);
     //
     state = await AsyncValue.guard(() async {

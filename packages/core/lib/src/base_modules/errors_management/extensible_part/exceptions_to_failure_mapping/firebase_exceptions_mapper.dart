@@ -62,6 +62,21 @@ final firebaseFailureMap = <String, Failure Function(String?)>{
   FirebaseCodes.docMissing: (msg) =>
       Failure(type: const DocMissingFirebaseFailureType(), message: msg),
 
+  // 🔥 Firebase Auth/Firestore мережеві кейси → RETRYABLE
+  FirebaseCodes.networkRequestFailed: (msg) => Failure(
+    type: const NetworkFailureType(), // retryable
+    message: msg,
+  ),
+  FirebaseCodes.deadlineExceeded: (msg) => Failure(
+    type: const NetworkTimeoutFailureType(), // retryable
+    message: msg,
+  ),
+  // (fallback) іноді SDK може віддати просто "timeout"
+  FirebaseCodes.timeout: (msg) => Failure(
+    type: const NetworkTimeoutFailureType(), // retryable
+    message: msg,
+  ),
+
   //
 };
 
@@ -87,6 +102,11 @@ sealed class FirebaseCodes {
   static const userMissing = 'firebase-user-missing';
   static const userNotFound = 'user-not-found';
   static const docMissing = 'firestore-doc-missing';
+
+  // 🆕 Network / timeout  Firebase codes
+  static const networkRequestFailed = 'network-request-failed'; // FirebaseAuth
+  static const deadlineExceeded = 'deadline-exceeded'; // Firestore/Functions
+  static const timeout = 'timeout';
 
   //
 }

@@ -1,3 +1,4 @@
+import 'package:bloc_adapter/bloc_adapter.dart' show SubmissionState;
 import 'package:core/core.dart';
 import 'package:equatable/equatable.dart';
 import 'package:features/features_barrels/auth/auth.dart';

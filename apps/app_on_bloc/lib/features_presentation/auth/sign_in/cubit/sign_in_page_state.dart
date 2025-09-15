@@ -6,7 +6,7 @@ part of 'sign_in_page_cubit.dart';
 /// 📄 [SignInPageState] — Stores form field values and validation status
 /// ✅ Used by [SignInCubit] to manage UI state reactively
 //
-final class SignInPageState extends Equatable {
+final class SignInPageState extends Equatable implements SubmissionState {
   ///---------------------------------------
   // 🧱 Initial constructor with default values
   const SignInPageState({
@@ -20,8 +20,10 @@ final class SignInPageState extends Equatable {
   //
   final EmailInputValidation email;
   final PasswordInputValidation password;
+  @override
   final FormzSubmissionStatus status;
   final bool isValid;
+  @override
   final Consumable<Failure>? failure;
   final bool isPasswordObscure;
 
@@ -33,6 +35,7 @@ final class SignInPageState extends Equatable {
     FormzSubmissionStatus? status,
     bool? isValid,
     Consumable<Failure>? failure,
+    bool clearFailure = false,
     bool? isPasswordObscure,
   }) {
     return SignInPageState(
@@ -40,11 +43,12 @@ final class SignInPageState extends Equatable {
       password: password ?? this.password,
       status: status ?? this.status,
       isValid: isValid ?? this.isValid,
-      failure: failure ?? this.failure,
+      failure: clearFailure ? null : (failure ?? this.failure),
       isPasswordObscure: isPasswordObscure ?? this.isPasswordObscure,
     );
   }
 
+  ///
   @override
   List<Object?> get props => [
     email,

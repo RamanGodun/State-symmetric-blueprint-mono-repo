@@ -62,3 +62,6 @@ export 'src/features_providers/profile/domain_layer_providers/use_case_provider.
 
 /// --- Others utils
 export 'src/utils/forms_utils.dart';
+
+/// --- Widgets
+export 'src/presentation/form_submit_button.dart';

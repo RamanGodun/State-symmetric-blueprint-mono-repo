@@ -1,3 +1,5 @@
+import 'package:bloc_adapter/bloc_adapter.dart'
+    show SubmissionActor, SubmissionState;
 import 'package:core/core.dart';
 import 'package:equatable/equatable.dart';
 import 'package:features/features.dart';
@@ -9,7 +11,8 @@ part 'sign_in_page_state.dart';
 /// 🔐 [SignInCubit] — Manages Sign In logic, validation, submission.
 /// ✅ Leverages via DI [FormValidationService] and uses DSL-like result handler.
 //
-final class SignInCubit extends Cubit<SignInPageState> {
+final class SignInCubit extends Cubit<SignInPageState>
+    implements SubmissionActor<SignInPageState> {
   ///-----------------------------------------------
   SignInCubit(this._signInUseCase, this._validationService)
     : super(const SignInPageState());
@@ -85,9 +88,11 @@ final class SignInCubit extends Cubit<SignInPageState> {
  */
 
   /// 🧽 Resets failure after consumption
-  void clearFailure() => emit(state._copyWith());
+  @override
+  void clearFailure() => emit(state._copyWith(clearFailure: true));
 
   /// 🔄 Resets only the submission status (used after dialogs)
+  @override
   void resetStatus() =>
       emit(state._copyWith(status: FormzSubmissionStatus.initial));
 

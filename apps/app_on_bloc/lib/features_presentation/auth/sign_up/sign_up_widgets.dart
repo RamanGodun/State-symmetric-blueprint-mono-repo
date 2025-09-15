@@ -1,20 +1,33 @@
 part of 'sign_up_page.dart';
 
-/// 🖼️ [_LogoImage] — Displays logo with hero animation
+/// 🖼️ [_SignInHeader] — Displays logo with hero animation
 //
-final class _LogoImage extends StatelessWidget {
+final class _SignInHeader extends StatelessWidget {
   ///-----------------------------------------
-  const _LogoImage();
+  const _SignInHeader();
 
   @override
   Widget build(BuildContext context) {
     //
-    return const Hero(
-      tag: 'Logo',
-      child: Image(
-        image: AssetImage(AppImagesPaths.flutterLogo, package: 'core'),
-        height: 150,
-      ),
+    return Column(
+      children: [
+        /// 🖼️ App logo
+        Hero(
+          tag: 'Logo',
+          child: const FlutterLogo(
+            size: AppSpacing.massive,
+          ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.xxl),
+        ),
+        //
+        /// 🏷️ Header text
+        const TextWidget(LocaleKeys.sign_in_header, TextType.headlineSmall),
+        //
+        /// 📝 Sub-header text
+        const TextWidget(
+          LocaleKeys.sign_in_sub_header,
+          TextType.bodyLarge,
+        ).withPaddingBottom(AppSpacing.xl),
+      ],
     );
   }
 }
@@ -23,11 +36,14 @@ final class _LogoImage extends StatelessWidget {
 
 ////
 
-/// 👤 [_NameField] — Handles name input with validation
+/// 👤 [_SignInEmailInputField] — Handles name input with validation
 //
-final class _NameField extends StatelessWidget {
+final class _SignInEmailInputField extends StatelessWidget {
   ///---------------------------------------
-  const _NameField({required this.focusNode, required this.nextFocusNode});
+  const _SignInEmailInputField({
+    required this.focusNode,
+    required this.nextFocusNode,
+  });
   //
   final FocusNode focusNode;
   final FocusNode nextFocusNode;
@@ -189,7 +205,7 @@ final class _SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return FormSubmitButton<SignUpCubit, SignUpState>(
+    return FormSubmitButtonForBlocApps<SignUpCubit, SignUpState>(
       label: LocaleKeys.buttons_sign_up,
       onPressed: (context) {
         context.unfocusKeyboard();

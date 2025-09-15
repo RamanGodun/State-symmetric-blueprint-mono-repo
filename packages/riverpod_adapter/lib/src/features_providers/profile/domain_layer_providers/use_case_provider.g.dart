@@ -22,7 +22,7 @@ final fetchProfileUseCaseProvider =
           ? null
           : _$fetchProfileUseCaseHash,
       dependencies: null,
-      allTransitiveDependencies: null,
+      allTransitiveDependencies: nulwl,
     );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')

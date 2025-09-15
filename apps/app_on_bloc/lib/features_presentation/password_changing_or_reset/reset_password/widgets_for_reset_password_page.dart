@@ -73,7 +73,10 @@ final class _ResetPasswordSubmitButton extends StatelessWidget {
     >(
       selector: (state) => (status: state.status, isValid: state.isValid),
       builder: (context, state) {
-        return FormSubmitButton<ResetPasswordCubit, ResetPasswordState>(
+        return FormSubmitButtonForBlocApps<
+          ResetPasswordCubit,
+          ResetPasswordState
+        >(
           label: LocaleKeys.buttons_reset_password,
           onPressed: (_) {
             context.unfocusKeyboard();

@@ -1,7 +1,7 @@
 import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/sign_up_page_cubit.dart'
     show SignUpCubit, SignUpState;
 import 'package:bloc_adapter/bloc_adapter.dart'
-    show FormSubmitButton, OverlayStatusCubit, di;
+    show FormSubmitButtonForBlocApps, OverlayStatusCubit, di;
 import 'package:core/base_modules/errors_management.dart';
 import 'package:core/base_modules/forms.dart'
     show
@@ -12,7 +12,7 @@ import 'package:core/base_modules/forms.dart'
         ObscureToggleIcon,
         useSignUpFocusNodes;
 import 'package:core/base_modules/localization.dart'
-    show AppLocalizer, LocaleKeys;
+    show AppLocalizer, LocaleKeys, TextType, TextWidget;
 import 'package:core/base_modules/navigation.dart';
 import 'package:core/base_modules/overlays.dart';
 import 'package:core/base_modules/ui_design.dart' show AppSpacing;
@@ -100,16 +100,17 @@ final class SignUpView extends HookWidget {
         child: GestureDetector(
           // 🔕 Dismiss keyboard on outside tap
           onTap: context.unfocusKeyboard,
+          //
           child: FocusTraversalGroup(
             child: ListView(
               shrinkWrap: true,
               children: [
                 /// 🔰 Logo with optional hero animation
-                const _LogoImage(),
+                const _SignInHeader(),
                 const SizedBox(height: AppSpacing.l),
 
                 /// 👤 Name input
-                _NameField(
+                _SignInEmailInputField(
                   focusNode: focusNodes.name,
                   nextFocusNode: focusNodes.email,
                 ),

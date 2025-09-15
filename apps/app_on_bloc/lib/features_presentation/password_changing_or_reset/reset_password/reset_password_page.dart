@@ -1,6 +1,7 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart';
 import 'package:app_on_bloc/features_presentation/password_changing_or_reset/reset_password/cubits/reset_password_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart' show FormSubmitButton, di;
+import 'package:bloc_adapter/bloc_adapter.dart'
+    show FormSubmitButtonForBlocApps, di;
 import 'package:core/core.dart';
 import 'package:features/features_barrels/password_changing_or_reset/password_changing_or_reset.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,7 @@
 part of 'sign_in_page.dart';
 
-/// 🧩 [_SignInHeader] — displays logo and welcome messages for Sign In screen
-/// 📦 Contains app logo, main header, and sub-header
+/// 🖼️ [_SignInHeader] — app logo + welcome texts
+/// 📦 Contains branding, main header, and sub-header
 //
 final class _SignInHeader extends StatelessWidget {
   ///------------------------------------------
@@ -9,148 +9,170 @@ final class _SignInHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //
     return Column(
       children: [
-        /// 🖼️ App logo
-        const FlutterLogo(
-          size: AppSpacing.massive,
-        ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.xxl),
+        /// 🖼️ App logo with Hero animation for smooth transitions
+        Hero(
+          tag: 'Logo',
+          child: const FlutterLogo(
+            size: AppSpacing.massive,
+          ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.xxl),
+        ),
         //
-        /// 🏷️ Header text
+        /// 🏷️ Main header text
         const TextWidget(LocaleKeys.sign_in_header, TextType.headlineSmall),
         //
         /// 📝 Sub-header text
         const TextWidget(
           LocaleKeys.sign_in_sub_header,
           TextType.bodyLarge,
-        ).withPaddingBottom(AppSpacing.xl),
+        ).withPaddingBottom(AppSpacing.l),
       ],
     );
   }
 }
 
 ////
-
 ////
 
-/// 🧩 [_SignInEmailInputField] — email and password fields
+/// 📧 [_SignInEmailInputField] — Email input field with validation & focus handling
+/// ✅ Rebuilds only when `email.uiError` changes
 //
 final class _SignInEmailInputField extends ConsumerWidget {
   ///--------------------------------------------------
-  const _SignInEmailInputField(this.focus);
+  const _SignInEmailInputField(this.focusNode);
   //
-  final ({FocusNode email, FocusNode password}) focus;
+  final ({FocusNode email, FocusNode password}) focusNode;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final form = ref.watch(signInFormProvider);
+    final emailError = ref.watch(
+      signInFormProvider.select((f) => f.email.uiErrorKey),
+    );
     final formNotifier = ref.read(signInFormProvider.notifier);
 
     return InputFieldFactory.create(
       type: InputFieldType.email,
-      focusNode: focus.email,
-      errorText: form.email.uiErrorKey,
+      focusNode: focusNode.email,
+      errorText: emailError,
       onChanged: formNotifier.emailChanged,
-      onSubmitted: goNext(focus.password),
-    ).withPaddingBottom(AppSpacing.m);
+      onSubmitted: goNext(focusNode.password),
+    ).withPaddingBottom(AppSpacing.xm);
   }
 }
 
 ////
-
 ////
 
 /// 🧩 [_SignInPasswordInputField] — password input field with visibility toggle
+/// ✅ Rebuilds only when password error or visibility state changes
 //
 final class _SignInPasswordInputField extends ConsumerWidget {
   ///------------------------------------------------------
-  const _SignInPasswordInputField(this.focus);
+  const _SignInPasswordInputField(this.focusNode);
   //
-  final ({FocusNode email, FocusNode password}) focus;
+  final ({FocusNode email, FocusNode password}) focusNode;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final form = ref.watch(signInFormProvider);
+    final passwordError = ref.watch(
+      signInFormProvider.select((f) => f.password.uiErrorKey),
+    );
+    final isObscure = ref.watch(
+      signInFormProvider.select((f) => f.isPasswordObscure),
+    );
+    final isValid = ref.watch(
+      signInFormProvider.select((f) => f.isValid),
+    );
     final formNotifier = ref.read(signInFormProvider.notifier);
 
     return InputFieldFactory.create(
       type: InputFieldType.password,
-      focusNode: focus.password,
-      errorText: form.password.uiErrorKey,
-      isObscure: form.isPasswordObscure,
+      focusNode: focusNode.password,
+      errorText: passwordError,
+      isObscure: isObscure,
       onChanged: formNotifier.passwordChanged,
-      onSubmitted: form.isValid ? () => ref.submit() : null,
+      onSubmitted: isValid ? () => ref.submitSignIn() : null,
       suffixIcon: ObscureToggleIcon(
-        isObscure: form.isPasswordObscure,
+        isObscure: isObscure,
         onPressed: formNotifier.togglePasswordVisibility,
       ),
-    ).withPaddingBottom(AppSpacing.xxxl);
+    ).withPaddingBottom(AppSpacing.xl);
   }
 }
 
 ////
-
 ////
 
-/// 🔘 [_SigninSubmitButton] — submit button for the sign-in form
+/// 🚀 [_SignInSubmitButton] — Button for triggering sign-in logic
+/// 🧠 Rebuilds only on `isValid` or `isLoading` changes
+/// ✅ Delegates behavior to [FormSubmitButtonForRiverpodApps]
 //
-final class _SigninSubmitButton extends ConsumerWidget {
+final class _SignInSubmitButton extends ConsumerWidget {
   ///------------------------------------------------
-  const _SigninSubmitButton();
+  const _SignInSubmitButton();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final form = ref.watch(signInFormProvider);
-    final signInState = ref.watch(signInProvider);
-    final isOverlayActive = ref.isOverlayActive;
-
-    return CustomFilledButton(
-      label: signInState.isLoading
-          ? LocaleKeys.buttons_submitting
-          : LocaleKeys.buttons_sign_in,
-      isEnabled: form.isValid && !isOverlayActive,
-      isLoading: signInState.isLoading,
-      onPressed: form.isValid && !signInState.isLoading
-          ? () => ref.submit()
-          : null,
+    return FormSubmitButtonForRiverpodApps(
+      label: LocaleKeys.buttons_sign_in,
+      isValidProvider: signInFormIsValidProvider,
+      isLoadingProvider: signInSubmitIsLoadingProvider,
+      onPressed: () => ref.submitSignIn(),
     ).withPaddingBottom(AppSpacing.l);
   }
 }
 
 ////
-
 ////
 
-/// 🔁 [_SigninFooter] — sign up & reset password actions
+/// 🔁 [_SignInFooter] — sign up & reset password links
+/// ✅ Disabled during form submission or overlay
 //
-final class _SigninFooter extends StatelessWidget {
+final class _SignInFooter extends ConsumerWidget {
   ///-------------------------------------------
-  const _SigninFooter();
+  const _SignInFooter();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     //
+    /// ⏳ Submission loading (primitive bool)
+    final isLoading = ref.watch(
+      signInProvider.select((a) => a.isLoading),
+    );
+
+    /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)
+    final isOverlayActive = ref.isOverlayActive;
+    final isEnabled = !isLoading && !isOverlayActive;
+
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
+        /// Redirect to [SignUpPage]
         const TextWidget(
           LocaleKeys.buttons_redirect_to_sign_up,
-          TextType.bodyMedium,
-        ),
-        const SizedBox(width: AppSpacing.s),
-
+          TextType.bodyLarge,
+        ).withPaddingBottom(AppSpacing.s),
         AppTextButton(
-          onPressed: () => context.goPushTo(RoutesNames.signUp),
           label: LocaleKeys.buttons_sign_up,
-        ),
-        const SizedBox(height: AppSpacing.xl),
+          isEnabled: isEnabled,
+          onPressed: () => context.goPushTo(RoutesNames.signUp),
+        ).withPaddingBottom(AppSpacing.xxxm),
 
+        /// Redirect to [ResetPasswordPage]
+        const TextWidget(
+          LocaleKeys.sign_in_forgot_password,
+          TextType.bodyLarge,
+        ).withPaddingBottom(AppSpacing.s),
         AppTextButton(
-          onPressed: () => context.goTo(RoutesNames.resetPassword),
-          label: LocaleKeys.sign_in_forgot_password,
+          label: LocaleKeys.buttons_reset_password,
           foregroundColor: AppColors.forErrors,
+          isEnabled: isEnabled,
+          onPressed: () => context.goTo(RoutesNames.resetPassword),
         ),
       ],
     );

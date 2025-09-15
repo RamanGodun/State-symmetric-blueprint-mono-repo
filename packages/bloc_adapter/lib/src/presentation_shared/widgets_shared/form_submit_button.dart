@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
-/// 🚀 [FormSubmitButton] — Bloc-aware smart submit button for forms.
+/// 🚀 [FormSubmitButtonForBlocApps] — Bloc-aware smart submit button for forms.
 ///
 /// 🧠 This widget acts as a **behavioral adapter** around [CustomFilledButton].
 /// It listens to the given Bloc/cubit and automatically:
@@ -21,10 +21,13 @@ import 'package:formz/formz.dart';
 ///   - Place at bottom of forms (SignIn, SignUp, ResetPassword, etc)
 ///   - Controlled declaratively using status and validation selectors
 //
-final class FormSubmitButton<Tcubit extends StateStreamable<TState>, TState>
+final class FormSubmitButtonForBlocApps<
+  Tcubit extends StateStreamable<TState>,
+  TState
+>
     extends StatelessWidget {
   ///--------------------------------------------------
-  const FormSubmitButton({
+  const FormSubmitButtonForBlocApps({
     required this.label,
     required this.onPressed,
     required this.statusSelector,

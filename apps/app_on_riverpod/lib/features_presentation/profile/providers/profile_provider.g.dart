@@ -6,11 +6,10 @@ part of 'profile_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$profileHash() => r'3e38d79092f18446d07d2bfc639abc519d7a6d3c';
+String _$profileHash() => r'8c18d8323e245069a80eaca557e5c0e6f3568978';
 
 /// 👤 [profileProvider] — async notifier that fetches user profile
-/// 🧼 Declarative-only approach, throws [Failure] and is handled in `.listenFailure(...)`
-/// 🧼 Compatible with `.family` and avoids breaking [SafeAsyncState] limitations
+/// 🧼 Declarative-only approach, throws [Failure] and is handled in [ErrorsListenerForAppOnRiverpod]
 ///
 /// Copied from [Profile].
 @ProviderFor(Profile)
