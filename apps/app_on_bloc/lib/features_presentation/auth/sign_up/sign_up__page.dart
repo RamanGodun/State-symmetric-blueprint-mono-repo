@@ -15,7 +15,8 @@ import 'package:flutter_hooks/flutter_hooks.dart' show HookWidget;
 part 'sign_up_input_fields.dart';
 part 'widgets_for_sign_up_page.dart';
 
-/// 🧾🔐 [SignUpPage] — Screen that allows user to register a new account.
+/// 🧾🔐 [SignUpPage] — Entry point for the sign-up feature
+/// ✅ Provides scoped cubit with injected services
 //
 final class SignUpPage extends StatelessWidget {
   ///-----------------------------------------
@@ -47,7 +48,7 @@ final class SignUpPage extends StatelessWidget {
 ////
 ////
 
-/// 🔐 [_SignUpView] — Main UI layout for the sign-in form
+/// 🔐 [_SignUpView] — Main UI layout for the sign-up form
 ///    Uses HookWidget for managing focus nodes & rebuild optimization
 /// ✅ Same widget used in Riverpod app for perfect parity
 //
@@ -80,16 +81,16 @@ final class _SignUpView extends HookWidget {
                         const _SignUpHeader(),
 
                         /// 👤 Name input field
-                        _UserNameInputField(focusNodes),
+                        _SignUpUserNameInputField(focusNodes),
 
                         /// 📧 Email input
-                        _EmailInputField(focusNodes),
+                        _SignUpEmailInputField(focusNodes),
 
                         /// 🔒 Password input field
-                        _PasswordInputField(focusNodes),
+                        _SignUpPasswordInputField(focusNodes),
 
                         /// 🔐 Confirm password input
-                        _ConfirmPasswordInputField(focusNodes),
+                        _SignUpConfirmPasswordInputField(focusNodes),
 
                         /// 🚀 Primary submit button
                         const _SignUpSubmitButton(),

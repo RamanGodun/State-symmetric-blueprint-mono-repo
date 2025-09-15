@@ -38,6 +38,7 @@ abstract final class AppSpacing {
   /// ───── Special large values ─────
   static const double huge = 100;
   static const double massive = 120;
+  static const double great = 150;
 
   /// ───── Utility/pixel-specific values (for precise control) ─────
   static const double p7 = 7;

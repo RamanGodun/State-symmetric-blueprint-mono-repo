@@ -1,4 +1,4 @@
-part of 'sign_in_page.dart';
+part of 'sign_in__page.dart';
 
 /// 🖼️ [_SignInHeader] — app logo + welcome texts
 /// 📦 Contains branding, main header, and sub-header
@@ -12,6 +12,7 @@ final class _SignInHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         /// 🖼️ App logo with Hero animation for smooth transitions
         Hero(
@@ -28,7 +29,7 @@ final class _SignInHeader extends StatelessWidget {
         const TextWidget(
           LocaleKeys.sign_in_sub_header,
           TextType.bodyLarge,
-        ).withPaddingBottom(AppSpacing.l),
+        ).withPaddingBottom(AppSpacing.xxxl),
       ],
     );
   }
@@ -67,7 +68,6 @@ final class _SignInEmailInputField extends StatelessWidget {
 }
 
 ////
-
 ////
 
 /// 🔒 [_SignInPasswordInputField] — Password field with toggle visibility logic
@@ -111,7 +111,6 @@ final class _SignInPasswordInputField extends StatelessWidget {
 }
 
 ////
-
 ////
 
 /// 🚀 [_SignInSubmitButton] — Button for triggering sign-in logic

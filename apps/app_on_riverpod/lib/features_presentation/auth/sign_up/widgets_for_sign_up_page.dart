@@ -12,12 +12,13 @@ final class _SignUpHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Hero(
           tag: 'Logo',
           child: const FlutterLogo(
             size: AppSpacing.massive,
-          ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.xl),
+          ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.l),
         ),
         //
         /// 🏷️ Main header text
@@ -27,7 +28,7 @@ final class _SignUpHeader extends StatelessWidget {
         const TextWidget(
           LocaleKeys.sign_up_sub_header,
           TextType.bodyLarge,
-        ).withPaddingBottom(AppSpacing.l),
+        ).withPaddingBottom(AppSpacing.xl),
       ],
     );
   }
@@ -48,7 +49,7 @@ final class _SignUpSubmitButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //
     return FormSubmitButtonForRiverpodApps(
-      label: LocaleKeys.buttons_sign_in,
+      label: LocaleKeys.buttons_sign_up,
       isValidProvider: signUpFormIsValidProvider,
       isLoadingProvider: signUpSubmitIsLoadingProvider,
       onPressed: () => ref.submitSignUp(),
@@ -59,7 +60,7 @@ final class _SignUpSubmitButton extends ConsumerWidget {
 ////
 ////
 
-/// 🔁 [_WrapperForFooter] — sign up & reset password links
+/// 🔁 [_WrapperForFooter] — sign in redirect link
 /// ✅ Disabled during form submission or overlay
 //
 final class _WrapperForFooter extends ConsumerWidget {
@@ -104,7 +105,7 @@ final class _SignUpPageFooter extends StatelessWidget {
         /// 🧭 Redirect to [SignUpPage]
         const TextWidget(
           LocaleKeys.buttons_redirect_to_sign_in,
-          TextType.titleSmall,
+          TextType.bodyLarge,
         ),
         const SizedBox(height: AppSpacing.s),
 

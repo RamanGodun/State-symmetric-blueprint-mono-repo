@@ -9,7 +9,8 @@ import 'package:riverpod_adapter/riverpod_adapter.dart';
 part 'sign_up_input_fields.dart';
 part 'widgets_for_sign_up_page.dart';
 
-/// 🧾🔐 [SignUpPage] — Screen that allows user to register a new account.
+/// 🧾🔐 [SignUpPage] — Entry point for the sign-up feature
+/// ✅ Provides scoped cubit with injected services
 //
 final class SignUpPage extends ConsumerWidget {
   ///-----------------------------------
@@ -31,19 +32,17 @@ final class SignUpPage extends ConsumerWidget {
     /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
     return const _SignUpView();
   }
-
-  //
 }
 
 ////
 ////
 
-/// 🔐 [_SignUpView] — Main UI layout for the sign-in form
+/// 🔐 [_SignUpView] — Main UI layout for the sign-up form
 ///    Uses HookWidget for managing focus nodes & rebuild optimization
 /// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _SignUpView extends HookWidget {
-  ///-----------------------------------------
+  ///------------------------------------
   const _SignUpView();
 
   @override
@@ -57,39 +56,40 @@ final class _SignUpView extends HookWidget {
         child: GestureDetector(
           // 🔕 Dismiss keyboard on outside tap
           onTap: context.unfocusKeyboard,
-
-          /// used "LayoutBuilder + ConstrainedBox" pattern
+          // used "LayoutBuilder+ConstrainedBox" pattern
           child: LayoutBuilder(
             builder: (context, constraints) {
               return ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: FocusTraversalGroup(
-                  ///d
-                  child: ListView(
-                    children: [
-                      /// 📋 Logo and welcome text
-                      const _SignUpHeader(),
+                  child: AutofillGroup(
+                    ///
+                    child: ListView(
+                      children: [
+                        /// 🔰 Logo with Hero animation
+                        const _SignUpHeader(),
 
-                      /// 👤 Name input field
-                      _UserNameInputField(focusNodes),
+                        /// 👤 Name input field
+                        _SignUpUserNameInputField(focusNodes),
 
-                      /// 📧 Email input field
-                      _EmailInputField(focusNodes),
+                        /// 📧 Email input
+                        _SignUpEmailInputField(focusNodes),
 
-                      /// 🔒 Password input field
-                      _PasswordInputField(focusNodes),
+                        /// 🔒 Password input field
+                        _SignUpPasswordInputField(focusNodes),
 
-                      /// 🔐 Confirm password input
-                      _ConfirmPasswordInputField(focusNodes),
+                        /// 🔐 Confirm password input
+                        _SignUpConfirmPasswordInputField(focusNodes),
 
-                      /// 🚀 Primary submit button
-                      const _SignUpSubmitButton(),
+                        /// 🚀 Primary submit button
+                        const _SignUpSubmitButton(),
 
-                      /// 🔄 Redirect to sign in
-                      const _WrapperForFooter(),
-                    ],
-                  ).centered()..withPaddingHorizontal(AppSpacing.xxxm),
-                  //
+                        /// 🔁 Links to redirect to sign-up or reset-password screen
+                        const _WrapperForFooter(),
+                      ],
+                    ).centered().withPaddingHorizontal(AppSpacing.xxxm),
+                    //
+                  ),
                 ),
               );
             },

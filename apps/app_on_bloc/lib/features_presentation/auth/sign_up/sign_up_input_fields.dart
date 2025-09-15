@@ -1,11 +1,11 @@
 part of 'sign_up__page.dart';
 
-/// 👤  [_UserNameInputField] — User name input field with localized validation
+/// 👤  [_SignUpUserNameInputField] — User name input field with localized validation
 /// ✅ Rebuilds only when `name.uiError` changes
 //
-final class _UserNameInputField extends StatelessWidget {
+final class _SignUpUserNameInputField extends StatelessWidget {
   ///---------------------------------------
-  const _UserNameInputField(this.focusNodes);
+  const _SignUpUserNameInputField(this.focusNodes);
   //
   final ({
     FocusNode name,
@@ -36,12 +36,12 @@ final class _UserNameInputField extends StatelessWidget {
 ////
 ////
 
-/// 🧩 [_EmailInputField] — User email input field with localized validation
+/// 🧩 [_SignUpEmailInputField] — User email input field with localized validation
 /// ✅ Rebuilds only when `email.uiError` changes
 //
-final class _EmailInputField extends StatelessWidget {
+final class _SignUpEmailInputField extends StatelessWidget {
   ///-----------------------------------------
-  const _EmailInputField(this.focusNodes);
+  const _SignUpEmailInputField(this.focusNodes);
   //
   final ({
     FocusNode name,
@@ -72,12 +72,12 @@ final class _EmailInputField extends StatelessWidget {
 ////
 ////
 
-/// 🔒 [_PasswordInputField] — Password input field with localized validation
+/// 🔒 [_SignUpPasswordInputField] — Password input field with localized validation
 /// ✅ Rebuilds only when password error or visibility state changes
 //
-final class _PasswordInputField extends StatelessWidget {
+final class _SignUpPasswordInputField extends StatelessWidget {
   ///--------------------------------------------
-  const _PasswordInputField(this.focusNodes);
+  const _SignUpPasswordInputField(this.focusNodes);
   //
   final ({
     FocusNode name,
@@ -120,12 +120,12 @@ final class _PasswordInputField extends StatelessWidget {
 ////
 ////
 
-/// 🔐 [_ConfirmPasswordInputField] — Confirm password input field with localized validation
+/// 🔐 [_SignUpConfirmPasswordInputField] — Confirm password input field with localized validation
 /// ✅ Rebuilds only when 'confirm password' error or visibility state changes
 //
-final class _ConfirmPasswordInputField extends StatelessWidget {
+final class _SignUpConfirmPasswordInputField extends StatelessWidget {
   ///---------------------------------------------------
-  const _ConfirmPasswordInputField(this.focusNodes);
+  const _SignUpConfirmPasswordInputField(this.focusNodes);
   //
   final ({
     FocusNode name,

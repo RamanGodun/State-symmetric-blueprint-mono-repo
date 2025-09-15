@@ -1,11 +1,11 @@
 part of 'sign_up__page.dart';
 
-/// 👤  [_UserNameInputField] — User name input field with localized validation
+/// 👤  [_SignUpUserNameInputField] — User name input field with localized validation
 /// ✅ Rebuilds only when `name.uiError` changes
 //
-final class _UserNameInputField extends ConsumerWidget {
+final class _SignUpUserNameInputField extends ConsumerWidget {
   ///--------------------------------------------
-  const _UserNameInputField(this.focusNodes);
+  const _SignUpUserNameInputField(this.focusNodes);
   //
   final ({
     FocusNode name,
@@ -19,7 +19,7 @@ final class _UserNameInputField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //
     final nameError = ref.watch(
-      signUpFormProvider.select((f) => f.email.uiErrorKey),
+      signUpFormProvider.select((f) => f.name.uiErrorKey),
     );
     final formNotifier = ref.read(signUpFormProvider.notifier);
 
@@ -36,12 +36,12 @@ final class _UserNameInputField extends ConsumerWidget {
 ////
 ////
 
-/// 🧩 [_EmailInputField] — User email input field with localized validation
+/// 🧩 [_SignUpEmailInputField] — User email input field with localized validation
 /// ✅ Rebuilds only when `email.uiError` changes
 //
-final class _EmailInputField extends ConsumerWidget {
+final class _SignUpEmailInputField extends ConsumerWidget {
   ///---------------------------------------------
-  const _EmailInputField(this.focusNodes);
+  const _SignUpEmailInputField(this.focusNodes);
   //
   final ({
     FocusNode name,
@@ -54,7 +54,7 @@ final class _EmailInputField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final nameError = ref.watch(
+    final emailError = ref.watch(
       signUpFormProvider.select((f) => f.email.uiErrorKey),
     );
     final formNotifier = ref.read(signUpFormProvider.notifier);
@@ -62,7 +62,7 @@ final class _EmailInputField extends ConsumerWidget {
     return InputFieldFactory.create(
       type: InputFieldType.email,
       focusNode: focusNodes.email,
-      errorText: nameError,
+      errorText: emailError,
       onChanged: formNotifier.emailChanged,
       onSubmitted: goNext(focusNodes.password),
     ).withPaddingBottom(AppSpacing.xm);
@@ -72,12 +72,12 @@ final class _EmailInputField extends ConsumerWidget {
 ////
 ////
 
-/// 🔒 [_PasswordInputField] — Password input field with localized validation
+/// 🔒 [_SignUpPasswordInputField] — Password input field with localized validation
 /// ✅ Rebuilds only when password error or visibility state changes
 //
-final class _PasswordInputField extends ConsumerWidget {
+final class _SignUpPasswordInputField extends ConsumerWidget {
   ///------------------------------------------------
-  const _PasswordInputField(this.focusNodes);
+  const _SignUpPasswordInputField(this.focusNodes);
   //
   final ({
     FocusNode name,
@@ -116,12 +116,12 @@ final class _PasswordInputField extends ConsumerWidget {
 ////
 ////
 
-/// 🔐 [_ConfirmPasswordInputField] — Confirm password input field with localized validation
+/// 🔐 [_SignUpConfirmPasswordInputField] — Confirm password input field with localized validation
 /// ✅ Rebuilds only when 'confirm password' error or visibility state changes
 //
-final class _ConfirmPasswordInputField extends ConsumerWidget {
+final class _SignUpConfirmPasswordInputField extends ConsumerWidget {
   ///-------------------------------------------------------
-  const _ConfirmPasswordInputField(this.focusNodes);
+  const _SignUpConfirmPasswordInputField(this.focusNodes);
   //
   final ({
     FocusNode name,
@@ -134,11 +134,11 @@ final class _ConfirmPasswordInputField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final passwordError = ref.watch(
-      signUpFormProvider.select((f) => f.password.uiErrorKey),
+    final confirmPasswordError = ref.watch(
+      signUpFormProvider.select((f) => f.confirmPassword.uiErrorKey),
     );
     final isObscure = ref.watch(
-      signUpFormProvider.select((f) => f.isPasswordObscure),
+      signUpFormProvider.select((f) => f.isConfirmPasswordObscure),
     );
     final isValid = ref.watch(signUpFormProvider.select((f) => f.isValid));
     final formNotifier = ref.read(signUpFormProvider.notifier);
@@ -146,7 +146,7 @@ final class _ConfirmPasswordInputField extends ConsumerWidget {
     return InputFieldFactory.create(
       type: InputFieldType.confirmPassword,
       focusNode: focusNodes.confirmPassword,
-      errorText: passwordError,
+      errorText: confirmPasswordError,
       isObscure: isObscure,
       onChanged: formNotifier.confirmPasswordChanged,
       onSubmitted: isValid ? () => ref.submitSignUp() : null,

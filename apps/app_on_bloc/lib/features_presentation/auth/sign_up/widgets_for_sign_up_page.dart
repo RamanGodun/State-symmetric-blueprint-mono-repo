@@ -12,13 +12,14 @@ final class _SignUpHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         /// 🖼️ App logo
         Hero(
           tag: 'Logo',
           child: const FlutterLogo(
             size: AppSpacing.massive,
-          ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.xl),
+          ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.l),
         ),
         //
         /// 🏷️ Header text
@@ -26,9 +27,9 @@ final class _SignUpHeader extends StatelessWidget {
         //
         /// 📝 Sub-header text
         const TextWidget(
-          LocaleKeys.sign_in_sub_header,
+          LocaleKeys.sign_up_sub_header,
           TextType.bodyLarge,
-        ).withPaddingBottom(AppSpacing.l),
+        ).withPaddingBottom(AppSpacing.xl),
       ],
     );
   }
@@ -63,9 +64,8 @@ final class _SignUpSubmitButton extends StatelessWidget {
 ////
 ////
 
-/// 🔁 [_WrapperForFooter] — sign up & reset password links
+/// 🔁 [_WrapperForFooter] — sign in redirect link
 /// ✅ Disabled during form submission or overlay
-
 //
 final class _WrapperForFooter extends StatelessWidget {
   ///------------------------------------------------------
