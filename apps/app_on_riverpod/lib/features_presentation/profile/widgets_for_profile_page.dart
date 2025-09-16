@@ -1,6 +1,7 @@
 part of 'profile_page.dart';
 
 /// [_ProfileAppBar] — Top bar with profile title, language and sign-out actions.
+/// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _ProfileAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -23,6 +24,7 @@ final class _ProfileAppBar extends StatelessWidget
 ////
 
 /// 🧾 [_UserProfileCard] — Displays user information after successful fetch.
+/// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _UserProfileCard extends StatelessWidget {
   ///-----------------------------------------------
@@ -123,6 +125,7 @@ final class _UserProfileCard extends StatelessWidget {
 ////
 
 /// 🎨 [_ThemeSection] — UI section for selecting app theme and toggling appearance.
+/// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _ThemeSection extends StatelessWidget {
   ///--------------------------------------------
@@ -156,6 +159,7 @@ final class _ThemeSection extends StatelessWidget {
 ////
 
 /// 🔒 [_ChangePasswordButton] — Navigates user to Change Password screen.
+/// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _ChangePasswordButton extends StatelessWidget {
   const _ChangePasswordButton();

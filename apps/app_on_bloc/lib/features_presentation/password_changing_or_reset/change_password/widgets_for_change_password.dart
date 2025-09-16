@@ -1,6 +1,7 @@
 part of 'change_password_page.dart';
 
 /// ℹ️ Info section for [ChangePasswordPage]
+/// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class _ChangePasswordInfo extends StatelessWidget {
   ///-------------------------------------------------
@@ -47,11 +48,11 @@ final class _ChangePasswordInfo extends StatelessWidget {
 
 ////
 
-/// 🧾 [_PasswordField] — input for the new password
+/// 🧾 [_PasswordInputField] — input for the new password
 //
-final class _PasswordField extends StatelessWidget {
+final class _PasswordInputField extends StatelessWidget {
   ///-------------------------------------------
-  const _PasswordField({required this.focusNodes});
+  const _PasswordInputField(this.focusNodes);
   //
   final ({FocusNode password, FocusNode confirmPassword}) focusNodes;
 
@@ -92,11 +93,11 @@ final class _PasswordField extends StatelessWidget {
 
 ////
 
-/// 🧾 [_ConfirmPasswordField] — confirmation input
-//
-final class _ConfirmPasswordField extends StatelessWidget {
+/// 🧾 [_ConfirmPasswordInputField] — confirmation input
+//w
+final class _ConfirmPasswordInputField extends StatelessWidget {
   ///---------------------------------------------------
-  const _ConfirmPasswordField({required this.focusNodes});
+  const _ConfirmPasswordInputField(this.focusNodes);
   //
   final ({FocusNode password, FocusNode confirmPassword}) focusNodes;
 

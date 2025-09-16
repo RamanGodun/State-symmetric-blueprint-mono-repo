@@ -63,3 +63,15 @@ final class SignUpForm extends _$SignUpForm {
 
   //
 }
+
+////
+////
+
+////
+////
+
+/// ✅ Returns form validity as primitive bool (minimal rebuilds)
+//
+@riverpod
+bool signUpFormIsValid(Ref ref) =>
+    ref.watch(signUpFormProvider.select((f) => f.isValid));

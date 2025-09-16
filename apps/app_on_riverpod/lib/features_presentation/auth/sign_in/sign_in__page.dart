@@ -9,7 +9,7 @@ import 'package:riverpod_adapter/riverpod_adapter.dart';
 
 part 'widgets_for_sign_in_page.dart';
 
-/// 🔐 [SignInPage] — screen that allows user to sign in.
+/// 🧾🔐 [SignInPage] — Entry point for the sign-in feature
 //
 final class SignInPage extends ConsumerWidget {
   ///-------------------------------------------

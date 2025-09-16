@@ -6,26 +6,6 @@ part of 'sign_up__provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signUpFormIsValidHash() =>
-    r'fd8a73b4f8c703fbd8c1e7e3bee50d6111a18a37'; ////
-////
-/// ✅ Returns form validity as primitive bool (minimal rebuilds)
-///
-/// Copied from [signUpFormIsValid].
-@ProviderFor(signUpFormIsValid)
-final signUpFormIsValidProvider = AutoDisposeProvider<bool>.internal(
-  signUpFormIsValid,
-  name: r'signUpFormIsValidProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$signUpFormIsValidHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SignUpFormIsValidRef = AutoDisposeProviderRef<bool>;
 String _$signUpSubmitIsLoadingHash() =>
     r'c28ec61ea8934eb2f173dcb74d1f5275595296fb'; ////
 ////

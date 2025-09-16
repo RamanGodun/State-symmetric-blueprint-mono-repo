@@ -1,5 +1,3 @@
-import 'package:app_on_riverpod/features_presentation/auth/sign_in/providers/sign_in_form_fields_provider.dart'
-    show signInFormProvider;
 import 'package:features/features.dart' show SignInUseCase;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart'
@@ -42,15 +40,6 @@ final class SignIn extends _$SignIn with SafeAsyncState<void> {
 
   //
 }
-
-////
-////
-
-/// ✅ Returns form validity as primitive bool (minimal rebuilds)
-//
-@riverpod
-bool signInFormIsValid(Ref ref) =>
-    ref.watch(signInFormProvider.select((f) => f.isValid));
 
 ////
 ////

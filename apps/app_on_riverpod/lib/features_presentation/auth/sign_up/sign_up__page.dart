@@ -10,7 +10,6 @@ part 'sign_up_input_fields.dart';
 part 'widgets_for_sign_up_page.dart';
 
 /// 🧾🔐 [SignUpPage] — Entry point for the sign-up feature
-/// ✅ Provides scoped cubit with injected services
 //
 final class SignUpPage extends ConsumerWidget {
   ///-----------------------------------

@@ -63,6 +63,20 @@ final class ChangePasswordState extends Equatable {
 }
 
 ////
+
+final class ChangePasswordRequiresReauth extends ChangePasswordState {
+  const ChangePasswordRequiresReauth(Consumable<Failure> failure)
+    : _failure = failure,
+      super();
+
+  final Consumable<Failure> _failure;
+
+  // опційно: геттер для уніфікації доступу як у базовому
+  @override
+  Consumable<Failure> get failure => _failure;
+}
+
+////
 ////
 
 /// 🧩 [ChangePasswordStateValidationX] — Adds validation/update logic to [ChangePasswordState]

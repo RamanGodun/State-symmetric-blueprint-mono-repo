@@ -6,6 +6,28 @@ part of 'sign_in_form_fields_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$signInFormIsValidHash() =>
+    r'62ac3ce6b9db063b0825fc31d06b9b98a70226a2'; ////
+////
+////
+////
+/// ✅ Returns form validity as primitive bool (minimal rebuilds)
+///
+/// Copied from [signInFormIsValid].
+@ProviderFor(signInFormIsValid)
+final signInFormIsValidProvider = AutoDisposeProvider<bool>.internal(
+  signInFormIsValid,
+  name: r'signInFormIsValidProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$signInFormIsValidHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef SignInFormIsValidRef = AutoDisposeProviderRef<bool>;
 String _$signInFormHash() => r'd7f4587326286cdab8e56c5036d5c86988d9467f';
 
 /// 🧩 [SignInForm] — Manages the state of the sign-in form using [StateNotifier].

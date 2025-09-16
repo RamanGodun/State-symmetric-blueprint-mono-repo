@@ -3,7 +3,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:features/features.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+part 'change_password__provider.g.dart';
 part 'change_password__state.dart';
 
 /// 🧩 [changePasswordProvider] — Manages the state and logic for password change flow.
@@ -18,7 +20,7 @@ final changePasswordProvider =
 /// Updates state for loading, success, error, and reauth cases.
 //
 final class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
-  ///-------------------------------------------------------------------------
+  ///----------------------------------------------------------------------
   /// 🧱 Initializes with [ChangePasswordInitial] state
   ChangePasswordNotifier(this.ref) : super(const ChangePasswordInitial());
 
@@ -29,22 +31,16 @@ final class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
   /// 🔁 Attempts to update the user password via [PasswordRelatedUseCases].
   /// Emits [ChangePasswordLoading], then [ChangePasswordSuccess], [ChangePasswordError], or [ChangePasswordRequiresReauth].
   Future<void> changePassword(String newPassword) async {
+    _pendingPassword = newPassword;
     state = const ChangePasswordLoading();
 
     final useCase = ref.read(passwordUseCasesProvider);
     final result = await useCase.callChangePassword(newPassword);
 
     result.fold(
-      (failure) {
-        // if (failure.type.code == FailureCodes.requiresRecentLogin
-        if (failure is RequiresRecentLoginFirebaseFailureType)
-        // 'requires-recent-login')
-        {
-          state = const ChangePasswordRequiresReauth();
-        } else {
-          state = ChangePasswordError(failure);
-        }
-      },
+      (failure) => failure is RequiresRecentLoginFirebaseFailureType
+          ? state = ChangePasswordRequiresReauth(failure)
+          : state = ChangePasswordError(failure),
       (_) => state = ChangePasswordSuccess(
         LocaleKeys.reauth_password_updated.tr(),
       ),
@@ -70,4 +66,15 @@ final class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
       ),
     );
   }
+
+  //
 }
+
+////
+////
+
+/// ⏳ Returns loading state for submission (primitive bool)
+//
+@riverpod
+bool changePasswordSubmitIsLoading(Ref ref) =>
+    ref.watch(changePasswordProvider.select((state) => state.isLoading));

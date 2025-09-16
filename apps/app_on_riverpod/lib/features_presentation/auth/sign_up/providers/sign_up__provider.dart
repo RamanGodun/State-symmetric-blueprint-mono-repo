@@ -1,4 +1,3 @@
-import 'package:app_on_riverpod/features_presentation/auth/sign_up/providers/sign_up_form_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart'
     show SafeAsyncState, signUpUseCaseProvider;
@@ -43,15 +42,6 @@ final class SignUp extends _$SignUp with SafeAsyncState<void> {
 
   //
 }
-
-////
-////
-
-/// ✅ Returns form validity as primitive bool (minimal rebuilds)
-//
-@riverpod
-bool signUpFormIsValid(Ref ref) =>
-    ref.watch(signUpFormProvider.select((f) => f.isValid));
 
 ////
 ////

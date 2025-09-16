@@ -1,6 +1,7 @@
 part of 'change_password_page.dart';
 
 /// ℹ️ Info section for [ChangePasswordPage]
+/// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class _ChangePasswordInfo extends StatelessWidget {
   ///-------------------------------------------------
@@ -44,32 +45,37 @@ final class _ChangePasswordInfo extends StatelessWidget {
 }
 
 ////
-
 ////
 
-/// 🧾 [_PasswordField] — input for the new password
+/// 🧾 [_PasswordInputField] — — Password input field with localized validation
+/// ✅ Rebuilds only when password error or visibility state changes
 //
-final class _PasswordField extends ConsumerWidget {
+final class _PasswordInputField extends ConsumerWidget {
   ///-------------------------------------------
-  const _PasswordField({required this.focus});
+  const _PasswordInputField(this.focusNodes);
   //
-  final ({FocusNode password, FocusNode confirmPassword}) focus;
+  final ({FocusNode password, FocusNode confirmPassword}) focusNodes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final form = ref.watch(changePasswordFormProvider);
+    final passwordError = ref.watch(
+      changePasswordFormProvider.select((f) => f.password.uiErrorKey),
+    );
+    final isObscure = ref.watch(
+      changePasswordFormProvider.select((f) => f.isPasswordObscure),
+    );
     final notifier = ref.read(changePasswordFormProvider.notifier);
 
     return InputFieldFactory.create(
       type: InputFieldType.password,
-      focusNode: focus.password,
-      errorText: form.password.uiErrorKey,
-      isObscure: form.isPasswordObscure,
+      focusNode: focusNodes.password,
+      errorText: passwordError,
+      isObscure: isObscure,
       onChanged: notifier.passwordChanged,
-      onSubmitted: goNext(focus.confirmPassword),
+      onSubmitted: goNext(focusNodes.confirmPassword),
       suffixIcon: ObscureToggleIcon(
-        isObscure: form.isPasswordObscure,
+        isObscure: isObscure,
         onPressed: notifier.togglePasswordVisibility,
       ),
     ).withPaddingBottom(AppSpacing.m);
@@ -77,32 +83,40 @@ final class _PasswordField extends ConsumerWidget {
 }
 
 ////
-
 ////
 
-/// 🧾 [_ConfirmPasswordField] — confirmation input
+/// 🧾 [_ConfirmPasswordInputField] — Confirm password input field with localized validation
+/// ✅ Rebuilds only when 'confirm password' error or visibility state changes
 //
-final class _ConfirmPasswordField extends ConsumerWidget {
+final class _ConfirmPasswordInputField extends ConsumerWidget {
   ///--------------------------------------------------
-  const _ConfirmPasswordField({required this.focus});
+  const _ConfirmPasswordInputField(this.focusNodes);
   //
-  final ({FocusNode password, FocusNode confirmPassword}) focus;
+  final ({FocusNode password, FocusNode confirmPassword}) focusNodes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final form = ref.watch(changePasswordFormProvider);
+    final confirmPasswordError = ref.watch(
+      changePasswordFormProvider.select((f) => f.confirmPassword.uiErrorKey),
+    );
+    final isObscure = ref.watch(
+      changePasswordFormProvider.select((f) => f.isConfirmPasswordObscure),
+    );
+    final isValid = ref.watch(
+      changePasswordFormProvider.select((f) => f.isValid),
+    );
     final notifier = ref.read(changePasswordFormProvider.notifier);
 
     return InputFieldFactory.create(
       type: InputFieldType.confirmPassword,
-      focusNode: focus.confirmPassword,
-      errorText: form.confirmPassword.uiErrorKey,
-      isObscure: form.isConfirmPasswordObscure,
+      focusNode: focusNodes.confirmPassword,
+      errorText: confirmPasswordError,
+      isObscure: isObscure,
       onChanged: notifier.confirmPasswordChanged,
-      onSubmitted: form.isValid ? () => ref.submitChangePassword() : null,
+      onSubmitted: isValid ? () => ref.submitChangePassword() : null,
       suffixIcon: ObscureToggleIcon(
-        isObscure: form.isConfirmPasswordObscure,
+        isObscure: isObscure,
         onPressed: notifier.toggleConfirmPasswordVisibility,
       ),
     ).withPaddingBottom(AppSpacing.xxxl);
@@ -110,7 +124,6 @@ final class _ConfirmPasswordField extends ConsumerWidget {
 }
 
 ////
-
 ////
 
 /// 🔐 [_ChangePasswordSubmitButton] — dispatches the password change request
@@ -123,27 +136,19 @@ final class _ChangePasswordSubmitButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final form = ref.watch(changePasswordFormProvider);
-    final isOverlayActive = ref.isOverlayActive;
-    final isLoading = ref.watch(changePasswordProvider).isLoading;
-
-    return CustomFilledButton(
-      label: isLoading
-          ? LocaleKeys.buttons_submitting
-          : LocaleKeys.change_password_title,
-      isLoading: isLoading,
-      isEnabled: form.isValid && !isOverlayActive,
-      onPressed: form.isValid && !isLoading
-          ? () => ref.submitChangePassword()
-          : null,
-    );
+    return FormSubmitButtonForRiverpodApps(
+      label: LocaleKeys.change_password_title,
+      isValidProvider: changePasswordFormIsValidProvider,
+      isLoadingProvider: changePasswordSubmitIsLoadingProvider,
+      onPressed: () => ref.submitChangePassword(),
+    ).withPaddingBottom(AppSpacing.l);
   }
 }
 
 ////
 ////
 
-/// 🛡️ /// 📤 Submits the password change request (when the form is valid)
+/// 🛡️s📤 Submits the password change request (when the form is valid)
 //
 extension PasswordActionsRefX on WidgetRef {
   ///------------------------------------
@@ -153,7 +158,6 @@ extension PasswordActionsRefX on WidgetRef {
     //
     final notifier = read(changePasswordProvider.notifier);
     await notifier.changePassword(form.password.value);
+    //
   }
-
-  //
 }

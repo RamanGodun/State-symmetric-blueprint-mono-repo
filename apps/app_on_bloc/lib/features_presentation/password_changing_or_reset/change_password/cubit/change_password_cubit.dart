@@ -48,7 +48,7 @@ final class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       emit(state._copyWith(status: FormzSubmissionStatus.inProgress));
       //
       final result = await _useCases.callChangePassword(
-        state.confirmPassword.value,
+        state.password.value,
       );
       if (isClosed) return;
       //
@@ -59,12 +59,14 @@ final class ChangePasswordCubit extends Cubit<ChangePasswordState> {
         })
         ..onFailure((f) {
           debugPrint('❌ Password change failed: ${f.runtimeType}');
-          emit(
-            state._copyWith(
-              status: FormzSubmissionStatus.failure,
-              failure: f.asConsumable(),
-            ),
-          );
+          (f is RequiresRecentLoginFirebaseFailureType)
+              ? emit(ChangePasswordRequiresReauth(f.asConsumable()))
+              : emit(
+                  state._copyWith(
+                    status: FormzSubmissionStatus.failure,
+                    failure: f.asConsumable(),
+                  ),
+                );
           f.log();
         })
         ..log();
