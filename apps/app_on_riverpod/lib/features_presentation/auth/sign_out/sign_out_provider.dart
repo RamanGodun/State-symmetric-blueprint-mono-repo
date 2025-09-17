@@ -21,6 +21,7 @@ final class SignOut extends _$SignOut with SafeAsyncState<void> {
   /// 🚪 Performs user sign-out via [SignOutUseCase]
   /// 💥 Throws [Failure] on error and clears cached profile on success
   Future<void> signOut() async {
+    if (state is AsyncLoading) return;
     state = const AsyncLoading();
     //
     final useCase = ref.watch(signOutUseCaseProvider);

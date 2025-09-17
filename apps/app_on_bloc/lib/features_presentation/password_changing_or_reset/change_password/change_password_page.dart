@@ -60,9 +60,14 @@ final class ChangePasswordPage extends StatelessWidget {
                   context.showError(failure.toUIEntity());
                   context.read<ChangePasswordCubit>().resetState();
 
-                /// 🔄 Requires Reauth → show dialog, than signOut+re
+                /// 🔄 Requires Reauth → show dialog, than signOut for reAuth
                 case ChangePasswordRequiresReauth(:final failure):
-                  context.showErrorAfterFrame(failure.toUIEntity());
+                  context.showError(
+                    failure.toUIEntity(),
+                    onConfirm: () async {
+                      await context.read<ChangePasswordCubit>().confirmReauth();
+                    },
+                  );
 
                 ///
                 default:

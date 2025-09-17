@@ -1,5 +1,4 @@
 import 'package:core/core.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:features/features.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,63 +12,10 @@ part 'change_password__state.dart';
 /// Handles password update process, error mapping, and reauthentication scenarios.
 //
 final changePasswordProvider =
-    StateNotifierProvider<ChangePasswordNotifier, ChangePasswordState>(
-      ChangePasswordNotifier.new,
-    );
-
-/// 🛡️ [ChangePasswordNotifier] — StateNotifier handling password change process.
-/// Updates state for loading, success, error, and reauth cases.
-//
-final class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
-  ///----------------------------------------------------------------------
-  /// 🧱 Initializes with [ChangePasswordInitial] state
-  ChangePasswordNotifier(this.ref) : super(const ChangePasswordInitial());
-
-  ///
-  final Ref ref;
-  String? _pendingPassword;
-
-  /// 🔁 Attempts to update the user password via [PasswordRelatedUseCases].
-  /// Emits [ChangePasswordLoading], then [ChangePasswordSuccess], [ChangePasswordError], or [ChangePasswordRequiresReauth].
-  Future<void> changePassword(String newPassword) async {
-    _pendingPassword = newPassword;
-    state = const ChangePasswordLoading();
-
-    final useCase = ref.read(passwordUseCasesProvider);
-    final result = await useCase.callChangePassword(newPassword);
-
-    result.fold(
-      (failure) => failure is RequiresRecentLoginFirebaseFailureType
-          ? state = ChangePasswordRequiresReauth(failure)
-          : state = ChangePasswordError(failure),
-      (_) => state = ChangePasswordSuccess(
-        LocaleKeys.reauth_password_updated.tr(),
-      ),
-    );
-  }
-
-  /// ♻️ Retries password update after user reauthenticates.
-  /// Uses stored [_pendingPassword] for retry logic.
-  Future<void> retryAfterReauth() async {
-    final pwd = _pendingPassword;
-    if (pwd == null) return;
-    state = const ChangePasswordLoading();
-
-    final useCase = ref.read(passwordUseCasesProvider);
-    final result = await useCase.callChangePassword(pwd);
-
-    result.fold(
-      (failure) {
-        state = ChangePasswordError(failure);
-      },
-      (_) => state = ChangePasswordSuccess(
-        LocaleKeys.reauth_password_updated.tr(),
-      ),
-    );
-  }
-
-  //
-}
+    StateNotifierProvider<ChangePasswordNotifier, ChangePasswordState>((ref) {
+      final signOutUseCase = ref.read(signOutUseCaseProvider);
+      return ChangePasswordNotifier(ref, signOutUseCase);
+    });
 
 ////
 ////
@@ -79,3 +25,49 @@ final class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
 @riverpod
 bool changePasswordSubmitIsLoading(Ref ref) =>
     ref.watch(changePasswordProvider.select((state) => state.isLoading));
+
+////
+////
+
+/// 🛡️ [ChangePasswordNotifier] — StateNotifier handling password change process.
+/// Updates state for loading, success, error, and reauth cases.
+//
+final class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
+  ///----------------------------------------------------------------------
+  /// 🧱 Initializes with [ChangePasswordInitial] state
+  ChangePasswordNotifier(this.ref, this._signOutUseCase)
+    : super(const ChangePasswordInitial());
+
+  ///
+  final Ref ref;
+  final SignOutUseCase _signOutUseCase;
+
+  /// 🔁 Attempts to update the user password via [PasswordRelatedUseCases].
+  /// Emits [ChangePasswordLoading], then [ChangePasswordSuccess], [ChangePasswordError], or [ChangePasswordRequiresReauth].
+  Future<void> changePassword(String newPassword) async {
+    if (state is ChangePasswordLoading) return;
+    state = const ChangePasswordLoading();
+    //
+    final useCase = ref.read(passwordUseCasesProvider);
+    final result = await useCase.callChangePassword(newPassword);
+    //
+    result.fold(
+      (failure) {
+        (failure.type is RequiresRecentLoginFirebaseFailureType)
+            ? state = ChangePasswordRequiresReauth(failure)
+            : state = ChangePasswordError(failure);
+      },
+      (_) {
+        state = const ChangePasswordSuccess();
+      },
+    );
+  }
+
+  /// 🔑 Confirms reauthentication by signing the user out.
+  /// 🚪 Triggers auth guard → automatic redirect to SignIn.
+  Future<void> confirmReauth() async {
+    await _signOutUseCase();
+  }
+
+  //
+}

@@ -1,5 +1,4 @@
 import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:app_on_riverpod/features_presentation/auth/sign_out/sign_out_provider.dart';
 import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/change_password/providers/change_password__provider.dart';
 import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/change_password/providers/change_password_form_provider.dart';
 import 'package:core/core.dart';
@@ -24,10 +23,40 @@ final class ChangePasswordPage extends HookConsumerWidget {
     // 🔁 Declarative side-effect for ChangePassword
     ref.listenToPasswordChange(context);
 
+    /*
+ref.listen<ChangePasswordState>(changePasswordProvider, (prev, next) async {
+      switch (next) {
+        ///
+        // ✅ On success
+        case ChangePasswordSuccess():
+          context.showUserSnackbar(
+            message: LocaleKeys.reauth_password_updated.tr(),
+          );
+          // 🧭 Navigation after success
+          context.goIfMounted(RoutesNames.home);
+
+        /// ❌ On error
+        case ChangePasswordError(:final failure):
+          context.showError(failure.toUIEntity());
+          ref.read(changePasswordFormProvider.notifier).reset();
+
+        /// 🔄 Requires Reauth → show dialog, than signOut for reAuth
+        case ChangePasswordRequiresReauth(:final failure):
+          context.showError(
+            failure.toUIEntity(),
+            onConfirm: () async {
+              await ref.read(changePasswordProvider.notifier).confirmReauth();
+            },
+          );
+
+        ///
+        default:
+          break;
+      }
+    });
+ */
     return const _ChangePasswordView();
   }
-
-  //
 }
 
 ////
@@ -102,22 +131,24 @@ extension PasswordChangeRefX on WidgetRef {
       switch (next) {
         ///
         // ✅ On success
-        case ChangePasswordSuccess(:final message):
-          context.showUserSnackbar(message: message);
+        case ChangePasswordSuccess():
+          context.showUserSnackbar(
+            message: LocaleKeys.reauth_password_updated.tr(),
+          );
           // 🧭 Navigation after success
           context.goIfMounted(RoutesNames.home);
 
         /// ❌ On error
         case ChangePasswordError(:final failure):
           context.showError(failure.toUIEntity());
+          read(changePasswordFormProvider.notifier).reset();
 
-        /// 🔄 On reauth
+        /// 🔄 Requires Reauth → show dialog, than signOut for reAuth
         case ChangePasswordRequiresReauth(:final failure):
           context.showError(
             failure.toUIEntity(),
             onConfirm: () async {
-              await read(signOutProvider.notifier).signOut();
-              if (context.mounted) context.goIfMounted(RoutesNames.signIn);
+              await read(changePasswordProvider.notifier).confirmReauth();
             },
           );
 

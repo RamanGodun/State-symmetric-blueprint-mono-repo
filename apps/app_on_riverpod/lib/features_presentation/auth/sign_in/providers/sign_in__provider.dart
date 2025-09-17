@@ -24,6 +24,7 @@ final class SignIn extends _$SignIn with SafeAsyncState<void> {
   /// - Delegates auth to [SignInUseCase]
   Future<void> signin({required String email, required String password}) async {
     //
+    if (state is AsyncLoading) return;
     state = const AsyncLoading();
 
     state = await AsyncValue.guard(() async {

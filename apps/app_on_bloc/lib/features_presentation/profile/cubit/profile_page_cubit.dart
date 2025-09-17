@@ -25,24 +25,8 @@ final class ProfileCubit extends AsyncStateCubit<UserEntity> {
           },
         )
         .distinct()
-        .listen((uid) {
-          // ⛔️ Logged out / no UID — keep idle UI (like Riverpod guard)
-          if (uid == null) {
-            _lastUid = null;
-            emit(
-              const AsyncState<UserEntity>.error(
-                Failure(type: UserMissingFirebaseFailureType()),
-              ),
-            );
-            return;
-          }
-          // ✅ Logged in — auto-load profile
-          _lastUid = uid;
-          load(uid);
-        });
-    //
-    // 2) Seed initial state (synchronous snapshot) after listeners attach
-    //    - covers case when AuthCubit is already Ready and stream is quiet
+        .listen(_onUidChanged);
+    // 2) Seed initial state (synchronous snapshot) after listeners attach (covers edge case when AuthCubit is already ready and stream is quiet)
     scheduleMicrotask(() => _seedFrom(authCubit.state));
   }
 
@@ -52,6 +36,20 @@ final class ProfileCubit extends AsyncStateCubit<UserEntity> {
   String? _lastUid;
   //
 
+  /// 🔄 Handles auth state changes (UID updates)
+  /// - `null` → user signed out → reset to loading (quiet state, not error)
+  /// - non-null → load profile for that UID
+  void _onUidChanged(String? uid) {
+    if (uid == null) {
+      _lastUid = null;
+      // 🔑 User signed out — emit loading to keep UI idle instead of error
+      emit(const AsyncState<UserEntity>.loading());
+      return;
+    }
+    _lastUid = uid;
+    load(uid);
+  }
+
   /// ▶️ One-shot seeding from current auth state
   void _seedFrom(AuthViewState s) {
     final uid = switch (s) {
@@ -60,11 +58,7 @@ final class ProfileCubit extends AsyncStateCubit<UserEntity> {
     };
     if (uid == null) {
       _lastUid = null;
-      emit(
-        const AsyncState<UserEntity>.error(
-          Failure(type: UserMissingFirebaseFailureType()),
-        ),
-      );
+      emit(const AsyncState<UserEntity>.loading());
       return;
     }
     _lastUid = uid;

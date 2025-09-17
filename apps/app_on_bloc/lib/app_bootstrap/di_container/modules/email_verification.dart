@@ -39,12 +39,13 @@ final class EmailVerificationModule implements DIModule {
           di<AuthGateway>(),
         ),
       )
-      /// Email Verification cubit
-      ..registerFactoryIfAbsent<EmailVerificationCubit>(
-        () => EmailVerificationCubit(
-          di<EmailVerificationUseCase>(),
-        ),
-      );
+    /// Email Verification cubit
+    // ..registerFactoryIfAbsent<EmailVerificationCubit>(
+    //   () => EmailVerificationCubit(
+    //     di<EmailVerificationUseCase>(),
+    //   ),
+    // )
+    ;
 
     //
   }

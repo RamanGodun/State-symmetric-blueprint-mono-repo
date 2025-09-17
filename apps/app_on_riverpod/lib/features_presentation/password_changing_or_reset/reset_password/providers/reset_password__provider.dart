@@ -24,6 +24,7 @@ final class ResetPassword extends _$ResetPassword with SafeAsyncState<void> {
   /// 🧼 Watches [passwordUseCasesProvider] to access domain logic
   /// ❗ Throws [Failure] if sending fails — handled via `.listen(...)` in UI
   Future<void> resetPassword({required String email}) async {
+    if (state is AsyncLoading) return;
     state = const AsyncLoading();
 
     state = await AsyncValue.guard(() async {

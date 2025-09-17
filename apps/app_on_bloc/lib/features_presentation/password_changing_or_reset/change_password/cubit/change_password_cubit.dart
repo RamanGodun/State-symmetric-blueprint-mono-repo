@@ -37,26 +37,27 @@ final class ChangePasswordCubit extends Cubit<ChangePasswordState> {
         })
         ..onFailure((failure) async {
           debugPrint('❌ Password change failed: ${failure.runtimeType}');
-          // (f is RequiresRecentLoginFirebaseFailureType)
-          //     ? emit(ChangePasswordRequiresReauth(f))
-          //     : emit(ChangePasswordError(f));
-          if (failure.type is RequiresRecentLoginFirebaseFailureType) {
-            final signOutResult = await _signOutUseCase();
-            signOutResult.fold(
-              (e) => debugPrint(
-                '⚠️ SignOut failed, but continuing: ${e.runtimeType}',
-              ),
-              (_) => debugPrint('🚪 Signed out due to requires-recent-login'),
-            );
-            emit(ChangePasswordRequiresReauth(failure));
-            return;
-          }
-
-          emit(ChangePasswordError(failure));
+          (failure.type is RequiresRecentLoginFirebaseFailureType)
+              ? emit(ChangePasswordRequiresReauth(failure))
+              // reAuthHandling(failure)
+              : emit(ChangePasswordError(failure));
           failure.log();
         })
         ..log();
     });
+  }
+
+  ///
+  // Future<void> reAuthHandling(Failure failure) async {
+  //   emit(ChangePasswordRequiresReauth(failure));
+  //   await Future<void>.delayed(Duration.zero);
+  //   // await _signOutUseCase();
+  // }
+
+  /// 🔑 Confirms reauthentication by signing the user out.
+  /// 🚪 Triggers auth guard → automatic redirect to SignIn.
+  Future<void> confirmReauth() async {
+    await _signOutUseCase();
   }
 
   ///

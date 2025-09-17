@@ -33,10 +33,8 @@ final class ChangePasswordLoading extends ChangePasswordState {
 /// ✅ [ChangePasswordSuccess] — Password was changed successfully
 final class ChangePasswordSuccess extends ChangePasswordState {
   ///-------------------------------------------------------
-  const ChangePasswordSuccess(this.message);
+  const ChangePasswordSuccess();
   //
-  ///
-  final String message;
 }
 
 ////
