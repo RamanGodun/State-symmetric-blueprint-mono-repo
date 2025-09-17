@@ -1,6 +1,6 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';
 import 'package:app_on_bloc/features_presentation/password_changing_or_reset/change_password/cubit/change_password_cubit.dart';
+import 'package:app_on_bloc/features_presentation/password_changing_or_reset/change_password/cubit/change_password_form_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -8,7 +8,6 @@ import 'package:features/features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:formz/formz.dart';
 
 part 'widgets_for_change_password.dart';
 
@@ -24,44 +23,31 @@ final class ChangePasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// 🧩 Provide screen-scoped cubits (disposed on pop)
-    return BlocProvider(
-      create: (_) => ChangePasswordCubit(
-        di<PasswordRelatedUseCases>(),
-        di<FormValidationService>(),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => ChangePasswordFormCubit(di<FormValidationService>()),
+        ),
+        BlocProvider(
+          create: (_) => ChangePasswordCubit(
+            di<PasswordRelatedUseCases>(),
+            di<SignOutUseCase>(),
+          ),
+        ),
+      ],
+
+      ///
       child: MultiBlocListener(
         listeners: [
           /// ❌ Error Listener
           BlocListener<ChangePasswordCubit, ChangePasswordState>(
-            listenWhen: (prev, curr) =>
-                prev.status != curr.status && curr.status.isSubmissionFailure,
-            listener: (context, state) {
+            listenWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
+            listener: (context, state) async {
               //
               switch (state) {
-                case ChangePasswordRequiresReauth(:final failure):
-                  final failureForUI = failure.consume()?.toUIEntity();
-                  if (failureForUI != null)
-                    context.showError(
-                      failureForUI,
-                      onConfirm: () async {
-                        final signOut = context.read<SignOutCubit>();
-                        await signOut.signOut();
-                        // 🧭 Navigation for reAuth
-                        if (context.mounted) {
-                          context.goTo(RoutesNames.signIn);
-                        }
-                      },
-                    );
-
-                case ChangePasswordState(
-                  status: FormzSubmissionStatus.failure,
-                  :final failure?,
-                ):
-                  final ui = failure.consume()?.toUIEntity();
-                  if (ui != null) context.showError(ui);
-                  context.read<ChangePasswordCubit>().clearFailure();
-
-                case ChangePasswordState(status: FormzSubmissionStatus.success):
+                //
+                /// ✅ Success
+                case ChangePasswordSuccess():
                   context
                     ..showSnackbar(
                       message: LocaleKeys.reauth_password_updated.tr(),
@@ -69,8 +55,19 @@ final class ChangePasswordPage extends StatelessWidget {
                     // 🧭 Navigation after success
                     ..goIfMounted(RoutesNames.home);
 
+                /// ❌ Error
+                case ChangePasswordError(:final failure):
+                  context.showError(failure.toUIEntity());
+                  context.read<ChangePasswordCubit>().resetState();
+
+                /// 🔄 Requires Reauth → show dialog, than signOut+re
+                case ChangePasswordRequiresReauth(:final failure):
+                  context.showErrorAfterFrame(failure.toUIEntity());
+
+                ///
                 default:
                   break;
+                //
               }
             },
           ),

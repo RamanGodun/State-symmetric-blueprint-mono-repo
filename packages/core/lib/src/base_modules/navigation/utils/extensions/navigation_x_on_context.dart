@@ -13,13 +13,15 @@ extension NavigationX on BuildContext {
     Map<String, String> pathParameters = const {},
     Map<String, dynamic> queryParameters = const {},
   }) {
+    debugPrint('🔄 goTo called → $routeName');
     try {
       GoRouter.of(this).goNamed(
         routeName,
         pathParameters: pathParameters,
         queryParameters: queryParameters,
       );
-    } on Object catch (_) {
+    } on Object catch (e) {
+      debugPrint('❌ goRouter.goNamed failed: $e');
       GoRouter.of(this).goNamed('pageNotFound');
     }
   }
@@ -30,13 +32,15 @@ extension NavigationX on BuildContext {
     Map<String, String> pathParameters = const {},
     Map<String, dynamic> queryParameters = const {},
   }) {
+    debugPrint('🔄 goPushTo called → $routeName');
     try {
       GoRouter.of(this).pushNamed(
         routeName,
         pathParameters: pathParameters,
         queryParameters: queryParameters,
       );
-    } on Object catch (_) {
+    } on Object catch (e) {
+      debugPrint('❌ goRouter.pushNamed failed: $e');
       GoRouter.of(this).goNamed('pageNotFound');
     }
   }
@@ -64,6 +68,16 @@ extension NavigationX on BuildContext {
   /// - Safe to call in any async callback or state listener.
   void goIfMounted(String route) {
     if (mounted) goTo(route);
+  }
+
+  /// 🎯 Returns actual contextfrm 'GoRouter.navigatorKey'
+  BuildContext? get globalRouterContext {
+    try {
+      return GoRouter.of(this).routerDelegate.navigatorKey.currentContext;
+    } on Object catch (e) {
+      debugPrint('❌ Failed to get globalRouterContext: $e');
+      return null;
+    }
   }
 
   //

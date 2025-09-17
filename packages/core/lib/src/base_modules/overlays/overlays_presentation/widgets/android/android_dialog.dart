@@ -165,40 +165,23 @@ final class AndroidDialog extends StatelessWidget {
     VoidCallback? action,
   ) {
     return () {
-      dispatcher.dismissCurrent(force: true);
-      action?.call();
+      dispatcher.dismissCurrent(force: true).whenComplete(() {
+        Future.microtask(() {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            debugPrint(
+              '[Overlay] confirm tapped → running action after dismiss (postFrame)',
+            );
+            final run = action ?? () {};
+            try {
+              run();
+            } on Object catch (e, st) {
+              debugPrint('❌ onConfirm action threw: $e\n$st');
+            }
+          });
+        });
+      });
     };
   }
-
-  /*
-  /// 🧭 Resolves cancel action: fallback to 'onAnimatedDismiss' if [onCancel] is null
-  VoidCallback _handleCancel(OverlayDispatcher dispatcher) =>
-      onCancel ??
-      () {
-        dispatcher.dismissCurrent(force: true);
-        onCancel?.call();
-      };
-
-  /// 🧭 Resolves confirm action: fallback to 'onAnimatedDismiss' if [onConfirm] is null
-  VoidCallback _handleConfirm(OverlayDispatcher dispatcher) =>
-      onConfirm ??
-      () {
-        dispatcher.dismissCurrent(force: true);
-        onConfirm?.call();
-      };
-
-
-  /// Option with dialog auto-closing, when action is given
-  VoidCallback _wrapWithDismiss(
-    OverlayDispatcher dispatcher,
-    VoidCallback? action,
-  ) {
-    return () {
-      dispatcher.dismissCurrent(force: true);
-      action?.call();
-    };
-  }
- */
 
   //
 }

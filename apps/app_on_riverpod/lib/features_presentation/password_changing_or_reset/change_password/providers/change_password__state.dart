@@ -2,9 +2,13 @@ part of 'change_password__provider.dart';
 
 /// 🧾 [ChangePasswordState] — Sealed class describing all possible states for password change flow.
 //
-sealed class ChangePasswordState {
+sealed class ChangePasswordState extends Equatable {
   ///--------------------------
   const ChangePasswordState();
+  //
+  @override
+  List<Object?> get props => [];
+  //
 }
 
 ////
@@ -44,6 +48,9 @@ final class ChangePasswordRequiresReauth extends ChangePasswordState {
   //
   ///
   final Failure failure;
+  //
+  @override
+  List<Object?> get props => [failure];
 }
 
 ////
@@ -55,6 +62,9 @@ final class ChangePasswordError extends ChangePasswordState {
   //
   ///
   final Failure failure;
+  //
+  @override
+  List<Object?> get props => [failure];
 }
 
 ////

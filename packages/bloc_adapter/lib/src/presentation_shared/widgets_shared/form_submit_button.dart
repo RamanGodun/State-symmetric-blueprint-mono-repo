@@ -5,6 +5,7 @@ import 'package:bloc_adapter/src/base_modules/overlays_module/overlay_status_cub
 import 'package:core/base_modules/forms.dart';
 import 'package:core/shared_layers/presentation.dart' show CustomFilledButton;
 import 'package:core/utils.dart' show SubmitCallback;
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -68,4 +69,31 @@ final class FormSubmitButtonForBlocApps<
       },
     );
   }
+}
+
+////
+////
+
+/// 🧩 [ChangePasswordSubmitVmState] — простий стан для кнопки:
+///     - FormzSubmissionStatus (loader/disable)
+///     - isValid (чи можна сабмітнути)
+final class ChangePasswordSubmitVmState extends Equatable {
+  const ChangePasswordSubmitVmState({
+    required this.status,
+    required this.isValid,
+  });
+
+  final FormzSubmissionStatus status;
+  final bool isValid;
+
+  ChangePasswordSubmitVmState copyWith({
+    FormzSubmissionStatus? status,
+    bool? isValid,
+  }) => ChangePasswordSubmitVmState(
+    status: status ?? this.status,
+    isValid: isValid ?? this.isValid,
+  );
+
+  @override
+  List<Object> get props => [status, isValid];
 }

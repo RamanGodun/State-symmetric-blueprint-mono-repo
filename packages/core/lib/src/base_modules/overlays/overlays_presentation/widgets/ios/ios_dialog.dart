@@ -139,37 +139,29 @@ final class IOSAppDialog extends StatelessWidget {
     );
   }
 
-  /// ✅ Уніфіковане замикання: спочатку закриваємо, потім викликаємо дію (якщо є)
+  /// ✅ Dissmis overlay, then run callback (if available)
   VoidCallback _dismissThen(
     OverlayDispatcher dispatcher,
     VoidCallback? action,
   ) {
     return () {
-      dispatcher.dismissCurrent(force: true);
-      action?.call();
+      dispatcher.dismissCurrent(force: true).whenComplete(() {
+        Future.microtask(() {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            debugPrint(
+              '[Overlay] confirm tapped → running action after dismiss (postFrame)',
+            );
+            final run = action ?? () {};
+            try {
+              run();
+            } on Object catch (e, st) {
+              debugPrint('❌ onConfirm action threw: $e\n$st');
+            }
+          });
+        });
+      });
     };
   }
-
-  /*
-?
-  /// Option with dialog auto-closing, when action is given
-  // ignore: unused_element
-  VoidCallback _wrapWithDismiss(
-    OverlayDispatcher dispatcher,
-    VoidCallback? action,
-  ) {
-    return () {
-      dispatcher.dismissCurrent(force: true);
-      action?.call();
-    };
-  }
-
-  ///
-  void _fallback(OverlayDispatcher dispatcher, VoidCallback? action) {
-    dispatcher.dismissCurrent(force: true);
-    action?.call();
-  }
- */
 
   //
 }

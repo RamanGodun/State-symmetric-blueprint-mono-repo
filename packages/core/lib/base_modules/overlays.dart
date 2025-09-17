@@ -45,12 +45,13 @@ export '../src/base_modules/overlays/overlays_presentation/overlay_presets/overl
 export '../src/base_modules/overlays/utils/overlay_utils.dart'
     show OverlayUtils;
 //
-// ─── NAVIGATION OBSERVER (auto-clean overlays on route change) ───────────────
+// ─── NAVIGATION UTILS ------------------------------------------───────────────
 //
 export '../src/base_modules/overlays/utils/overlays_cleaner_within_navigation.dart'
     show OverlaysCleanerWithinNavigation;
 export '../src/base_modules/overlays/utils/ports/overlay_activity_port.dart';
 export '../src/base_modules/overlays/utils/ports/overlay_dispatcher_locator.dart';
+export '../src/base_modules/overlays/utils/show_overlay_after_frame_x_on_context.dart';
 
 // NOTE:
 // - Platform-specific widgets (Android/iOS) and overlay entry classes/registry

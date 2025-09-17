@@ -115,10 +115,9 @@ extension PasswordChangeRefX on WidgetRef {
         case ChangePasswordRequiresReauth(:final failure):
           context.showError(
             failure.toUIEntity(),
-            onConfirm: () {
-              read(signOutProvider.notifier).signOut().whenComplete(() {
-                context.goIfMounted(RoutesNames.signIn);
-              });
+            onConfirm: () async {
+              await read(signOutProvider.notifier).signOut();
+              if (context.mounted) context.goIfMounted(RoutesNames.signIn);
             },
           );
 

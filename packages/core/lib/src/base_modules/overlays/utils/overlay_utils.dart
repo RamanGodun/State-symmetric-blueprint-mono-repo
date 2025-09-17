@@ -11,11 +11,14 @@ abstract final class OverlayUtils {
 
   /// 🔁 Dismisses the currently visible overlay (if any) and executes [action]
   static VoidCallback dismissAndRun(VoidCallback action, BuildContext context) {
-    //
-    return () async {
+    return () {
       final d = resolveOverlayDispatcher(context);
-      await d.dismissCurrent(force: true);
-      action.call();
+      d.dismissCurrent(force: true).whenComplete(() {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          debugPrint('[OverlayUtils] running deferred action');
+          action();
+        });
+      });
     };
   }
 
