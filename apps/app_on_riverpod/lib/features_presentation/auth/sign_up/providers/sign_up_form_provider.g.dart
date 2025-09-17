@@ -9,8 +9,6 @@ part of 'sign_up_form_provider.dart';
 String _$signUpFormIsValidHash() =>
     r'fd8a73b4f8c703fbd8c1e7e3bee50d6111a18a37'; ////
 ////
-////
-////
 /// ✅ Returns form validity as primitive bool (minimal rebuilds)
 ///
 /// Copied from [signUpFormIsValid].

@@ -7,7 +7,7 @@ part of 'change_password__provider.dart';
 // **************************************************************************
 
 String _$changePasswordSubmitIsLoadingHash() =>
-    r'b24e6bea74f9c3465f6b3d7597bff86b7668fb7f'; ////
+    r'71091cad1f65d7abdbaaf529ca1657e7ecf037ea'; ////
 ////
 /// ⏳ Returns loading state for submission (primitive bool)
 ///

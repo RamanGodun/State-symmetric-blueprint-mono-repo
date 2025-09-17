@@ -83,7 +83,7 @@ final class _SignUpView extends HookWidget {
                         /// 🚀 Primary submit button
                         const _SignUpSubmitButton(),
 
-                        /// 🔁 Links to redirect to sign-up or reset-password screen
+                        /// 🔁 Links to redirect to sign-in screen
                         const _WrapperForFooter(),
                       ],
                     ).centered().withPaddingHorizontal(AppSpacing.xxxm),

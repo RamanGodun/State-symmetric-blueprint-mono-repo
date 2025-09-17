@@ -11,8 +11,8 @@ import 'package:formz/formz.dart';
 
 part 'widgets_for_reset_password_page.dart';
 
-/// 🔐 [ResetPasswordPage] — allows user to request password reset
-/// 🔁 Declarative side-effect for [ResetPasswordPage]
+/// 🔐 [ResetPasswordPage] — Entry point for the sign-up feature,
+/// 🧾 that allows user to request password reset
 //
 final class ResetPasswordPage extends StatelessWidget {
   ///---------------------------------------
@@ -21,11 +21,14 @@ final class ResetPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
+    /// 🧩 Provide screen-scoped cubits (disposed on pop)
     return BlocProvider(
       create: (_) => ResetPasswordCubit(
         di<PasswordRelatedUseCases>(),
         di<FormValidationService>(),
       ),
+
+      ///
       child: MultiBlocListener(
         listeners: [
           /// ❌ Error Listener
@@ -54,14 +57,16 @@ final class ResetPasswordPage extends StatelessWidget {
           ),
         ],
 
+        /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
         child: const _ResetPasswordView(),
       ),
     );
   }
 }
 
-/// 🔐 [_ResetPasswordView] — screen that allows user to request password reset
+/// 🔐 [_ResetPasswordView] — Screen that allows user to request password reset
 /// 📩 Sends reset link to user's email using [ResetPasswordCubit]
+/// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class _ResetPasswordView extends StatelessWidget {
   ///------------------------------------------------
@@ -73,22 +78,35 @@ final class _ResetPasswordView extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: GestureDetector(
+          // 🔕 Dismiss keyboard on outside tap
           onTap: context.unfocusKeyboard,
-          child: ListView(
-            shrinkWrap: true,
-            children: const [
-              //
-              _ResetPasswordHeader(),
+          // used "LayoutBuilder+ConstrainedBox" pattern
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: FocusTraversalGroup(
+                  ///
+                  child: ListView(
+                    children: const [
+                      /// ℹ️ Info section for [ResetPasswordPage]
+                      _ResetPasswordHeader(),
 
-              _ResetPasswordEmailInputField(),
-              SizedBox(height: AppSpacing.huge),
+                      /// 🔒 Password input field
+                      _ResetPasswordEmailInputField(),
+                      SizedBox(height: AppSpacing.huge),
 
-              _ResetPasswordSubmitButton(),
-              SizedBox(height: AppSpacing.xxxs),
+                      /// 🚀 Primary submit button
+                      _ResetPasswordSubmitButton(),
+                      SizedBox(height: AppSpacing.xxxs),
 
-              _ResetPasswordFooter(),
-            ],
-          ).withPaddingHorizontal(AppSpacing.l),
+                      _ResetPasswordFooter(),
+                    ],
+                  ).withPaddingHorizontal(AppSpacing.l),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

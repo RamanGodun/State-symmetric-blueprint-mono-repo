@@ -67,9 +67,6 @@ final class SignUpForm extends _$SignUpForm {
 ////
 ////
 
-////
-////
-
 /// ✅ Returns form validity as primitive bool (minimal rebuilds)
 //
 @riverpod

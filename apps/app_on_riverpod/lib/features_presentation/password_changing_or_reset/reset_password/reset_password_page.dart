@@ -10,38 +10,67 @@ import 'package:riverpod_adapter/riverpod_adapter.dart';
 part 'widgets_for_reset_password_page.dart';
 part 'x_on_ref_for_reset_password.dart';
 
-/// 🔐 [ResetPasswordPage] — screen that allows user to request password reset
+/// 🔐 [ResetPasswordPage] — Entry point for the request-password feature,
 /// 📩 Sends reset link to user's email using [resetPasswordProvider]
 //
 final class ResetPasswordPage extends ConsumerWidget {
-  ///------------------------------------------
+  ///----------------------------------------------
   const ResetPasswordPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    // 👂 Declarative listener for success/failure
+    /// 🔁 Declarative side-effect listener for [ResetPasswordPage]
     ref.listenToResetPassword(context);
 
+    /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
+    return const _ResetPasswordView();
+  }
+}
+
+////
+////
+
+/// 🔐 [_ResetPasswordView] — Screen that allows the user to reset password.
+/// ✅ Same widget used in BLoC app for perfect parity
+//
+final class _ResetPasswordView extends StatelessWidget {
+  ///------------------------------------------------
+  const _ResetPasswordView();
+
+  @override
+  Widget build(BuildContext context) {
+    //
     return Scaffold(
       body: SafeArea(
         child: GestureDetector(
+          // 🔕 Dismiss keyboard on outside tap
           onTap: context.unfocusKeyboard,
-          child: ListView(
-            shrinkWrap: true,
-            children: const [
-              //
-              _ResetPasswordHeader(),
+          // used "LayoutBuilder+ConstrainedBox" pattern
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
 
-              _ResetPasswordEmailInputField(),
-              SizedBox(height: AppSpacing.huge),
+                ///
+                child: ListView(
+                  children: const [
+                    /// ℹ️ Info section for [ResetPasswordPage]
+                    _ResetPasswordHeader(),
 
-              _ResetPasswordSubmitButton(),
-              SizedBox(height: AppSpacing.xxxs),
+                    /// 🔒 Password input field
+                    _ResetPasswordEmailInputField(),
 
-              _ResetPasswordFooter(),
-            ],
-          ).withPaddingHorizontal(AppSpacing.l),
+                    /// 🚀 Primary submit button
+                    _ResetPasswordSubmitButton(),
+
+                    /// 🔁 Links to redirect to sign-in screen
+                    _WrapperForFooter(),
+                  ],
+                ).withPaddingHorizontal(AppSpacing.l),
+              );
+            },
+          ),
         ),
       ),
     );

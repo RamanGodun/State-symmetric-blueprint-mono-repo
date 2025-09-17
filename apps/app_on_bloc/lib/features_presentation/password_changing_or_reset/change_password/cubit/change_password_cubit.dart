@@ -5,7 +5,7 @@ import 'package:features/features_barrels/auth/auth.dart' show SignOutUseCase;
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'change_password_state.dart';
+part 'change_password__state.dart';
 
 /// 🔐 [ChangePasswordCubit] — Manages reset password logic, validation, submission.
 /// ✅ Leverages [PasswordRelatedUseCases] injected via DI and uses declarative state updates.
@@ -39,20 +39,12 @@ final class ChangePasswordCubit extends Cubit<ChangePasswordState> {
           debugPrint('❌ Password change failed: ${failure.runtimeType}');
           (failure.type is RequiresRecentLoginFirebaseFailureType)
               ? emit(ChangePasswordRequiresReauth(failure))
-              // reAuthHandling(failure)
               : emit(ChangePasswordError(failure));
           failure.log();
         })
         ..log();
     });
   }
-
-  ///
-  // Future<void> reAuthHandling(Failure failure) async {
-  //   emit(ChangePasswordRequiresReauth(failure));
-  //   await Future<void>.delayed(Duration.zero);
-  //   // await _signOutUseCase();
-  // }
 
   /// 🔑 Confirms reauthentication by signing the user out.
   /// 🚪 Triggers auth guard → automatic redirect to SignIn.

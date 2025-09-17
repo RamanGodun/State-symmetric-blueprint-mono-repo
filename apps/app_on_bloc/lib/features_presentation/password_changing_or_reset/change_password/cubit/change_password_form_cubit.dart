@@ -16,7 +16,6 @@ final class ChangePasswordFormCubit extends Cubit<ChangePasswordFormState> {
     : super(const ChangePasswordFormState());
 
   final FormValidationService _validation;
-
   final _debouncer = Debouncer(AppDurations.ms150);
 
   /// 🔒 Handles password input and updates confirm sync

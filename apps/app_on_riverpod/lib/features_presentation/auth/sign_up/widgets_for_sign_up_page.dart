@@ -93,7 +93,7 @@ final class _WrapperForFooter extends ConsumerWidget {
 final class _SignUpPageFooter extends StatelessWidget {
   ///-------------------------------------------
   const _SignUpPageFooter({required this.isEnabled});
-  // /
+  //
   final bool isEnabled;
 
   @override

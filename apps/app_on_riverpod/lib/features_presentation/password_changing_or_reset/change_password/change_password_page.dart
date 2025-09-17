@@ -1,60 +1,31 @@
-import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
+import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart'
+    show RoutesNames;
 import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/change_password/providers/change_password__provider.dart';
 import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/change_password/providers/change_password_form_provider.dart';
 import 'package:core/core.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart';
 
+part 'errors_listener.dart';
 part 'widgets_for_change_password.dart';
 
 /// 🔐 [ChangePasswordPage] — Entry point for the sign-up feature,
 /// 🧾 that allows user to request password change
 //
-final class ChangePasswordPage extends HookConsumerWidget {
+final class ChangePasswordPage extends ConsumerWidget {
   ///-------------------------------------------
   const ChangePasswordPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    // 🔁 Declarative side-effect for ChangePassword
+    /// 🔁 Declarative side-effect listener for [ChangePasswordPage]
     ref.listenToPasswordChange(context);
 
-    /*
-ref.listen<ChangePasswordState>(changePasswordProvider, (prev, next) async {
-      switch (next) {
-        ///
-        // ✅ On success
-        case ChangePasswordSuccess():
-          context.showUserSnackbar(
-            message: LocaleKeys.reauth_password_updated.tr(),
-          );
-          // 🧭 Navigation after success
-          context.goIfMounted(RoutesNames.home);
-
-        /// ❌ On error
-        case ChangePasswordError(:final failure):
-          context.showError(failure.toUIEntity());
-          ref.read(changePasswordFormProvider.notifier).reset();
-
-        /// 🔄 Requires Reauth → show dialog, than signOut for reAuth
-        case ChangePasswordRequiresReauth(:final failure):
-          context.showError(
-            failure.toUIEntity(),
-            onConfirm: () async {
-              await ref.read(changePasswordProvider.notifier).confirmReauth();
-            },
-          );
-
-        ///
-        default:
-          break;
-      }
-    });
- */
+    /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
     return const _ChangePasswordView();
   }
 }
@@ -66,7 +37,7 @@ ref.listen<ChangePasswordState>(changePasswordProvider, (prev, next) async {
 /// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _ChangePasswordView extends HookWidget {
-  ///-------------------------------------------------
+  ///--------------------------------------------
   const _ChangePasswordView();
 
   @override
@@ -112,52 +83,4 @@ final class _ChangePasswordView extends HookWidget {
       ),
     );
   }
-}
-
-////
-////
-
-/// 🛡️ [PasswordChangeRefX] — handles side-effects for Change Password flow.
-//
-extension PasswordChangeRefX on WidgetRef {
-  ///---------------------------------------------
-  //
-  /// Encapsulates success, error, and retry handling.
-  ///   - ✅ On success: shows success snackbar and navigates home.
-  ///   - ❌ On failure: shows localized error.
-  ///   - 🔄 On "requires-recent-login" error: triggers reauthentication flow and retries on success.
-  void listenToPasswordChange(BuildContext context) {
-    listen<ChangePasswordState>(changePasswordProvider, (prev, next) async {
-      switch (next) {
-        ///
-        // ✅ On success
-        case ChangePasswordSuccess():
-          context.showUserSnackbar(
-            message: LocaleKeys.reauth_password_updated.tr(),
-          );
-          // 🧭 Navigation after success
-          context.goIfMounted(RoutesNames.home);
-
-        /// ❌ On error
-        case ChangePasswordError(:final failure):
-          context.showError(failure.toUIEntity());
-          read(changePasswordFormProvider.notifier).reset();
-
-        /// 🔄 Requires Reauth → show dialog, than signOut for reAuth
-        case ChangePasswordRequiresReauth(:final failure):
-          context.showError(
-            failure.toUIEntity(),
-            onConfirm: () async {
-              await read(changePasswordProvider.notifier).confirmReauth();
-            },
-          );
-
-        ///
-        default:
-          break;
-      }
-    });
-  }
-
-  //
 }

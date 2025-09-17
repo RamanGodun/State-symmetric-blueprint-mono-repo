@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+part 'errors_listener.dart';
 part 'widgets_for_change_password.dart';
 
 /// 🔐 [ChangePasswordPage] — Entry point for the sign-up feature,
 /// 🧾 that allows user to request password change
-/// ✅ Provides scoped cubit with injected services
 //
 final class ChangePasswordPage extends StatelessWidget {
   ///---------------------------------------
@@ -37,49 +37,9 @@ final class ChangePasswordPage extends StatelessWidget {
       ],
 
       ///
-      child: MultiBlocListener(
-        listeners: [
-          /// ❌ Error Listener
-          BlocListener<ChangePasswordCubit, ChangePasswordState>(
-            listenWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
-            listener: (context, state) async {
-              //
-              switch (state) {
-                //
-                /// ✅ Success
-                case ChangePasswordSuccess():
-                  context
-                    ..showSnackbar(
-                      message: LocaleKeys.reauth_password_updated.tr(),
-                    )
-                    // 🧭 Navigation after success
-                    ..goIfMounted(RoutesNames.home);
-
-                /// ❌ Error
-                case ChangePasswordError(:final failure):
-                  context.showError(failure.toUIEntity());
-                  context.read<ChangePasswordCubit>().resetState();
-
-                /// 🔄 Requires Reauth → show dialog, than signOut for reAuth
-                case ChangePasswordRequiresReauth(:final failure):
-                  context.showError(
-                    failure.toUIEntity(),
-                    onConfirm: () async {
-                      await context.read<ChangePasswordCubit>().confirmReauth();
-                    },
-                  );
-
-                ///
-                default:
-                  break;
-                //
-              }
-            },
-          ),
-        ],
-
+      child: const _ErrorsListenerForChangePasswordPage(
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-        child: const _ChangePasswordView(),
+        child: _ChangePasswordView(),
       ),
     );
   }
@@ -115,7 +75,6 @@ final class _ChangePasswordView extends HookWidget {
                   ///
                   child: ListView(
                     children: [
-                      //
                       /// ℹ️ Info section for [ChangePasswordPage]
                       const _ChangePasswordInfo(),
 

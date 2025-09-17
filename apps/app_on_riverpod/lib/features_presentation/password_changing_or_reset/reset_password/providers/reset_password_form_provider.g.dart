@@ -6,6 +6,26 @@ part of 'reset_password_form_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$resetPasswordFormIsValidHash() =>
+    r'711cdc8f0ef97e963bea8f06aa611d0bd58219be'; ////
+////
+/// ✅ Returns form validity as primitive bool (minimal rebuilds)
+///
+/// Copied from [resetPasswordFormIsValid].
+@ProviderFor(resetPasswordFormIsValid)
+final resetPasswordFormIsValidProvider = AutoDisposeProvider<bool>.internal(
+  resetPasswordFormIsValid,
+  name: r'resetPasswordFormIsValidProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$resetPasswordFormIsValidHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef ResetPasswordFormIsValidRef = AutoDisposeProviderRef<bool>;
 String _$resetPasswordFormHash() => r'07ad82f8b916d54b911fc767b856143ae7d4fcbc';
 
 /// 🧩 [ResetPasswordForm] — Manages the state of the reset password form using [StateNotifier].

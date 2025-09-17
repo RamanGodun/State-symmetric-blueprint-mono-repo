@@ -26,7 +26,7 @@ final signInSubmitIsLoadingProvider = AutoDisposeProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SignInSubmitIsLoadingRef = AutoDisposeProviderRef<bool>;
-String _$signInHash() => r'dd256dcb77fe1c90870ad8c9964b15d736459c4d';
+String _$signInHash() => r'4c7a275edd48394f7ca1ce3dbce9b3e84b1ef5c8';
 
 /// 🧩 [signInProvider] — async notifier that handles user sign-in
 /// 🧼 Uses [SafeAsyncState] to prevent post-dispose state updates

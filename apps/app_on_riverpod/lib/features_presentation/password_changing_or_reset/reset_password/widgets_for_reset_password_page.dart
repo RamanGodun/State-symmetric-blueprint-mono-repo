@@ -1,6 +1,7 @@
 part of 'reset_password_page.dart';
 
-/// ℹ️ [_ResetPasswordHeader] — header section with logo & instructions
+/// ℹ️ Info section for [_ResetPasswordHeader]
+/// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _ResetPasswordHeader extends StatelessWidget {
   ///--------------------------------------------------
@@ -9,25 +10,29 @@ final class _ResetPasswordHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return const Column(
+    return Column(
       children: [
-        SizedBox(height: AppSpacing.huge),
-        SizedBox(height: AppSpacing.huge),
-        FlutterLogo(size: AppSpacing.huge),
-        SizedBox(height: AppSpacing.xxxm),
-        TextWidget(LocaleKeys.reset_password_header, TextType.headlineSmall),
-        TextWidget(LocaleKeys.reset_password_sub_header, TextType.bodyMedium),
-        SizedBox(height: AppSpacing.xxl),
+        const FlutterLogo(
+          size: AppSpacing.huge,
+        ).withPaddingOnly(top: AppSpacing.great, bottom: AppSpacing.l),
+        const TextWidget(
+          LocaleKeys.reset_password_header,
+          TextType.headlineSmall,
+        ),
+        const TextWidget(
+          LocaleKeys.reset_password_sub_header,
+          TextType.bodyMedium,
+        ).withPaddingBottom(AppSpacing.xxl),
       ],
     );
   }
 }
 
 ////
-
 ////
 
-/// 🧾 [_ResetPasswordEmailInputField] — email input field for password reset
+/// 🧩 [_ResetPasswordEmailInputField] — User email input field with localized validation
+/// ✅ Rebuilds only when `email.uiError` changes
 //
 final class _ResetPasswordEmailInputField extends HookConsumerWidget {
   ///--------------------------------------------------------------
@@ -36,25 +41,29 @@ final class _ResetPasswordEmailInputField extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final form = ref.watch(resetPasswordFormProvider);
-    final notifier = ref.read(resetPasswordFormProvider.notifier);
     final focusNode = useResetPasswordFocusNodes();
+    final emailError = ref.watch(
+      resetPasswordFormProvider.select((f) => f.email.uiErrorKey),
+    );
+    final isValid = ref.watch(
+      resetPasswordFormProvider.select((f) => f.isValid),
+    );
+    final notifier = ref.read(resetPasswordFormProvider.notifier);
 
     return InputFieldFactory.create(
       type: InputFieldType.email,
       focusNode: focusNode.email,
-      errorText: form.email.uiErrorKey,
+      errorText: emailError,
       onChanged: notifier.emailChanged,
-      onSubmitted: form.isValid ? () => ref.submitResetPassword() : null,
-    );
+      onSubmitted: isValid ? () => ref.submitResetPassword() : null,
+    ).withPaddingBottom(AppSpacing.huge);
   }
 }
 
 ////
-
 ////
 
-/// 🔘 [_ResetPasswordSubmitButton] — confirms reset action
+/// 🔘 [_ResetPasswordSubmitButton] — confirms reset action button
 //
 final class _ResetPasswordSubmitButton extends ConsumerWidget {
   ///-------------------------------------------------------
@@ -63,51 +72,70 @@ final class _ResetPasswordSubmitButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final form = ref.watch(resetPasswordFormProvider);
-    final resetState = ref.watch(resetPasswordProvider);
-    final isOverlayActive = ref.isOverlayActive;
-
-    return CustomFilledButton(
-      onPressed: form.isValid && !resetState.isLoading
-          ? () => ref.submitResetPassword()
-          : null,
-      label: resetState.isLoading
-          ? LocaleKeys.buttons_submitting
-          : LocaleKeys.buttons_reset_password,
-      isLoading: resetState.isLoading,
-      isEnabled: form.isValid && !isOverlayActive,
-    );
+    return FormSubmitButtonForRiverpodApps(
+      label: LocaleKeys.buttons_reset_password,
+      isValidProvider: resetPasswordFormIsValidProvider,
+      isLoadingProvider: resetPasswordIsLoadingProvider,
+      onPressed: () => ref.submitResetPassword(),
+    ).withPaddingBottom(AppSpacing.xl);
   }
 }
 
 ////
-
 ////
 
-/// 🔁 [_ResetPasswordFooter] — footer with redirect to Sign In
+/// 🔁 [_WrapperForFooter] — sign in redirect link
+/// ✅ Disabled during form submission or overlay
+//
+final class _WrapperForFooter extends ConsumerWidget {
+  ///-------------------------------------------
+  const _WrapperForFooter();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    //
+    /// ⏳ Submission loading (primitive bool)
+    final isLoading = ref.watch(
+      resetPasswordProvider.select((a) => a.isLoading),
+    );
+    //
+    /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)
+    final isOverlayActive = ref.isOverlayActive;
+    final isEnabled = !isLoading && !isOverlayActive;
+
+    /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
+    return _ResetPasswordFooter(isEnabled: isEnabled);
+  }
+}
+
+////
+////
+
+/// 🔁 [_ResetPasswordFooter] — sign in redirect link
+/// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _ResetPasswordFooter extends StatelessWidget {
   ///--------------------------------------------------
-  const _ResetPasswordFooter();
+  const _ResetPasswordFooter({required this.isEnabled});
+  //
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
     //
-    return Padding(
-      padding: const EdgeInsets.only(top: AppSpacing.l),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const TextWidget(
-            LocaleKeys.reset_password_remember,
-            TextType.titleSmall,
-          ),
-          AppTextButton(
-            onPressed: () => context.goTo(RoutesNames.signIn),
-            label: LocaleKeys.buttons_sign_in,
-          ),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const TextWidget(
+          LocaleKeys.reset_password_remember,
+          TextType.titleSmall,
+        ),
+        AppTextButton(
+          label: LocaleKeys.buttons_sign_in,
+          isEnabled: isEnabled,
+          onPressed: () => context.goTo(RoutesNames.signIn),
+        ).withPaddingBottom(AppSpacing.xxxm),
+      ],
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:core/base_modules/errors_management.dart' show Failure;
 import 'package:features/features.dart' show PasswordRelatedUseCases;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart'
     show SafeAsyncState, passwordUseCasesProvider;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -12,7 +13,7 @@ part 'reset_password__provider.g.dart';
 //
 @riverpod
 final class ResetPassword extends _$ResetPassword with SafeAsyncState<void> {
-  //----------------------------------------------------------------
+  ///--------------------------------------------------------------------
 
   /// 🧱 Initializes safe lifecycle tracking
   @override
@@ -40,3 +41,12 @@ final class ResetPassword extends _$ResetPassword with SafeAsyncState<void> {
 
   //
 }
+
+////
+////
+
+/// ⏳ Returns loading state for submission (primitive bool)
+//
+@riverpod
+bool resetPasswordIsLoading(Ref ref) =>
+    ref.watch(resetPasswordProvider.select((a) => a.isLoading));

@@ -1,7 +1,7 @@
 part of 'change_password_page.dart';
 
 /// ℹ️ Info section for [ChangePasswordPage]
-/// ✅ Same widget used in Riverpod app for perfect parity
+/// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _ChangePasswordInfo extends StatelessWidget {
   ///-------------------------------------------------
@@ -47,7 +47,7 @@ final class _ChangePasswordInfo extends StatelessWidget {
 ////
 ////
 
-/// 🧾 [_PasswordInputField] — — Password input field with localized validation
+/// 🧾 [_PasswordInputField] — Password input field with localized validation
 /// ✅ Rebuilds only when password error or visibility state changes
 //
 final class _PasswordInputField extends ConsumerWidget {

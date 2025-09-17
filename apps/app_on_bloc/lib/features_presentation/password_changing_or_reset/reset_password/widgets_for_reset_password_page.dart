@@ -1,6 +1,7 @@
 part of 'reset_password_page.dart';
 
-/// ℹ️ [_ResetPasswordHeader] — header section with logo & instructions
+/// ℹ️ Info section for [_ResetPasswordHeader]
+/// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _ResetPasswordHeader extends StatelessWidget {
   ///--------------------------------------------------
@@ -27,7 +28,8 @@ final class _ResetPasswordHeader extends StatelessWidget {
 
 ////
 
-/// 🧾 [_ResetPasswordEmailInputField] — email input field for password reset
+/// 🧩 [_ResetPasswordEmailInputField] — User email input field with localized validation
+/// ✅ Rebuilds only when `email.uiError` changes
 //
 final class _ResetPasswordEmailInputField extends HookWidget {
   ///------------------------------------------------------
@@ -47,7 +49,7 @@ final class _ResetPasswordEmailInputField extends HookWidget {
           errorText: errorText,
           onChanged: context.read<ResetPasswordCubit>().onEmailChanged,
           onSubmitted: () => context.read<ResetPasswordCubit>().submit(),
-        );
+        ).withPaddingBottom(AppSpacing.huge);
       },
     );
   }
@@ -57,7 +59,7 @@ final class _ResetPasswordEmailInputField extends HookWidget {
 
 ////
 
-/// 🔘 [_ResetPasswordSubmitButton] — confirms reset action
+/// 🔘 [_ResetPasswordSubmitButton] — confirms reset action button
 //
 final class _ResetPasswordSubmitButton extends StatelessWidget {
   ///--------------------------------------------------------
@@ -74,17 +76,18 @@ final class _ResetPasswordSubmitButton extends StatelessWidget {
       selector: (state) => (status: state.status, isValid: state.isValid),
       builder: (context, state) {
         return FormSubmitButtonForBlocApps<
-          ResetPasswordCubit,
-          ResetPasswordState
-        >(
-          label: LocaleKeys.buttons_reset_password,
-          onPressed: (_) {
-            context.unfocusKeyboard();
-            context.read<ResetPasswordCubit>().submit();
-          },
-          statusSelector: (s) => s.status,
-          isValidatedSelector: (s) => s.isValid,
-        );
+              ResetPasswordCubit,
+              ResetPasswordState
+            >(
+              label: LocaleKeys.buttons_reset_password,
+              onPressed: (_) {
+                context.unfocusKeyboard();
+                context.read<ResetPasswordCubit>().submit();
+              },
+              statusSelector: (s) => s.status,
+              isValidatedSelector: (s) => s.isValid,
+            )
+            .withPaddingBottom(AppSpacing.xl);
       },
     );
   }
