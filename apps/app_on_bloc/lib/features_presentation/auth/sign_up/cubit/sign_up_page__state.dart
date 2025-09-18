@@ -42,7 +42,7 @@ final class SignUpSuccess extends SignUpState {
 final class SignUpError extends SignUpState {
   ///---------------------------------------
   const SignUpError(this.failure);
-  final Failure failure;
+  final Consumable<Failure>? failure;
   //
   @override
   List<Object?> get props => [failure];

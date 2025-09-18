@@ -33,10 +33,10 @@ final class SignInCubit extends Cubit<SignInPageState> {
           debugPrint('✅ Signed in successfully');
           emit(const SignInSuccess());
         })
-        ..onFailure((f) {
-          debugPrint('❌ Sign in failed: ${f.runtimeType}');
-          emit(SignInError(f));
-          f.log();
+        ..onFailure((failure) {
+          debugPrint('❌ Sign in failed: ${failure.runtimeType}');
+          emit(SignInError(failure.asConsumable()));
+          failure.log();
         })
         ..log();
     });

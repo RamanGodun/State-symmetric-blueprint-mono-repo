@@ -9,7 +9,7 @@ import 'package:features/features.dart' show FetchProfileUseCase;
 ///     ✅ Seeds initial load via microtask to catch pre-ready auth state
 ///     ✅ Emits [CoreAsync<UserEntity>] so UI stays state-agnostic
 //
-final class ProfileCubit extends AsyncStateCubit<UserEntity> {
+final class ProfileCubit extends CubitWithAsyncState<UserEntity> {
   ///-----------------------------------------------------
   ProfileCubit(
     this._fetchProfileUsecase, {

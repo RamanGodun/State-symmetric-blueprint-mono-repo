@@ -52,7 +52,6 @@ export '../src/base_modules/errors_management/core_of_module/core_utils/errors_o
 // ─── STATE MANAGER SPECIFICS (BLOC/CUBIT) ──────────────────────────────────────
 //
 export '../src/base_modules/errors_management/core_of_module/core_utils/specific_for_bloc/consumable.dart';
-export '../src/base_modules/errors_management/core_of_module/core_utils/specific_for_bloc/consumable_extensions.dart';
 
 //
 // ─── EXTENSIBLE PART: UI/DIAGNOSTICS HELPERS & CODES ──────────────────────────

@@ -8,7 +8,7 @@ import 'package:features/features_barrels/email_verification/email_verification.
 /// ✅ Emits [AsyncState<void>] to mirror Riverpod's notifier
 /// ✅ Keeps polling/timeout logic + inline loader UX
 //
-final class EmailVerificationCubit extends AsyncStateCubit<void> {
+final class EmailVerificationCubit extends CubitWithAsyncState<void> {
   ///-----------------------------------------------
   EmailVerificationCubit(this._useCase) : super() {
     // ▶️ Fire-and-forget bootstrap: starts polling flow after construction

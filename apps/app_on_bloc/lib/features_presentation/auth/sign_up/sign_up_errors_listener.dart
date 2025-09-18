@@ -14,20 +14,32 @@ final class _ErrorsListenersForSignUpPage extends StatelessWidget {
     return BlocListener<SignUpCubit, SignUpState>(
       listenWhen: (prev, current) => prev.runtimeType != current.runtimeType,
       listener: (context, state) {
+        //
         switch (state) {
+          //
+          /// ✅ Success
           case SignUpSuccess():
             context.showSnackbar(
               message: LocaleKeys.sign_up_already_have_account,
             );
 
-          case SignUpError(:final failure):
-            context.showError(failure.toUIEntity());
+          ////
 
+          /// ❌ Error
+          case SignUpError(:final failure):
+            final consumedFailure = failure?.consume();
+            if (consumedFailure == null) return;
+            context.showError(consumedFailure.toUIEntity());
+
+          ///
           default:
             break;
         }
       },
+
+      ///
       child: child,
+      //
     );
   }
 }

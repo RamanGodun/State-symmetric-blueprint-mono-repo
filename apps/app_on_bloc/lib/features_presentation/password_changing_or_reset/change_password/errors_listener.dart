@@ -8,7 +8,6 @@ part of 'change_password_page.dart';
 final class _ErrorsListenerForChangePasswordPage extends StatelessWidget {
   ///-------------------------------------------------------
   const _ErrorsListenerForChangePasswordPage({required this.child});
-  //
   final Widget child;
 
   @override
@@ -29,18 +28,24 @@ final class _ErrorsListenerForChangePasswordPage extends StatelessWidget {
               // 🧭 Navigation after success
               ..goIfMounted(RoutesNames.home);
 
+          ////
+
           /// ❌ Error
           case ChangePasswordError(:final failure):
-            context.showError(failure.toUIEntity());
+            final consumedFailure = failure?.consume();
+            if (consumedFailure == null) return;
+            context.showError(consumedFailure.toUIEntity());
             context.read<ChangePasswordCubit>().resetState();
+
+          ////
 
           /// 🔄 Requires Reauth → show dialog, than signOut for reAuth
           case ChangePasswordRequiresReauth(:final failure):
+            final consumedFailure = failure?.consume();
+            if (consumedFailure == null) return;
             context.showError(
-              failure.toUIEntity(),
-              onConfirm: () async {
-                await context.read<ChangePasswordCubit>().confirmReauth();
-              },
+              consumedFailure.toUIEntity(),
+              onConfirm: context.read<ChangePasswordCubit>().confirmReauth,
             );
 
           ///
@@ -48,7 +53,10 @@ final class _ErrorsListenerForChangePasswordPage extends StatelessWidget {
             break;
         }
       },
+
+      ///
       child: child,
+      //
     );
   }
 }

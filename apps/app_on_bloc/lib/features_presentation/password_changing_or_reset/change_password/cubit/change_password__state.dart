@@ -47,7 +47,7 @@ final class ChangePasswordRequiresReauth extends ChangePasswordState {
   ///--------------------------------------------------------------
   const ChangePasswordRequiresReauth(this.failure);
   //
-  final Failure failure;
+  final Consumable<Failure>? failure;
   //
   @override
   List<Object?> get props => [failure];
@@ -60,7 +60,7 @@ final class ChangePasswordError extends ChangePasswordState {
   ///-----------------------------------------------------
   const ChangePasswordError(this.failure);
   //
-  final Failure failure;
+  final Consumable<Failure>? failure;
   //
   @override
   List<Object?> get props => [failure];

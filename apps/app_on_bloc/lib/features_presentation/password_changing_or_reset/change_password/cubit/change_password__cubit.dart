@@ -38,8 +38,8 @@ final class ChangePasswordCubit extends Cubit<ChangePasswordState> {
         ..onFailure((failure) async {
           debugPrint('❌ Password change failed: ${failure.runtimeType}');
           (failure.type is RequiresRecentLoginFirebaseFailureType)
-              ? emit(ChangePasswordRequiresReauth(failure))
-              : emit(ChangePasswordError(failure));
+              ? emit(ChangePasswordRequiresReauth(failure.asConsumable()))
+              : emit(ChangePasswordError(failure.asConsumable()));
           failure.log();
         })
         ..log();

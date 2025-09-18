@@ -17,17 +17,27 @@ final class _ErrorsListenersForSignInPage extends StatelessWidget {
       listener: (context, state) {
         //
         switch (state) {
+          //
+          /// ✅ Success
           case SignInSuccess():
             context.showSnackbar(message: LocaleKeys.sign_in_forgot_password);
 
-          case SignInError(:final failure):
-            context.showError(failure.toUIEntity());
+          ////
 
+          /// ❌ Error
+          case SignInError(:final failure):
+            final consumedFailure = failure?.consume();
+            if (consumedFailure == null) return;
+            context.showError(consumedFailure.toUIEntity());
+          //
           default:
             break;
         }
       },
+
+      ///
       child: child,
+      // /
     );
   }
 }

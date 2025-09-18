@@ -36,7 +36,7 @@ final class SignInError extends SignInPageState {
   ///-----------------------------------------
   const SignInError(this.failure);
   //
-  final Failure failure;
+  final Consumable<Failure>? failure;
   //
   @override
   List<Object?> get props => [failure];
