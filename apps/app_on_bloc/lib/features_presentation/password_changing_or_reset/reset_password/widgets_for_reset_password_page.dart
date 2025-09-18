@@ -1,4 +1,4 @@
-part of 'reset_password_page.dart';
+part of 'reset_password__page.dart';
 
 /// ℹ️ Info section for [_ResetPasswordHeader]
 /// ✅ Same widget used in BLoC app for perfect parity
@@ -10,22 +10,25 @@ final class _ResetPasswordHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return const Column(
+    return Column(
       children: [
-        SizedBox(height: AppSpacing.huge),
-        SizedBox(height: AppSpacing.huge),
-        FlutterLogo(size: AppSpacing.huge),
-        SizedBox(height: AppSpacing.xxxm),
-        TextWidget(LocaleKeys.reset_password_header, TextType.headlineSmall),
-        TextWidget(LocaleKeys.reset_password_sub_header, TextType.bodyMedium),
-        SizedBox(height: AppSpacing.xxl),
+        const FlutterLogo(
+          size: AppSpacing.great,
+        ).withPaddingOnly(top: AppSpacing.great, bottom: AppSpacing.l),
+        const TextWidget(
+          LocaleKeys.reset_password_header,
+          TextType.headlineSmall,
+        ),
+        const TextWidget(
+          LocaleKeys.reset_password_sub_header,
+          TextType.bodyMedium,
+        ).withPaddingBottom(AppSpacing.xxl),
       ],
     );
   }
 }
 
 ////
-
 ////
 
 /// 🧩 [_ResetPasswordEmailInputField] — User email input field with localized validation
@@ -56,10 +59,9 @@ final class _ResetPasswordEmailInputField extends HookWidget {
 }
 
 ////
-
 ////
 
-/// 🔘 [_ResetPasswordSubmitButton] — confirms reset action button
+/// 🔘 [_ResetPasswordSubmitButton] — Confirms reset action button
 //
 final class _ResetPasswordSubmitButton extends StatelessWidget {
   ///--------------------------------------------------------
@@ -84,8 +86,8 @@ final class _ResetPasswordSubmitButton extends StatelessWidget {
                 context.unfocusKeyboard();
                 context.read<ResetPasswordCubit>().submit();
               },
-              statusSelector: (s) => s.status,
-              isValidatedSelector: (s) => s.isValid,
+              statusSelector: (state) => state.status,
+              isValidatedSelector: (state) => state.isValid,
             )
             .withPaddingBottom(AppSpacing.xl);
       },
@@ -94,33 +96,54 @@ final class _ResetPasswordSubmitButton extends StatelessWidget {
 }
 
 ////
-
 ////
 
-/// 🔁 [_ResetPasswordFooter] — footer with redirect to Sign In
+/// 🛡️ [_ResetPasswordFooterGuard] — Make footer disable during form submission or active overlay
 //
-final class _ResetPasswordFooter extends StatelessWidget {
-  ///--------------------------------------------------
-  const _ResetPasswordFooter();
+final class _ResetPasswordFooterGuard extends StatelessWidget {
+  ///-------------------------------------------------------
+  const _ResetPasswordFooterGuard();
 
   @override
   Widget build(BuildContext context) {
     //
-    return Padding(
-      padding: const EdgeInsets.only(top: AppSpacing.l),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const TextWidget(
-            LocaleKeys.reset_password_remember,
-            TextType.titleSmall,
-          ),
-          AppTextButton(
-            onPressed: () => context.popView(),
-            label: LocaleKeys.buttons_sign_in,
-          ),
-        ],
-      ),
+    return FooterGuard<ResetPasswordCubit, ResetPasswordState>(
+      isLoadingSelector: (state) => state.status.isSubmissionInProgress,
+      childBuilder: (_, isEnabled) =>
+          /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
+          _ResetPasswordPageFooter(isEnabled: isEnabled),
     );
+  }
+}
+
+////
+////
+
+/// 🔁 [_ResetPasswordPageFooter] — sign in redirect link
+/// ✅ Same widget used in Riverpod app for perfect parity
+//
+final class _ResetPasswordPageFooter extends StatelessWidget {
+  ///------------------------------------------------------
+  const _ResetPasswordPageFooter({required this.isEnabled});
+  //
+  final bool isEnabled;
+
+  @override
+  Widget build(BuildContext context) {
+    //
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const TextWidget(
+          LocaleKeys.reset_password_remember,
+          TextType.titleSmall,
+        ),
+        AppTextButton(
+          label: LocaleKeys.buttons_sign_in,
+          isEnabled: isEnabled,
+          onPressed: () => context.popView(),
+        ),
+      ],
+    ).withPaddingBottom(AppSpacing.xxxm);
   }
 }

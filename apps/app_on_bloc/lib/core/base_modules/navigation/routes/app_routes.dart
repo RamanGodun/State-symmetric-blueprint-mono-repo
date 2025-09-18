@@ -4,7 +4,7 @@ import 'package:app_on_bloc/features_presentation/auth/sign_in/sign_in__page.dar
 import 'package:app_on_bloc/features_presentation/auth/sign_up/sign_up__page.dart';
 import 'package:app_on_bloc/features_presentation/email_verification/email_verification_page.dart';
 import 'package:app_on_bloc/features_presentation/password_changing_or_reset/change_password/change_password_page.dart';
-import 'package:app_on_bloc/features_presentation/password_changing_or_reset/reset_password/reset_password_page.dart';
+import 'package:app_on_bloc/features_presentation/password_changing_or_reset/reset_password/reset_password__page.dart';
 import 'package:app_on_bloc/features_presentation/profile/profile_page.dart';
 import 'package:core/base_modules/animations.dart' show AppTransitions;
 import 'package:core/shared_layers/presentation.dart' show SplashPage;

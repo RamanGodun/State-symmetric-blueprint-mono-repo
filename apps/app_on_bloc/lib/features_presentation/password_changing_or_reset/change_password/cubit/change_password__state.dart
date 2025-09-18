@@ -1,4 +1,4 @@
-part of 'change_password_cubit.dart';
+part of 'change_password__cubit.dart';
 
 /// 🧾 [ChangePasswordState] — Sealed class describing all possible states for password change flow.
 //

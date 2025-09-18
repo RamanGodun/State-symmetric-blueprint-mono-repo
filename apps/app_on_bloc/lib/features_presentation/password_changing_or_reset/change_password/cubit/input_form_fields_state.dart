@@ -1,7 +1,7 @@
 //
 // ignore_for_file: public_member_api_docs
 
-part of 'change_password_form_cubit.dart';
+part of 'input_form_fields_cubit.dart';
 
 /// 📄 [ChangePasswordFormState] — Stores reset form values and validation status
 /// ✅ Centralized state object for validation, UI, and submission status

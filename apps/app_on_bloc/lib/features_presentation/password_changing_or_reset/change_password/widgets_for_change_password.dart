@@ -161,16 +161,16 @@ final class _ChangePasswordSubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     final isOverlayActive = context.select<OverlayStatusCubit, bool>(
-      (c) => c.state,
+      (cubit) => cubit.state,
     );
 
     return BlocBuilder<ChangePasswordFormCubit, ChangePasswordFormState>(
-      buildWhen: (p, c) => p.isValid != c.isValid,
+      buildWhen: (prev, cur) => prev.isValid != cur.isValid,
       builder: (context, form) {
+        //
         final isLoading = context.select<ChangePasswordCubit, bool>(
           (cubit) => cubit.state is ChangePasswordLoading,
         );
-
         final isEnabled = form.isValid && !isLoading && !isOverlayActive;
 
         return CustomFilledButton(

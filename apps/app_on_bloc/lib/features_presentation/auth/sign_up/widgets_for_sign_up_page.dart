@@ -64,29 +64,20 @@ final class _SignUpSubmitButton extends StatelessWidget {
 ////
 ////
 
-/// 🔁 [_WrapperForFooter] — sign in redirect link
-/// ✅ Disabled during form submission or overlay
+/// 🛡️ [_SignUpFooterGuard] — Make footer disable during form submission or active overlay
 //
-final class _WrapperForFooter extends StatelessWidget {
+final class _SignUpFooterGuard extends StatelessWidget {
   ///------------------------------------------------------
-  const _WrapperForFooter();
+  const _SignUpFooterGuard();
 
   @override
   Widget build(BuildContext context) {
     //
-    /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)
-    final isOverlayActive = context.select<OverlayStatusCubit, bool>(
-      (cubit) => cubit.state,
-    );
-
-    return BlocSelector<SignUpCubit, SignUpPageState, bool>(
-      selector: (state) => state.status.isSubmissionInProgress,
-      builder: (context, isLoading) {
-        final isEnabled = !isLoading && !isOverlayActive;
-
-        /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-        return _SignUpPageFooter(isEnabled: isEnabled);
-      },
+    return FooterGuard<SignUpCubit, SignUpPageState>(
+      isLoadingSelector: (state) => state.status.isSubmissionInProgress,
+      childBuilder: (_, isEnabled) =>
+          /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
+          _SignUpPageFooter(isEnabled: isEnabled),
     );
   }
 }

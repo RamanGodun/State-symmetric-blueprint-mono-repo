@@ -55,6 +55,7 @@ export 'src/presentation_shared/cubits/auth_cubit.dart'
 export 'src/presentation_shared/widgets_shared/form_submit_button.dart';
 export 'src/utils/async/async_error_listener.dart';
 export 'src/utils/async/async_multi_errors_listener.dart';
+export 'src/presentation_shared/widgets_shared/page_footer_guard.dart';
 
 /// ─────────────────────────────────────────────────────────────────────────
 /// 5) State adapters

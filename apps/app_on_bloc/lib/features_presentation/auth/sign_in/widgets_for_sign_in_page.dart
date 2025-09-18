@@ -139,30 +139,20 @@ final class _SignInSubmitButton extends StatelessWidget {
 ////
 ////
 
-/// 🔁 [_WrapperForFooter] — sign up & reset password links
-/// ✅ Disabled during form submission or overlay
-
+/// 🛡️ [_SignInPageFooterGuard] — Make footer disable during form submission or active overlay
 //
-final class _WrapperForFooter extends StatelessWidget {
+final class _SignInPageFooterGuard extends StatelessWidget {
   ///------------------------------------------------------
-  const _WrapperForFooter();
+  const _SignInPageFooterGuard();
 
   @override
   Widget build(BuildContext context) {
     //
-    /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)
-    final isOverlayActive = context.select<OverlayStatusCubit, bool>(
-      (cubit) => cubit.state,
-    );
-
-    return BlocSelector<SignInCubit, SignInPageState, bool>(
-      selector: (state) => state.status.isSubmissionInProgress,
-      builder: (context, isLoading) {
-        final isEnabled = !isLoading && !isOverlayActive;
-
-        /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-        return _SignInPageFooter(isEnabled: isEnabled);
-      },
+    return FooterGuard<SignInCubit, SignInPageState>(
+      isLoadingSelector: (state) => state.status.isSubmissionInProgress,
+      childBuilder: (_, isEnabled) =>
+          /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
+          _SignInPageFooter(isEnabled: isEnabled),
     );
   }
 }
@@ -176,7 +166,7 @@ final class _WrapperForFooter extends StatelessWidget {
 final class _SignInPageFooter extends StatelessWidget {
   ///-----------------------------------------------
   const _SignInPageFooter({required this.isEnabled});
-
+  //
   final bool isEnabled;
 
   @override

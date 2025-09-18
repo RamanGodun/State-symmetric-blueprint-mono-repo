@@ -85,7 +85,7 @@ final class _SignInPageView extends HookWidget {
                         const _SignInSubmitButton(),
 
                         /// 🔁 Links to redirect to sign-up or reset-password screen
-                        const _WrapperForFooter(),
+                        const _SignInPageFooterGuard(),
                         //
                       ],
                     ).centered().withPaddingHorizontal(AppSpacing.xxxm),

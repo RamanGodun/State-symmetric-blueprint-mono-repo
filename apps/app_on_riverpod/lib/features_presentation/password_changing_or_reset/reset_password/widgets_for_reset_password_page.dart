@@ -13,7 +13,7 @@ final class _ResetPasswordHeader extends StatelessWidget {
     return Column(
       children: [
         const FlutterLogo(
-          size: AppSpacing.huge,
+          size: AppSpacing.great,
         ).withPaddingOnly(top: AppSpacing.great, bottom: AppSpacing.l),
         const TextWidget(
           LocaleKeys.reset_password_header,
@@ -63,7 +63,7 @@ final class _ResetPasswordEmailInputField extends HookConsumerWidget {
 ////
 ////
 
-/// 🔘 [_ResetPasswordSubmitButton] — confirms reset action button
+/// 🔘 [_ResetPasswordSubmitButton] — Confirms reset action button
 //
 final class _ResetPasswordSubmitButton extends ConsumerWidget {
   ///-------------------------------------------------------
