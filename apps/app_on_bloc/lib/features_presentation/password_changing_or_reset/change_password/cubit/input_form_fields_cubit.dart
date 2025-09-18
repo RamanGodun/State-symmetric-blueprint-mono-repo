@@ -8,15 +8,18 @@ import 'package:formz/formz.dart';
 
 part 'input_form_fields_state.dart';
 
-/// 🔐 [ChangePasswordFormCubit] —
+/// 🔐 [ChangePasswordFormFieldsCubit] —
 //
-final class ChangePasswordFormCubit extends Cubit<ChangePasswordFormState> {
+final class ChangePasswordFormFieldsCubit
+    extends Cubit<ChangePasswordFormState> {
   ///-----------------------------------------------------------
-  ChangePasswordFormCubit(this._validation)
+  ChangePasswordFormFieldsCubit(this._validation)
     : super(const ChangePasswordFormState());
-
+  //
   final FormValidationService _validation;
   final _debouncer = Debouncer(AppDurations.ms150);
+
+  ////
 
   /// 🔒 Handles password input and updates confirm sync
   void onPasswordChanged(String value) {
@@ -61,11 +64,12 @@ final class ChangePasswordFormCubit extends Cubit<ChangePasswordFormState> {
   /// 🧼 Resets the entire form to initial state
   void resetState() => emit(const ChangePasswordFormState());
 
-  ///
-
+  /// 🧼 Cleanup
   @override
   Future<void> close() {
     _cancelDebouncers();
     return super.close();
   }
+
+  //
 }

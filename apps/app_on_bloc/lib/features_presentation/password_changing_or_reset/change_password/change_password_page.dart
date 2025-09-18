@@ -26,7 +26,8 @@ final class ChangePasswordPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => ChangePasswordFormCubit(di<FormValidationService>()),
+          create: (_) =>
+              ChangePasswordFormFieldsCubit(di<FormValidationService>()),
         ),
         BlocProvider(
           create: (_) => ChangePasswordCubit(
@@ -38,6 +39,7 @@ final class ChangePasswordPage extends StatelessWidget {
 
       ///
       child: const _ErrorsListenerForChangePasswordPage(
+        //
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
         child: _ChangePasswordView(),
       ),

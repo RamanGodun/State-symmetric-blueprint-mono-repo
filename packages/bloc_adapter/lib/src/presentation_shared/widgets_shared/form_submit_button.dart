@@ -74,11 +74,11 @@ final class FormSubmitButtonForBlocApps<
 ////
 ////
 
-/// 🧩 [ChangePasswordSubmitVmState] — простий стан для кнопки:
+/// 🧩 [FormSubmitButtonState] — простий стан для кнопки:
 ///     - FormzSubmissionStatus (loader/disable)
 ///     - isValid (чи можна сабмітнути)
-final class ChangePasswordSubmitVmState extends Equatable {
-  const ChangePasswordSubmitVmState({
+final class FormSubmitButtonState extends Equatable {
+  const FormSubmitButtonState({
     required this.status,
     required this.isValid,
   });
@@ -86,10 +86,10 @@ final class ChangePasswordSubmitVmState extends Equatable {
   final FormzSubmissionStatus status;
   final bool isValid;
 
-  ChangePasswordSubmitVmState copyWith({
+  FormSubmitButtonState copyWith({
     FormzSubmissionStatus? status,
     bool? isValid,
-  }) => ChangePasswordSubmitVmState(
+  }) => FormSubmitButtonState(
     status: status ?? this.status,
     isValid: isValid ?? this.isValid,
   );

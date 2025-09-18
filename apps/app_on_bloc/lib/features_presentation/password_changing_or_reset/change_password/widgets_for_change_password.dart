@@ -58,10 +58,10 @@ final class _PasswordInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final formCubit = context.read<ChangePasswordFormCubit>();
+    final formCubit = context.read<ChangePasswordFormFieldsCubit>();
 
     return BlocSelector<
-      ChangePasswordFormCubit,
+      ChangePasswordFormFieldsCubit,
       ChangePasswordFormState,
       FieldUiState
     >(
@@ -106,10 +106,10 @@ final class _ConfirmPasswordInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final formCubit = context.read<ChangePasswordFormCubit>();
+    final formCubit = context.read<ChangePasswordFormFieldsCubit>();
 
     return BlocSelector<
-      ChangePasswordFormCubit,
+      ChangePasswordFormFieldsCubit,
       ChangePasswordFormState,
       (String?, bool, bool)
     >(
@@ -133,7 +133,7 @@ final class _ConfirmPasswordInputField extends StatelessWidget {
           onSubmitted: isValid
               ? () {
                   final password = context
-                      .read<ChangePasswordFormCubit>()
+                      .read<ChangePasswordFormFieldsCubit>()
                       .state
                       .password
                       .value;
@@ -164,7 +164,7 @@ final class _ChangePasswordSubmitButton extends StatelessWidget {
       (cubit) => cubit.state,
     );
 
-    return BlocBuilder<ChangePasswordFormCubit, ChangePasswordFormState>(
+    return BlocBuilder<ChangePasswordFormFieldsCubit, ChangePasswordFormState>(
       buildWhen: (prev, cur) => prev.isValid != cur.isValid,
       builder: (context, form) {
         //

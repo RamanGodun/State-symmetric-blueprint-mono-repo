@@ -43,15 +43,24 @@ final class _ResetPasswordEmailInputField extends HookWidget {
     //
     final focusNode = useResetPasswordFocusNodes().email;
 
-    return BlocSelector<ResetPasswordCubit, ResetPasswordState, String?>(
+    return BlocSelector<
+      ResetPasswordFormCubit,
+      ResetPasswordFormState,
+      String?
+    >(
       selector: (state) => state.email.uiErrorKey,
       builder: (context, errorText) {
         return InputFieldFactory.create(
           type: InputFieldType.email,
           focusNode: focusNode,
           errorText: errorText,
-          onChanged: context.read<ResetPasswordCubit>().onEmailChanged,
-          onSubmitted: () => context.read<ResetPasswordCubit>().submit(),
+          onChanged: context.read<ResetPasswordFormCubit>().onEmailChanged,
+          onSubmitted: () {
+            final form = context.read<ResetPasswordFormCubit>().state;
+            if (form.isValid) {
+              context.read<ResetPasswordCubit>().submit(form.email.value);
+            }
+          },
         ).withPaddingBottom(AppSpacing.huge);
       },
     );
@@ -70,26 +79,36 @@ final class _ResetPasswordSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<
-      ResetPasswordCubit,
-      ResetPasswordState,
-      ({FormzSubmissionStatus status, bool isValid})
-    >(
-      selector: (state) => (status: state.status, isValid: state.isValid),
-      builder: (context, state) {
-        return FormSubmitButtonForBlocApps<
-              ResetPasswordCubit,
-              ResetPasswordState
-            >(
-              label: LocaleKeys.buttons_reset_password,
-              onPressed: (_) {
-                context.unfocusKeyboard();
-                context.read<ResetPasswordCubit>().submit();
-              },
-              statusSelector: (state) => state.status,
-              isValidatedSelector: (state) => state.isValid,
-            )
-            .withPaddingBottom(AppSpacing.xl);
+    final isOverlayActive = context.select<OverlayStatusCubit, bool>(
+      (cubit) => cubit.state,
+    );
+    final isLoading = context.select<ResetPasswordCubit, bool>(
+      (cubit) => cubit.state.isLoading,
+    );
+
+    return BlocSelector<ResetPasswordFormCubit, ResetPasswordFormState, bool>(
+      selector: (s) => s.isValid,
+      builder: (context, isValid) {
+        final isEnabled = isValid && !isLoading && !isOverlayActive;
+
+        return CustomFilledButton(
+          label: isLoading
+              ? LocaleKeys.buttons_submitting
+              : LocaleKeys.buttons_reset_password,
+          isLoading: isLoading,
+          isEnabled: isEnabled,
+          onPressed: isEnabled
+              ? () {
+                  context.unfocusKeyboard();
+                  final email = context
+                      .read<ResetPasswordFormCubit>()
+                      .state
+                      .email
+                      .value;
+                  context.read<ResetPasswordCubit>().submit(email);
+                }
+              : null,
+        ).withPaddingBottom(AppSpacing.xl);
       },
     );
   }
@@ -108,7 +127,7 @@ final class _ResetPasswordFooterGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     return FooterGuard<ResetPasswordCubit, ResetPasswordState>(
-      isLoadingSelector: (state) => state.status.isSubmissionInProgress,
+      isLoadingSelector: (state) => state.isLoading,
       childBuilder: (_, isEnabled) =>
           /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
           _ResetPasswordPageFooter(isEnabled: isEnabled),

@@ -5,20 +5,47 @@ part of 'reset_password__page.dart';
 /// - ✅ Success → snackbar + redirect to SignIn
 //
 final class _ErrorsListenersForResetPasswordPage extends StatelessWidget {
-  ///-------------------------------------------------------
+  ///-----------------------------------------------------------------
   const _ErrorsListenersForResetPasswordPage({required this.child});
   //
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        /// ❌ Error Listener
+    //
+    return BlocListener<ResetPasswordCubit, ResetPasswordState>(
+      listenWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
+      listener: (context, state) {
+        switch (state) {
+          /// ✅ Success
+          case ResetPasswordSuccess():
+            context
+              ..showSnackbar(message: LocaleKeys.reset_password_success)
+              // 🧭 Navigation after success
+              ..goTo(RoutesNames.signIn);
+
+          /// ❌ Error
+          case ResetPasswordError(:final failure):
+            context.showError(failure.toUIEntity());
+
+          default:
+            break;
+        }
+      },
+      child: child,
+    );
+  }
+}
+
+////
+////
+
+/*
+
+ /// ❌ Error Listener
         BlocListener<ResetPasswordCubit, ResetPasswordState>(
           // 🎯 Fire only on submission failure transition
-          listenWhen: (prev, curr) =>
-              prev.status != curr.status && curr.status.isSubmissionFailure,
+          listenWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
           listener: (context, state) {
             final error = state.failure?.consume();
             if (error != null) {
@@ -31,8 +58,7 @@ final class _ErrorsListenersForResetPasswordPage extends StatelessWidget {
         /// ✅ Success Listener
         BlocListener<ResetPasswordCubit, ResetPasswordState>(
           // 🎯 Fire only on submission success transition
-          listenWhen: (prev, curr) =>
-              prev.status != curr.status && curr.status.isSubmissionSuccess,
+          listenWhen: (prev, curr) => prev.status != curr.status && curr.status.isSubmissionSuccess,
           listener: (context, state) {
             context
               ..showSnackbar(message: LocaleKeys.reset_password_success)
@@ -40,8 +66,5 @@ final class _ErrorsListenersForResetPasswordPage extends StatelessWidget {
               ..goTo(RoutesNames.signIn);
           },
         ),
-      ],
-      child: child,
-    );
-  }
-}
+
+ */
