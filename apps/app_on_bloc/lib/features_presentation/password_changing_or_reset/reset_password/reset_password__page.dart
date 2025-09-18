@@ -33,7 +33,7 @@ final class ResetPasswordPage extends StatelessWidget {
         ),
       ],
 
-      /// 🛡️ Wraps [_ResetPasswordView] with side-effect listeners (handles ❌Error&✅Success cases)
+      /// 🛡️ Wraps [_ResetPasswordView] with side-effect listeners (handles ❌Error & ✅Success cases)
       child: const _ErrorsListenersForResetPasswordPage(
         //
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)

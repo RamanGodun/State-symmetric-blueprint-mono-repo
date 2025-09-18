@@ -49,15 +49,38 @@ final class _SignUpSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return FormSubmitButtonForBlocApps<SignUpCubit, SignUpPageState>(
-      label: LocaleKeys.buttons_sign_up,
-      onPressed: (context) {
-        context.unfocusKeyboard();
-        context.read<SignUpCubit>().submit();
+    final isOverlayActive = context.select<OverlayStatusCubit, bool>(
+      (cubit) => cubit.state,
+    );
+    final isLoading = context.select<SignUpCubit, bool>(
+      (cubit) => cubit.state.isLoading,
+    );
+
+    return BlocSelector<SignUpFormCubit, SignUpFormState, bool>(
+      selector: (state) => state.isValid,
+      builder: (context, isValid) {
+        final isEnabled = isValid && !isLoading && !isOverlayActive;
+
+        return CustomFilledButton(
+          label: isLoading
+              ? LocaleKeys.buttons_submitting
+              : LocaleKeys.buttons_sign_up,
+          isLoading: isLoading,
+          isEnabled: isEnabled,
+          onPressed: isEnabled
+              ? () {
+                  context.unfocusKeyboard();
+                  final form = context.read<SignUpFormCubit>().state;
+                  context.read<SignUpCubit>().submit(
+                    name: form.name.value,
+                    email: form.email.value,
+                    password: form.password.value,
+                  );
+                }
+              : null,
+        ).withPaddingBottom(AppSpacing.l);
       },
-      statusSelector: (state) => state.status,
-      isValidatedSelector: (state) => state.isValid,
-    ).withPaddingBottom(AppSpacing.l);
+    );
   }
 }
 
@@ -73,8 +96,8 @@ final class _SignUpFooterGuard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return FooterGuard<SignUpCubit, SignUpPageState>(
-      isLoadingSelector: (state) => state.status.isSubmissionInProgress,
+    return FooterGuard<SignUpCubit, SignUpState>(
+      isLoadingSelector: (state) => state.isLoading,
       childBuilder: (_, isEnabled) =>
           /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
           _SignUpPageFooter(isEnabled: isEnabled),

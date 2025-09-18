@@ -1,0 +1,33 @@
+part of 'sign_up__page.dart';
+
+/// 🛡️ [_ErrorsListenersForSignUpPage] — encapsulates side-effects for SignUp
+/// - ✅ Success → snackbar + redirect to VerifyEmail (or Home — as you prefer)
+/// - ❌ Error → show localized error
+//
+final class _ErrorsListenersForSignUpPage extends StatelessWidget {
+  ///-----------------------------------------------------------
+  const _ErrorsListenersForSignUpPage({required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<SignUpCubit, SignUpState>(
+      listenWhen: (prev, current) => prev.runtimeType != current.runtimeType,
+      listener: (context, state) {
+        switch (state) {
+          case SignUpSuccess():
+            context.showSnackbar(
+              message: LocaleKeys.sign_up_already_have_account,
+            );
+
+          case SignUpError(:final failure):
+            context.showError(failure.toUIEntity());
+
+          default:
+            break;
+        }
+      },
+      child: child,
+    );
+  }
+}

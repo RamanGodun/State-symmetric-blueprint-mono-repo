@@ -52,14 +52,14 @@ final class _SignInEmailInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<SignInCubit, SignInPageState, String?>(
+    return BlocSelector<SignInFormCubit, SignInFormState, String?>(
       selector: (state) => state.email.uiErrorKey,
       builder: (context, errorText) {
         return InputFieldFactory.create(
           type: InputFieldType.email,
           focusNode: focusNodes.email,
           errorText: errorText,
-          onChanged: context.read<SignInCubit>().emailChanged,
+          onChanged: context.read<SignInFormCubit>().onEmailChanged,
           onSubmitted: focusNodes.password.requestFocus,
         ).withPaddingBottom(AppSpacing.xm);
       },
@@ -82,7 +82,7 @@ final class _SignInPasswordInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<SignInCubit, SignInPageState, FieldUiState>(
+    return BlocSelector<SignInFormCubit, SignInFormState, FieldUiState>(
       selector: (state) => (
         errorText: state.password.uiErrorKey,
         isObscure: state.isPasswordObscure,
@@ -97,12 +97,17 @@ final class _SignInPasswordInputField extends StatelessWidget {
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
-            onPressed: context.read<SignInCubit>().togglePasswordVisibility,
+            onPressed: context.read<SignInFormCubit>().togglePasswordVisibility,
           ),
-          onChanged: context.read<SignInCubit>().passwordChanged,
+          onChanged: context.read<SignInFormCubit>().onPasswordChanged,
           onSubmitted: () {
-            final isValid = context.read<SignInCubit>().state.isValid;
-            if (isValid) context.read<SignInCubit>().submit();
+            final form = context.read<SignInFormCubit>().state;
+            if (form.isValid) {
+              context.read<SignInCubit>().submit(
+                email: form.email.value,
+                password: form.password.value,
+              );
+            }
           },
         ).withPaddingBottom(AppSpacing.xl);
       },
@@ -124,15 +129,37 @@ final class _SignInSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return FormSubmitButtonForBlocApps<SignInCubit, SignInPageState>(
-      label: LocaleKeys.buttons_sign_in,
-      onPressed: (context) {
-        context.unfocusKeyboard();
-        context.read<SignInCubit>().submit();
+    final isOverlayActive = context.select<OverlayStatusCubit, bool>(
+      (c) => c.state,
+    );
+    final isLoading = context.select<SignInCubit, bool>(
+      (c) => c.state.isLoading,
+    );
+
+    return BlocSelector<SignInFormCubit, SignInFormState, bool>(
+      selector: (s) => s.isValid,
+      builder: (context, isValid) {
+        final isEnabled = isValid && !isLoading && !isOverlayActive;
+
+        return CustomFilledButton(
+          label: isLoading
+              ? LocaleKeys.buttons_submitting
+              : LocaleKeys.buttons_sign_in,
+          isLoading: isLoading,
+          isEnabled: isEnabled,
+          onPressed: isEnabled
+              ? () {
+                  context.unfocusKeyboard();
+                  final form = context.read<SignInFormCubit>().state;
+                  context.read<SignInCubit>().submit(
+                    email: form.email.value,
+                    password: form.password.value,
+                  );
+                }
+              : null,
+        ).withPaddingBottom(AppSpacing.l);
       },
-      statusSelector: (state) => state.status,
-      isValidatedSelector: (state) => state.isValid,
-    ).withPaddingBottom(AppSpacing.l);
+    );
   }
 }
 
@@ -149,7 +176,7 @@ final class _SignInPageFooterGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     return FooterGuard<SignInCubit, SignInPageState>(
-      isLoadingSelector: (state) => state.status.isSubmissionInProgress,
+      isLoadingSelector: (state) => state.isLoading,
       childBuilder: (_, isEnabled) =>
           /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
           _SignInPageFooter(isEnabled: isEnabled),

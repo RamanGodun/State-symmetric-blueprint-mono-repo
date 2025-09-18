@@ -37,7 +37,8 @@ final class ChangePasswordPage extends StatelessWidget {
         ),
       ],
 
-      ///
+      /// 🔄 Bloc listener for one-shot error handling (with optional "retry" logic) via overlays
+      /// 🧠 OverlayDispatcher resolves conflicts/priority internally
       child: const _ErrorsListenerForChangePasswordPage(
         //
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)

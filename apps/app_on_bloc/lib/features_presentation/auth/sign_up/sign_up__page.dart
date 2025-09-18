@@ -1,22 +1,17 @@
-import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/sign_up_page_cubit.dart'
-    show SignUpCubit, SignUpPageState;
+import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/sign_up_page__cubit.dart';
+import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/sign_up_page_input_fields_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/base_modules/forms.dart';
-import 'package:core/base_modules/localization.dart';
-import 'package:core/base_modules/navigation.dart';
-import 'package:core/base_modules/ui_design.dart' show AppSpacing;
-import 'package:core/shared_layers/presentation.dart' show AppTextButton;
-import 'package:core/utils.dart';
+import 'package:core/core.dart';
 import 'package:features/features.dart' show SignUpUseCase;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' show HookWidget;
 
+part 'sign_up_errors_listener.dart';
 part 'sign_up_input_fields.dart';
 part 'widgets_for_sign_up_page.dart';
 
 /// 🧾🔐 [SignUpPage] — Entry point for the sign-up feature
-/// ✅ Provides scoped cubit with injected services
 //
 final class SignUpPage extends StatelessWidget {
   ///-----------------------------------------
@@ -26,20 +21,20 @@ final class SignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// 🧩 Provide screen-scoped cubits (disposed on pop)
-    return BlocProvider(
-      create: (_) => SignUpCubit(
-        di<SignUpUseCase>(),
-        di<FormValidationService>(),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => SignUpCubit(di<SignUpUseCase>())),
+        BlocProvider(
+          create: (_) => SignUpFormCubit(di<FormValidationService>()),
+        ),
+      ],
 
-      /// 🔄 [RetryAwareFailureListener] — Bloc listener for one-shot
-      ///    error handling (with optional "retry" logic) via overlays
+      /// 🛡️ Wrap with Bloc side-effect listeners (with optional "retry" logic)
       /// 🧠 OverlayDispatcher resolves conflicts/priority internally
-      child: FailureListenerForAppWithBloc<SignUpPageState, SignUpCubit>(
-        onRetry: (cubit) => cubit.submit(),
-
+      child: const _ErrorsListenersForSignUpPage(
+        //
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-        child: const _SignUpView(),
+        child: _SignUpView(),
       ),
     );
   }

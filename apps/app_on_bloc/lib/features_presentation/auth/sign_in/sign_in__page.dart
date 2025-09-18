@@ -1,6 +1,7 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart'
     show RoutesNames;
-import 'package:app_on_bloc/features_presentation/auth/sign_in/cubit/sign_in_page_cubit.dart';
+import 'package:app_on_bloc/features_presentation/auth/sign_in/cubit/sign_in_page__cubit.dart';
+import 'package:app_on_bloc/features_presentation/auth/sign_in/cubit/sign_in_page_input_fields_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
 import 'package:features/features_barrels/auth/auth.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+part 'sign_in_page_errors_listener.dart';
 part 'widgets_for_sign_in_page.dart';
 
 /// 🔐 [SignInPage] — Entry point for the sign-in feature
@@ -21,20 +23,20 @@ final class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// 🧩 Provide screen-scoped cubits (disposed on pop)
-    return BlocProvider(
-      create: (_) => SignInCubit(
-        di<SignInUseCase>(),
-        di<FormValidationService>(),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => SignInCubit(di<SignInUseCase>())),
+        BlocProvider(
+          create: (_) => SignInFormCubit(di<FormValidationService>()),
+        ),
+      ],
 
-      /// 🔄 [RetryAwareFailureListener] — Bloc listener for one-shot
-      ///    error handling (with optional "retry" logic) via overlays
+      /// 🛡️ Wrap with side-effect Bloc listeners (❌Error & ✅Success) with optional "retry" logic
       /// 🧠 OverlayDispatcher resolves conflicts/priority internally
-      child: FailureListenerForAppWithBloc<SignInPageState, SignInCubit>(
-        onRetry: (cubit) => cubit.submit(),
-
+      child: const _ErrorsListenersForSignInPage(
+        //
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-        child: const _SignInPageView(),
+        child: _SignInPageView(),
       ),
     );
   }

@@ -18,14 +18,14 @@ final class _SignUpUserNameInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<SignUpCubit, SignUpPageState, String?>(
+    return BlocSelector<SignUpFormCubit, SignUpFormState, String?>(
       selector: (state) => state.name.uiErrorKey,
       builder: (context, errorText) {
         return InputFieldFactory.create(
           type: InputFieldType.name,
           focusNode: focusNodes.name,
           errorText: errorText,
-          onChanged: context.read<SignUpCubit>().onNameChanged,
+          onChanged: context.read<SignUpFormCubit>().onNameChanged,
           onSubmitted: focusNodes.email.requestFocus,
         ).withPaddingBottom(AppSpacing.xm);
       },
@@ -54,14 +54,14 @@ final class _SignUpEmailInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<SignUpCubit, SignUpPageState, String?>(
+    return BlocSelector<SignUpFormCubit, SignUpFormState, String?>(
       selector: (state) => state.email.uiErrorKey,
       builder: (context, errorText) {
         return InputFieldFactory.create(
           type: InputFieldType.email,
           focusNode: focusNodes.email,
           errorText: errorText,
-          onChanged: context.read<SignUpCubit>().onEmailChanged,
+          onChanged: context.read<SignUpFormCubit>().onEmailChanged,
           onSubmitted: focusNodes.password.requestFocus,
         ).withPaddingBottom(AppSpacing.xm);
       },
@@ -90,7 +90,7 @@ final class _SignUpPasswordInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<SignUpCubit, SignUpPageState, FieldUiState>(
+    return BlocSelector<SignUpFormCubit, SignUpFormState, FieldUiState>(
       selector: (state) => (
         errorText: state.password.uiErrorKey,
         isObscure: state.isPasswordObscure,
@@ -106,10 +106,10 @@ final class _SignUpPasswordInputField extends StatelessWidget {
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
-            onPressed: context.read<SignUpCubit>().togglePasswordVisibility,
+            onPressed: context.read<SignUpFormCubit>().togglePasswordVisibility,
           ),
           //
-          onChanged: context.read<SignUpCubit>().onPasswordChanged,
+          onChanged: context.read<SignUpFormCubit>().onPasswordChanged,
           onSubmitted: focusNodes.confirmPassword.requestFocus,
         ).withPaddingBottom(AppSpacing.xm);
       },
@@ -138,7 +138,7 @@ final class _SignUpConfirmPasswordInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<SignUpCubit, SignUpPageState, FieldUiState>(
+    return BlocSelector<SignUpFormCubit, SignUpFormState, FieldUiState>(
       selector: (state) => (
         errorText: state.confirmPassword.uiErrorKey,
         isObscure: state.isConfirmPasswordObscure,
@@ -150,19 +150,25 @@ final class _SignUpConfirmPasswordInputField extends StatelessWidget {
           type: InputFieldType.confirmPassword,
           focusNode: focusNodes.confirmPassword,
           errorText: errorText,
-          //
+
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
             onPressed: context
-                .read<SignUpCubit>()
+                .read<SignUpFormCubit>()
                 .toggleConfirmPasswordVisibility,
           ),
-          //
-          onChanged: context.read<SignUpCubit>().onConfirmPasswordChanged,
+
+          onChanged: context.read<SignUpFormCubit>().onConfirmPasswordChanged,
           onSubmitted: () {
-            final cubit = context.read<SignUpCubit>();
-            if (cubit.state.isValid) cubit.submit();
+            final form = context.read<SignUpFormCubit>().state;
+            if (form.isValid) {
+              context.read<SignUpCubit>().submit(
+                name: form.name.value,
+                email: form.email.value,
+                password: form.password.value,
+              );
+            }
           },
         ).withPaddingBottom(AppSpacing.xl);
       },
