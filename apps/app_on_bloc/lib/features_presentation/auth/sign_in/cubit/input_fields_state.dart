@@ -1,7 +1,7 @@
 //
 // ignore_for_file: public_member_api_docs
 
-part of 'sign_in_page_input_fields_cubit.dart';
+part of 'input_fields_cubit.dart';
 
 /// 📄 [SignInFormState] — Holds email/password + isValid/obscure flags
 //

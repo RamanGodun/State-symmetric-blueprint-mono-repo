@@ -1,19 +1,19 @@
+import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
-import 'package:equatable/equatable.dart';
 import 'package:features/features.dart' show PasswordRelatedUseCases;
 import 'package:features/features_barrels/auth/auth.dart' show SignOutUseCase;
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'change_password__state.dart';
+// part 'change_password__state.dart';
 
 /// 🔐 [ChangePasswordCubit] — Manages reset password logic, validation, submission.
 /// ✅ Leverages [PasswordRelatedUseCases] injected via DI and uses declarative state updates.
 //
-final class ChangePasswordCubit extends Cubit<ChangePasswordState> {
+final class ChangePasswordCubit extends Cubit<ButtonSubmissionState> {
   ///-----------------------------------------------------------
   ChangePasswordCubit(this._useCases, this._signOutUseCase)
-    : super(const ChangePasswordInitial());
+    : super(const ButtonSubmissionInitial());
   //
   final PasswordRelatedUseCases _useCases;
   final SignOutUseCase _signOutUseCase;
@@ -23,23 +23,23 @@ final class ChangePasswordCubit extends Cubit<ChangePasswordState> {
 
   /// 🚀 Submits reset password request if form is valid
   Future<void> submit(String newPassword) async {
-    if (state is ChangePasswordLoading) return;
+    if (state is ButtonSubmissionLoading) return;
     //
     _submitDebouncer.run(() async {
-      emit(const ChangePasswordLoading());
+      emit(const ButtonSubmissionLoading());
       //
       final result = await _useCases.callChangePassword(newPassword);
       //
       ResultHandler(result)
         ..onSuccess((_) {
           debugPrint('✅ Password changed successfully');
-          emit(const ChangePasswordSuccess());
+          emit(const ButtonSubmissionSuccess());
         })
         ..onFailure((failure) async {
           debugPrint('❌ Password change failed: ${failure.runtimeType}');
           (failure.type is RequiresRecentLoginFirebaseFailureType)
-              ? emit(ChangePasswordRequiresReauth(failure.asConsumable()))
-              : emit(ChangePasswordError(failure.asConsumable()));
+              ? emit(ButtonSubmissionRequiresReauth(failure.asConsumable()))
+              : emit(ButtonSubmissionError(failure.asConsumable()));
           failure.log();
         })
         ..log();
@@ -55,7 +55,7 @@ final class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   ///
 
   /// ♻️ Returns to initial state (eg, after dialog/redirect)
-  void resetState() => emit(const ChangePasswordInitial());
+  void resetState() => emit(const ButtonSubmissionInitial());
 
   /// 🧼 Cleans up resources on close
   @override

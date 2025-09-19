@@ -1,16 +1,14 @@
+import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
-import 'package:equatable/equatable.dart';
 import 'package:features/features.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'sign_in_page__state.dart';
-
 /// 🔐 [SignInCubit] — Handles sign-in submission & side-effects
 //
-final class SignInCubit extends Cubit<SignInPageState> {
+final class SignInCubit extends Cubit<ButtonSubmissionState> {
   ///-----------------------------------------------
-  SignInCubit(this._signInUseCase) : super(const SignInInitial());
+  SignInCubit(this._signInUseCase) : super(const ButtonSubmissionInitial());
   //
   final SignInUseCase _signInUseCase;
   final _submitDebouncer = Debouncer(AppDurations.ms600);
@@ -19,10 +17,10 @@ final class SignInCubit extends Cubit<SignInPageState> {
 
   /// 🚀 Submits credentials (expects pre-validated email/password)
   Future<void> submit({required String email, required String password}) async {
-    if (state is SignInLoading) return;
+    if (state is ButtonSubmissionLoading) return;
     //
     _submitDebouncer.run(() async {
-      emit(const SignInLoading());
+      emit(const ButtonSubmissionLoading());
       //
       final result = await _signInUseCase.call(
         email: email,
@@ -31,11 +29,11 @@ final class SignInCubit extends Cubit<SignInPageState> {
       ResultHandler(result)
         ..onSuccess((_) {
           debugPrint('✅ Signed in successfully');
-          emit(const SignInSuccess());
+          emit(const ButtonSubmissionSuccess());
         })
         ..onFailure((failure) {
           debugPrint('❌ Sign in failed: ${failure.runtimeType}');
-          emit(SignInError(failure.asConsumable()));
+          emit(ButtonSubmissionError(failure.asConsumable()));
           failure.log();
         })
         ..log();
@@ -45,15 +43,15 @@ final class SignInCubit extends Cubit<SignInPageState> {
   ? Alternative syntax: classic fold version for direct mapping:
 
   result.fold(
-      (f) =>  emit(SignInError(f))),
-      (_) =>  emit(const SignInSuccess()),
+      (f) =>  emit(SubmissionError(f))),
+      (_) =>  emit(const SubmissionSuccess()),
     );
   }
 
  */
 
   /// ♻️ Reset to initial (e.g., after dialogs/navigation)
-  void resetState() => emit(const SignInInitial());
+  void resetState() => emit(const ButtonSubmissionInitial());
 
   /// 🧼 Cleanup
   @override

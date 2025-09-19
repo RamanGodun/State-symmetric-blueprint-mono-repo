@@ -7,7 +7,7 @@ import 'package:features/features.dart' show SignOutUseCase;
 ///     ✅ error   => AsyncState.error(Failure)
 ///     ✅ loading => AsyncState.loading()
 //
-final class SignOutCubit extends CubitWithAsyncState<void> {
+final class SignOutCubit extends CubitWithAsyncValue<void> {
   ///------------------------------------------------
   SignOutCubit(this._signOutUseCase) : super();
   //

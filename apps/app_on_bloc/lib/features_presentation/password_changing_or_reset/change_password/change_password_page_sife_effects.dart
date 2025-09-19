@@ -1,4 +1,4 @@
-part of 'change_password_page.dart';
+part of 'change_password__page.dart';
 
 /// 🛡️ [_ErrorsListenerForChangePasswordPage] — incapsulates side-effects for [_ChangePasswordView]
 ///     - ✅ Success → snackbar + redirect to home page
@@ -13,14 +13,14 @@ final class _ErrorsListenerForChangePasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocListener<ChangePasswordCubit, ChangePasswordState>(
+    return BlocListener<ChangePasswordCubit, ButtonSubmissionState>(
       listenWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
       listener: (context, state) async {
         //
         switch (state) {
           //
           /// ✅ Success
-          case ChangePasswordSuccess():
+          case ButtonSubmissionSuccess():
             context
               ..showSnackbar(
                 message: LocaleKeys.reauth_password_updated.tr(),
@@ -31,7 +31,7 @@ final class _ErrorsListenerForChangePasswordPage extends StatelessWidget {
           ////
 
           /// ❌ Error
-          case ChangePasswordError(:final failure):
+          case ButtonSubmissionError(:final failure):
             final consumedFailure = failure?.consume();
             if (consumedFailure == null) return;
             context.showError(consumedFailure.toUIEntity());
@@ -40,7 +40,7 @@ final class _ErrorsListenerForChangePasswordPage extends StatelessWidget {
           ////
 
           /// 🔄 Requires Reauth → show dialog, than signOut for reAuth
-          case ChangePasswordRequiresReauth(:final failure):
+          case ButtonSubmissionRequiresReauth(:final failure):
             final consumedFailure = failure?.consume();
             if (consumedFailure == null) return;
             context.showError(

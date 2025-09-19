@@ -1,4 +1,4 @@
-part of 'change_password_page.dart';
+part of 'change_password__page.dart';
 
 /// ℹ️ Info section for [ChangePasswordPage]
 /// ✅ Same widget used in Riverpod app for perfect parity
@@ -169,7 +169,7 @@ final class _ChangePasswordSubmitButton extends StatelessWidget {
       builder: (context, form) {
         //
         final isLoading = context.select<ChangePasswordCubit, bool>(
-          (cubit) => cubit.state is ChangePasswordLoading,
+          (cubit) => cubit.state.isLoading,
         );
         final isEnabled = form.isValid && !isLoading && !isOverlayActive;
 

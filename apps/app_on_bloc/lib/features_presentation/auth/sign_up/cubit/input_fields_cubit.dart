@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
-part 'sign_up_page_input_fields_state.dart';
+part 'input_fields_state.dart';
 
 /// 📝 [SignUpFormCubit] — Owns name/email/password/confirm fields & validation
 /// ✅ UI-only state: values, errors, visibility, isValid

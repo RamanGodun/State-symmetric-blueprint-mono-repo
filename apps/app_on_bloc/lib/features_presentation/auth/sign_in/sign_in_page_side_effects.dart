@@ -1,37 +1,35 @@
-part of 'sign_up__page.dart';
+part of 'sign_in__page.dart';
 
-/// 🛡️ [_ErrorsListenersForSignUpPage] — encapsulates side-effects for SignUp
-/// - ✅ Success → snackbar + redirect to VerifyEmail (or Home — as you prefer)
+/// 🛡️ [_ErrorsListenersForSignInPage] — encapsulates side-effects for SignIn
+/// - ✅ Success → snackbar + redirect to Home
 /// - ❌ Error → show localized error
 //
-final class _ErrorsListenersForSignUpPage extends StatelessWidget {
+final class _ErrorsListenersForSignInPage extends StatelessWidget {
   ///-----------------------------------------------------------
-  const _ErrorsListenersForSignUpPage({required this.child});
+  const _ErrorsListenersForSignInPage({required this.child});
+  //
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SignUpCubit, SignUpState>(
+    return BlocListener<SignInCubit, ButtonSubmissionState>(
       listenWhen: (prev, current) => prev.runtimeType != current.runtimeType,
       listener: (context, state) {
         //
         switch (state) {
           //
           /// ✅ Success
-          case SignUpSuccess():
-            context.showSnackbar(
-              message: LocaleKeys.sign_up_already_have_account,
-            );
+          case ButtonSubmissionSuccess():
+            context.showSnackbar(message: LocaleKeys.sign_in_forgot_password);
 
           ////
 
           /// ❌ Error
-          case SignUpError(:final failure):
+          case ButtonSubmissionError(:final failure):
             final consumedFailure = failure?.consume();
             if (consumedFailure == null) return;
             context.showError(consumedFailure.toUIEntity());
-
-          ///
+          //
           default:
             break;
         }
@@ -39,7 +37,7 @@ final class _ErrorsListenersForSignUpPage extends StatelessWidget {
 
       ///
       child: child,
-      //
+      // /
     );
   }
 }

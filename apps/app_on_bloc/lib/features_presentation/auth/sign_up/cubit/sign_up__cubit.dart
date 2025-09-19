@@ -1,19 +1,19 @@
+import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
-import 'package:equatable/equatable.dart';
 import 'package:features/features_barrels/auth/auth.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'sign_up_page__state.dart';
+// part 'sign_up_page__state.dart';
 
 /// 🔐 [SignUpCubit] — Handles sign-up submission & side-effects
 //
-final class SignUpCubit extends Cubit<SignUpState> {
-  ///-------------------------------------------
-  SignUpCubit(this._signUpUseCase) : super(const SignUpInitial());
+final class SignUpCubit extends Cubit<ButtonSubmissionState> {
+  ///------------------------------------------------
+  SignUpCubit(this._signUpUseCase) : super(const ButtonSubmissionInitial());
   //
   final SignUpUseCase _signUpUseCase;
-  final _submitDebouncer = Debouncer(AppDurations.ms180);
+  final _submitDebouncer = Debouncer(AppDurations.ms600);
 
   ////
 
@@ -23,10 +23,10 @@ final class SignUpCubit extends Cubit<SignUpState> {
     required String email,
     required String password,
   }) async {
-    if (state is SignUpLoading) return;
+    if (state is ButtonSubmissionLoading) return;
     //
     _submitDebouncer.run(() async {
-      emit(const SignUpLoading());
+      emit(const ButtonSubmissionLoading());
       //
       final result = await _signUpUseCase(
         name: name,
@@ -37,11 +37,11 @@ final class SignUpCubit extends Cubit<SignUpState> {
       ResultHandler(result)
         ..onSuccess((_) {
           debugPrint('✅ Signed up successfully');
-          emit(const SignUpSuccess());
+          emit(const ButtonSubmissionSuccess());
         })
         ..onFailure((failure) {
           debugPrint('❌ Sign up failed: ${failure.runtimeType}');
-          emit(SignUpError(failure.asConsumable()));
+          emit(ButtonSubmissionError(failure.asConsumable()));
           failure.log();
         })
         ..log();
@@ -58,7 +58,7 @@ final class SignUpCubit extends Cubit<SignUpState> {
   ////
 
   /// ♻️ Reset to initial (e.g., after dialogs/navigation)
-  void resetState() => emit(const SignUpInitial());
+  void resetState() => emit(const ButtonSubmissionInitial());
 
   /// 🧼 Cleanup
   @override

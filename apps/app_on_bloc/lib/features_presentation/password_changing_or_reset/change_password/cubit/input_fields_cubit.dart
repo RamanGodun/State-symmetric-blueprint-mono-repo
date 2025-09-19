@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
-part 'input_form_fields_state.dart';
+part 'input_fields_state.dart';
 
 /// 🔐 [ChangePasswordFormFieldsCubit] —
 //

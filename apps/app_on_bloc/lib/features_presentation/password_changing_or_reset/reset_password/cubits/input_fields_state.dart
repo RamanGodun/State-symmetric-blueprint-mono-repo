@@ -1,4 +1,4 @@
-part of 'reset_password_input_form_fields_cubit.dart';
+part of 'input_fields_cubit.dart';
 
 /// 📄 [ResetPasswordFormState] — Stores email field + isValid
 final class ResetPasswordFormState extends Equatable {

@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
-part 'reset_password_state.dart';
+part 'input_fields_state.dart';
 
 /// 🔐 [ResetPasswordFormCubit] — Owns email field & validation (Form only)
 final class ResetPasswordFormCubit extends Cubit<ResetPasswordFormState> {

@@ -1,5 +1,5 @@
-import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/sign_up_page__cubit.dart';
-import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/sign_up_page_input_fields_cubit.dart';
+import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/sign_up__cubit.dart';
+import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/input_fields_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
 import 'package:features/features.dart' show SignUpUseCase;
@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' show HookWidget;
 
-part 'sign_up_errors_listener.dart';
-part 'sign_up_input_fields.dart';
+part 'sign_up_page_side_effects.dart';
+part 'sign_up_page_input_fields.dart';
 part 'widgets_for_sign_up_page.dart';
 
 /// 🧾🔐 [SignUpPage] — Entry point for the sign-up feature

@@ -1,13 +1,13 @@
 import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 🧩 [CubitWithAsyncState] — base Cubit for [AsyncState] state
+/// 🧩 [CubitWithAsyncValue] — base Cubit for [AsyncState] state
 /// ✅ Unified loader + Either helper
 /// ✅ Ready for distinct-emits (pair with Equatable AsyncState)
 ///
-abstract class CubitWithAsyncState<T> extends Cubit<AsyncState<T>> {
+abstract class CubitWithAsyncValue<T> extends Cubit<AsyncState<T>> {
   ///--------------------------------------------------------
-  CubitWithAsyncState() : super(const AsyncState.loading());
+  CubitWithAsyncValue() : super(const AsyncState.loading());
 
   /// 🗺️ Centralized mapping (errors_management): Exception/Error → Failure
   Failure mapError(Object e, StackTrace st) => e.mapToFailure(st);

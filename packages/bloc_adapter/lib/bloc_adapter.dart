@@ -70,3 +70,7 @@ export 'src/utils/i_submission_state.dart'
 /// 5) Others utils
 /// ─────────────────────────────────────────────────────────────────────────
 export 'src/utils/async/forms_utils.dart';
+
+///
+export 'src/presentation_shared/cubits/submission_state.dart';
+export 'src/utils/side_effects_for_submission_state.dart';

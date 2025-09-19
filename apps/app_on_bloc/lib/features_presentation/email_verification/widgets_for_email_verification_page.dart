@@ -49,6 +49,7 @@ final class _VerifyEmailView extends StatelessWidget {
 ////
 
 /// ℹ️ [_VerifyEmailInfo] — shows instructions about checking inbox / spam
+/// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class _VerifyEmailInfo extends StatelessWidget {
   ///----------------------------------------------
