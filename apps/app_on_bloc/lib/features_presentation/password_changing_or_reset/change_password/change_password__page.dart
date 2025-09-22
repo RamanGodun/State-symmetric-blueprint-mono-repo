@@ -46,6 +46,8 @@ final class ChangePasswordPage extends StatelessWidget {
           ui,
           onConfirm: ctx.read<ChangePasswordCubit>().confirmReauth,
         ),
+        onResetForm: (ctx) =>
+            ctx.read<ChangePasswordFormFieldsCubit>().resetState(),
 
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
         child: const _ChangePasswordView(),

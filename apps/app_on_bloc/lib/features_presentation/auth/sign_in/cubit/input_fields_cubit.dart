@@ -36,7 +36,7 @@ final class SignInFormCubit extends Cubit<SignInFormState> {
       emit(state._copyWith(isPasswordObscure: !state.isPasswordObscure));
 
   /// 🧼 Reset form
-  void resetState() => emit(const SignInFormState());
+  void resetState() => emit(SignInFormState(epoch: state.epoch + 1));
 
   /// 🧼 Cleans up resources on close
   @override

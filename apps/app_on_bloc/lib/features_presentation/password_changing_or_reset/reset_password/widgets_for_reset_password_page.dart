@@ -42,27 +42,30 @@ final class _ResetPasswordEmailInputField extends HookWidget {
   Widget build(BuildContext context) {
     //
     final focusNode = useResetPasswordFocusNodes().email;
-    final formState = context.read<ResetPasswordFormCubit>().state;
     //
     return BlocSelector<
       ResetPasswordFormCubit,
       ResetPasswordFormState,
-      String?
+      (String?, int)
     >(
-      selector: (state) => state.email.uiErrorKey,
-      builder: (context, errorText) {
+      selector: (state) => (state.email.uiErrorKey, state.epoch),
+      builder: (context, tuple) {
+        final (errorText, epoch) = tuple;
+
         return InputFieldFactory.create(
           type: InputFieldType.email,
           focusNode: focusNode,
           errorText: errorText,
           textInputAction: TextInputAction.done,
-          autofillHints: const [AutofillHints.email],
+          autofillHints: const [AutofillHints.username, AutofillHints.email],
           onChanged: context.read<ResetPasswordFormCubit>().onEmailChanged,
           onEditingComplete: () {
-            if (formState.isValid) {
-              context.read<ResetPasswordCubit>().submit(formState.email.value);
+            final current = context.read<ResetPasswordFormCubit>().state;
+            if (current.isValid) {
+              context.read<ResetPasswordCubit>().submit(current.email.value);
             }
           },
+          fieldKeyOverride: ValueKey('email_$epoch'),
         ).withPaddingBottom(AppSpacing.huge);
       },
     );
@@ -83,8 +86,6 @@ final class _ResetPasswordSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final formState = context.read<ResetPasswordFormCubit>().state;
-    //
     return UniversalSubmitButton<
           ResetPasswordFormCubit,
           ResetPasswordFormState,
@@ -94,10 +95,12 @@ final class _ResetPasswordSubmitButton extends StatelessWidget {
           loadingLabel: LocaleKeys.buttons_submitting,
           isFormValid: (state) => state.isValid,
           //
-          onPressed: () =>
-              context.unfocusKeyboard().read<ResetPasswordCubit>().submit(
-                formState.email.value,
-              ),
+          onPressed: () {
+            final formState = context.read<ResetPasswordFormCubit>().state;
+            context.unfocusKeyboard().read<ResetPasswordCubit>().submit(
+              formState.email.value,
+            );
+          },
           //
         )
         .withPaddingBottom(AppSpacing.xl);

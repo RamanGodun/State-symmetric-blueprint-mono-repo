@@ -33,6 +33,7 @@ final class SignUpPage extends StatelessWidget {
       child: SubmissionSideEffects<SignUpCubit>(
         onSuccess: (ctx, _) =>
             ctx.showSnackbar(message: LocaleKeys.sign_up_already_have_account),
+        onResetForm: (ctx) => ctx.read<SignUpFormFieldCubit>().resetState(),
 
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
         child: const _SignUpView(),

@@ -58,26 +58,29 @@ final class _PasswordInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final formCubit = context.read<ChangePasswordFormFieldsCubit>();
-
     return BlocSelector<
       ChangePasswordFormFieldsCubit,
       ChangePasswordFormState,
-      FormFieldUiState
+      (FormFieldUiState, int)
     >(
       selector: (state) => (
-        errorText: state.password.uiErrorKey,
-        isObscure: state.isPasswordObscure,
+        (
+          errorText: state.password.uiErrorKey,
+          isObscure: state.isPasswordObscure,
+        ),
+        state.epoch,
       ),
-      builder: (context, field) {
-        final (errorText: errorText, isObscure: isObscure) = field;
+      builder: (context, pair) {
+        final (field, epoch) = pair;
+        final (:errorText, :isObscure) = field;
+        final formCubit = context.read<ChangePasswordFormFieldsCubit>();
 
         return InputFieldFactory.create(
           type: InputFieldType.password,
           focusNode: focusNodes.password,
           errorText: errorText,
           textInputAction: TextInputAction.next,
-          autofillHints: const [AutofillHints.newPassword],
+          autofillHints: const [AutofillHints.password],
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
@@ -86,6 +89,7 @@ final class _PasswordInputField extends StatelessWidget {
           //
           onChanged: formCubit.onPasswordChanged,
           onEditingComplete: context.focusNext(focusNodes.confirmPassword),
+          fieldKeyOverride: ValueKey('password_$epoch'),
           //
         ).withPaddingBottom(AppSpacing.m);
       },
@@ -107,28 +111,29 @@ final class _ConfirmPasswordInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final formCubit = context.read<ChangePasswordFormFieldsCubit>();
-    final formCubitState = formCubit.state;
-
     return BlocSelector<
       ChangePasswordFormFieldsCubit,
       ChangePasswordFormState,
-      (String?, bool, bool)
+      (FormFieldUiState, int)
     >(
       selector: (state) => (
-        state.confirmPassword.uiErrorKey,
-        state.isConfirmPasswordObscure,
-        state.isValid,
+        (
+          errorText: state.confirmPassword.uiErrorKey,
+          isObscure: state.isConfirmPasswordObscure,
+        ),
+        state.epoch,
       ),
-      builder: (context, field) {
-        final (errorText, isObscure, isValid) = field;
+      builder: (context, pair) {
+        final (field, epoch) = pair;
+        final (:errorText, :isObscure) = field;
+        final formCubit = context.read<ChangePasswordFormFieldsCubit>();
 
         return InputFieldFactory.create(
           type: InputFieldType.confirmPassword,
           focusNode: focusNodes.confirmPassword,
           errorText: errorText,
           textInputAction: TextInputAction.done,
-          autofillHints: const [AutofillHints.newPassword],
+          autofillHints: const [AutofillHints.password],
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
@@ -137,12 +142,14 @@ final class _ConfirmPasswordInputField extends StatelessWidget {
           //
           onChanged: formCubit.onConfirmPasswordChanged,
           onEditingComplete: () {
-            if (formCubitState.isValid) {
+            final currentState = formCubit.state;
+            if (currentState.isValid) {
               context.read<ChangePasswordCubit>().submit(
-                formCubitState.password.value,
+                currentState.password.value,
               );
             }
           },
+          fieldKeyOverride: ValueKey('confirm_$epoch'),
           //
         ).withPaddingBottom(AppSpacing.xxxl);
       },
@@ -164,8 +171,6 @@ final class _ChangePasswordSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final formState = context.read<ChangePasswordFormFieldsCubit>().state;
-    //
     return UniversalSubmitButton<
           ChangePasswordFormFieldsCubit,
           ChangePasswordFormState,
@@ -175,10 +180,15 @@ final class _ChangePasswordSubmitButton extends StatelessWidget {
           loadingLabel: LocaleKeys.buttons_submitting,
           isFormValid: (state) => state.isValid,
           //
-          onPressed: () =>
-              context.unfocusKeyboard().read<ChangePasswordCubit>().submit(
-                formState.password.value,
-              ),
+          onPressed: () {
+            context.unfocusKeyboard();
+            final currentState = context
+                .read<ChangePasswordFormFieldsCubit>()
+                .state;
+            context.read<ChangePasswordCubit>().submit(
+              currentState.password.value,
+            );
+          },
           //
         )
         .withPaddingBottom(AppSpacing.l);

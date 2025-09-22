@@ -66,7 +66,7 @@ final class SignUpFormFieldCubit extends Cubit<SignUpFormState> {
   );
 
   /// 🧼 Full reset
-  void resetState() => emit(const SignUpFormState());
+  void resetState() => emit(SignUpFormState(epoch: state.epoch + 1));
 
   /// 🧼 Cleans up resources on close
   @override

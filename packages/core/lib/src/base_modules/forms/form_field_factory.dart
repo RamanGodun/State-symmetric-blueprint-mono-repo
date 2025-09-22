@@ -24,12 +24,14 @@ abstract final class InputFieldFactory {
     TextInputAction? textInputAction,
     Iterable<String>? autofillHints,
     VoidCallback? onEditingComplete,
+    TextEditingController? controller,
+    Key? fieldKeyOverride,
   }) {
     ///
     return switch (type) {
       ///
       InputFieldType.name => AppTextField(
-        key: FormFieldsKeys.nameField,
+        key: fieldKeyOverride ?? FormFieldsKeys.nameField,
         focusNode: focusNode,
         label: LocaleKeys.form_name,
         icon: AppIcons.name,
@@ -41,11 +43,12 @@ abstract final class InputFieldFactory {
         onChanged: onChanged,
         onEditingComplete: onEditingComplete,
         onSubmitted: (_) => onSubmitted?.call(),
+        controller: controller,
       ),
 
       ///
       InputFieldType.email => AppTextField(
-        key: FormFieldsKeys.emailField,
+        key: fieldKeyOverride ?? FormFieldsKeys.emailField,
         focusNode: focusNode,
         label: LocaleKeys.form_email,
         icon: AppIcons.email,
@@ -57,11 +60,12 @@ abstract final class InputFieldFactory {
         onChanged: onChanged,
         onEditingComplete: onEditingComplete,
         onSubmitted: (_) => onSubmitted?.call(),
+        controller: controller,
       ),
 
       ///
       InputFieldType.password => AppTextField(
-        key: FormFieldsKeys.passwordField,
+        key: fieldKeyOverride ?? FormFieldsKeys.passwordField,
         focusNode: focusNode,
         label: LocaleKeys.form_password,
         icon: AppIcons.password,
@@ -74,11 +78,12 @@ abstract final class InputFieldFactory {
         onChanged: onChanged,
         onEditingComplete: onEditingComplete,
         onSubmitted: (_) => onSubmitted?.call(),
+        controller: controller,
       ),
 
       ///
       InputFieldType.confirmPassword => AppTextField(
-        key: FormFieldsKeys.confirmPasswordField,
+        key: fieldKeyOverride ?? FormFieldsKeys.confirmPasswordField,
         focusNode: focusNode,
         label: LocaleKeys.form_confirm_password,
         icon: AppIcons.confirmPassword,
@@ -91,6 +96,7 @@ abstract final class InputFieldFactory {
         onChanged: onChanged,
         onEditingComplete: onEditingComplete,
         onSubmitted: (_) => onSubmitted?.call(),
+        controller: controller,
       ),
 
       //

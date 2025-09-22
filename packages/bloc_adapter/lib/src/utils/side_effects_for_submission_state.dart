@@ -31,6 +31,7 @@ final class SubmissionSideEffects<
     this.onSuccess,
     this.onError,
     this.onRequiresReauth,
+    this.onResetForm,
     super.key,
   });
 
@@ -61,6 +62,10 @@ final class SubmissionSideEffects<
   )?
   onRequiresReauth;
 
+  /// 🧼 Optional hook to reset form state (e.g. SignInFormCubit.resetState()) on error
+  /// Pass: `onResetForm: (ctx) => ctx.read<SignInFormCubit>().resetState()`
+  final void Function(BuildContext context)? onResetForm;
+
   @override
   Widget build(BuildContext context) {
     //
@@ -82,6 +87,8 @@ final class SubmissionSideEffects<
             (onError != null)
                 ? onError!(context, failureForUI, state)
                 : context.showError(failureForUI);
+            // Additionally reset the form if provided
+            onResetForm?.call(context);
 
           /// 🔄 Requires reauth
           case ButtonSubmissionRequiresReauth(:final failure):

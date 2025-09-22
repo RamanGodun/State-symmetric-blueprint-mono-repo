@@ -52,17 +52,19 @@ final class _SignInEmailInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<SignInFormCubit, SignInFormState, String?>(
-      selector: (state) => state.email.uiErrorKey,
-      builder: (context, errorText) {
+    return BlocSelector<SignInFormCubit, SignInFormState, (String?, int)>(
+      selector: (state) => (state.email.uiErrorKey, state.epoch),
+      builder: (context, tuple) {
+        final (errorText, epoch) = tuple;
         return InputFieldFactory.create(
           type: InputFieldType.email,
           focusNode: focusNodes.email,
           errorText: errorText,
           textInputAction: TextInputAction.next,
-          autofillHints: const [AutofillHints.email],
+          autofillHints: const [AutofillHints.username, AutofillHints.email],
           onChanged: context.read<SignInFormCubit>().onEmailChanged,
           onEditingComplete: () => context.requestFocus(focusNodes.password),
+          fieldKeyOverride: ValueKey('email_$epoch'),
         ).withPaddingBottom(AppSpacing.xm);
       },
     );
@@ -84,13 +86,21 @@ final class _SignInPasswordInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<SignInFormCubit, SignInFormState, FormFieldUiState>(
+    return BlocSelector<
+      SignInFormCubit,
+      SignInFormState,
+      (FormFieldUiState, int)
+    >(
       selector: (state) => (
-        errorText: state.password.uiErrorKey,
-        isObscure: state.isPasswordObscure,
+        (
+          errorText: state.password.uiErrorKey,
+          isObscure: state.isPasswordObscure,
+        ),
+        state.epoch,
       ),
-      builder: (context, field) {
-        final (errorText: errorText, isObscure: isObscure) = field;
+      builder: (context, pair) {
+        final (field, epoch) = pair;
+        final (:errorText, :isObscure) = field;
         final formCubit = context.read<SignInFormCubit>();
 
         return InputFieldFactory.create(
@@ -98,7 +108,7 @@ final class _SignInPasswordInputField extends StatelessWidget {
           focusNode: focusNodes.password,
           errorText: errorText,
           textInputAction: TextInputAction.done,
-          autofillHints: const [AutofillHints.newPassword],
+          autofillHints: const [AutofillHints.password],
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
@@ -114,6 +124,7 @@ final class _SignInPasswordInputField extends StatelessWidget {
               );
             }
           },
+          fieldKeyOverride: ValueKey('password_$epoch'),
         ).withPaddingBottom(AppSpacing.xl);
       },
     );
@@ -134,18 +145,19 @@ final class _SignInSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final formState = context.read<SignInFormCubit>().state;
-    //
     return UniversalSubmitButton<SignInFormCubit, SignInFormState, SignInCubit>(
       label: LocaleKeys.buttons_sign_in,
       loadingLabel: LocaleKeys.buttons_submitting,
       isFormValid: (state) => state.isValid,
       //
-      onPressed: () => context.unfocusKeyboard().read<SignInCubit>().submit(
-        email: formState.email.value,
-        password: formState.password.value,
-      ),
-      //
+      onPressed: () {
+        context.unfocusKeyboard();
+        final current = context.read<SignInFormCubit>().state;
+        context.read<SignInCubit>().submit(
+          email: current.email.value,
+          password: current.password.value,
+        );
+      },
     ).withPaddingBottom(AppSpacing.l);
   }
 }

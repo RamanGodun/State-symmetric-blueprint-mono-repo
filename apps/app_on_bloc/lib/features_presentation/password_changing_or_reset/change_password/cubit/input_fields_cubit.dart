@@ -62,7 +62,7 @@ final class ChangePasswordFormFieldsCubit
   }
 
   /// 🧼 Resets the entire form to initial state
-  void resetState() => emit(const ChangePasswordFormState());
+  void resetState() => emit(ChangePasswordFormState(epoch: state.epoch + 1));
 
   /// 🧼 Cleanup
   @override

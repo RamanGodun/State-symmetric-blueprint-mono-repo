@@ -49,8 +49,6 @@ final class _SignUpSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final formState = context.read<SignUpFormFieldCubit>().state;
-    //
     return UniversalSubmitButton<
           SignUpFormFieldCubit,
           SignUpFormState,
@@ -60,11 +58,15 @@ final class _SignUpSubmitButton extends StatelessWidget {
           loadingLabel: LocaleKeys.buttons_submitting,
           isFormValid: (state) => state.isValid,
           //
-          onPressed: () => context.unfocusKeyboard().read<SignUpCubit>().submit(
-            name: formState.name.value,
-            email: formState.email.value,
-            password: formState.password.value,
-          ),
+          onPressed: () {
+            context.unfocusKeyboard();
+            final current = context.read<SignUpFormFieldCubit>().state;
+            context.read<SignUpCubit>().submit(
+              name: current.name.value,
+              email: current.email.value,
+              password: current.password.value,
+            );
+          },
           //
         )
         .withPaddingBottom(AppSpacing.l);

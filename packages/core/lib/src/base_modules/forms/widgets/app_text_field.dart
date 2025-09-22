@@ -30,6 +30,7 @@ final class AppTextField extends StatelessWidget {
     this.textInputAction,
     this.autofillHints,
     this.onEditingComplete,
+    this.controller,
     super.key,
   });
   //
@@ -47,6 +48,7 @@ final class AppTextField extends StatelessWidget {
   final void Function(String) onChanged;
   final void Function(String)? onSubmitted;
   final Widget? suffixIcon;
+  final TextEditingController? controller;
 
   ///
 
@@ -64,6 +66,7 @@ final class AppTextField extends StatelessWidget {
     return TextField(
       key: fieldKey,
       focusNode: focusNode,
+      controller: controller,
       keyboardType: keyboardType,
       textInputAction: textInputAction,
       autofillHints: autofillHints,

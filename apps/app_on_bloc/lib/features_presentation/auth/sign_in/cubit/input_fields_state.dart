@@ -12,24 +12,28 @@ final class SignInFormState extends Equatable {
     this.password = const PasswordInputValidation.pure(),
     this.isValid = false,
     this.isPasswordObscure = true,
+    this.epoch = 0,
   });
 
   final EmailInputValidation email;
   final PasswordInputValidation password;
   final bool isValid;
   final bool isPasswordObscure;
+  final int epoch;
 
   SignInFormState _copyWith({
     EmailInputValidation? email,
     PasswordInputValidation? password,
     bool? isValid,
     bool? isPasswordObscure,
+    int? epoch,
   }) {
     return SignInFormState(
       email: email ?? this.email,
       password: password ?? this.password,
       isValid: isValid ?? this.isValid,
       isPasswordObscure: isPasswordObscure ?? this.isPasswordObscure,
+      epoch: epoch ?? this.epoch,
     );
   }
 
@@ -40,7 +44,13 @@ final class SignInFormState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [email, password, isValid, isPasswordObscure];
+  List<Object?> get props => [
+    email,
+    password,
+    isValid,
+    isPasswordObscure,
+    epoch,
+  ];
 
   //
 }

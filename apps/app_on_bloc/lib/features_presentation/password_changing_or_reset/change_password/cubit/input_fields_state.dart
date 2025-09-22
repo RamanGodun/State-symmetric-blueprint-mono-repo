@@ -14,6 +14,7 @@ final class ChangePasswordFormState extends Equatable {
     this.isValid = false,
     this.isPasswordObscure = true,
     this.isConfirmPasswordObscure = true,
+    this.epoch = 0,
   });
   //
   final PasswordInputValidation password;
@@ -21,6 +22,7 @@ final class ChangePasswordFormState extends Equatable {
   final bool isValid;
   final bool isPasswordObscure;
   final bool isConfirmPasswordObscure;
+  final int epoch;
 
   /// 🔁 Returns new state with updated fields
   ChangePasswordFormState _copyWith({
@@ -29,6 +31,7 @@ final class ChangePasswordFormState extends Equatable {
     bool? isValid,
     bool? isPasswordObscure,
     bool? isConfirmPasswordObscure,
+    int? epoch,
   }) {
     return ChangePasswordFormState(
       password: password ?? this.password,
@@ -37,6 +40,7 @@ final class ChangePasswordFormState extends Equatable {
       isPasswordObscure: isPasswordObscure ?? this.isPasswordObscure,
       isConfirmPasswordObscure:
           isConfirmPasswordObscure ?? this.isConfirmPasswordObscure,
+      epoch: epoch ?? this.epoch,
     );
   }
 
@@ -61,6 +65,7 @@ final class ChangePasswordFormState extends Equatable {
     isValid,
     isPasswordObscure,
     isConfirmPasswordObscure,
+    epoch,
   ];
 
   //

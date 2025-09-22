@@ -18,9 +18,11 @@ final class _SignUpUserNameInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<SignUpFormFieldCubit, SignUpFormState, String?>(
-      selector: (state) => state.name.uiErrorKey,
-      builder: (context, errorText) {
+    return BlocSelector<SignUpFormFieldCubit, SignUpFormState, (String?, int)>(
+      selector: (state) => (state.name.uiErrorKey, state.epoch),
+      builder: (context, tuple) {
+        final (errorText, epoch) = tuple;
+        //
         return InputFieldFactory.create(
           type: InputFieldType.name,
           focusNode: focusNodes.name,
@@ -30,6 +32,7 @@ final class _SignUpUserNameInputField extends StatelessWidget {
           onChanged: context.read<SignUpFormFieldCubit>().onNameChanged,
           onEditingComplete: context.focusNext(focusNodes.email),
           // onEditingComplete: () => context.nextFocus(),
+          fieldKeyOverride: ValueKey('name_$epoch'),
         ).withPaddingBottom(AppSpacing.xm);
       },
     );
@@ -57,17 +60,20 @@ final class _SignUpEmailInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<SignUpFormFieldCubit, SignUpFormState, String?>(
-      selector: (state) => state.email.uiErrorKey,
-      builder: (context, errorText) {
+    return BlocSelector<SignUpFormFieldCubit, SignUpFormState, (String?, int)>(
+      selector: (state) => (state.email.uiErrorKey, state.epoch),
+      builder: (context, tuple) {
+        final (errorText, epoch) = tuple;
+        //
         return InputFieldFactory.create(
           type: InputFieldType.email,
           focusNode: focusNodes.email,
           errorText: errorText,
           textInputAction: TextInputAction.next,
-          autofillHints: const [AutofillHints.email],
+          autofillHints: const [AutofillHints.username, AutofillHints.email],
           onChanged: context.read<SignUpFormFieldCubit>().onEmailChanged,
           onEditingComplete: () => context.requestFocus(focusNodes.password),
+          fieldKeyOverride: ValueKey('email_$epoch'),
         ).withPaddingBottom(AppSpacing.xm);
       },
     );
@@ -95,26 +101,29 @@ final class _SignUpPasswordInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final formCubit = context.read<SignUpFormFieldCubit>();
-
     return BlocSelector<
       SignUpFormFieldCubit,
       SignUpFormState,
-      FormFieldUiState
+      (FormFieldUiState, int)
     >(
       selector: (state) => (
-        errorText: state.password.uiErrorKey,
-        isObscure: state.isPasswordObscure,
+        (
+          errorText: state.password.uiErrorKey,
+          isObscure: state.isPasswordObscure,
+        ),
+        state.epoch,
       ),
-      builder: (context, field) {
-        final (errorText: errorText, isObscure: isObscure) = field;
-
+      builder: (context, pair) {
+        final (field, epoch) = pair;
+        final (:errorText, :isObscure) = field;
+        final formCubit = context.read<SignUpFormFieldCubit>();
+        //
         return InputFieldFactory.create(
           type: InputFieldType.password,
           focusNode: focusNodes.password,
           errorText: errorText,
           textInputAction: TextInputAction.next,
-          autofillHints: const [AutofillHints.newPassword],
+          autofillHints: const [AutofillHints.password],
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
@@ -123,6 +132,7 @@ final class _SignUpPasswordInputField extends StatelessWidget {
           onChanged: formCubit.onPasswordChanged,
           onEditingComplete: () =>
               context.requestFocus(focusNodes.confirmPassword),
+          fieldKeyOverride: ValueKey('password_$epoch'),
         ).withPaddingBottom(AppSpacing.xm);
       },
     );
@@ -150,27 +160,30 @@ final class _SignUpConfirmPasswordInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final formCubit = context.read<SignUpFormFieldCubit>();
-    final formCubitState = formCubit.state;
-
     return BlocSelector<
       SignUpFormFieldCubit,
       SignUpFormState,
-      FormFieldUiState
+      (FormFieldUiState, int)
     >(
       selector: (state) => (
-        errorText: state.confirmPassword.uiErrorKey,
-        isObscure: state.isConfirmPasswordObscure,
+        (
+          errorText: state.confirmPassword.uiErrorKey,
+          isObscure: state.isConfirmPasswordObscure,
+        ),
+        state.epoch,
       ),
-      builder: (context, field) {
-        final (errorText: errorText, isObscure: isObscure) = field;
+      builder: (context, pair) {
+        final (field, epoch) = pair;
+        final (:errorText, :isObscure) = field;
+        final formCubit = context.read<SignUpFormFieldCubit>();
 
+        //
         return InputFieldFactory.create(
           type: InputFieldType.confirmPassword,
           focusNode: focusNodes.confirmPassword,
           errorText: errorText,
           textInputAction: TextInputAction.done,
-          autofillHints: const [AutofillHints.newPassword],
+          autofillHints: const [AutofillHints.password],
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
@@ -178,6 +191,7 @@ final class _SignUpConfirmPasswordInputField extends StatelessWidget {
           ),
           onChanged: formCubit.onConfirmPasswordChanged,
           onEditingComplete: () {
+            final formCubitState = formCubit.state;
             if (formCubit.state.isValid) {
               context.read<SignUpCubit>().submit(
                 name: formCubitState.name.value,
@@ -186,6 +200,7 @@ final class _SignUpConfirmPasswordInputField extends StatelessWidget {
               );
             }
           },
+          fieldKeyOverride: ValueKey('confirm_$epoch'),
           //
         ).withPaddingBottom(AppSpacing.xl);
       },

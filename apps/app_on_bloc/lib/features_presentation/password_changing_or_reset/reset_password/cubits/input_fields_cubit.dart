@@ -25,7 +25,7 @@ final class ResetPasswordFormCubit extends Cubit<ResetPasswordFormState> {
   }
 
   /// 🧼 Reset form to initial
-  void resetState() => emit(const ResetPasswordFormState());
+  void resetState() => emit(ResetPasswordFormState(epoch: state.epoch + 1));
 
   /// 🧼 Cleanup
   @override

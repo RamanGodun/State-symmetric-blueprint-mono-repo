@@ -36,6 +36,7 @@ final class ResetPasswordPage extends StatelessWidget {
         onSuccess: (ctx, _) => ctx
           ..showSnackbar(message: LocaleKeys.reset_password_success)
           ..goTo(RoutesNames.signIn),
+        onResetForm: (ctx) => ctx.read<ResetPasswordFormCubit>().resetState(),
         //
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
         child: const _ResetPasswordView(),
