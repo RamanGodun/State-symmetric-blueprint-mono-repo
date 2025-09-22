@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-part 'sign_in_page_side_effects.dart';
 part 'widgets_for_sign_in_page.dart';
 
 /// 🔐 [SignInPage] — Entry point for the sign-in feature
@@ -33,10 +32,12 @@ final class SignInPage extends StatelessWidget {
 
       /// 🛡️ Wrap with side-effect Bloc listeners (❌Error & ✅Success) with optional "retry" logic
       /// 🧠 OverlayDispatcher resolves conflicts/priority internally
-      child: const _ErrorsListenersForSignInPage(
-        //
+      child: SubmissionSideEffects<SignInCubit>(
+        onSuccess: (ctx, _) =>
+            ctx.showSnackbar(message: LocaleKeys.sign_in_forgot_password),
+
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-        child: _SignInPageView(),
+        child: const _SignInPageView(),
       ),
     );
   }

@@ -1,5 +1,5 @@
-import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/sign_up__cubit.dart';
 import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/input_fields_cubit.dart';
+import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/sign_up__cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
 import 'package:features/features.dart' show SignUpUseCase;
@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' show HookWidget;
 
-part 'sign_up_page_side_effects.dart';
 part 'sign_up_page_input_fields.dart';
 part 'widgets_for_sign_up_page.dart';
 
@@ -25,16 +24,18 @@ final class SignUpPage extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => SignUpCubit(di<SignUpUseCase>())),
         BlocProvider(
-          create: (_) => SignUpFormCubit(di<FormValidationService>()),
+          create: (_) => SignUpFormFieldCubit(di<FormValidationService>()),
         ),
       ],
 
       /// 🛡️ Wrap with Bloc side-effect listeners (with optional "retry" logic)
       /// 🧠 OverlayDispatcher resolves conflicts/priority internally
-      child: const _ErrorsListenersForSignUpPage(
-        //
+      child: SubmissionSideEffects<SignUpCubit>(
+        onSuccess: (ctx, _) =>
+            ctx.showSnackbar(message: LocaleKeys.sign_up_already_have_account),
+
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-        child: _SignUpView(),
+        child: const _SignUpView(),
       ),
     );
   }

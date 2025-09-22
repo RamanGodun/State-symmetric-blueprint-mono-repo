@@ -1,4 +1,3 @@
-import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
 import 'package:features/features_barrels/auth/auth.dart';
 import 'package:flutter/foundation.dart' show debugPrint;

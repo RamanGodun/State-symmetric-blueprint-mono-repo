@@ -54,6 +54,14 @@ final class SignUpFormState extends Equatable {
     return _copyWith(isValid: valid);
   }
 
+  /// ➞ Returns a new state with updated values and revalidated form
+  /// 📦 Supports field updates and UI controls like visibility or submission status
+  SignUpFormState updateConfirmPasswordValidation() {
+    final updatedConfirm = confirmPassword.updatePassword(password.value);
+    final valid = Formz.validate([password, updatedConfirm]);
+    return _copyWith(confirmPassword: updatedConfirm, isValid: valid);
+  }
+
   ///
   @override
   List<Object?> get props => [

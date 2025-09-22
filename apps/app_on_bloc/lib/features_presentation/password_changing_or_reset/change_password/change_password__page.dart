@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-part 'change_password_page_sife_effects.dart';
 part 'widgets_for_change_password.dart';
 
 /// 🔐 [ChangePasswordPage] — Entry point for the sign-up feature,
@@ -39,10 +38,17 @@ final class ChangePasswordPage extends StatelessWidget {
 
       /// 🔄 Bloc listener for one-shot error handling (with optional "retry" logic) via overlays
       /// 🧠 OverlayDispatcher resolves conflicts/priority internally
-      child: const _ErrorsListenerForChangePasswordPage(
-        //
+      child: SubmissionSideEffects<ChangePasswordCubit>(
+        onSuccess: (ctx, _) => ctx
+          ..showSnackbar(message: LocaleKeys.reauth_password_updated.tr())
+          ..goIfMounted(RoutesNames.home),
+        onRequiresReauth: (ctx, ui, _) => ctx.showError(
+          ui,
+          onConfirm: ctx.read<ChangePasswordCubit>().confirmReauth,
+        ),
+
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-        child: _ChangePasswordView(),
+        child: const _ChangePasswordView(),
       ),
     );
   }

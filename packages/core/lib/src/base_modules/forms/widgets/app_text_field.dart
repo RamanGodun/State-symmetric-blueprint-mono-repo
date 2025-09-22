@@ -27,6 +27,9 @@ final class AppTextField extends StatelessWidget {
     this.errorKey,
     this.keyboardType,
     this.onSubmitted,
+    this.textInputAction,
+    this.autofillHints,
+    this.onEditingComplete,
     super.key,
   });
   //
@@ -38,8 +41,11 @@ final class AppTextField extends StatelessWidget {
   final bool obscure;
   final String? errorKey;
   final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final Iterable<String>? autofillHints;
+  final VoidCallback? onEditingComplete;
   final void Function(String) onChanged;
-  final VoidCallback? onSubmitted;
+  final void Function(String)? onSubmitted;
   final Widget? suffixIcon;
 
   ///
@@ -48,6 +54,9 @@ final class AppTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     final resolvedLabel = _resolveLabel(label, fallback);
+    // Field type for UX-tweaks
+    final isName = keyboardType == TextInputType.name;
+    final isPassword = keyboardType == TextInputType.visiblePassword;
 
     debugPrint('⚠️ label: $label');
     debugPrint('⚠️ errorText: $errorKey');
@@ -56,11 +65,15 @@ final class AppTextField extends StatelessWidget {
       key: fieldKey,
       focusNode: focusNode,
       keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      autofillHints: autofillHints,
+      onEditingComplete: onEditingComplete,
       obscureText: obscure,
-      textCapitalization: keyboardType == TextInputType.name
+      textCapitalization: isName
           ? TextCapitalization.words
           : TextCapitalization.none,
       autocorrect: false,
+      enableSuggestions: !isPassword,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         filled: true,
@@ -70,7 +83,7 @@ final class AppTextField extends StatelessWidget {
         errorText: errorKey?.translateOrNull,
       ),
       onChanged: onChanged,
-      onSubmitted: (_) => onSubmitted?.call(),
+      onSubmitted: onSubmitted,
     );
   }
 

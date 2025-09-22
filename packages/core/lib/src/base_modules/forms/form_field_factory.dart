@@ -21,6 +21,9 @@ abstract final class InputFieldFactory {
     bool isObscure = false,
     Widget? suffixIcon,
     VoidCallback? onSubmitted,
+    TextInputAction? textInputAction,
+    Iterable<String>? autofillHints,
+    VoidCallback? onEditingComplete,
   }) {
     ///
     return switch (type) {
@@ -33,8 +36,11 @@ abstract final class InputFieldFactory {
         obscure: false,
         errorKey: errorText,
         keyboardType: TextInputType.name,
+        textInputAction: textInputAction,
+        autofillHints: autofillHints,
         onChanged: onChanged,
-        onSubmitted: onSubmitted,
+        onEditingComplete: onEditingComplete,
+        onSubmitted: (_) => onSubmitted?.call(),
       ),
 
       ///
@@ -46,8 +52,11 @@ abstract final class InputFieldFactory {
         obscure: false,
         errorKey: errorText,
         keyboardType: TextInputType.emailAddress,
+        textInputAction: textInputAction,
+        autofillHints: autofillHints,
         onChanged: onChanged,
-        onSubmitted: onSubmitted,
+        onEditingComplete: onEditingComplete,
+        onSubmitted: (_) => onSubmitted?.call(),
       ),
 
       ///
@@ -59,8 +68,12 @@ abstract final class InputFieldFactory {
         obscure: isObscure,
         suffixIcon: suffixIcon,
         errorKey: errorText,
+        keyboardType: TextInputType.visiblePassword,
+        textInputAction: textInputAction,
+        autofillHints: autofillHints,
         onChanged: onChanged,
-        onSubmitted: onSubmitted,
+        onEditingComplete: onEditingComplete,
+        onSubmitted: (_) => onSubmitted?.call(),
       ),
 
       ///
@@ -72,8 +85,12 @@ abstract final class InputFieldFactory {
         obscure: isObscure,
         suffixIcon: suffixIcon,
         errorKey: errorText,
+        keyboardType: TextInputType.visiblePassword,
+        textInputAction: textInputAction,
+        autofillHints: autofillHints,
         onChanged: onChanged,
-        onSubmitted: onSubmitted,
+        onEditingComplete: onEditingComplete,
+        onSubmitted: (_) => onSubmitted?.call(),
       ),
 
       //

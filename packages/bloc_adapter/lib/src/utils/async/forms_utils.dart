@@ -1,4 +1,4 @@
-import 'package:core/utils.dart' show FieldUiState;
+import 'package:core/utils.dart' show FormFieldUiState;
 import 'package:flutter/widgets.dart';
 import 'package:formz/formz.dart';
 
@@ -14,10 +14,10 @@ extension BlocFormStatusX on FormzSubmissionStatus {
 ////
 
 /// 🧱 [BlocFieldSelector] — builder typedef for field UI slices
-/// ✅ Extracts `error` and `isObscure` into [FieldUiState]
+/// ✅ Extracts `error` and `isObscure` into [FormFieldUiState]
 /// ✅ Keeps BlocSelector usage clean and consistent
 typedef BlocFieldSelector<Cubit, State> =
-    FieldUiState Function(
+    FormFieldUiState Function(
       State state, {
       required bool isObscure,
       String? error,
@@ -26,10 +26,10 @@ typedef BlocFieldSelector<Cubit, State> =
 ////
 ////
 
-/// 🧱 [fieldUi] — factory for creating [FieldUiState]
+/// 🧱 [fieldUi] — factory for creating [FormFieldUiState]
 /// ✅ Unified approach across widgets/selectors
 /// ✅ Eliminates repetitive inline tuples
-FieldUiState fieldUi({
+FormFieldUiState fieldUi({
   required bool isObscure,
   String? error,
 }) => (errorText: error, isObscure: isObscure);

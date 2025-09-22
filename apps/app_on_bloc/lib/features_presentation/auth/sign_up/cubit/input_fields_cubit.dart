@@ -8,12 +8,12 @@ import 'package:formz/formz.dart';
 
 part 'input_fields_state.dart';
 
-/// 📝 [SignUpFormCubit] — Owns name/email/password/confirm fields & validation
+/// 📝 [SignUpFormFieldCubit] — Owns name/email/password/confirm fields & validation
 /// ✅ UI-only state: values, errors, visibility, isValid
 //
-final class SignUpFormCubit extends Cubit<SignUpFormState> {
+final class SignUpFormFieldCubit extends Cubit<SignUpFormState> {
   ///----------------------------------------------------------
-  SignUpFormCubit(this._validation) : super(const SignUpFormState());
+  SignUpFormFieldCubit(this._validation) : super(const SignUpFormState());
   //
   final FormValidationService _validation;
   final _debouncer = Debouncer(AppDurations.ms180);
@@ -38,14 +38,10 @@ final class SignUpFormCubit extends Cubit<SignUpFormState> {
   void onPasswordChanged(String value) {
     _debouncer.run(() {
       final password = _validation.validatePassword(value.trim());
-      final updatedConfirm = state.confirmPassword.updatePassword(
-        password.value,
-      );
-      emit(
-        state
-            ._copyWith(password: password, confirmPassword: updatedConfirm)
-            .validate(),
-      );
+      final nextState = state
+          ._copyWith(password: password)
+          .updateConfirmPasswordValidation();
+      emit(nextState);
     });
   }
 

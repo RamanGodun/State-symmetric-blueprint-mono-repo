@@ -59,8 +59,10 @@ final class _SignInEmailInputField extends StatelessWidget {
           type: InputFieldType.email,
           focusNode: focusNodes.email,
           errorText: errorText,
+          textInputAction: TextInputAction.next,
+          autofillHints: const [AutofillHints.email],
           onChanged: context.read<SignInFormCubit>().onEmailChanged,
-          onSubmitted: focusNodes.password.requestFocus,
+          onEditingComplete: () => context.requestFocus(focusNodes.password),
         ).withPaddingBottom(AppSpacing.xm);
       },
     );
@@ -75,33 +77,36 @@ final class _SignInEmailInputField extends StatelessWidget {
 //
 final class _SignInPasswordInputField extends StatelessWidget {
   ///--------------------------------------------
-  const _SignInPasswordInputField(this.focusNode);
+  const _SignInPasswordInputField(this.focusNodes);
   //
-  final ({FocusNode email, FocusNode password}) focusNode;
+  final ({FocusNode email, FocusNode password}) focusNodes;
 
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<SignInFormCubit, SignInFormState, FieldUiState>(
+    return BlocSelector<SignInFormCubit, SignInFormState, FormFieldUiState>(
       selector: (state) => (
         errorText: state.password.uiErrorKey,
         isObscure: state.isPasswordObscure,
       ),
       builder: (context, field) {
         final (errorText: errorText, isObscure: isObscure) = field;
+        final formCubit = context.read<SignInFormCubit>();
 
         return InputFieldFactory.create(
           type: InputFieldType.password,
-          focusNode: focusNode.password,
+          focusNode: focusNodes.password,
           errorText: errorText,
+          textInputAction: TextInputAction.done,
+          autofillHints: const [AutofillHints.newPassword],
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
-            onPressed: context.read<SignInFormCubit>().togglePasswordVisibility,
+            onPressed: formCubit.togglePasswordVisibility,
           ),
-          onChanged: context.read<SignInFormCubit>().onPasswordChanged,
-          onSubmitted: () {
-            final form = context.read<SignInFormCubit>().state;
+          onChanged: formCubit.onPasswordChanged,
+          onEditingComplete: () {
+            final form = formCubit.state;
             if (form.isValid) {
               context.read<SignInCubit>().submit(
                 email: form.email.value,
@@ -120,7 +125,7 @@ final class _SignInPasswordInputField extends StatelessWidget {
 
 /// 🚀 [_SignInSubmitButton] — Button for triggering sign-in logic
 /// 🧠 Rebuilds only on `isValid` or `isLoading` changes
-/// ✅ Delegates behavior to [FormSubmitButtonForBlocApps]
+/// ✅ Delegates behavior to [UniversalSubmitButton]
 //
 final class _SignInSubmitButton extends StatelessWidget {
   ///--------------------------------------------
@@ -129,37 +134,19 @@ final class _SignInSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final isOverlayActive = context.select<OverlayStatusCubit, bool>(
-      (c) => c.state,
-    );
-    final isLoading = context.select<SignInCubit, bool>(
-      (c) => c.state.isLoading,
-    );
-
-    return BlocSelector<SignInFormCubit, SignInFormState, bool>(
-      selector: (s) => s.isValid,
-      builder: (context, isValid) {
-        final isEnabled = isValid && !isLoading && !isOverlayActive;
-
-        return CustomFilledButton(
-          label: isLoading
-              ? LocaleKeys.buttons_submitting
-              : LocaleKeys.buttons_sign_in,
-          isLoading: isLoading,
-          isEnabled: isEnabled,
-          onPressed: isEnabled
-              ? () {
-                  context.unfocusKeyboard();
-                  final form = context.read<SignInFormCubit>().state;
-                  context.read<SignInCubit>().submit(
-                    email: form.email.value,
-                    password: form.password.value,
-                  );
-                }
-              : null,
-        ).withPaddingBottom(AppSpacing.l);
-      },
-    );
+    final formState = context.read<SignInFormCubit>().state;
+    //
+    return UniversalSubmitButton<SignInFormCubit, SignInFormState, SignInCubit>(
+      label: LocaleKeys.buttons_sign_in,
+      loadingLabel: LocaleKeys.buttons_submitting,
+      isFormValid: (state) => state.isValid,
+      //
+      onPressed: () => context.unfocusKeyboard().read<SignInCubit>().submit(
+        email: formState.email.value,
+        password: formState.password.value,
+      ),
+      //
+    ).withPaddingBottom(AppSpacing.l);
   }
 }
 

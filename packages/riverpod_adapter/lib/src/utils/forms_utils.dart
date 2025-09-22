@@ -1,4 +1,4 @@
-import 'package:core/utils.dart' show FieldUiState;
+import 'package:core/utils.dart' show FormFieldUiState;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,10 +13,10 @@ extension AsyncStatusX on AsyncValue<Object?> {
 ////
 ////
 
-/// 🧱 [fieldUi] — factory for building [FieldUiState]
+/// 🧱 [fieldUi] — factory for building [FormFieldUiState]
 /// ✅ Unified approach for selectors (BlocSelector / ref.select)
 /// ✅ Reduces duplication of inline tuples `(errorText, isObscure)`
-FieldUiState fieldUi({
+FormFieldUiState fieldUi({
   required bool isObscure,
   String? error,
 }) => (errorText: error, isObscure: isObscure);

@@ -20,8 +20,8 @@ typedef DataMap = Map<String, dynamic>;
 
 //------------- Form fields module ----------------
 
-/// 🧾 [FieldUiState] — Compact record for field visibility & error display
-typedef FieldUiState = ({String? errorText, bool isObscure});
+/// 🧾 [FormFieldUiState] — Compact record for field visibility & error display
+typedef FormFieldUiState = ({String? errorText, bool isObscure});
 
 /// 🧾 [SubmitSlice] — Compact record for field validity & error forms submission status
 typedef SubmitSlice = ({bool isValid, FormzSubmissionStatus status});

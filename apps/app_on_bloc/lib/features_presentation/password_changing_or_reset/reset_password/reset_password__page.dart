@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-part 'reset_password_page_side_effects.dart';
 part 'widgets_for_reset_password_page.dart';
 
 /// 🔐 [ResetPasswordPage] — Entry point for the sign-up feature,
@@ -33,10 +32,13 @@ final class ResetPasswordPage extends StatelessWidget {
       ],
 
       /// 🛡️ Wraps [_ResetPasswordView] with side-effect listeners (handles ❌Error & ✅Success cases)
-      child: const _ErrorsListenersForResetPasswordPage(
+      child: SubmissionSideEffects<ResetPasswordCubit>(
+        onSuccess: (ctx, _) => ctx
+          ..showSnackbar(message: LocaleKeys.reset_password_success)
+          ..goTo(RoutesNames.signIn),
         //
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-        child: _ResetPasswordView(),
+        child: const _ResetPasswordView(),
       ),
     );
   }

@@ -1,4 +1,5 @@
 export '../src/shared_presentation_layer/pages_shared/splash_page.dart';
+export '../src/shared_presentation_layer/shared_states/submission_state.dart';
 export '../src/shared_presentation_layer/widgets_shared/app_bar.dart';
 export '../src/shared_presentation_layer/widgets_shared/buttons/filled_button.dart';
 export '../src/shared_presentation_layer/widgets_shared/buttons/text_button.dart';

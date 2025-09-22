@@ -40,7 +40,7 @@ final class _SignUpHeader extends StatelessWidget {
 
 /// 🚀 [_SignUpSubmitButton] — Button for triggering sign-up logic
 /// 🧠 Rebuilds only on `isValid` or `isLoading` changes
-/// ✅ Delegates behavior to [FormSubmitButtonForBlocApps]
+/// ✅ Delegates behavior to [UniversalSubmitButton]
 //
 final class _SignUpSubmitButton extends StatelessWidget {
   ///-------------------------------------------
@@ -49,41 +49,27 @@ final class _SignUpSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final isOverlayActive = context.select<OverlayStatusCubit, bool>(
-      (cubit) => cubit.state,
-    );
-    final isLoading = context.select<SignUpCubit, bool>(
-      (cubit) => cubit.state.isLoading,
-    );
-
-    return BlocSelector<SignUpFormCubit, SignUpFormState, bool>(
-      selector: (state) => state.isValid,
-      builder: (context, isValid) {
-        final isEnabled = isValid && !isLoading && !isOverlayActive;
-
-        return CustomFilledButton(
-          label: isLoading
-              ? LocaleKeys.buttons_submitting
-              : LocaleKeys.buttons_sign_up,
-          isLoading: isLoading,
-          isEnabled: isEnabled,
-          onPressed: isEnabled
-              ? () {
-                  context.unfocusKeyboard();
-                  final form = context.read<SignUpFormCubit>().state;
-                  context.read<SignUpCubit>().submit(
-                    name: form.name.value,
-                    email: form.email.value,
-                    password: form.password.value,
-                  );
-                }
-              : null,
-        ).withPaddingBottom(AppSpacing.l);
-      },
-    );
+    final formState = context.read<SignUpFormFieldCubit>().state;
+    //
+    return UniversalSubmitButton<
+          SignUpFormFieldCubit,
+          SignUpFormState,
+          SignUpCubit
+        >(
+          label: LocaleKeys.buttons_sign_up,
+          loadingLabel: LocaleKeys.buttons_submitting,
+          isFormValid: (state) => state.isValid,
+          //
+          onPressed: () => context.unfocusKeyboard().read<SignUpCubit>().submit(
+            name: formState.name.value,
+            email: formState.email.value,
+            password: formState.password.value,
+          ),
+          //
+        )
+        .withPaddingBottom(AppSpacing.l);
   }
 }
-
 ////
 ////
 

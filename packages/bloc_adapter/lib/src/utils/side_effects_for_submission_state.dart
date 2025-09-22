@@ -1,18 +1,30 @@
-//
-// ignore_for_file: public_member_api_docs
-
-import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart'
+    show BuildContext, StatelessWidget, Widget;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 🧯 [SubmissionSideEffects] — BLoC listener for Success/Error (+ optionally RequiresReauth) states.
+/// 🧯 [SubmissionSideEffects] — universal BLoC listener for button-driven flows
+/// ✅ Handles three common branches:
+///    - Success → `onSuccess`
+///    - Error → `onError` (auto-consumes `Consumable<Failure>`)
+///    - RequiresReauth → `onRequiresReauth` (optional)
 //
+/// 💡 Defaults:
+///    - If `onError` is not provided → shows `context.showError(...)`
+///    - If `onRequiresReauth` is not provided → also shows `context.showError(...)`
+//
+/// Usage:
+/// ```dart
+/// SubmissionSideEffects<MyCubit>(
+///   onSuccess: (ctx, _) => ctx.showSnackbar(message: 'Done!'),
+///   child: MyView(),
+/// )
+/// ```
 final class SubmissionSideEffects<
   C extends StateStreamable<ButtonSubmissionState>
 >
     extends StatelessWidget {
-  ///-----------------------------------------------------------------------------------------------------
+  ///----------------------------
   const SubmissionSideEffects({
     required this.child,
     this.listenWhen,
@@ -21,19 +33,19 @@ final class SubmissionSideEffects<
     this.onRequiresReauth,
     super.key,
   });
-  //
-  ///
+
+  /// Subtree to wrap
   final Widget child;
 
-  /// Custom predicate (by default - on runtimeType changes)
+  /// Custom predicate (default: fires on runtimeType changes)
   final bool Function(ButtonSubmissionState prev, ButtonSubmissionState curr)?
   listenWhen;
 
-  /// ✅ Success type function
+  /// ✅ Success handler
   final void Function(BuildContext context, ButtonSubmissionSuccess state)?
   onSuccess;
 
-  /// ❌ Error type function
+  /// ❌ Error handler
   final void Function(
     BuildContext context,
     FailureUIEntity ui,
@@ -41,7 +53,7 @@ final class SubmissionSideEffects<
   )?
   onError;
 
-  /// 🔄 Requires Reauth type function (optional)
+  /// 🔄 Requires-reauth handler (optional)
   final void Function(
     BuildContext context,
     FailureUIEntity ui,
@@ -64,18 +76,18 @@ final class SubmissionSideEffects<
 
           /// ❌ Error
           case ButtonSubmissionError(:final failure):
-            final consumedFailure = failure?.consume();
-            if (consumedFailure == null) return;
-            final failureForUI = consumedFailure.toUIEntity();
+            final consumed = failure?.consume();
+            if (consumed == null) return;
+            final failureForUI = consumed.toUIEntity();
             (onError != null)
                 ? onError!(context, failureForUI, state)
                 : context.showError(failureForUI);
 
-          /// 🔄 Requires Reauth → show dialog, than signOut for reAuth
+          /// 🔄 Requires reauth
           case ButtonSubmissionRequiresReauth(:final failure):
-            final consumedFailure = failure?.consume();
-            if (consumedFailure == null) return;
-            final failureForUI = consumedFailure.toUIEntity();
+            final consumed = failure?.consume();
+            if (consumed == null) return;
+            final failureForUI = consumed.toUIEntity();
             (onRequiresReauth != null)
                 ? onRequiresReauth!(context, failureForUI, state)
                 : context.showError(failureForUI);

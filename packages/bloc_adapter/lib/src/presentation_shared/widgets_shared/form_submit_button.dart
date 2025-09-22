@@ -1,99 +1,136 @@
-//
-// ignore_for_file: public_member_api_docs
-
 import 'package:bloc_adapter/src/base_modules/overlays_module/overlay_status_cubit.dart';
-import 'package:core/base_modules/forms.dart';
-import 'package:core/shared_layers/presentation.dart' show CustomFilledButton;
-import 'package:core/utils.dart' show SubmitCallback;
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+import 'package:core/shared_layers/presentation.dart'
+    show
+        ButtonSubmissionError,
+        ButtonSubmissionLoading,
+        ButtonSubmissionState,
+        ButtonSubmissionSuccess,
+        CustomFilledButton;
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
 
-/// 🚀 [FormSubmitButtonForBlocApps] — Bloc-aware smart submit button for forms.
-///
-/// 🧠 This widget acts as a **behavioral adapter** around [CustomFilledButton].
-/// It listens to the given Bloc/cubit and automatically:
-///   - shows a loader during form submission
-///   - disables itself if form is invalid or submission in progress
-///   - respects overlay state (to avoid multiple submissions)
-///
-/// ✅ Common use case:
-///   - Place at bottom of forms (SignIn, SignUp, ResetPassword, etc)
-///   - Controlled declaratively using status and validation selectors
+/// 🖱️ [SubmitCallback] — common signature for submit button handlers
+/// ✅ Does not pass [BuildContext] explicitly (outer context is used instead)
+typedef SubmitCallback = void Function();
+
+////
+////
+
+/// 🚀 [UniversalSubmitButton] — universal submit button aware of two cubits (FormCubit + SubmitCubit)
+/// ✅ Automatically:
+///   - shows loader while submitting
+///   - disables itself when form is invalid / overlay is active / submitting
+///   - prevents “button flicker” after Success/Error by using a short transient-lock
 //
-final class FormSubmitButtonForBlocApps<
-  Tcubit extends StateStreamable<TState>,
-  TState
+final class UniversalSubmitButton<
+  FormsCubit extends StateStreamable<FormsState>,
+  FormsState,
+  SubmitCubit extends StateStreamable<ButtonSubmissionState>
 >
-    extends StatelessWidget {
-  ///--------------------------------------------------
-  const FormSubmitButtonForBlocApps({
+    extends StatefulWidget {
+  ///-------------------------------
+  const UniversalSubmitButton({
     required this.label,
+    required this.loadingLabel,
+    required this.isFormValid,
     required this.onPressed,
-    required this.statusSelector,
-    required this.isValidatedSelector,
+    this.padding,
     super.key,
   });
-  //
+
+  /// 🏷️ Default label text
   final String label;
+
+  /// 🔄 Label text shown while submitting
+  final String loadingLabel;
+
+  /// ✅ Selector that checks if form is valid
+  final bool Function(FormsState) isFormValid;
+
+  /// 🖱️ Tap handler (only called when enabled)
   final SubmitCallback onPressed;
-  final FormzSubmissionStatus Function(TState) statusSelector;
-  final bool Function(TState) isValidatedSelector;
+
+  /// 📐 Optional padding around the button
+  final EdgeInsets? padding;
+
+  @override
+  State<UniversalSubmitButton<FormsCubit, FormsState, SubmitCubit>>
+  createState() =>
+      _UniversalSubmitButtonState<FormsCubit, FormsState, SubmitCubit>();
+}
+
+////
+
+/// 🏗️ Internal state — holds transient-lock to smooth UX
+//
+final class _UniversalSubmitButtonState<
+  FormsCubit extends StateStreamable<FormsState>,
+  FormsState,
+  SubmitCubit extends StateStreamable<ButtonSubmissionState>
+>
+    extends State<UniversalSubmitButton<FormsCubit, FormsState, SubmitCubit>> {
+  ///---------------------------------------------------------------------
+  //
+  bool _transientLock = false;
+
+  /// ⏳ Arms a short lock after Success/Error
+  /// - released on the next frame, giving overlays time to activate
+  void _armTransientLock() {
+    if (mounted) {
+      setState(() => _transientLock = true);
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() => _transientLock = false);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     //
-    /// Whether an overlay/dialog is active (blocks submission)
+    // 🛡️ Disable button if overlay is active
     final isOverlayActive = context.select<OverlayStatusCubit, bool>(
-      (cubit) => cubit.state,
+      (c) => c.state,
     );
 
-    return BlocBuilder<Tcubit, TState>(
-      buildWhen: (prev, curr) =>
-          statusSelector(prev) != statusSelector(curr) ||
-          isValidatedSelector(prev) != isValidatedSelector(curr),
-      builder: (context, state) {
-        final status = statusSelector(state);
-        final isValidated = isValidatedSelector(state);
-        final isLoading = status.isInProgress;
-        final isEnabled = status.canSubmit && isValidated && !isOverlayActive;
-
-        return CustomFilledButton(
-          label: label,
-          onPressed: isEnabled ? () => onPressed(context) : null,
-          isLoading: isLoading,
-          isEnabled: isEnabled,
-          isValidated: isValidated,
-        );
+    return BlocListener<SubmitCubit, ButtonSubmissionState>(
+      listenWhen: (p, c) => p.runtimeType != c.runtimeType,
+      listener: (context, state) {
+        // When submission ends (Success/Error) → short lock to avoid flicker
+        switch (state) {
+          case ButtonSubmissionError():
+          case ButtonSubmissionSuccess():
+            _armTransientLock();
+          default:
+            break;
+        }
       },
+      child: BlocBuilder<SubmitCubit, ButtonSubmissionState>(
+        buildWhen: (p, c) => p.runtimeType != c.runtimeType,
+        builder: (context, submitState) {
+          final isLoading = submitState is ButtonSubmissionLoading;
+
+          return BlocSelector<FormsCubit, FormsState, bool>(
+            selector: widget.isFormValid,
+            builder: (context, isValid) {
+              final isEnabled =
+                  isValid && !isLoading && !isOverlayActive && !_transientLock;
+
+              final btn = CustomFilledButton(
+                label: isLoading ? widget.loadingLabel : widget.label,
+                onPressed: isEnabled ? widget.onPressed : null,
+                isLoading: isLoading,
+                isEnabled: isEnabled,
+                isValidated: isValid,
+              );
+
+              if (widget.padding != null)
+                return Padding(padding: widget.padding!, child: btn);
+              return btn;
+            },
+          );
+        },
+      ),
     );
   }
-}
-
-////
-////
-
-/// 🧩 [FormSubmitButtonState] — простий стан для кнопки:
-///     - FormzSubmissionStatus (loader/disable)
-///     - isValid (чи можна сабмітнути)
-final class FormSubmitButtonState extends Equatable {
-  const FormSubmitButtonState({
-    required this.status,
-    required this.isValid,
-  });
-
-  final FormzSubmissionStatus status;
-  final bool isValid;
-
-  FormSubmitButtonState copyWith({
-    FormzSubmissionStatus? status,
-    bool? isValid,
-  }) => FormSubmitButtonState(
-    status: status ?? this.status,
-    isValid: isValid ?? this.isValid,
-  );
-
-  @override
-  List<Object> get props => [status, isValid];
 }

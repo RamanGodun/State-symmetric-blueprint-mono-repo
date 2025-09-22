@@ -42,7 +42,8 @@ final class _ResetPasswordEmailInputField extends HookWidget {
   Widget build(BuildContext context) {
     //
     final focusNode = useResetPasswordFocusNodes().email;
-
+    final formState = context.read<ResetPasswordFormCubit>().state;
+    //
     return BlocSelector<
       ResetPasswordFormCubit,
       ResetPasswordFormState,
@@ -54,11 +55,12 @@ final class _ResetPasswordEmailInputField extends HookWidget {
           type: InputFieldType.email,
           focusNode: focusNode,
           errorText: errorText,
+          textInputAction: TextInputAction.done,
+          autofillHints: const [AutofillHints.email],
           onChanged: context.read<ResetPasswordFormCubit>().onEmailChanged,
-          onSubmitted: () {
-            final form = context.read<ResetPasswordFormCubit>().state;
-            if (form.isValid) {
-              context.read<ResetPasswordCubit>().submit(form.email.value);
+          onEditingComplete: () {
+            if (formState.isValid) {
+              context.read<ResetPasswordCubit>().submit(formState.email.value);
             }
           },
         ).withPaddingBottom(AppSpacing.huge);
@@ -71,6 +73,8 @@ final class _ResetPasswordEmailInputField extends HookWidget {
 ////
 
 /// 🔘 [_ResetPasswordSubmitButton] — Confirms reset action button
+/// 🧠 Rebuilds only on `isValid` or `isLoading` changes
+/// ✅ Delegates behavior to [UniversalSubmitButton]
 //
 final class _ResetPasswordSubmitButton extends StatelessWidget {
   ///--------------------------------------------------------
@@ -79,38 +83,24 @@ final class _ResetPasswordSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final isOverlayActive = context.select<OverlayStatusCubit, bool>(
-      (cubit) => cubit.state,
-    );
-    final isLoading = context.select<ResetPasswordCubit, bool>(
-      (cubit) => cubit.state.isLoading,
-    );
-
-    return BlocSelector<ResetPasswordFormCubit, ResetPasswordFormState, bool>(
-      selector: (s) => s.isValid,
-      builder: (context, isValid) {
-        final isEnabled = isValid && !isLoading && !isOverlayActive;
-
-        return CustomFilledButton(
-          label: isLoading
-              ? LocaleKeys.buttons_submitting
-              : LocaleKeys.buttons_reset_password,
-          isLoading: isLoading,
-          isEnabled: isEnabled,
-          onPressed: isEnabled
-              ? () {
-                  context.unfocusKeyboard();
-                  final email = context
-                      .read<ResetPasswordFormCubit>()
-                      .state
-                      .email
-                      .value;
-                  context.read<ResetPasswordCubit>().submit(email);
-                }
-              : null,
-        ).withPaddingBottom(AppSpacing.xl);
-      },
-    );
+    final formState = context.read<ResetPasswordFormCubit>().state;
+    //
+    return UniversalSubmitButton<
+          ResetPasswordFormCubit,
+          ResetPasswordFormState,
+          ResetPasswordCubit
+        >(
+          label: LocaleKeys.buttons_reset_password,
+          loadingLabel: LocaleKeys.buttons_submitting,
+          isFormValid: (state) => state.isValid,
+          //
+          onPressed: () =>
+              context.unfocusKeyboard().read<ResetPasswordCubit>().submit(
+                formState.email.value,
+              ),
+          //
+        )
+        .withPaddingBottom(AppSpacing.xl);
   }
 }
 
