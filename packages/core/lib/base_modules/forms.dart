@@ -1,4 +1,5 @@
-export '../src/base_modules/forms/common_states/input_fields_state.dart';
+export '../src/base_modules/forms/common_imput_fields_states/sign_in.dart';
+export '../src/base_modules/forms/common_imput_fields_states/sign_up.dart';
 export '../src/base_modules/forms/form_field_factory.dart'
     show InputFieldFactory;
 export '../src/base_modules/forms/input_validation/validation_enums.dart';

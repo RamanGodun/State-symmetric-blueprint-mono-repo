@@ -1,46 +1,42 @@
 import 'package:core/core.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
-
-part 'input_fields_state.dart';
 
 /// 📝 [SignInFormCubit] — Owns email/password fields & validation (Form only)
 final class SignInFormCubit extends Cubit<SignInFormState> {
   ///----------------------------------------------------------
   SignInFormCubit() : super(const SignInFormState());
   //
-  final _inputDebouncer = Debouncer(AppDurations.ms20);
+  final _debouncer = Debouncer(AppDurations.ms20);
 
   ////
 
-  /// 📧 Handles email field changes with debounce and validation
+  /// 📧  Handles email input with validation, trimming and debounce
   void onEmailChanged(String value) {
-    _inputDebouncer.run(() {
-      final email = EmailInputValidation.dirty(value.trim());
-      emit(state._copyWith(email: email).validate());
-    });
+    _debouncer.run(() => emit(state.updateState(email: value)));
   }
 
-  /// 🔒 Handles password field changes and form revalidation
+  /// 🔒  Handles password input with validation, trimming and debounce
   void onPasswordChanged(String value) {
-    _inputDebouncer.run(() {
-      final password = PasswordInputValidation.dirty(value.trim());
-      emit(state._copyWith(password: password).validate());
-    });
+    _debouncer.run(() => emit(state.updateState(password: value)));
   }
 
-  /// 👁️ Toggle password visibility
-  void togglePasswordVisibility() =>
-      emit(state._copyWith(isPasswordObscure: !state.isPasswordObscure));
+  /// 👁️ Toggle password field visibility
+  void togglePasswordVisibility() {
+    emit(
+      state.updateState(
+        isPasswordObscure: !state.isPasswordObscure,
+        revalidate: false,
+      ),
+    );
+  }
 
-  /// 🧼 Reset form
+  /// Resets the form state to its initial (pure) values.
   void resetState() => emit(SignInFormState(epoch: state.epoch + 1));
 
   /// 🧼 Cleans up resources on close
   @override
   Future<void> close() {
-    _inputDebouncer.cancel();
+    _debouncer.cancel();
     return super.close();
   }
 

@@ -26,7 +26,7 @@ final signUpFormIsValidProvider = AutoDisposeProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SignUpFormIsValidRef = AutoDisposeProviderRef<bool>;
-String _$signUpFormHash() => r'7c9deb6a25b0fd9d4774466e5406ca31673980e7';
+String _$signUpFormHash() => r'88708ccc13082b31645f69df983dfd9232541210';
 
 /// 🧩 [SignUpForm] — Manages the state of the sign-up form using [StateNotifier].
 /// Handles input updates, validation, and visibility toggling for password fields.

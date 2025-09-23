@@ -59,7 +59,7 @@ final class _SignInEmailInputField extends ConsumerWidget {
       type: InputFieldType.email,
       focusNode: focusNode.email,
       errorText: emailError,
-      onChanged: formNotifier.emailChanged,
+      onChanged: formNotifier.onEmailChanged,
       onSubmitted: goNext(focusNode.password),
     ).withPaddingBottom(AppSpacing.xm);
   }
@@ -94,7 +94,7 @@ final class _SignInPasswordInputField extends ConsumerWidget {
       focusNode: focusNode.password,
       errorText: passwordError,
       isObscure: isObscure,
-      onChanged: formNotifier.passwordChanged,
+      onChanged: formNotifier.onPasswordChanged,
       onSubmitted: isValid ? () => ref.submitSignIn() : null,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,

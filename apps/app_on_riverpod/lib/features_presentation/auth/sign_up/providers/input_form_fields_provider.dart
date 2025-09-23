@@ -43,7 +43,7 @@ final class SignUpForm extends _$SignUpForm {
     revalidate: false,
   );
 
-  /// 👁️🔁 Toggles confirm password visibility
+  /// 👁️🔁 Toggles confirm-password field visibility
   void toggleConfirmPasswordVisibility() => state = state.updateState(
     isConfirmPasswordObscure: !state.isConfirmPasswordObscure,
     revalidate: false,

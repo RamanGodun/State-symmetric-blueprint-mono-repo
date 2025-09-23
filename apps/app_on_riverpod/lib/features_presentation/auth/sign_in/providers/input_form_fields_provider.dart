@@ -1,6 +1,4 @@
-import 'package:app_on_riverpod/features_presentation/auth/sign_in/providers/input_form_fields_state.dart';
-import 'package:core/base_modules/forms.dart'
-    show EmailInputValidation, PasswordInputValidation;
+import 'package:core/base_modules/forms.dart' show SignInFormState;
 import 'package:core/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' show Ref, StateNotifier;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,32 +11,31 @@ part 'input_form_fields_provider.g.dart';
 @riverpod
 final class SignInForm extends _$SignInForm {
   ///-------------------------------------
+  //
+  final _debouncer = Debouncer(AppDurations.ms20);
 
-  final _inputDebouncer = Debouncer(AppDurations.ms20);
+  ////
 
   /// Initializes the form state with default (pure) values.
   @override
   SignInFormState build() => const SignInFormState();
 
-  /// Updates the email field with a new value and triggers validation.
-  void emailChanged(String value) {
-    _inputDebouncer.run(() {
-      final email = EmailInputValidation.dirty(value);
-      state = state.copyWith(email: email).validate();
-    });
+  /// 📧  Handles email input with validation, trimming and debounce
+  void onEmailChanged(String value) {
+    _debouncer.run(() => state = state.updateState(email: value));
   }
 
-  /// Updates the password field with a new value and triggers validation.
-  void passwordChanged(String value) {
-    _inputDebouncer.run(() {
-      final password = PasswordInputValidation.dirty(value);
-      state = state.copyWith(password: password).validate();
-    });
+  /// 🔒  Handles password input with validation, trimming and debounce
+  void onPasswordChanged(String value) {
+    _debouncer.run(() => state = state.updateState(password: value));
   }
 
-  /// Toggles the visibility of the password field (obscure text).
+  /// 👁️ Toggle password field visibility
   void togglePasswordVisibility() {
-    state = state.copyWith(isPasswordObscure: !state.isPasswordObscure);
+    state = state.updateState(
+      isPasswordObscure: !state.isPasswordObscure,
+      revalidate: false,
+    );
   }
 
   /// Resets the form state to its initial (pure) values.
@@ -46,9 +43,6 @@ final class SignInForm extends _$SignInForm {
 
   //
 }
-
-////
-////
 
 ////
 ////
