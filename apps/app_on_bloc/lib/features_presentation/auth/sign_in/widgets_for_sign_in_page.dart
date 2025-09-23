@@ -147,15 +147,7 @@ final class _SignInSubmitButton extends StatelessWidget {
       label: LocaleKeys.buttons_sign_in,
       loadingLabel: LocaleKeys.buttons_submitting,
       isFormValid: (state) => state.isValid,
-      //
-      onPressed: () {
-        context.unfocusKeyboard();
-        final current = context.read<SignInFormCubit>().state;
-        context.read<SignInCubit>().submit(
-          email: current.email.value,
-          password: current.password.value,
-        );
-      },
+      onPressed: () => context.unfocusKeyboard().submitSignIn,
     ).withPaddingBottom(AppSpacing.l);
   }
 }

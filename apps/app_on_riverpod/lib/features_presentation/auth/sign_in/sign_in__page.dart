@@ -18,14 +18,12 @@ final class SignInPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    /// 🔄 [ref.listenRetryAwareFailure] — ref listener for one-shot
-    ///    error handling (with optional "retry" logic) via overlays
-    /// 🧠 OverlayDispatcher resolves conflicts/priority internally
-    ref.listenRetryAwareFailure(
+    ref.listenSubmissionSideEffects(
       signInProvider,
       context,
-      ref: ref,
-      onRetry: () => ref.submitSignIn(),
+      onSuccess: (ctx, _) =>
+          ctx.showSnackbar(message: LocaleKeys.sign_in_forgot_password),
+      onRetry: (ref) => ref.submitSignIn(),
     );
 
     /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)

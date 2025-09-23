@@ -40,7 +40,6 @@ final class SignInCubit extends Cubit<ButtonSubmissionState> {
   }
   /*
   ? Alternative syntax: classic fold version for direct mapping:
-
   result.fold(
       (f) =>  emit(SubmissionError(f))),
       (_) =>  emit(const SubmissionSuccess()),

@@ -1,5 +1,4 @@
-import 'package:core/core.dart' show AppDurations;
-import 'package:core/utils.dart' show Debouncer;
+import 'package:core/core.dart';
 import 'package:features/features.dart' show SignInUseCase;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart'
@@ -12,39 +11,44 @@ part 'sign_in__provider.g.dart';
 /// 🧼 Uses [SafeAsyncState] to prevent post-dispose state updates
 /// 🧼 Wraps logic in [AsyncValue.guard] for robust error handling
 //
+/// 🧩 [signInProvider] — Riverpod Notifier with shared ButtonSubmissionState
+/// ✅ Mirrors BLoC Submit Cubit semantics (Initial → Loading → Success/Error)
+//
 @Riverpod(keepAlive: false)
-final class SignIn extends _$SignIn with SafeAsyncState<void> {
+final class SignIn extends _$SignIn {
   ///-------------------------------------------------------
-
+  ///
   final _submitDebouncer = Debouncer(AppDurations.ms600);
 
-  /// 🧱 Initializes safe lifecycle tracking
+  /// 🧱 Initial state (idle)
   @override
-  FutureOr<void> build() {
-    initSafe();
-  }
+  ButtonSubmissionState build() => const ButtonSubmissionInitial();
 
   /// 🔐 Signs in user with provided email and password
   /// - Delegates auth to [SignInUseCase]
   Future<void> signin({required String email, required String password}) async {
-    //
-    if (state is AsyncLoading) return;
+    if (state is ButtonSubmissionLoading) return;
     //
     _submitDebouncer.run(() async {
-      state = const AsyncLoading();
+      state = const ButtonSubmissionLoading();
       //
-      state = await AsyncValue.guard(() async {
-        final useCase = ref.watch(signInUseCaseProvider);
-        final result = await useCase(email: email, password: password);
-        return result.fold((failure) => throw failure, (_) => null);
-      });
+      final useCase = ref.watch(signInUseCaseProvider);
+      final result = await useCase(email: email, password: password);
+
+      result.fold(
+        // ❌ Failure branch → emit error with Consumable<Failure>
+        (failure) {
+          state = ButtonSubmissionError(failure.asConsumable());
+          failure.log();
+        },
+        // ✅ Success branch
+        (_) => state = const ButtonSubmissionSuccess(),
+      );
     });
   }
 
-  /// 🧼 Resets state to idle after error or submission
-  void reset() {
-    state = const AsyncData(null);
-  }
+  /// ♻️ Reset to initial (e.g., after dialogs/navigation)
+  void reset() => state = const ButtonSubmissionInitial();
 
   //
 }

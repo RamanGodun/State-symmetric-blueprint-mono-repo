@@ -1,6 +1,5 @@
 import 'package:core/core.dart';
-import 'package:flutter/material.dart'
-    show BuildContext, StatelessWidget, Widget;
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// 🧯 [SubmissionSideEffects] — universal BLoC listener for button-driven flows
@@ -32,6 +31,9 @@ final class SubmissionSideEffects<
     this.onError,
     this.onRequiresReauth,
     this.onResetForm,
+    this.onRetry,
+    this.retryLabel,
+    this.onErrorWithRetry,
     super.key,
   });
 
@@ -66,6 +68,23 @@ final class SubmissionSideEffects<
   /// Pass: `onResetForm: (ctx) => ctx.read<SignInFormCubit>().resetState()`
   final void Function(BuildContext context)? onResetForm;
 
+  /// 📞 Callback for retry action (submit, resend, etc)
+  final void Function(BuildContext context)? onRetry;
+
+  /// 🔄 Confirm button text in Retry dialog (if need to change default)
+  final String? retryLabel;
+
+  /// 📲 Error render with Retry-button
+  final void Function(
+    BuildContext context,
+    FailureUIEntity ui,
+    ButtonSubmissionError state,
+    VoidCallback retry,
+  )?
+  onErrorWithRetry;
+
+  ////
+
   @override
   Widget build(BuildContext context) {
     //
@@ -79,16 +98,42 @@ final class SubmissionSideEffects<
           case ButtonSubmissionSuccess():
             onSuccess?.call(context, state);
 
+          ////
+
           /// ❌ Error
           case ButtonSubmissionError(:final failure):
             final consumed = failure?.consume();
             if (consumed == null) return;
             final failureForUI = consumed.toUIEntity();
+            final retryable = consumed.isRetryable;
+            //
+            if (retryable && onRetry != null) {
+              void retry() => onRetry!.call(context);
+              if (onErrorWithRetry != null) {
+                onErrorWithRetry!(context, failureForUI, state, retry);
+              } else {
+                // Default (button with retry button)
+                context.showError(
+                  failureForUI,
+                  showAs: ShowAs.dialog,
+                  onConfirm: retry,
+                  confirmText:
+                      retryLabel ??
+                      AppLocalizer.translateSafely(LocaleKeys.buttons_retry),
+                );
+              }
+              onResetForm?.call(context);
+              return;
+            }
+            //
+            /// Usual branch without retry logic
             (onError != null)
                 ? onError!(context, failureForUI, state)
                 : context.showError(failureForUI);
             // Additionally reset the form if provided
             onResetForm?.call(context);
+
+          ////
 
           /// 🔄 Requires reauth
           case ButtonSubmissionRequiresReauth(:final failure):

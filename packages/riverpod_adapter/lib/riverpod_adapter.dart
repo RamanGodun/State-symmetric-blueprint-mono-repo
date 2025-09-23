@@ -17,6 +17,7 @@ export 'src/utils/async/async_state_view_for_riverpod.dart';
 export 'src/utils/async/async_error_listener.dart';
 export 'src/utils/async/async_value_to_core_async.dart';
 export 'src/utils/async/async_multi_errors_listener.dart';
+export 'src/base_modules/errors_handling_module/submission_effect_x_on_ref.dart';
 
 /// --- Base Modules: Errors
 export 'src/base_modules/errors_handling_module/async_value_failure_x.dart';

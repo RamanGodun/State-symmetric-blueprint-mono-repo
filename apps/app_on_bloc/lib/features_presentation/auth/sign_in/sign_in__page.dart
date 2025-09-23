@@ -28,11 +28,12 @@ final class SignInPage extends StatelessWidget {
         BlocProvider(create: (_) => SignInFormCubit()),
       ],
 
-      /// 🛡️ Wrap with side-effect Bloc listeners (❌Error & ✅Success) with optional "retry" logic
+      /// 🛡️ Wrap with side-effect Bloc listeners
       /// 🧠 OverlayDispatcher resolves conflicts/priority internally
       child: SubmissionSideEffects<SignInCubit>(
         onSuccess: (ctx, _) =>
             ctx.showSnackbar(message: LocaleKeys.sign_in_forgot_password),
+        onRetry: (ctx) => ctx.submitSignIn(),
 
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
         child: const _SignInPageView(),
@@ -97,6 +98,22 @@ final class _SignInPageView extends HookWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+////
+////
+
+/// 🧩 [SignInContextX] — extension for SignIn submit action
+//
+extension SignInContextX on BuildContext {
+  /// 🚀 Perform submit, using current form state
+  void submitSignIn() {
+    final form = read<SignInFormCubit>().state;
+    read<SignInCubit>().submit(
+      email: form.email.value,
+      password: form.password.value,
     );
   }
 }

@@ -27,7 +27,7 @@ final changePasswordFormIsValidProvider = AutoDisposeProvider<bool>.internal(
 // ignore: unused_element
 typedef ChangePasswordFormIsValidRef = AutoDisposeProviderRef<bool>;
 String _$changePasswordFormHash() =>
-    r'ad653ecfa111f43c1fad14641a21b23e83e07f73';
+    r'd6e7e64bb9c508db1083148adf62f998da21ad32';
 
 /// 🧩 [ChangePasswordForm] — Manages the state of the change password form using [StateNotifier].
 /// Handles input updates, validation, and visibility toggling for password field.

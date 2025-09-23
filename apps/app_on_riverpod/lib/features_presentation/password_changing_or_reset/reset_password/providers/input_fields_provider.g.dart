@@ -26,7 +26,7 @@ final resetPasswordFormIsValidProvider = AutoDisposeProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ResetPasswordFormIsValidRef = AutoDisposeProviderRef<bool>;
-String _$resetPasswordFormHash() => r'07ad82f8b916d54b911fc767b856143ae7d4fcbc';
+String _$resetPasswordFormHash() => r'4d8c8e4524696ec63a512bbd892297ca28d1015c';
 
 /// 🧩 [ResetPasswordForm] — Manages the state of the reset password form using [StateNotifier].
 /// Handles input updates, validation, and future extensibility.

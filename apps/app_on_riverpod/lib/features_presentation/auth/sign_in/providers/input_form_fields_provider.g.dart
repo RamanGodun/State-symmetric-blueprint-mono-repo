@@ -9,8 +9,6 @@ part of 'input_form_fields_provider.dart';
 String _$signInFormIsValidHash() =>
     r'62ac3ce6b9db063b0825fc31d06b9b98a70226a2'; ////
 ////
-////
-////
 /// ✅ Returns form validity as primitive bool (minimal rebuilds)
 ///
 /// Copied from [signInFormIsValid].
@@ -28,7 +26,7 @@ final signInFormIsValidProvider = AutoDisposeProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SignInFormIsValidRef = AutoDisposeProviderRef<bool>;
-String _$signInFormHash() => r'18a45e561bc8ce18ab8412dc2d5bb013a544b6cf';
+String _$signInFormHash() => r'f667f50d1a0d69468e1556fa6628a7eedadc78c4';
 
 /// 🧩 [SignInForm] — Manages the state of the sign-in form using [StateNotifier].
 /// Handles input updates, validation, and visibility toggling for password field.
