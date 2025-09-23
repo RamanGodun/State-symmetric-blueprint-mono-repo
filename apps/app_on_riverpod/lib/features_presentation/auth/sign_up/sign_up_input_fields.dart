@@ -27,8 +27,11 @@ final class _SignUpUserNameInputField extends ConsumerWidget {
       type: InputFieldType.name,
       focusNode: focusNodes.name,
       errorText: nameError,
-      onChanged: formNotifier.nameChanged,
+      textInputAction: TextInputAction.next,
+      autofillHints: const [AutofillHints.name],
+      onChanged: formNotifier.onNameChanged,
       onSubmitted: focusNodes.email.requestFocus,
+      // fieldKeyOverride: ValueKey('name_$epoch'),
     ).withPaddingBottom(AppSpacing.xm);
   }
 }
@@ -63,8 +66,11 @@ final class _SignUpEmailInputField extends ConsumerWidget {
       type: InputFieldType.email,
       focusNode: focusNodes.email,
       errorText: emailError,
-      onChanged: formNotifier.emailChanged,
+      textInputAction: TextInputAction.next,
+      autofillHints: const [AutofillHints.username, AutofillHints.email],
+      onChanged: formNotifier.onEmailChanged,
       onSubmitted: goNext(focusNodes.password),
+      // fieldKeyOverride: ValueKey('email_$epoch'),
     ).withPaddingBottom(AppSpacing.xm);
   }
 }
@@ -102,13 +108,16 @@ final class _SignUpPasswordInputField extends ConsumerWidget {
       type: InputFieldType.password,
       focusNode: focusNodes.password,
       errorText: passwordError,
+      textInputAction: TextInputAction.next,
+      // autofillHints: const [AutofillHints.password],
       isObscure: isObscure,
-      onChanged: formNotifier.passwordChanged,
+      onChanged: formNotifier.onPasswordChanged,
       onSubmitted: goNext(focusNodes.confirmPassword),
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
         onPressed: formNotifier.togglePasswordVisibility,
       ),
+      // fieldKeyOverride: ValueKey('password_$epoch'),
     ).withPaddingBottom(AppSpacing.xm);
   }
 }
@@ -147,13 +156,16 @@ final class _SignUpConfirmPasswordInputField extends ConsumerWidget {
       type: InputFieldType.confirmPassword,
       focusNode: focusNodes.confirmPassword,
       errorText: confirmPasswordError,
+      textInputAction: TextInputAction.done,
+      // autofillHints: const [AutofillHints.password],
       isObscure: isObscure,
-      onChanged: formNotifier.confirmPasswordChanged,
+      onChanged: formNotifier.onConfirmPasswordChanged,
       onSubmitted: isValid ? () => ref.submitSignUp() : null,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
         onPressed: formNotifier.toggleConfirmPasswordVisibility,
       ),
+      //  fieldKeyOverride: ValueKey('confirm_$epoch'),
     ).withPaddingBottom(AppSpacing.xl);
   }
 }

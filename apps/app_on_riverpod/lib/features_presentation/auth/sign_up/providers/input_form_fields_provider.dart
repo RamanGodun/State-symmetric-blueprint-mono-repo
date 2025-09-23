@@ -1,4 +1,3 @@
-import 'package:app_on_riverpod/features_presentation/auth/sign_up/providers/input_form_fields_state.dart';
 import 'package:core/core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -19,46 +18,36 @@ final class SignUpForm extends _$SignUpForm {
   SignUpFormState build() => const SignUpFormState();
 
   /// 👤 Handles name input with validation, trimming and debounce
-  void nameChanged(String value) => _debouncer.run(() {
-    final name = NameInputValidation.dirty(value.trim());
-    state = state.copyWith(name: name).validate();
-  });
+  void onNameChanged(String value) {
+    _debouncer.run(() => state = state.updateState(name: value));
+  }
 
   /// 📧  Handles email input with validation, trimming and debounce
-  void emailChanged(String value) => _debouncer.run(() {
-    final email = EmailInputValidation.dirty(value.trim());
-    state = state.copyWith(email: email).validate();
-  });
+  void onEmailChanged(String value) {
+    _debouncer.run(() => state = state.updateState(email: value));
+  }
 
   /// 🔒  Handles password input + sync password confirm (with validation, trimming and debounce)
-  void passwordChanged(String value) => _debouncer.run(() {
-    final password = PasswordInputValidation.dirty(value.trim());
-    final confirmPassword = state.confirmPassword.updatePassword(value);
-    state = state
-        .copyWith(password: password, confirmPassword: confirmPassword)
-        .validate();
-  });
+  void onPasswordChanged(String value) {
+    _debouncer.run(() => state = state.updateState(password: value));
+  }
 
   /// 🔐  Handles confirm password input with validation, trimming and debounce
-  void confirmPasswordChanged(String value) => _debouncer.run(() {
-    final confirmPassword = ConfirmPasswordInputValidation.dirty(
-      value: value.trim(),
-      password: state.password.value,
-    );
-    state = state.copyWith(confirmPassword: confirmPassword).validate();
-  });
+  void onConfirmPasswordChanged(String value) {
+    _debouncer.run(() => state = state.updateState(confirmPassword: value));
+  }
 
   /// 👁️ Toggles password field visibility
-  void togglePasswordVisibility() {
-    state = state.copyWith(isPasswordObscure: !state.isPasswordObscure);
-  }
+  void togglePasswordVisibility() => state = state.updateState(
+    isPasswordObscure: !state.isPasswordObscure,
+    revalidate: false,
+  );
 
   /// 👁️🔁 Toggles confirm password visibility
-  void toggleConfirmPasswordVisibility() {
-    state = state.copyWith(
-      isConfirmPasswordObscure: !state.isConfirmPasswordObscure,
-    );
-  }
+  void toggleConfirmPasswordVisibility() => state = state.updateState(
+    isConfirmPasswordObscure: !state.isConfirmPasswordObscure,
+    revalidate: false,
+  );
 
   /// 🧼 Full state reset
   void resetState() => state = SignUpFormState(epoch: state.epoch + 1);

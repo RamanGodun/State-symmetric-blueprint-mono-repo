@@ -1,85 +1,118 @@
-//
-// ignore_for_file: public_member_api_docs
+// //
+// // ignore_for_file: public_member_api_docs
 
-import 'package:core/base_modules/forms.dart';
-import 'package:equatable/equatable.dart' show Equatable;
-import 'package:formz/formz.dart';
+// import 'package:core/base_modules/forms.dart';
+// import 'package:equatable/equatable.dart' show Equatable;
+// import 'package:formz/formz.dart';
 
-/// 📦 [SignUpFormState] — immutable state of the sign-up form.
-/// Tracks each input field and overall form validity.
-//
-final class SignUpFormState extends Equatable {
-  /// --------------------------------------
-  /// Constructor with default pure inputs and flags
-  const SignUpFormState({
-    this.name = const NameInputValidation.pure(),
-    this.email = const EmailInputValidation.pure(),
-    this.password = const PasswordInputValidation.pure(),
-    this.confirmPassword = const ConfirmPasswordInputValidation.pure(),
-    this.isPasswordObscure = true,
-    this.isConfirmPasswordObscure = true,
-    this.isValid = false,
-    this.epoch = 0,
-  });
-  //
-  final NameInputValidation name;
-  final EmailInputValidation email;
-  final PasswordInputValidation password;
-  final ConfirmPasswordInputValidation confirmPassword;
-  final bool isPasswordObscure;
-  final bool isConfirmPasswordObscure;
-  final bool isValid;
-  final int epoch;
+// /// 📦 [SignUpFormState] — immutable state of the sign-up form.
+// ///    Tracks each input field and overall form validity.
+// //
+// final class SignUpFormState extends Equatable {
+//   /// --------------------------------------
+//   /// Constructor with default pure inputs and flags
+//   const SignUpFormState({
+//     this.name = const NameInputValidation.pure(),
+//     this.email = const EmailInputValidation.pure(),
+//     this.password = const PasswordInputValidation.pure(),
+//     this.confirmPassword = const ConfirmPasswordInputValidation.pure(),
+//     this.isPasswordObscure = true,
+//     this.isConfirmPasswordObscure = true,
+//     this.isValid = false,
+//     this.epoch = 0,
+//   });
+//   //
+//   final NameInputValidation name;
+//   final EmailInputValidation email;
+//   final PasswordInputValidation password;
+//   final ConfirmPasswordInputValidation confirmPassword;
+//   final bool isPasswordObscure;
+//   final bool isConfirmPasswordObscure;
+//   final bool isValid;
+//   final int epoch;
 
-  /// Copy method for updating fields and flags
-  SignUpFormState copyWith({
-    NameInputValidation? name,
-    EmailInputValidation? email,
-    PasswordInputValidation? password,
-    ConfirmPasswordInputValidation? confirmPassword,
-    bool? isPasswordObscure,
-    bool? isConfirmPasswordObscure,
-    bool? isValid,
-    int? epoch,
-  }) {
-    return SignUpFormState(
-      name: name ?? this.name,
-      email: email ?? this.email,
-      password: password ?? this.password,
-      confirmPassword: confirmPassword ?? this.confirmPassword,
-      isPasswordObscure: isPasswordObscure ?? this.isPasswordObscure,
-      isConfirmPasswordObscure:
-          isConfirmPasswordObscure ?? this.isConfirmPasswordObscure,
-      isValid: isValid ?? this.isValid,
-      epoch: epoch ?? this.epoch,
-    );
-  }
+//   /// 🧱 Clones current state with optional overrides
+//   SignUpFormState updateState({
+//     String? name,
+//     String? email,
+//     String? password,
+//     String? confirmPassword,
+//     bool? isPasswordObscure,
+//     bool? isConfirmPasswordObscure,
+//     int? epoch,
+//     bool revalidate = true,
+//   }) {
+//     //
+//     //
+//     /// 🔍🧪 Input fields and validation
+//     final inputs = _nextInputs(name: name, email: email, password: password, confirmPassword: confirmPassword);
+//     //
+//     final nextIsValid = revalidate
+//         ? Formz.validate([
+//             inputs.name,
+//             inputs.email,
+//             inputs.password,
+//             inputs.confirmPassword,
+//           ])
+//         : isValid;
 
-  /// Validates all fields and recalculates overall form validity
-  SignUpFormState validate() {
-    final valid = Formz.validate([name, email, password, confirmPassword]);
-    return copyWith(isValid: valid);
-  }
+//     /// 🆕 Get new state
+//     return SignUpFormState(
+//       name: inputs.name,
+//       email: inputs.email,
+//       password: inputs.password,
+//       isPasswordObscure: isPasswordObscure ?? this.isPasswordObscure,
+//       isConfirmPasswordObscure: isConfirmPasswordObscure ?? this.isConfirmPasswordObscure,
+//       isValid: nextIsValid,
+//       epoch: epoch ?? this.epoch,
+//     );
+//   }
 
-  /// 🔁 Revalidates confirmPassword if password changes
-  SignUpFormState updateConfirmPasswordValidation() {
-    final updatedConfirm = confirmPassword.updatePassword(password.value);
-    final valid = Formz.validate([name, email, password, updatedConfirm]);
-    return copyWith(confirmPassword: updatedConfirm, isValid: valid);
-  }
+//   /// 💠 Forms next inputs
+//   ({
+//     NameInputValidation name,
+//     EmailInputValidation email,
+//     PasswordInputValidation password,
+//     ConfirmPasswordInputValidation confirmPassword,
+//   })
+//   _nextInputs({
+//     String? name,
+//     String? email,
+//     String? password,
+//     String? confirmPassword,
+//   }) {
+//     final nextName = (name != null) ? NameInputValidation.dirty(name.trim()) : this.name;
+//     final nextEmail = (email != null) ? EmailInputValidation.dirty(email.trim()) : this.email;
+//     final nextPassword = (password != null) ? PasswordInputValidation.dirty(password.trim()) : this.password;
+//     final nextConfirmPassword = (confirmPassword != null)
+//         ? ConfirmPasswordInputValidation.dirty(
+//             value: confirmPassword.trim(),
+//             password: nextPassword.value,
+//           )
+//         : (password != null)
+//         ? this.confirmPassword.updatePassword(nextPassword.value)
+//         : this.confirmPassword;
+//     //
+//     return (
+//       name: nextName,
+//       email: nextEmail,
+//       password: nextPassword,
+//       confirmPassword: nextConfirmPassword,
+//     );
+//   }
 
-  ///
-  @override
-  List<Object> get props => [
-    name,
-    email,
-    password,
-    confirmPassword,
-    isPasswordObscure,
-    isConfirmPasswordObscure,
-    isValid,
-    epoch,
-  ];
+//   ////
 
-  //
-}
+//   @override
+//   List<Object> get props => [
+//     name,
+//     email,
+//     password,
+//     confirmPassword,
+//     isPasswordObscure,
+//     isConfirmPasswordObscure,
+//     isValid,
+//     epoch,
+//   ];
+//   //
+// }

@@ -30,7 +30,7 @@ final class _SignUpUserNameInputField extends StatelessWidget {
           textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.name],
           onChanged: context.read<SignUpFormFieldCubit>().onNameChanged,
-          onEditingComplete: () => context.requestFocus(focusNodes.email),
+          onSubmitted: focusNodes.email.requestFocus,
           fieldKeyOverride: ValueKey('name_$epoch'),
         ).withPaddingBottom(AppSpacing.xm);
       },
@@ -71,7 +71,8 @@ final class _SignUpEmailInputField extends StatelessWidget {
           textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.username, AutofillHints.email],
           onChanged: context.read<SignUpFormFieldCubit>().onEmailChanged,
-          onEditingComplete: () => context.requestFocus(focusNodes.password),
+          onSubmitted: goNext(focusNodes.password),
+          // onEditingComplete: () => context.requestFocus(focusNodes.password),
           fieldKeyOverride: ValueKey('email_$epoch'),
         ).withPaddingBottom(AppSpacing.xm);
       },
@@ -122,17 +123,16 @@ final class _SignUpPasswordInputField extends StatelessWidget {
           focusNode: focusNodes.password,
           errorText: errorText,
           textInputAction: TextInputAction.next,
-          autofillHints: const [AutofillHints.password],
+          // autofillHints: const [AutofillHints.password],
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
             onPressed: formCubit.togglePasswordVisibility,
           ),
           onChanged: formCubit.onPasswordChanged,
-          onEditingComplete: () =>
-              context.requestFocus(focusNodes.confirmPassword),
+          onSubmitted: goNext(focusNodes.confirmPassword),
+          // onEditingComplete: () => context.requestFocus(focusNodes.confirmPassword),
           fieldKeyOverride: ValueKey('password_$epoch'),
-          //
         ).withPaddingBottom(AppSpacing.xm);
       },
     );
@@ -183,14 +183,14 @@ final class _SignUpConfirmPasswordInputField extends StatelessWidget {
           focusNode: focusNodes.confirmPassword,
           errorText: errorText,
           textInputAction: TextInputAction.done,
-          autofillHints: const [AutofillHints.password],
+          // autofillHints: const [AutofillHints.password],
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
             onPressed: formCubit.toggleConfirmPasswordVisibility,
           ),
           onChanged: formCubit.onConfirmPasswordChanged,
-          onEditingComplete: () {
+          onSubmitted: () {
             final formCubitState = formCubit.state;
             if (formCubit.state.isValid) {
               context.read<SignUpCubit>().submit(
