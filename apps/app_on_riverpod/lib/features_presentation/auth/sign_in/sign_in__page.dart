@@ -4,7 +4,7 @@ import 'package:app_on_riverpod/features_presentation/auth/sign_in/providers/sig
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' show HookWidget;
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart';
 
 part 'widgets_for_sign_in_page.dart';

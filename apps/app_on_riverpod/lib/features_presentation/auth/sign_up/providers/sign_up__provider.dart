@@ -1,23 +1,23 @@
+import 'package:core/core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart'
-    show SafeAsyncState, signUpUseCaseProvider;
+    show signUpUseCaseProvider;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sign_up__provider.g.dart';
 
-/// 🧩 [signUpProvider] — async notifier for user registration
-/// 🧼 Uses [SafeAsyncState] to prevent post-dispose state updates
-/// 🧼 Wraps logic in [AsyncValue.guard] for robust error handling
+/// 🧩 [signUpProvider] — Riverpod Notifier with shared ButtonSubmissionState
+/// ✅ Mirrors BLoC submit Cubit semantics (Initial → Loading → Success/Error)
 //
 @Riverpod(keepAlive: false)
-final class SignUp extends _$SignUp with SafeAsyncState<void> {
-  ///------------------------------------------------------
+final class SignUp extends _$SignUp {
+  ///-----------------------------
+  //
+  final _submitDebouncer = Debouncer(AppDurations.ms600);
 
-  /// 🧱 Initializes safe lifecycle mechanism
+  /// 🧱 Initial state (idle)
   @override
-  FutureOr<void> build() {
-    initSafe();
-  }
+  ButtonSubmissionState build() => const ButtonSubmissionInitialState();
 
   /// 📝 Signs up user with name, email and password
   Future<void> signup({
@@ -25,20 +25,32 @@ final class SignUp extends _$SignUp with SafeAsyncState<void> {
     required String email,
     required String password,
   }) async {
-    final useCase = ref.read(signUpUseCaseProvider);
+    if (state is ButtonSubmissionLoadingState) return;
+    //
+    _submitDebouncer.run(() async {
+      state = const ButtonSubmissionLoadingState();
 
-    await updateSafely(() async {
+      final useCase = ref.read(signUpUseCaseProvider);
       final result = await useCase(
         name: name,
         email: email,
         password: password,
       );
-      return result.fold((f) => throw f, (_) => null);
+
+      result.fold(
+        // ❌ Failure → error with Consumable<Failure>
+        (failure) {
+          state = ButtonSubmissionErrorState(failure.asConsumable());
+          failure.log();
+        },
+        // ✅ Success
+        (_) => state = const ButtonSubmissionSuccessState(),
+      );
     });
   }
 
   /// 🧼 Resets state after UI has handled error
-  void reset() => state = const AsyncData(null);
+  void reset() => state = const ButtonSubmissionInitialState();
 
   //
 }

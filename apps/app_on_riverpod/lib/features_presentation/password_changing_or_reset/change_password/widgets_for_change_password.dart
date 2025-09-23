@@ -144,20 +144,3 @@ final class _ChangePasswordSubmitButton extends ConsumerWidget {
     ).withPaddingBottom(AppSpacing.l);
   }
 }
-
-////
-////
-
-/// 🛡️s📤 Submits the password change request (when the form is valid)
-//
-extension PasswordActionsRefX on WidgetRef {
-  ///------------------------------------
-  Future<void> submitChangePassword() async {
-    final form = watch(changePasswordFormProvider);
-    if (!form.isValid) return;
-    //
-    final notifier = read(changePasswordProvider.notifier);
-    await notifier.changePassword(form.password.value);
-    //
-  }
-}

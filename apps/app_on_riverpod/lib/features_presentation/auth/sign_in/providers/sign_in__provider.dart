@@ -22,15 +22,15 @@ final class SignIn extends _$SignIn {
 
   /// 🧱 Initial state (idle)
   @override
-  ButtonSubmissionState build() => const ButtonSubmissionInitial();
+  ButtonSubmissionState build() => const ButtonSubmissionInitialState();
 
   /// 🔐 Signs in user with provided email and password
   /// - Delegates auth to [SignInUseCase]
   Future<void> signin({required String email, required String password}) async {
-    if (state is ButtonSubmissionLoading) return;
+    if (state is ButtonSubmissionLoadingState) return;
     //
     _submitDebouncer.run(() async {
-      state = const ButtonSubmissionLoading();
+      state = const ButtonSubmissionLoadingState();
       //
       final useCase = ref.watch(signInUseCaseProvider);
       final result = await useCase(email: email, password: password);
@@ -38,17 +38,17 @@ final class SignIn extends _$SignIn {
       result.fold(
         // ❌ Failure branch → emit error with Consumable<Failure>
         (failure) {
-          state = ButtonSubmissionError(failure.asConsumable());
+          state = ButtonSubmissionErrorState(failure.asConsumable());
           failure.log();
         },
         // ✅ Success branch
-        (_) => state = const ButtonSubmissionSuccess(),
+        (_) => state = const ButtonSubmissionSuccessState(),
       );
     });
   }
 
   /// ♻️ Reset to initial (e.g., after dialogs/navigation)
-  void reset() => state = const ButtonSubmissionInitial();
+  void reset() => state = const ButtonSubmissionInitialState();
 
   //
 }

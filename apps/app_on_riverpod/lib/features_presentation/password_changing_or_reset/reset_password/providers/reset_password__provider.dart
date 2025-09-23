@@ -1,43 +1,50 @@
-import 'package:core/base_modules/errors_management.dart' show Failure;
+import 'package:core/core.dart';
 import 'package:features/features.dart' show PasswordRelatedUseCases;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart'
-    show SafeAsyncState, passwordUseCasesProvider;
+    show passwordUseCasesProvider;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'reset_password__provider.g.dart';
 
-/// 🧩 [resetPasswordProvider] — async notifier that handles password reset
-/// 🧼 Uses [SafeAsyncState] to prevent post-dispose state updates
-/// 🧼 Wraps logic in [AsyncValue.guard] for robust error handling
+/// 🧩 [resetPasswordProvider] — Riverpod Notifier with shared ButtonSubmissionState
+/// ✅ Mirrors BLoC submit Cubit semantics (Initial → Loading → Success/Error)
 //
-@riverpod
-final class ResetPassword extends _$ResetPassword with SafeAsyncState<void> {
-  ///--------------------------------------------------------------------
+@Riverpod(keepAlive: false)
+final class ResetPassword extends _$ResetPassword {
+  ///----------------------------------------------------
+  //
+  final _submitDebouncer = Debouncer(AppDurations.ms600);
 
-  /// 🧱 Initializes safe lifecycle tracking
+  /// 🧱 Initial state (idle)
   @override
-  FutureOr<void> build() {
-    initSafe();
-  }
+  ButtonSubmissionState build() => const ButtonSubmissionInitialState();
 
   /// 📩 Sends reset link to provided email via [PasswordRelatedUseCases]
-  /// 🧼 Watches [passwordUseCasesProvider] to access domain logic
-  /// ❗ Throws [Failure] if sending fails — handled via `.listen(...)` in UI
+  /// ✅ Maps result into shared [ButtonSubmissionState]
   Future<void> resetPassword({required String email}) async {
-    if (state is AsyncLoading) return;
-    state = const AsyncLoading();
+    if (state is ButtonSubmissionLoadingState) return;
 
-    state = await AsyncValue.guard(() async {
-      await updateSafely(() async {
-        final useCase = ref.watch(passwordUseCasesProvider);
-        final result = await useCase.callResetPassword(email);
-        return result.fold((f) => throw f, (_) => null);
-      });
+    _submitDebouncer.run(() async {
+      state = const ButtonSubmissionLoadingState();
 
-      return;
+      final useCase = ref.read(passwordUseCasesProvider);
+      final result = await useCase.callResetPassword(email);
+
+      result.fold(
+        // ❌ Failure → error with Consumable<Failure>
+        (failure) {
+          state = ButtonSubmissionErrorState(failure.asConsumable());
+          failure.log();
+        },
+        // ✅ Success
+        (_) => state = const ButtonSubmissionSuccessState(),
+      );
     });
   }
+
+  /// ♻️ Reset to initial (e.g., after dialogs/navigation)
+  void reset() => state = const ButtonSubmissionInitialState();
 
   //
 }

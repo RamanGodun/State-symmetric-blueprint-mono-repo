@@ -17,7 +17,7 @@ final class AppTextButton extends StatelessWidget {
     this.isEnabled = true,
     this.foregroundColor,
     this.fontSize = 16,
-    this.fontWeight = FontWeight.w200,
+    this.fontWeight = FontWeight.w300,
     this.isUnderlined = true,
     super.key,
   });

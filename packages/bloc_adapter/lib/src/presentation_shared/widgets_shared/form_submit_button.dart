@@ -1,10 +1,10 @@
 import 'package:bloc_adapter/src/base_modules/overlays_module/overlay_status_cubit.dart';
 import 'package:core/shared_layers/presentation.dart'
     show
-        ButtonSubmissionError,
-        ButtonSubmissionLoading,
+        ButtonSubmissionErrorState,
+        ButtonSubmissionLoadingState,
         ButtonSubmissionState,
-        ButtonSubmissionSuccess,
+        ButtonSubmissionSuccessState,
         CustomFilledButton;
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
@@ -98,8 +98,8 @@ final class _UniversalSubmitButtonState<
       listener: (context, state) {
         // When submission ends (Success/Error) → short lock to avoid flicker
         switch (state) {
-          case ButtonSubmissionError():
-          case ButtonSubmissionSuccess():
+          case ButtonSubmissionErrorState():
+          case ButtonSubmissionSuccessState():
             _armTransientLock();
           default:
             break;
@@ -108,7 +108,7 @@ final class _UniversalSubmitButtonState<
       child: BlocBuilder<SubmitCubit, ButtonSubmissionState>(
         buildWhen: (p, c) => p.runtimeType != c.runtimeType,
         builder: (context, submitState) {
-          final isLoading = submitState is ButtonSubmissionLoading;
+          final isLoading = submitState is ButtonSubmissionLoadingState;
 
           return BlocSelector<FormsCubit, FormsState, bool>(
             selector: widget.isFormValid,

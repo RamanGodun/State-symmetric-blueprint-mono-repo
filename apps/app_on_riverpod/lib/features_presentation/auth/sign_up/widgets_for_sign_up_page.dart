@@ -72,7 +72,7 @@ final class _WrapperForFooter extends ConsumerWidget {
     //
     /// ⏳ Submission loading (primitive bool)
     final isLoading = ref.watch(
-      signUpProvider.select((a) => a.isLoading),
+      signUpProvider.select((state) => state.isLoading),
     );
 
     /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)
@@ -106,9 +106,8 @@ final class _SignUpPageFooter extends StatelessWidget {
         const TextWidget(
           LocaleKeys.buttons_redirect_to_sign_in,
           TextType.bodyLarge,
-        ),
-        const SizedBox(height: AppSpacing.s),
-
+        ).withPaddingBottom(AppSpacing.xs),
+        //
         AppTextButton(
           label: LocaleKeys.pages_sign_in,
           isEnabled: isEnabled,

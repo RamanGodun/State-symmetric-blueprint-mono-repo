@@ -9,7 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 //
 final class SignUpCubit extends Cubit<ButtonSubmissionState> {
   ///------------------------------------------------
-  SignUpCubit(this._signUpUseCase) : super(const ButtonSubmissionInitial());
+  SignUpCubit(this._signUpUseCase)
+    : super(const ButtonSubmissionInitialState());
   //
   final SignUpUseCase _signUpUseCase;
   final _submitDebouncer = Debouncer(AppDurations.ms600);
@@ -22,10 +23,10 @@ final class SignUpCubit extends Cubit<ButtonSubmissionState> {
     required String email,
     required String password,
   }) async {
-    if (state is ButtonSubmissionLoading) return;
+    if (state is ButtonSubmissionLoadingState) return;
     //
     _submitDebouncer.run(() async {
-      emit(const ButtonSubmissionLoading());
+      emit(const ButtonSubmissionLoadingState());
       //
       final result = await _signUpUseCase(
         name: name,
@@ -36,11 +37,11 @@ final class SignUpCubit extends Cubit<ButtonSubmissionState> {
       ResultHandler(result)
         ..onSuccess((_) {
           debugPrint('✅ Signed up successfully');
-          emit(const ButtonSubmissionSuccess());
+          emit(const ButtonSubmissionSuccessState());
         })
         ..onFailure((failure) {
           debugPrint('❌ Sign up failed: ${failure.runtimeType}');
-          emit(ButtonSubmissionError(failure.asConsumable()));
+          emit(ButtonSubmissionErrorState(failure.asConsumable()));
           failure.log();
         })
         ..log();
@@ -57,7 +58,7 @@ final class SignUpCubit extends Cubit<ButtonSubmissionState> {
   ////
 
   /// ♻️ Reset to initial (e.g., after dialogs/navigation)
-  void resetState() => emit(const ButtonSubmissionInitial());
+  void resetState() => emit(const ButtonSubmissionInitialState());
 
   /// 🧼 Cleanup
   @override

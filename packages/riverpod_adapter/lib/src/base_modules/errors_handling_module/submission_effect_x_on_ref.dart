@@ -6,10 +6,10 @@ import 'package:core/base_modules/overlays.dart'
     show ContextXForOverlays, OverlayUtils, ShowAs;
 import 'package:core/core.dart'
     show
-        ButtonSubmissionError,
-        ButtonSubmissionRequiresReauth,
+        ButtonSubmissionErrorState,
+        ButtonSubmissionRequiresReauthState,
         ButtonSubmissionState,
-        ButtonSubmissionSuccess;
+        ButtonSubmissionSuccessState;
 import 'package:flutter/material.dart' show BuildContext, VoidCallback;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -30,14 +30,14 @@ extension SubmissionEffectsRefX on WidgetRef {
     listenWhen,
 
     /// ✅ Success handler
-    void Function(BuildContext context, ButtonSubmissionSuccess state)?
+    void Function(BuildContext context, ButtonSubmissionSuccessState state)?
     onSuccess,
 
     /// ❌ Error handler (no retry)
     void Function(
       BuildContext context,
       FailureUIEntity ui,
-      ButtonSubmissionError state,
+      ButtonSubmissionErrorState state,
     )?
     onError,
 
@@ -45,7 +45,7 @@ extension SubmissionEffectsRefX on WidgetRef {
     void Function(
       BuildContext context,
       FailureUIEntity ui,
-      ButtonSubmissionRequiresReauth state,
+      ButtonSubmissionRequiresReauthState state,
     )?
     onRequiresReauth,
 
@@ -65,7 +65,7 @@ extension SubmissionEffectsRefX on WidgetRef {
     void Function(
       BuildContext context,
       FailureUIEntity ui,
-      ButtonSubmissionError state,
+      ButtonSubmissionErrorState state,
       VoidCallback retry,
     )?
     onErrorWithRetry,
@@ -83,11 +83,11 @@ extension SubmissionEffectsRefX on WidgetRef {
 
         switch (curr) {
           /// ✅ Success
-          case ButtonSubmissionSuccess():
+          case ButtonSubmissionSuccessState():
             onSuccess?.call(context, curr);
 
           /// ❌ Error
-          case ButtonSubmissionError(:final failure):
+          case ButtonSubmissionErrorState(:final failure):
             final consumed = failure?.consume();
             if (consumed == null) return; // already handled elsewhere
 
@@ -125,7 +125,7 @@ extension SubmissionEffectsRefX on WidgetRef {
             onResetForm?.call(context);
 
           /// 🔄 Requires reauth (optional flow)
-          case ButtonSubmissionRequiresReauth(:final failure):
+          case ButtonSubmissionRequiresReauthState(:final failure):
             final consumed = failure?.consume();
             if (consumed == null) return;
             final ui = consumed.toUIEntity();

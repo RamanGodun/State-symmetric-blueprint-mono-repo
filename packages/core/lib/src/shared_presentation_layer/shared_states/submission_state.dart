@@ -19,36 +19,36 @@ sealed class ButtonSubmissionState extends Equatable {
 
 /// ⏳ Idle
 //
-final class ButtonSubmissionInitial extends ButtonSubmissionState {
+final class ButtonSubmissionInitialState extends ButtonSubmissionState {
   ///-----------------------------------------------------------
-  const ButtonSubmissionInitial();
+  const ButtonSubmissionInitialState();
 }
 
 ////
 
 /// 🕓 In progress
 //
-final class ButtonSubmissionLoading extends ButtonSubmissionState {
+final class ButtonSubmissionLoadingState extends ButtonSubmissionState {
   ///------------------------------------------------------------
-  const ButtonSubmissionLoading();
+  const ButtonSubmissionLoadingState();
 }
 
 ////
 
 /// ✅ Done
 //
-final class ButtonSubmissionSuccess extends ButtonSubmissionState {
+final class ButtonSubmissionSuccessState extends ButtonSubmissionState {
   ///------------------------------------------------------------
-  const ButtonSubmissionSuccess();
+  const ButtonSubmissionSuccessState();
 }
 
 ////
 
 /// ❌ Failed
 //
-final class ButtonSubmissionError extends ButtonSubmissionState {
+final class ButtonSubmissionErrorState extends ButtonSubmissionState {
   ///----------------------------------------------------------
-  const ButtonSubmissionError(this.failure);
+  const ButtonSubmissionErrorState(this.failure);
   final Consumable<Failure>? failure;
   @override
   List<Object?> get props => [failure];
@@ -56,12 +56,12 @@ final class ButtonSubmissionError extends ButtonSubmissionState {
 
 ////
 
-/// 🔐 [ButtonSubmissionRequiresReauth] - User must reauthenticate before
+/// 🔐 [ButtonSubmissionRequiresReauthState] - User must reauthenticate before
 ///    (currently this branch emits only in change-password feature)
 //
-final class ButtonSubmissionRequiresReauth extends ButtonSubmissionState {
+final class ButtonSubmissionRequiresReauthState extends ButtonSubmissionState {
   ///------------------------------------------------------------------
-  const ButtonSubmissionRequiresReauth(this.failure);
+  const ButtonSubmissionRequiresReauthState(this.failure);
   final Consumable<Failure>? failure;
   @override
   List<Object?> get props => [failure];
@@ -74,8 +74,8 @@ final class ButtonSubmissionRequiresReauth extends ButtonSubmissionState {
 //
 extension ButtonSubmissionStateX on ButtonSubmissionState {
   ///---------------------------------------------------
-  bool get isLoading => this is ButtonSubmissionLoading;
-  bool get isSuccess => this is ButtonSubmissionSuccess;
-  bool get isError => this is ButtonSubmissionError;
-  bool get isRequiresReauth => this is ButtonSubmissionRequiresReauth;
+  bool get isLoading => this is ButtonSubmissionLoadingState;
+  bool get isSuccess => this is ButtonSubmissionSuccessState;
+  bool get isError => this is ButtonSubmissionErrorState;
+  bool get isRequiresReauth => this is ButtonSubmissionRequiresReauthState;
 }

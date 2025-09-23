@@ -18,14 +18,14 @@ final class SignUpPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    /// 🔄 [ ref.listenRetryAwareFailure] — Ref listener for one-shot
-    ///    error handling (with optional "retry" logic) via overlays
-    /// 🧠 OverlayDispatcher resolves conflicts/priority internally
-    ref.listenRetryAwareFailure(
+    /// 🛡️ Riverpod-side effects listener (symmetry with BLoC SubmissionSideEffects)
+    ref.listenSubmissionSideEffects(
       signUpProvider,
       context,
-      ref: ref,
-      onRetry: () => ref.submitSignUp(),
+      onSuccess: (ctx, _) =>
+          ctx.showSnackbar(message: LocaleKeys.sign_up_already_have_account),
+      // onResetForm: (ctx) => ref.read(signUpFormProvider.notifier).resetState(),
+      onRetry: (ref) => ref.submitSignUp(),
     );
 
     /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
@@ -47,7 +47,7 @@ final class _SignUpView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     //
-    // 📌 Shared focus nodes for form fields
+    /// 📌 Shared focus nodes for form fields
     final focusNodes = useSignUpFocusNodes();
 
     return Scaffold(
@@ -110,6 +110,7 @@ extension SignUpRefX on WidgetRef {
   /// 📩 Triggers sign-up logic based on current form state
   void submitSignUp() {
     final form = read(signUpFormProvider);
+    context.unfocusKeyboard();
     read(signUpProvider.notifier).signup(
       name: form.name.value,
       email: form.email.value,

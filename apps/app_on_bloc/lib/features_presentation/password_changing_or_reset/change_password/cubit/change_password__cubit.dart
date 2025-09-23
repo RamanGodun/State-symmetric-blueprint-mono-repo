@@ -12,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 final class ChangePasswordCubit extends Cubit<ButtonSubmissionState> {
   ///-----------------------------------------------------------
   ChangePasswordCubit(this._useCases, this._signOutUseCase)
-    : super(const ButtonSubmissionInitial());
+    : super(const ButtonSubmissionInitialState());
   //
   final PasswordRelatedUseCases _useCases;
   final SignOutUseCase _signOutUseCase;
@@ -22,23 +22,25 @@ final class ChangePasswordCubit extends Cubit<ButtonSubmissionState> {
 
   /// 🚀 Submits reset password request if form is valid
   Future<void> submit(String newPassword) async {
-    if (state is ButtonSubmissionLoading) return;
+    if (state is ButtonSubmissionLoadingState) return;
     //
     _submitDebouncer.run(() async {
-      emit(const ButtonSubmissionLoading());
+      emit(const ButtonSubmissionLoadingState());
       //
       final result = await _useCases.callChangePassword(newPassword);
       //
       ResultHandler(result)
         ..onSuccess((_) {
           debugPrint('✅ Password changed successfully');
-          emit(const ButtonSubmissionSuccess());
+          emit(const ButtonSubmissionSuccessState());
         })
         ..onFailure((failure) async {
           debugPrint('❌ Password change failed: ${failure.runtimeType}');
           (failure.type is RequiresRecentLoginFirebaseFailureType)
-              ? emit(ButtonSubmissionRequiresReauth(failure.asConsumable()))
-              : emit(ButtonSubmissionError(failure.asConsumable()));
+              ? emit(
+                  ButtonSubmissionRequiresReauthState(failure.asConsumable()),
+                )
+              : emit(ButtonSubmissionErrorState(failure.asConsumable()));
           failure.log();
         })
         ..log();
@@ -54,7 +56,7 @@ final class ChangePasswordCubit extends Cubit<ButtonSubmissionState> {
   ///
 
   /// ♻️ Returns to initial state (eg, after dialog/redirect)
-  void resetState() => emit(const ButtonSubmissionInitial());
+  void resetState() => emit(const ButtonSubmissionInitialState());
 
   /// 🧼 Cleans up resources on close
   @override

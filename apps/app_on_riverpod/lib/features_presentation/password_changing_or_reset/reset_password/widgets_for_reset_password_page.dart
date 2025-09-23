@@ -34,14 +34,16 @@ final class _ResetPasswordHeader extends StatelessWidget {
 /// 🧩 [_ResetPasswordEmailInputField] — User email input field with localized validation
 /// ✅ Rebuilds only when `email.uiError` changes
 //
-final class _ResetPasswordEmailInputField extends HookConsumerWidget {
+final class _ResetPasswordEmailInputField extends ConsumerWidget {
   ///--------------------------------------------------------------
-  const _ResetPasswordEmailInputField();
+  const _ResetPasswordEmailInputField(this.focusNodes);
+  //
+  final ({FocusNode email}) focusNodes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final focusNode = useResetPasswordFocusNodes();
+
     final emailError = ref.watch(
       resetPasswordFormProvider.select((f) => f.email.uiErrorKey),
     );
@@ -52,7 +54,7 @@ final class _ResetPasswordEmailInputField extends HookConsumerWidget {
 
     return InputFieldFactory.create(
       type: InputFieldType.email,
-      focusNode: focusNode.email,
+      focusNode: focusNodes.email,
       errorText: emailError,
       onChanged: notifier.onEmailChanged,
       onSubmitted: isValid ? () => ref.submitResetPassword() : null,
@@ -96,7 +98,7 @@ final class _WrapperForFooter extends ConsumerWidget {
     //
     /// ⏳ Submission loading (primitive bool)
     final isLoading = ref.watch(
-      resetPasswordProvider.select((a) => a.isLoading),
+      resetPasswordProvider.select((state) => state.isLoading),
     );
     //
     /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)
@@ -123,13 +125,15 @@ final class _ResetPasswordFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
+        /// 🧭 Redirect to [SignInPage]
         const TextWidget(
           LocaleKeys.reset_password_remember,
-          TextType.titleSmall,
-        ),
+          TextType.bodyLarge,
+        ).withPaddingBottom(AppSpacing.xs),
+        //
         AppTextButton(
           label: LocaleKeys.buttons_sign_in,
           isEnabled: isEnabled,

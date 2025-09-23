@@ -26,16 +26,15 @@ final resetPasswordIsLoadingProvider = AutoDisposeProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ResetPasswordIsLoadingRef = AutoDisposeProviderRef<bool>;
-String _$resetPasswordHash() => r'c0ca7dcb5c187aaf0bf32aebea4db47a20280db8';
+String _$resetPasswordHash() => r'10cb0dab7b0399222f852659e11ef818e238b099';
 
-/// 🧩 [resetPasswordProvider] — async notifier that handles password reset
-/// 🧼 Uses [SafeAsyncState] to prevent post-dispose state updates
-/// 🧼 Wraps logic in [AsyncValue.guard] for robust error handling
+/// 🧩 [resetPasswordProvider] — Riverpod Notifier with shared ButtonSubmissionState
+/// ✅ Mirrors BLoC submit Cubit semantics (Initial → Loading → Success/Error)
 ///
 /// Copied from [ResetPassword].
 @ProviderFor(ResetPassword)
 final resetPasswordProvider =
-    AutoDisposeAsyncNotifierProvider<ResetPassword, void>.internal(
+    AutoDisposeNotifierProvider<ResetPassword, ButtonSubmissionState>.internal(
       ResetPassword.new,
       name: r'resetPasswordProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -45,6 +44,6 @@ final resetPasswordProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$ResetPassword = AutoDisposeAsyncNotifier<void>;
+typedef _$ResetPassword = AutoDisposeNotifier<ButtonSubmissionState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

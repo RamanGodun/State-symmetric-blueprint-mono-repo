@@ -10,7 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 //
 final class ResetPasswordCubit extends Cubit<ButtonSubmissionState> {
   ///----------------------------------------------------------
-  ResetPasswordCubit(this._useCases) : super(const ButtonSubmissionInitial());
+  ResetPasswordCubit(this._useCases)
+    : super(const ButtonSubmissionInitialState());
   //
   final PasswordRelatedUseCases _useCases;
   final _submitDebouncer = Debouncer(AppDurations.ms600);
@@ -19,21 +20,21 @@ final class ResetPasswordCubit extends Cubit<ButtonSubmissionState> {
 
   /// 🚀 Submits reset password request if form is valid
   Future<void> submit(String email) async {
-    if (state is ButtonSubmissionLoading) return;
+    if (state is ButtonSubmissionLoadingState) return;
     //
     _submitDebouncer.run(() async {
-      emit(const ButtonSubmissionLoading());
+      emit(const ButtonSubmissionLoadingState());
       //
       final result = await _useCases.callResetPassword(email);
       //
       ResultHandler(result)
         ..onSuccess((_) {
           debugPrint('✅ Reset password link sent');
-          emit(const ButtonSubmissionSuccess());
+          emit(const ButtonSubmissionSuccessState());
         })
         ..onFailure((f) {
           debugPrint('❌ Reset password failed: ${f.runtimeType}');
-          emit(ButtonSubmissionError(f.asConsumable()));
+          emit(ButtonSubmissionErrorState(f.asConsumable()));
           f.log();
         })
         ..log();
@@ -43,7 +44,7 @@ final class ResetPasswordCubit extends Cubit<ButtonSubmissionState> {
   ////
 
   /// ♻️ Returns to initial state (eg, after dialog/redirect)
-  void resetState() => emit(const ButtonSubmissionInitial());
+  void resetState() => emit(const ButtonSubmissionInitialState());
 
   /// 🧼 Cleans up
   @override

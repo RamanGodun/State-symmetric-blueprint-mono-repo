@@ -45,14 +45,14 @@ final class SubmissionSideEffects<
   listenWhen;
 
   /// ✅ Success handler
-  final void Function(BuildContext context, ButtonSubmissionSuccess state)?
+  final void Function(BuildContext context, ButtonSubmissionSuccessState state)?
   onSuccess;
 
   /// ❌ Error handler
   final void Function(
     BuildContext context,
     FailureUIEntity ui,
-    ButtonSubmissionError state,
+    ButtonSubmissionErrorState state,
   )?
   onError;
 
@@ -60,7 +60,7 @@ final class SubmissionSideEffects<
   final void Function(
     BuildContext context,
     FailureUIEntity ui,
-    ButtonSubmissionRequiresReauth state,
+    ButtonSubmissionRequiresReauthState state,
   )?
   onRequiresReauth;
 
@@ -78,7 +78,7 @@ final class SubmissionSideEffects<
   final void Function(
     BuildContext context,
     FailureUIEntity ui,
-    ButtonSubmissionError state,
+    ButtonSubmissionErrorState state,
     VoidCallback retry,
   )?
   onErrorWithRetry;
@@ -95,13 +95,13 @@ final class SubmissionSideEffects<
         switch (state) {
           //
           /// ✅ Success
-          case ButtonSubmissionSuccess():
+          case ButtonSubmissionSuccessState():
             onSuccess?.call(context, state);
 
           ////
 
           /// ❌ Error
-          case ButtonSubmissionError(:final failure):
+          case ButtonSubmissionErrorState(:final failure):
             final consumed = failure?.consume();
             if (consumed == null) return;
             final failureForUI = consumed.toUIEntity();
@@ -136,7 +136,7 @@ final class SubmissionSideEffects<
           ////
 
           /// 🔄 Requires reauth
-          case ButtonSubmissionRequiresReauth(:final failure):
+          case ButtonSubmissionRequiresReauthState(:final failure):
             final consumed = failure?.consume();
             if (consumed == null) return;
             final failureForUI = consumed.toUIEntity();
