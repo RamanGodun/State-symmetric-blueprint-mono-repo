@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sign_up_form_provider.dart';
+part of 'input_form_fields_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -26,7 +26,7 @@ final signUpFormIsValidProvider = AutoDisposeProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SignUpFormIsValidRef = AutoDisposeProviderRef<bool>;
-String _$signUpFormHash() => r'de978c34a635d8457dd58a902c8184e669f243dd';
+String _$signUpFormHash() => r'7c9deb6a25b0fd9d4774466e5406ca31673980e7';
 
 /// 🧩 [SignUpForm] — Manages the state of the sign-up form using [StateNotifier].
 /// Handles input updates, validation, and visibility toggling for password fields.

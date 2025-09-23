@@ -19,6 +19,7 @@ final class SignUpFormState extends Equatable {
     this.isPasswordObscure = true,
     this.isConfirmPasswordObscure = true,
     this.isValid = false,
+    this.epoch = 0,
   });
   //
   final NameInputValidation name;
@@ -28,6 +29,7 @@ final class SignUpFormState extends Equatable {
   final bool isPasswordObscure;
   final bool isConfirmPasswordObscure;
   final bool isValid;
+  final int epoch;
 
   /// Copy method for updating fields and flags
   SignUpFormState copyWith({
@@ -38,6 +40,7 @@ final class SignUpFormState extends Equatable {
     bool? isPasswordObscure,
     bool? isConfirmPasswordObscure,
     bool? isValid,
+    int? epoch,
   }) {
     return SignUpFormState(
       name: name ?? this.name,
@@ -48,6 +51,7 @@ final class SignUpFormState extends Equatable {
       isConfirmPasswordObscure:
           isConfirmPasswordObscure ?? this.isConfirmPasswordObscure,
       isValid: isValid ?? this.isValid,
+      epoch: epoch ?? this.epoch,
     );
   }
 
@@ -74,6 +78,7 @@ final class SignUpFormState extends Equatable {
     isPasswordObscure,
     isConfirmPasswordObscure,
     isValid,
+    epoch,
   ];
 
   //

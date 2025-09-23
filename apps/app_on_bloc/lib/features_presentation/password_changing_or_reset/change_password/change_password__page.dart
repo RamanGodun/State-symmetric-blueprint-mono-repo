@@ -25,8 +25,7 @@ final class ChangePasswordPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) =>
-              ChangePasswordFormFieldsCubit(di<FormValidationService>()),
+          create: (_) => ChangePasswordFormFieldsCubit(),
         ),
         BlocProvider(
           create: (_) => ChangePasswordCubit(

@@ -47,8 +47,6 @@ final class _SignInEmailInputField extends StatelessWidget {
   //
   final ({FocusNode email, FocusNode password}) focusNodes;
 
-  //
-
   @override
   Widget build(BuildContext context) {
     //

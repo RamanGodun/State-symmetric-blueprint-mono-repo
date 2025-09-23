@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sign_in_form_fields_provider.dart';
+part of 'input_form_fields_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -28,7 +28,7 @@ final signInFormIsValidProvider = AutoDisposeProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SignInFormIsValidRef = AutoDisposeProviderRef<bool>;
-String _$signInFormHash() => r'd7f4587326286cdab8e56c5036d5c86988d9467f';
+String _$signInFormHash() => r'18a45e561bc8ce18ab8412dc2d5bb013a544b6cf';
 
 /// 🧩 [SignInForm] — Manages the state of the sign-in form using [StateNotifier].
 /// Handles input updates, validation, and visibility toggling for password field.

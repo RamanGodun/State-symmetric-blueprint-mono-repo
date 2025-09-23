@@ -13,48 +13,41 @@ part 'input_fields_state.dart';
 //
 final class SignUpFormFieldCubit extends Cubit<SignUpFormState> {
   ///----------------------------------------------------------
-  SignUpFormFieldCubit(this._validation) : super(const SignUpFormState());
+  SignUpFormFieldCubit() : super(const SignUpFormState());
   //
-  final FormValidationService _validation;
   final _debouncer = Debouncer(AppDurations.ms180);
 
-  /// 👤 Handles (with trimming&debounce) name input
-  void onNameChanged(String value) {
-    _debouncer.run(() {
-      final name = _validation.validateName(value.trim());
-      emit(state._copyWith(name: name).validate());
-    });
-  }
+  /// 👤 Handles name input with validation, trimming and debounce
+  void onNameChanged(String value) => _debouncer.run(() {
+    final name = NameInputValidation.dirty(value.trim());
+    emit(state._copyWith(name: name).validate());
+  });
 
-  /// 📧  Handles (with trimming&debounce)  email input
-  void onEmailChanged(String value) {
-    _debouncer.run(() {
-      final email = _validation.validateEmail(value.trim());
-      emit(state._copyWith(email: email).validate());
-    });
-  }
+  /// 📧  Handles email input with validation, trimming and debounce
+  void onEmailChanged(String value) => _debouncer.run(() {
+    final email = EmailInputValidation.dirty(value.trim());
+    emit(state._copyWith(email: email).validate());
+  });
 
-  /// 🔒  Handles (with trimming&debounce)  password input + sync confirm
-  void onPasswordChanged(String value) {
-    _debouncer.run(() {
-      final password = _validation.validatePassword(value.trim());
-      final nextState = state
-          ._copyWith(password: password)
-          .updateConfirmPasswordValidation();
-      emit(nextState);
-    });
-  }
+  /// 🔒  Handles password input + sync password confirm (with validation, trimming and debounce)
+  void onPasswordChanged(String value) => _debouncer.run(() {
+    final password = PasswordInputValidation.dirty(value.trim());
+    final confirmPassword = state.confirmPassword.updatePassword(value);
+    emit(
+      state
+          ._copyWith(password: password, confirmPassword: confirmPassword)
+          .validate(),
+    );
+  });
 
-  /// 🔐  Handles (with trimming&debounce) confirm password input and validates match
-  void onConfirmPasswordChanged(String value) {
-    _debouncer.run(() {
-      final confirm = _validation.validateConfirmPassword(
-        password: state.password.value,
-        value: value.trim(),
-      );
-      emit(state._copyWith(confirmPassword: confirm).validate());
-    });
-  }
+  /// 🔐  Handles confirm password input with validation, trimming and debounce
+  void onConfirmPasswordChanged(String value) => _debouncer.run(() {
+    final confirmPassword = ConfirmPasswordInputValidation.dirty(
+      value: value.trim(),
+      password: state.password.value,
+    );
+    emit(state._copyWith(confirmPassword: confirmPassword).validate());
+  });
 
   /// 👁️ Toggles password field visibility
   void togglePasswordVisibility() =>
@@ -65,7 +58,7 @@ final class SignUpFormFieldCubit extends Cubit<SignUpFormState> {
     state._copyWith(isConfirmPasswordObscure: !state.isConfirmPasswordObscure),
   );
 
-  /// 🧼 Full reset
+  /// 🧼 Full state reset
   void resetState() => emit(SignUpFormState(epoch: state.epoch + 1));
 
   /// 🧼 Cleans up resources on close

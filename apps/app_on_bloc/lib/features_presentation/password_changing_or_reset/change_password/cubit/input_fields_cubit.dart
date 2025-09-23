@@ -13,10 +13,8 @@ part 'input_fields_state.dart';
 final class ChangePasswordFormFieldsCubit
     extends Cubit<ChangePasswordFormState> {
   ///-----------------------------------------------------------
-  ChangePasswordFormFieldsCubit(this._validation)
-    : super(const ChangePasswordFormState());
+  ChangePasswordFormFieldsCubit() : super(const ChangePasswordFormState());
   //
-  final FormValidationService _validation;
   final _debouncer = Debouncer(AppDurations.ms150);
 
   ////
@@ -24,22 +22,24 @@ final class ChangePasswordFormFieldsCubit
   /// 🔒 Handles password input and updates confirm sync
   void onPasswordChanged(String value) {
     _debouncer.run(() {
-      final password = _validation.validatePassword(value.trim());
-      final next = state
-          ._copyWith(password: password)
-          .updateConfirmPasswordValidation();
-      emit(next);
+      final password = PasswordInputValidation.dirty(value.trim());
+      final confirmPassword = state.confirmPassword.updatePassword(value);
+      emit(
+        state
+            ._copyWith(password: password, confirmPassword: confirmPassword)
+            .validate(),
+      );
     });
   }
 
   /// 🔐 Handles confirm password input and validates match
   void onConfirmPasswordChanged(String value) {
     _debouncer.run(() {
-      final confirm = _validation.validateConfirmPassword(
+      final confirmPassword = ConfirmPasswordInputValidation.dirty(
+        value: value.trim(),
         password: state.password.value,
-        value: value,
       );
-      emit(state._copyWith(confirmPassword: confirm).validate());
+      emit(state._copyWith(confirmPassword: confirmPassword).validate());
     });
   }
 

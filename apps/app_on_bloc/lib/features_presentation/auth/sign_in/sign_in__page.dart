@@ -25,9 +25,7 @@ final class SignInPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => SignInCubit(di<SignInUseCase>())),
-        BlocProvider(
-          create: (_) => SignInFormCubit(di<FormValidationService>()),
-        ),
+        BlocProvider(create: (_) => SignInFormCubit()),
       ],
 
       /// 🛡️ Wrap with side-effect Bloc listeners (❌Error & ✅Success) with optional "retry" logic

@@ -30,8 +30,7 @@ final class _SignUpUserNameInputField extends StatelessWidget {
           textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.name],
           onChanged: context.read<SignUpFormFieldCubit>().onNameChanged,
-          onEditingComplete: context.focusNext(focusNodes.email),
-          // onEditingComplete: () => context.nextFocus(),
+          onEditingComplete: () => context.requestFocus(focusNodes.email),
           fieldKeyOverride: ValueKey('name_$epoch'),
         ).withPaddingBottom(AppSpacing.xm);
       },
@@ -133,6 +132,7 @@ final class _SignUpPasswordInputField extends StatelessWidget {
           onEditingComplete: () =>
               context.requestFocus(focusNodes.confirmPassword),
           fieldKeyOverride: ValueKey('password_$epoch'),
+          //
         ).withPaddingBottom(AppSpacing.xm);
       },
     );

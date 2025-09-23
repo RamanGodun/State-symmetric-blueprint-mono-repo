@@ -27,7 +27,7 @@ final class ResetPasswordPage extends StatelessWidget {
           create: (_) => ResetPasswordCubit(di<PasswordRelatedUseCases>()),
         ),
         BlocProvider(
-          create: (_) => ResetPasswordFormCubit(di<FormValidationService>()),
+          create: (_) => ResetPasswordFormCubit(),
         ),
       ],
 

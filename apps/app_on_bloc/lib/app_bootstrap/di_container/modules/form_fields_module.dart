@@ -1,6 +1,4 @@
-import 'package:bloc_adapter/bloc_adapter.dart'
-    show DIModule, SafeRegistration, di;
-import 'package:core/base_modules/forms.dart' show FormValidationService;
+import 'package:bloc_adapter/bloc_adapter.dart' show DIModule;
 
 ///  🔐 Registers form validation service
 //
@@ -17,7 +15,7 @@ final class FormFieldsModule implements DIModule {
   ///
   @override
   Future<void> register() async {
-    di.registerFactoryIfAbsent(() => const FormValidationService());
+    // di.registerFactoryIfAbsent(() => const FormValidationService());
   }
 
   ///

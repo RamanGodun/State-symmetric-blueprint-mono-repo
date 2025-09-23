@@ -1,3 +1,5 @@
+import 'package:core/core.dart' show AppDurations;
+import 'package:core/utils.dart' show Debouncer;
 import 'package:features/features.dart' show SignInUseCase;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart'
@@ -12,7 +14,9 @@ part 'sign_in__provider.g.dart';
 //
 @Riverpod(keepAlive: false)
 final class SignIn extends _$SignIn with SafeAsyncState<void> {
-  ///----------------------------------------------------
+  ///-------------------------------------------------------
+
+  final _submitDebouncer = Debouncer(AppDurations.ms600);
 
   /// 🧱 Initializes safe lifecycle tracking
   @override
@@ -25,12 +29,15 @@ final class SignIn extends _$SignIn with SafeAsyncState<void> {
   Future<void> signin({required String email, required String password}) async {
     //
     if (state is AsyncLoading) return;
-    state = const AsyncLoading();
-
-    state = await AsyncValue.guard(() async {
-      final useCase = ref.watch(signInUseCaseProvider);
-      final result = await useCase(email: email, password: password);
-      return result.fold((failure) => throw failure, (_) => null);
+    //
+    _submitDebouncer.run(() async {
+      state = const AsyncLoading();
+      //
+      state = await AsyncValue.guard(() async {
+        final useCase = ref.watch(signInUseCaseProvider);
+        final result = await useCase(email: email, password: password);
+        return result.fold((failure) => throw failure, (_) => null);
+      });
     });
   }
 

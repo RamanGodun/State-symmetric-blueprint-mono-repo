@@ -8,10 +8,9 @@ part 'input_fields_state.dart';
 /// 🔐 [ResetPasswordFormCubit] — Owns email field & validation (Form only)
 final class ResetPasswordFormCubit extends Cubit<ResetPasswordFormState> {
   ///----------------------------------------------------------
-  ResetPasswordFormCubit(this._validation)
-    : super(const ResetPasswordFormState());
+  ResetPasswordFormCubit() : super(const ResetPasswordFormState());
   //
-  final FormValidationService _validation;
+
   final _debouncer = Debouncer(AppDurations.ms180);
 
   ////
@@ -19,7 +18,7 @@ final class ResetPasswordFormCubit extends Cubit<ResetPasswordFormState> {
   /// 📧 Handles email input change (debounced)
   void onEmailChanged(String value) {
     _debouncer.run(() {
-      final email = _validation.validateEmail(value.trim());
+      final email = EmailInputValidation.dirty(value.trim());
       emit(state._copyWith(email: email).validate());
     });
   }

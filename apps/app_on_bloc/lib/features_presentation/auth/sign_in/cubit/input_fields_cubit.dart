@@ -8,25 +8,24 @@ part 'input_fields_state.dart';
 /// 📝 [SignInFormCubit] — Owns email/password fields & validation (Form only)
 final class SignInFormCubit extends Cubit<SignInFormState> {
   ///----------------------------------------------------------
-  SignInFormCubit(this._validation) : super(const SignInFormState());
+  SignInFormCubit() : super(const SignInFormState());
   //
-  final FormValidationService _validation;
-  final _emailDebouncer = Debouncer(AppDurations.ms150);
+  final _inputDebouncer = Debouncer(AppDurations.ms20);
 
   ////
 
   /// 📧 Handles email field changes with debounce and validation
   void onEmailChanged(String value) {
-    _emailDebouncer.run(() {
-      final email = _validation.validateEmail(value.trim());
+    _inputDebouncer.run(() {
+      final email = EmailInputValidation.dirty(value.trim());
       emit(state._copyWith(email: email).validate());
     });
   }
 
   /// 🔒 Handles password field changes and form revalidation
   void onPasswordChanged(String value) {
-    _emailDebouncer.run(() {
-      final password = _validation.validatePassword(value.trim());
+    _inputDebouncer.run(() {
+      final password = PasswordInputValidation.dirty(value.trim());
       emit(state._copyWith(password: password).validate());
     });
   }
@@ -41,7 +40,7 @@ final class SignInFormCubit extends Cubit<SignInFormState> {
   /// 🧼 Cleans up resources on close
   @override
   Future<void> close() {
-    _emailDebouncer.cancel();
+    _inputDebouncer.cancel();
     return super.close();
   }
 

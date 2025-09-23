@@ -24,7 +24,7 @@ final class SignUpPage extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => SignUpCubit(di<SignUpUseCase>())),
         BlocProvider(
-          create: (_) => SignUpFormFieldCubit(di<FormValidationService>()),
+          create: (_) => SignUpFormFieldCubit(),
         ),
       ],
 

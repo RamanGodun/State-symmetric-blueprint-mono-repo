@@ -1,9 +1,9 @@
-import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/reset_password/providers/reset_password_form_state.dart';
+import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/reset_password/providers/input_form_fields_state.dart';
 import 'package:core/base_modules/forms.dart' show EmailInputValidation;
 import 'package:flutter_riverpod/flutter_riverpod.dart' show Ref, StateNotifier;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'reset_password_form_provider.g.dart';
+part 'input_form_fields_provider.g.dart';
 
 /// 🧩 [ResetPasswordForm] — Manages the state of the reset password form using [StateNotifier].
 /// Handles input updates, validation, and future extensibility.

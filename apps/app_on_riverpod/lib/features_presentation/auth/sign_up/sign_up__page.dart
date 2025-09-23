@@ -1,5 +1,5 @@
+import 'package:app_on_riverpod/features_presentation/auth/sign_up/providers/input_form_fields_provider.dart';
 import 'package:app_on_riverpod/features_presentation/auth/sign_up/providers/sign_up__provider.dart';
-import 'package:app_on_riverpod/features_presentation/auth/sign_up/providers/sign_up_form_provider.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

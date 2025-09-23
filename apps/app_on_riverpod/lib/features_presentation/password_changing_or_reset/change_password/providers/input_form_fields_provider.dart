@@ -1,10 +1,10 @@
-import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/change_password/providers/change_password_form_state.dart';
+import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/change_password/providers/input_form_fields_satate.dart';
 import 'package:core/base_modules/forms.dart'
     show ConfirmPasswordInputValidation, PasswordInputValidation;
 import 'package:flutter_riverpod/flutter_riverpod.dart' show Ref, StateNotifier;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'change_password_form_provider.g.dart';
+part 'input_form_fields_provider.g.dart';
 
 /// 🧩 [ChangePasswordForm] — Manages the state of the change password form using [StateNotifier].
 /// Handles input updates, validation, and visibility toggling for password field.
