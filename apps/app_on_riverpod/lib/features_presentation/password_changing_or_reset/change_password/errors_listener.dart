@@ -24,7 +24,7 @@ extension PasswordChangeRefX on WidgetRef {
         /// ❌ On error
         case ChangePasswordError(:final failure):
           context.showError(failure.toUIEntity());
-          read(changePasswordFormProvider.notifier).reset();
+          read(changePasswordFormProvider.notifier).resetState();
 
         /// 🔄 Requires Reauth → show dialog, than signOut for reAuth
         case ChangePasswordRequiresReauth(:final failure):

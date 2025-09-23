@@ -1,29 +1,31 @@
-import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/reset_password/providers/input_form_fields_state.dart';
-import 'package:core/base_modules/forms.dart' show EmailInputValidation;
+import 'package:core/core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' show Ref, StateNotifier;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'input_form_fields_provider.g.dart';
+part 'input_fields_provider.g.dart';
 
 /// 🧩 [ResetPasswordForm] — Manages the state of the reset password form using [StateNotifier].
 /// Handles input updates, validation, and future extensibility.
 //
 @riverpod
 final class ResetPasswordForm extends _$ResetPasswordForm {
-  ///--------------------------------
+  ///---------------------------------------------------
+  //
+  final _debouncer = Debouncer(AppDurations.ms180);
 
   /// Initializes the form state with default (pure) values.
   @override
   ResetPasswordFormState build() => const ResetPasswordFormState();
 
-  /// Updates the email field with a new value and triggers validation.
-  void emailChanged(String value) {
-    final email = EmailInputValidation.dirty(value);
-    state = state.copyWith(email: email).validate();
+  ////
+
+  /// 📧  Handles email input with validation, trimming and debounce
+  void onEmailChanged(String value) {
+    _debouncer.run(() => state = state.updateState(email: value));
   }
 
-  /// Resets the form state to initial pure values.
-  void reset() => state = const ResetPasswordFormState();
+  /// 🧼 Reset form to initial
+  void resetState() => state = ResetPasswordFormState(epoch: state.epoch + 1);
 
   //
 }

@@ -1,3 +1,5 @@
+export '../src/base_modules/forms/common_imput_fields_states/change_password.dart';
+export '../src/base_modules/forms/common_imput_fields_states/reset_password.dart';
 export '../src/base_modules/forms/common_imput_fields_states/sign_in.dart';
 export '../src/base_modules/forms/common_imput_fields_states/sign_up.dart';
 export '../src/base_modules/forms/form_field_factory.dart'

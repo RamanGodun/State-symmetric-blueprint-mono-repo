@@ -1,12 +1,7 @@
 //
 // ignore_for_file: public_member_api_docs
-
 import 'package:core/core.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
-
-part 'input_fields_state.dart';
 
 /// 🔐 [ChangePasswordFormFieldsCubit] —
 //
@@ -19,55 +14,41 @@ final class ChangePasswordFormFieldsCubit
 
   ////
 
-  /// 🔒 Handles password input and updates confirm sync
+  /// 🔒  Handles password input + sync password confirm (with validation, trimming and debounce)
   void onPasswordChanged(String value) {
-    _debouncer.run(() {
-      final password = PasswordInputValidation.dirty(value.trim());
-      final confirmPassword = state.confirmPassword.updatePassword(value);
-      emit(
-        state
-            ._copyWith(password: password, confirmPassword: confirmPassword)
-            .validate(),
-      );
-    });
+    _debouncer.run(() => emit(state.updateState(password: value)));
   }
 
-  /// 🔐 Handles confirm password input and validates match
+  /// 🔐  Handles confirm password input with validation, trimming and debounce
   void onConfirmPasswordChanged(String value) {
-    _debouncer.run(() {
-      final confirmPassword = ConfirmPasswordInputValidation.dirty(
-        value: value.trim(),
-        password: state.password.value,
-      );
-      emit(state._copyWith(confirmPassword: confirmPassword).validate());
-    });
+    _debouncer.run(() => emit(state.updateState(confirmPassword: value)));
   }
 
   /// 👁️ Toggles password field visibility
   void togglePasswordVisibility() => emit(
-    state._copyWith(isPasswordObscure: !state.isPasswordObscure),
+    state.updateState(
+      isPasswordObscure: !state.isPasswordObscure,
+      revalidate: false,
+    ),
   );
 
   /// 👁️🔁 Toggles confirm password visibility
   void toggleConfirmPasswordVisibility() => emit(
-    state._copyWith(isConfirmPasswordObscure: !state.isConfirmPasswordObscure),
+    state.updateState(
+      isConfirmPasswordObscure: !state.isConfirmPasswordObscure,
+      revalidate: false,
+    ),
   );
 
   ////
 
-  /// 🧼 Cancels all pending debounce operations
-  void _cancelDebouncers() {
-    _debouncer
-        .cancel(); // 🧯 prevent delayed emit from old email input // 🧯 prevent accidental double submit
-  }
-
-  /// 🧼 Resets the entire form to initial state
+  /// ♻️🧼 Resets the entire form to initial state
   void resetState() => emit(ChangePasswordFormState(epoch: state.epoch + 1));
 
   /// 🧼 Cleanup
   @override
   Future<void> close() {
-    _cancelDebouncers();
+    _debouncer.cancel();
     return super.close();
   }
 

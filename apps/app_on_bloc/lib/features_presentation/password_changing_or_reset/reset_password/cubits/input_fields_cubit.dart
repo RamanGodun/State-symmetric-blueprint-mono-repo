@@ -1,26 +1,19 @@
 import 'package:core/core.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
-
-part 'input_fields_state.dart';
 
 /// 🔐 [ResetPasswordFormCubit] — Owns email field & validation (Form only)
+//
 final class ResetPasswordFormCubit extends Cubit<ResetPasswordFormState> {
   ///----------------------------------------------------------
   ResetPasswordFormCubit() : super(const ResetPasswordFormState());
   //
-
-  final _debouncer = Debouncer(AppDurations.ms180);
+  final _debouncer = Debouncer(AppDurations.ms20);
 
   ////
 
-  /// 📧 Handles email input change (debounced)
+  /// 📧  Handles email input with validation, trimming and debounce
   void onEmailChanged(String value) {
-    _debouncer.run(() {
-      final email = EmailInputValidation.dirty(value.trim());
-      emit(state._copyWith(email: email).validate());
-    });
+    _debouncer.run(() => emit(state.updateState(email: value)));
   }
 
   /// 🧼 Reset form to initial

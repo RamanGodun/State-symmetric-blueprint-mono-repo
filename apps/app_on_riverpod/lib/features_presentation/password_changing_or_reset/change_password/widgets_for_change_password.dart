@@ -72,7 +72,7 @@ final class _PasswordInputField extends ConsumerWidget {
       focusNode: focusNodes.password,
       errorText: passwordError,
       isObscure: isObscure,
-      onChanged: notifier.passwordChanged,
+      onChanged: notifier.onPasswordChanged,
       onSubmitted: goNext(focusNodes.confirmPassword),
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
@@ -113,7 +113,7 @@ final class _ConfirmPasswordInputField extends ConsumerWidget {
       focusNode: focusNodes.confirmPassword,
       errorText: confirmPasswordError,
       isObscure: isObscure,
-      onChanged: notifier.confirmPasswordChanged,
+      onChanged: notifier.onConfirmPasswordChanged,
       onSubmitted: isValid ? () => ref.submitChangePassword() : null,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,

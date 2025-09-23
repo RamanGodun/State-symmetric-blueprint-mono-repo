@@ -1,5 +1,5 @@
 import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/reset_password/providers/input_form_fields_provider.dart';
+import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/reset_password/providers/input_fields_provider.dart';
 import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/reset_password/providers/reset_password__provider.dart';
 import 'package:core/core.dart';
 import 'package:easy_localization/easy_localization.dart';

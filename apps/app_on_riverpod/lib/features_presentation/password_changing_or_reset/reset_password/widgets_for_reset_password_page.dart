@@ -54,7 +54,7 @@ final class _ResetPasswordEmailInputField extends HookConsumerWidget {
       type: InputFieldType.email,
       focusNode: focusNode.email,
       errorText: emailError,
-      onChanged: notifier.emailChanged,
+      onChanged: notifier.onEmailChanged,
       onSubmitted: isValid ? () => ref.submitResetPassword() : null,
     ).withPaddingBottom(AppSpacing.huge);
   }

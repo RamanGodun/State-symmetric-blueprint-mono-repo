@@ -23,7 +23,7 @@ final class SignInFormState extends Equatable {
   final bool isValid;
   final int epoch;
 
-  /// 🧱 Updates current state  (raw Strings → Formz inputs + password-confirm sync)
+  /// 🧱 Updates current state  (raw Strings → Formz inputs)
   SignInFormState updateState({
     String? email,
     String? password,
