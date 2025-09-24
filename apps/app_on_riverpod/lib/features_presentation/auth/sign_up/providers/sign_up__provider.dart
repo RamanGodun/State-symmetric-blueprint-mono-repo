@@ -1,26 +1,32 @@
 import 'package:core/core.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:features/features.dart' show SignUpUseCase;
+import 'package:features/features_barrels/auth/auth.dart' show SignUpUseCase;
 import 'package:riverpod_adapter/riverpod_adapter.dart'
     show signUpUseCaseProvider;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sign_up__provider.g.dart';
 
-/// 🧩 [signUpProvider] — Riverpod Notifier with shared ButtonSubmissionState
-/// ✅ Mirrors BLoC submit Cubit semantics (Initial → Loading → Success/Error)
+/// 🔐 [signUpProvider] — Handles sign-up submission & side-effects.
+/// 🧰 Uses shared [ButtonSubmissionState].
+/// 🔁 Symmetric to BLoC 'SignUpCubit' (Initial → Loading → Success/Error).
 //
 @Riverpod(keepAlive: false)
 final class SignUp extends _$SignUp {
   ///-----------------------------
   //
+  // For anti double-tap protection for the submit action.
   final _submitDebouncer = Debouncer(AppDurations.ms600);
 
   /// 🧱 Initial state (idle)
   @override
   ButtonSubmissionState build() => const ButtonSubmissionInitialState();
 
-  /// 📝 Signs up user with name, email and password
-  Future<void> signup({
+  ////
+
+  /// 🚀 Triggers sign-up with the provided credentials.
+  ///    Delegates domain logic to [SignUpUseCase] and updates ButtonSubmission state.
+  Future<void> submit({
     required String name,
     required String email,
     required String password,
@@ -49,17 +55,10 @@ final class SignUp extends _$SignUp {
     });
   }
 
-  /// 🧼 Resets state after UI has handled error
+  ////
+
+  /// ♻️ Reset to initial (e.g., after dialogs/navigation)
   void reset() => state = const ButtonSubmissionInitialState();
 
   //
 }
-
-////
-////
-
-/// ⏳ Returns loading state for submission (primitive bool)
-//
-@riverpod
-bool signUpSubmitIsLoading(Ref ref) =>
-    ref.watch(signUpProvider.select((a) => a.isLoading));

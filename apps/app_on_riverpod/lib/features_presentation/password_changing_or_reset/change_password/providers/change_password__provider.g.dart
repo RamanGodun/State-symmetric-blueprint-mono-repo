@@ -6,29 +6,6 @@ part of 'change_password__provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$changePasswordSubmitIsLoadingHash() =>
-    r'71091cad1f65d7abdbaaf529ca1657e7ecf037ea'; ////
-////
-////
-////
-/// ⏳ Returns loading state for submission (primitive bool)
-///
-/// Copied from [changePasswordSubmitIsLoading].
-@ProviderFor(changePasswordSubmitIsLoading)
-final changePasswordSubmitIsLoadingProvider =
-    AutoDisposeProvider<bool>.internal(
-      changePasswordSubmitIsLoading,
-      name: r'changePasswordSubmitIsLoadingProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$changePasswordSubmitIsLoadingHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ChangePasswordSubmitIsLoadingRef = AutoDisposeProviderRef<bool>;
 String _$changePasswordHash() => r'918fa6cc583af87d43d5900e897672ae41ad23ff';
 
 /// 🧩 [changePasswordProvider] — Riverpod Notifier with shared ButtonSubmissionState

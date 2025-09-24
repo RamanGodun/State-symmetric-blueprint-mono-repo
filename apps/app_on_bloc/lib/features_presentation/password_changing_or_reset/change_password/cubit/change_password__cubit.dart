@@ -4,23 +4,25 @@ import 'package:features/features_barrels/auth/auth.dart' show SignOutUseCase;
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// part 'change_password__state.dart';
-
-/// 🔐 [ChangePasswordCubit] — Manages reset password logic, validation, submission.
-/// ✅ Leverages [PasswordRelatedUseCases] injected via DI and uses declarative state updates.
+/// 🔐 [ChangePasswordCubit] — Handles password-change submission & side-effects.
+/// 🧰 Uses shared [ButtonSubmissionState].
+/// 🔁 Symmetric to Riverpod 'changePasswordProvider' (Initial → Loading → Success/Error/RequiresReauth).
 //
 final class ChangePasswordCubit extends Cubit<ButtonSubmissionState> {
-  ///-----------------------------------------------------------
+  ///-------------------------------------------------------------
+  /// Creates a cubit bound to domain [PasswordRelatedUseCases] & [SignOutUseCase].
   ChangePasswordCubit(this._useCases, this._signOutUseCase)
     : super(const ButtonSubmissionInitialState());
   //
   final PasswordRelatedUseCases _useCases;
   final SignOutUseCase _signOutUseCase;
+  // For anti double-tap protection for the submit action.
   final _submitDebouncer = Debouncer(AppDurations.ms600);
 
-  ///
+  ////
 
-  /// 🚀 Submits reset password request if form is valid
+  /// 🚀 Triggers password update with the provided `newPassword`.
+  ///    Delegates domain logic to [_useCases] and emits ButtonSubmission states.
   Future<void> submit(String newPassword) async {
     if (state is ButtonSubmissionLoadingState) return;
     //
@@ -28,7 +30,6 @@ final class ChangePasswordCubit extends Cubit<ButtonSubmissionState> {
       emit(const ButtonSubmissionLoadingState());
       //
       final result = await _useCases.callChangePassword(newPassword);
-      //
       ResultHandler(result)
         ..onSuccess((_) {
           debugPrint('✅ Password changed successfully');
@@ -53,15 +54,15 @@ final class ChangePasswordCubit extends Cubit<ButtonSubmissionState> {
     await _signOutUseCase();
   }
 
-  ///
+  ////
 
-  /// ♻️ Returns to initial state (eg, after dialog/redirect)
+  /// ♻️ Reset to initial (e.g., after dialogs/navigation)
   void resetState() => emit(const ButtonSubmissionInitialState());
 
   /// 🧼 Cleans up resources on close
   @override
   Future<void> close() {
-    _submitDebouncer.cancel(); // 🧯 prevent accidental double submit
+    _submitDebouncer.cancel();
     return super.close();
   }
 

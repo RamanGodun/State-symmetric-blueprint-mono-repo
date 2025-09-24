@@ -1,11 +1,10 @@
 import 'package:core/core.dart';
 import 'package:features/features_barrels/auth/auth.dart';
-import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// part 'sign_up_page__state.dart';
-
-/// 🔐 [SignUpCubit] — Handles sign-up submission & side-effects
+/// 🔐 [SignUpCubit] — Handles sign-up submission & side-effects.
+/// 🧰 Uses shared [ButtonSubmissionState].
+/// 🔁 Symmetric to Riverpod 'signUpProvider' (Initial → Loading → Success/Error).
 //
 final class SignUpCubit extends Cubit<ButtonSubmissionState> {
   ///------------------------------------------------
@@ -13,11 +12,13 @@ final class SignUpCubit extends Cubit<ButtonSubmissionState> {
     : super(const ButtonSubmissionInitialState());
   //
   final SignUpUseCase _signUpUseCase;
+  // For anti double-tap protection for the submit action.
   final _submitDebouncer = Debouncer(AppDurations.ms600);
 
   ////
 
-  /// 🚀/// ✅ Delegates actual sign-up to [SignUpUseCase], if form is valid
+  /// 🚀 Triggers sign-up with the provided credentials.
+  ///    Delegates domain logic to [SignUpUseCase] and emits ButtonSubmission states.
   Future<void> submit({
     required String name,
     required String email,
@@ -28,31 +29,21 @@ final class SignUpCubit extends Cubit<ButtonSubmissionState> {
     _submitDebouncer.run(() async {
       emit(const ButtonSubmissionLoadingState());
       //
-      final result = await _signUpUseCase(
+      final result = await _signUpUseCase.call(
         name: name,
         email: email,
         password: password,
       );
-      //
-      ResultHandler(result)
-        ..onSuccess((_) {
-          debugPrint('✅ Signed up successfully');
-          emit(const ButtonSubmissionSuccessState());
-        })
-        ..onFailure((failure) {
-          debugPrint('❌ Sign up failed: ${failure.runtimeType}');
+      result.fold(
+        // ❌ Failure branch → emit error with Consumable<Failure>
+        (failure) {
           emit(ButtonSubmissionErrorState(failure.asConsumable()));
           failure.log();
-        })
-        ..log();
+        },
+        // ✅ Success branch
+        (_) => emit(const ButtonSubmissionSuccessState()),
+      );
     });
-    /*
-  ? Alternative syntax: classic fold version for direct mapping:
-  result.fold(
-    (f) => emit(SignUpError(f))),
-    (_) => emit(const SignUpSuccess()),
-  );
-  */
   }
 
   ////
@@ -63,7 +54,7 @@ final class SignUpCubit extends Cubit<ButtonSubmissionState> {
   /// 🧼 Cleanup
   @override
   Future<void> close() {
-    _submitDebouncer.cancel(); // 🧯 prevent accidental double submit
+    _submitDebouncer.cancel();
     return super.close();
   }
 

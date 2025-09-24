@@ -1,18 +1,20 @@
 import 'package:core/base_modules/forms.dart' show SignInFormState;
 import 'package:core/utils.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' show Ref, StateNotifier;
+import 'package:flutter_riverpod/flutter_riverpod.dart' show StateNotifier;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'input_form_fields_provider.g.dart';
 
-/// 🧩 [SignInForm] — Manages the state of the sign-in form using [StateNotifier].
-/// Handles input updates, validation, and visibility toggling for password field.
+/// 📝 [signInFormProvider] — Handles sign-in form fields & validation.
+/// 🧰 Uses shared [SignInFormState].
+/// 🔁 Symmetric to BLoC ['SignInFormCubit'] (Form only).
 //
 @riverpod
 final class SignInForm extends _$SignInForm {
   ///-------------------------------------
   //
-  final _debouncer = Debouncer(AppDurations.ms20);
+  // For anti double-tap protection for the submit action.
+  final _debouncer = Debouncer(AppDurations.ms100);
 
   ////
 
@@ -38,17 +40,8 @@ final class SignInForm extends _$SignInForm {
     );
   }
 
-  /// Resets the form state to its initial (pure) values.
+  /// ♻️  Resets the form state to its initial (pure) values.
   void resetState() => state = SignInFormState(epoch: state.epoch + 1);
 
   //
 }
-
-////
-////
-
-/// ✅ Returns form validity as primitive bool (minimal rebuilds)
-//
-@riverpod
-bool signInFormIsValid(Ref ref) =>
-    ref.watch(signInFormProvider.select((f) => f.isValid));

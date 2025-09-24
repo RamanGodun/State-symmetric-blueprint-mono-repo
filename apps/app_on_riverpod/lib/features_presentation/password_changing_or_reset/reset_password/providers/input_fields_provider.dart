@@ -1,17 +1,19 @@
 import 'package:core/core.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' show Ref, StateNotifier;
+import 'package:flutter_riverpod/flutter_riverpod.dart' show StateNotifier;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'input_fields_provider.g.dart';
 
-/// 🧩 [ResetPasswordForm] — Manages the state of the reset password form using [StateNotifier].
-/// Handles input updates, validation, and future extensibility.
+/// 📝 [ResetPasswordForm] — Handles reset-password form field & validation.
+/// 🧰 Uses shared [ResetPasswordFormState].
+/// 🔁 Symmetric to BLoC 'ResetPasswordFormCubit' (Form only).
 //
 @riverpod
 final class ResetPasswordForm extends _$ResetPasswordForm {
   ///---------------------------------------------------
   //
-  final _debouncer = Debouncer(AppDurations.ms180);
+  // For anti double-tap protection on input updates.
+  final _debouncer = Debouncer(AppDurations.ms100);
 
   /// Initializes the form state with default (pure) values.
   @override
@@ -24,17 +26,8 @@ final class ResetPasswordForm extends _$ResetPasswordForm {
     _debouncer.run(() => state = state.updateState(email: value));
   }
 
-  /// 🧼 Reset form to initial
+  /// ♻️ Resets the form to its initial state.
   void resetState() => state = ResetPasswordFormState(epoch: state.epoch + 1);
 
   //
 }
-
-////
-////
-
-/// ✅ Returns form validity as primitive bool (minimal rebuilds)
-//
-@riverpod
-bool resetPasswordFormIsValid(Ref ref) =>
-    ref.watch(resetPasswordFormProvider.select((f) => f.isValid));

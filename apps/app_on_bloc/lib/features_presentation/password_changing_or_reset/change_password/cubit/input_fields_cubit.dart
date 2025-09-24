@@ -3,14 +3,17 @@
 import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 🔐 [ChangePasswordFormFieldsCubit] —
+/// 📝 [ChangePasswordFormFieldsCubit] — Handles change-password form fields & validation.
+/// 🧰 Uses shared [ChangePasswordFormState].
+/// 🔁 Symmetric to Riverpod 'ChangePasswordForm' notifier (Form only).
 //
 final class ChangePasswordFormFieldsCubit
     extends Cubit<ChangePasswordFormState> {
   ///-----------------------------------------------------------
   ChangePasswordFormFieldsCubit() : super(const ChangePasswordFormState());
   //
-  final _debouncer = Debouncer(AppDurations.ms150);
+  // For anti double-tap protection on input updates.
+  final _debouncer = Debouncer(AppDurations.ms100);
 
   ////
 

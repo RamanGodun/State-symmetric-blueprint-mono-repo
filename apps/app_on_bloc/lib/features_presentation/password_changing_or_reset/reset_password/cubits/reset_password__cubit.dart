@@ -1,24 +1,24 @@
 import 'package:core/core.dart';
 import 'package:features/features.dart' show PasswordRelatedUseCases;
-import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// part 'reset_password__state.dart';
-
-/// 🔐 [ResetPasswordCubit] — Manages reset password submission & side-effects
-/// ✅ Leverages [PasswordRelatedUseCases] injected via DI and uses declarative state updates.
+/// 🔐 [ResetPasswordCubit] — Handles reset-password submission & side-effects.
+/// 🧰 Uses shared [ButtonSubmissionState].
+/// 🔁 Symmetric to Riverpod 'resetPasswordProvider' (Initial → Loading → Success/Error).
 //
 final class ResetPasswordCubit extends Cubit<ButtonSubmissionState> {
-  ///----------------------------------------------------------
+  ///-------------------------------------------------------------
   ResetPasswordCubit(this._useCases)
     : super(const ButtonSubmissionInitialState());
   //
   final PasswordRelatedUseCases _useCases;
+  // For anti double-tap protection on submit action.
   final _submitDebouncer = Debouncer(AppDurations.ms600);
 
   ////
 
-  /// 🚀 Submits reset password request if form is valid
+  /// 📩 Sends reset link to provided email.
+  /// ✅ Delegates domain logic to [PasswordRelatedUseCases] and emits ButtonSubmission states.
   Future<void> submit(String email) async {
     if (state is ButtonSubmissionLoadingState) return;
     //
@@ -26,18 +26,15 @@ final class ResetPasswordCubit extends Cubit<ButtonSubmissionState> {
       emit(const ButtonSubmissionLoadingState());
       //
       final result = await _useCases.callResetPassword(email);
-      //
-      ResultHandler(result)
-        ..onSuccess((_) {
-          debugPrint('✅ Reset password link sent');
-          emit(const ButtonSubmissionSuccessState());
-        })
-        ..onFailure((f) {
-          debugPrint('❌ Reset password failed: ${f.runtimeType}');
-          emit(ButtonSubmissionErrorState(f.asConsumable()));
-          f.log();
-        })
-        ..log();
+      result.fold(
+        // ❌ Failure → error with Consumable<Failure>
+        (failure) {
+          emit(ButtonSubmissionErrorState(failure.asConsumable()));
+          failure.log();
+        },
+        // ✅ Success
+        (_) => emit(const ButtonSubmissionSuccessState()),
+      );
     });
   }
 
@@ -49,7 +46,7 @@ final class ResetPasswordCubit extends Cubit<ButtonSubmissionState> {
   /// 🧼 Cleans up
   @override
   Future<void> close() {
-    _submitDebouncer.cancel(); // 🧯 prevent accidental double submit
+    _submitDebouncer.cancel();
     return super.close();
   }
 

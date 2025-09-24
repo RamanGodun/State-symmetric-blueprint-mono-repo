@@ -1,12 +1,16 @@
 import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 📝 [SignInFormCubit] — Owns email/password fields & validation (Form only)
+/// 📝 [SignInFormCubit] — Handles sign-in form fields & validation.
+/// 🧰 Uses shared [SignInFormState].
+/// 🔁 Symmetric to Riverpod 'signInFormProvider' (Form only).
+//
 final class SignInFormCubit extends Cubit<SignInFormState> {
-  ///----------------------------------------------------------
+  ///---------------------------------------------------
   SignInFormCubit() : super(const SignInFormState());
   //
-  final _debouncer = Debouncer(AppDurations.ms20);
+  // For anti double-tap protection for the submit action.
+  final _debouncer = Debouncer(AppDurations.ms100);
 
   ////
 
@@ -30,7 +34,7 @@ final class SignInFormCubit extends Cubit<SignInFormState> {
     );
   }
 
-  /// Resets the form state to its initial (pure) values.
+  /// ♻️  Resets the form state to its initial (pure) values.
   void resetState() => emit(SignInFormState(epoch: state.epoch + 1));
 
   /// 🧼 Cleans up resources on close

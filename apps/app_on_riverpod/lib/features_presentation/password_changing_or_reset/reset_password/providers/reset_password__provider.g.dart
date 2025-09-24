@@ -6,26 +6,6 @@ part of 'reset_password__provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$resetPasswordIsLoadingHash() =>
-    r'13553231324e681fa4fc4532557084237a820250'; ////
-////
-/// ⏳ Returns loading state for submission (primitive bool)
-///
-/// Copied from [resetPasswordIsLoading].
-@ProviderFor(resetPasswordIsLoading)
-final resetPasswordIsLoadingProvider = AutoDisposeProvider<bool>.internal(
-  resetPasswordIsLoading,
-  name: r'resetPasswordIsLoadingProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$resetPasswordIsLoadingHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ResetPasswordIsLoadingRef = AutoDisposeProviderRef<bool>;
 String _$resetPasswordHash() => r'10cb0dab7b0399222f852659e11ef818e238b099';
 
 /// 🧩 [resetPasswordProvider] — Riverpod Notifier with shared ButtonSubmissionState

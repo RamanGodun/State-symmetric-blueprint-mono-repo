@@ -1,21 +1,25 @@
 import 'package:core/core.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' show Ref, StateNotifier;
+import 'package:flutter_riverpod/flutter_riverpod.dart' show StateNotifier;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'input_fields_provider.g.dart';
 
-/// 🧩 [ChangePasswordForm] — Manages the state of the change password form using [StateNotifier].
-/// Handles input updates, validation, and visibility toggling for password field.
+/// 📝 [ChangePasswordForm] — Handles change-password form fields & validation.
+/// 🧰 Uses shared [ChangePasswordFormState].
+/// 🔁 Symmetric to BLoC 'ChangePasswordFormFieldsCubit' (Form only).
 //
 @riverpod
 final class ChangePasswordForm extends _$ChangePasswordForm {
   ///-----------------------------------------------------
   //
-  final _debouncer = Debouncer(AppDurations.ms150);
+  // For anti double-tap protection on input updates.
+  final _debouncer = Debouncer(AppDurations.ms100);
 
   /// 🧱 Initializes the form with pure input values
   @override
   ChangePasswordFormState build() => const ChangePasswordFormState();
+
+  ////
 
   /// 🔒  Handles password input + sync password confirm (with validation, trimming and debounce)
   void onPasswordChanged(String value) {
@@ -43,17 +47,10 @@ final class ChangePasswordForm extends _$ChangePasswordForm {
     );
   }
 
+  ////
+
   /// ♻️🧼 Resets the entire form to initial state
   void resetState() => state = ChangePasswordFormState(epoch: state.epoch + 1);
 
   //
 }
-
-////
-////
-
-/// ✅ Returns form validity as primitive bool (minimal rebuilds)
-//
-@riverpod
-bool changePasswordFormIsValid(Ref ref) =>
-    ref.watch(changePasswordFormProvider.select((f) => f.isValid));

@@ -4,14 +4,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'input_form_fields_provider.g.dart';
 
-/// 🧩 [SignUpForm] — Manages the state of the sign-up form using [StateNotifier].
-/// Handles input updates, validation, and visibility toggling for password fields.
+/// 📝 [signUpFormProvider] — Handles sign-up form fields & validation (StateNotifier).
+/// 🧰 Uses shared [SignUpFormState].
+/// 🔁 Symmetric to BLoC 'SignUpFormFieldCubit' (Form only).
 //
 @riverpod
 final class SignUpForm extends _$SignUpForm {
   ///------------------------------------
   //
-  final _debouncer = Debouncer(AppDurations.ms180);
+  // For anti input-spam / micro debouncing of validation (smooth UX, fewer rebuilds).
+  final _debouncer = Debouncer(AppDurations.ms100);
 
   /// Initializes the form state with default (pure) values.
   @override
@@ -49,17 +51,8 @@ final class SignUpForm extends _$SignUpForm {
     revalidate: false,
   );
 
-  /// 🧼 Full state reset
+  /// ♻️ Full state reset (bump epoch to force field rebuilds)
   void resetState() => state = SignUpFormState(epoch: state.epoch + 1);
 
   //
 }
-
-////
-////
-
-/// ✅ Returns form validity as primitive bool (minimal rebuilds)
-//
-@riverpod
-bool signUpFormIsValid(Ref ref) =>
-    ref.watch(signUpFormProvider.select((f) => f.isValid));

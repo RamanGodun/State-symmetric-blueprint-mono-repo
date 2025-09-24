@@ -76,8 +76,12 @@ final class _ResetPasswordSubmitButton extends ConsumerWidget {
     //
     return FormSubmitButtonForRiverpodApps(
       label: LocaleKeys.buttons_reset_password,
-      isValidProvider: resetPasswordFormIsValidProvider,
-      isLoadingProvider: resetPasswordIsLoadingProvider,
+      isValidProvider: resetPasswordFormProvider.select(
+        (state) => state.isValid,
+      ),
+      isLoadingProvider: resetPasswordProvider.select(
+        (state) => state.isLoading,
+      ),
       onPressed: () => ref.submitResetPassword(),
     ).withPaddingBottom(AppSpacing.xl);
   }

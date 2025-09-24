@@ -81,12 +81,14 @@ final class _SignInPasswordInputField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //
     final passwordError = ref.watch(
-      signInFormProvider.select((f) => f.password.uiErrorKey),
+      signInFormProvider.select((state) => state.password.uiErrorKey),
     );
     final isObscure = ref.watch(
-      signInFormProvider.select((f) => f.isPasswordObscure),
+      signInFormProvider.select((state) => state.isPasswordObscure),
     );
-    final isValid = ref.watch(signInFormProvider.select((f) => f.isValid));
+    final isValid = ref.watch(
+      signInFormProvider.select((state) => state.isValid),
+    );
     final formNotifier = ref.read(signInFormProvider.notifier);
 
     return InputFieldFactory.create(
@@ -120,8 +122,8 @@ final class _SignInSubmitButton extends ConsumerWidget {
     //
     return FormSubmitButtonForRiverpodApps(
       label: LocaleKeys.buttons_sign_in,
-      isValidProvider: signInFormIsValidProvider,
-      isLoadingProvider: signInSubmitIsLoadingProvider,
+      isValidProvider: signInFormProvider.select((state) => state.isValid),
+      isLoadingProvider: signInProvider.select((state) => state.isLoading),
       onPressed: () => ref.submitSignIn(),
     ).withPaddingBottom(AppSpacing.l);
   }
@@ -142,7 +144,7 @@ final class _WrapperForFooter extends ConsumerWidget {
     //
     /// ⏳ Submission loading (primitive bool)
     final isLoading = ref.watch(
-      signInProvider.select((a) => a.isLoading),
+      signInProvider.select((state) => state.isLoading),
     );
 
     /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)

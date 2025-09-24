@@ -6,26 +6,6 @@ part of 'sign_in__provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signInSubmitIsLoadingHash() =>
-    r'd1c273730f5810e42bf3ad7238ac67592a793ece'; ////
-////
-/// ⏳ Returns loading state for submission (primitive bool)
-///
-/// Copied from [signInSubmitIsLoading].
-@ProviderFor(signInSubmitIsLoading)
-final signInSubmitIsLoadingProvider = AutoDisposeProvider<bool>.internal(
-  signInSubmitIsLoading,
-  name: r'signInSubmitIsLoadingProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$signInSubmitIsLoadingHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SignInSubmitIsLoadingRef = AutoDisposeProviderRef<bool>;
 String _$signInHash() => r'81c475ac19b4728ae002ae7176353d86f13aad26';
 
 /// 🧩 [signInProvider] — async notifier that handles user sign-in

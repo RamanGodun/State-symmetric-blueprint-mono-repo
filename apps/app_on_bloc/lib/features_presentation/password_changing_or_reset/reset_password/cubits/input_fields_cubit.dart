@@ -1,13 +1,16 @@
 import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 🔐 [ResetPasswordFormCubit] — Owns email field & validation (Form only)
+/// 📝 [ResetPasswordFormCubit] — Handles reset-password form field & validation.
+/// 🧰 Uses shared [ResetPasswordFormState].
+/// 🔁 Symmetric to Riverpod 'ResetPasswordForm' notifier (Form only).
 //
 final class ResetPasswordFormCubit extends Cubit<ResetPasswordFormState> {
   ///----------------------------------------------------------
   ResetPasswordFormCubit() : super(const ResetPasswordFormState());
   //
-  final _debouncer = Debouncer(AppDurations.ms20);
+  // For anti double-tap protection on input updates.
+  final _debouncer = Debouncer(AppDurations.ms100);
 
   ////
 
@@ -16,7 +19,9 @@ final class ResetPasswordFormCubit extends Cubit<ResetPasswordFormState> {
     _debouncer.run(() => emit(state.updateState(email: value)));
   }
 
-  /// 🧼 Reset form to initial
+  ////
+
+  /// ♻️ Resets the form to its initial state.
   void resetState() => emit(ResetPasswordFormState(epoch: state.epoch + 1));
 
   /// 🧼 Cleanup

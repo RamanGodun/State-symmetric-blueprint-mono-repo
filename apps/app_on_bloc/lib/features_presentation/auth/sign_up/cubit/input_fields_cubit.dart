@@ -3,14 +3,16 @@
 import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 📝 [SignUpFormFieldCubit] — Owns name/email/password/confirm fields & validation
-/// ✅ UI-only state: values, errors, visibility, isValid
+/// 📝 [SignUpFormFieldCubit] — Handles sign-up form fields & validation (UI-only).
+/// 🧰 Uses shared [SignUpFormState].
+/// 🔁 Symmetric to Riverpod 'signUpFormProvider' (Form only).
 //
 final class SignUpFormFieldCubit extends Cubit<SignUpFormState> {
-  ///----------------------------------------------------------
+  ///--------------------------------------------------------
   SignUpFormFieldCubit() : super(const SignUpFormState());
   //
-  final _debouncer = Debouncer(AppDurations.ms180);
+  // For anti input-spam / micro debouncing of validation (smooth UX, fewer rebuilds).
+  final _debouncer = Debouncer(AppDurations.ms100);
 
   /// 👤 Handles name input with validation, trimming and debounce
   void onNameChanged(String value) {
@@ -48,7 +50,7 @@ final class SignUpFormFieldCubit extends Cubit<SignUpFormState> {
     ),
   );
 
-  /// 🧼 Full state reset
+  /// ♻️ Full state reset (bump epoch to force field rebuilds)
   void resetState() => emit(SignUpFormState(epoch: state.epoch + 1));
 
   /// 🧼 Cleans up resources on close

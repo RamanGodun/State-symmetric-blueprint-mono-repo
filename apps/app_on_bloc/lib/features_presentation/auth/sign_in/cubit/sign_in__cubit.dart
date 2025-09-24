@@ -1,21 +1,25 @@
 import 'package:core/core.dart';
 import 'package:features/features.dart';
-import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 🔐 [SignInCubit] — Handles sign-in submission & side-effects
+/// 🔐 [SignInCubit] — Handles sign-in submission & side-effects.
+/// 🧰 Uses shared [ButtonSubmissionState].
+/// 🔁 Symmetric to Riverpod 'signInProvider' (Initial → Loading → Success/Error).
 //
 final class SignInCubit extends Cubit<ButtonSubmissionState> {
-  ///-----------------------------------------------
+  ///-----------------------------------------------------
+  /// Creates a cubit bound to the domain [SignInUseCase].
   SignInCubit(this._signInUseCase)
     : super(const ButtonSubmissionInitialState());
   //
   final SignInUseCase _signInUseCase;
+  // For anti double-tap protection for the submit action.
   final _submitDebouncer = Debouncer(AppDurations.ms600);
 
   ////
 
-  /// 🚀 Submits credentials (expects pre-validated email/password)
+  /// 🚀 Triggers sign-in with the provided credentials.
+  ///    Delegates domain logic to [SignInUseCase] and emits ButtonSubmission states.
   Future<void> submit({required String email, required String password}) async {
     if (state is ButtonSubmissionLoadingState) return;
     //
@@ -26,28 +30,17 @@ final class SignInCubit extends Cubit<ButtonSubmissionState> {
         email: email,
         password: password,
       );
-      ResultHandler(result)
-        ..onSuccess((_) {
-          debugPrint('✅ Signed in successfully');
-          emit(const ButtonSubmissionSuccessState());
-        })
-        ..onFailure((failure) {
-          debugPrint('❌ Sign in failed: ${failure.runtimeType}');
+      result.fold(
+        // ❌ Failure branch → emit error with Consumable<Failure>
+        (failure) {
           emit(ButtonSubmissionErrorState(failure.asConsumable()));
           failure.log();
-        })
-        ..log();
+        },
+        // ✅ Success branch
+        (_) => emit(const ButtonSubmissionSuccessState()),
+      );
     });
   }
-  /*
-  ? Alternative syntax: classic fold version for direct mapping:
-  result.fold(
-      (f) =>  emit(SubmissionError(f))),
-      (_) =>  emit(const SubmissionSuccess()),
-    );
-  }
-
- */
 
   /// ♻️ Reset to initial (e.g., after dialogs/navigation)
   void resetState() => emit(const ButtonSubmissionInitialState());
@@ -55,7 +48,7 @@ final class SignInCubit extends Cubit<ButtonSubmissionState> {
   /// 🧼 Cleanup
   @override
   Future<void> close() {
-    _submitDebouncer.cancel(); // 🧯 prevent accidental double submit
+    _submitDebouncer.cancel();
     return super.close();
   }
 

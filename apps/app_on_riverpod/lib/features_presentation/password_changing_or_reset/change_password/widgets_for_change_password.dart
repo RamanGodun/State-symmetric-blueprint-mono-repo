@@ -138,8 +138,12 @@ final class _ChangePasswordSubmitButton extends ConsumerWidget {
     //
     return FormSubmitButtonForRiverpodApps(
       label: LocaleKeys.change_password_title,
-      isValidProvider: changePasswordFormIsValidProvider,
-      isLoadingProvider: changePasswordSubmitIsLoadingProvider,
+      isValidProvider: changePasswordFormProvider.select(
+        (state) => state.isValid,
+      ),
+      isLoadingProvider: changePasswordProvider.select(
+        (state) => state.isLoading,
+      ),
       onPressed: () => ref.submitChangePassword(),
     ).withPaddingBottom(AppSpacing.l);
   }

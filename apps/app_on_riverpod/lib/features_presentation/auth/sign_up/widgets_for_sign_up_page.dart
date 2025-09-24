@@ -50,8 +50,8 @@ final class _SignUpSubmitButton extends ConsumerWidget {
     //
     return FormSubmitButtonForRiverpodApps(
       label: LocaleKeys.buttons_sign_up,
-      isValidProvider: signUpFormIsValidProvider,
-      isLoadingProvider: signUpSubmitIsLoadingProvider,
+      isValidProvider: signUpFormProvider.select((state) => state.isValid),
+      isLoadingProvider: signUpProvider.select((state) => state.isLoading),
       onPressed: () => ref.submitSignUp(),
     ).withPaddingBottom(AppSpacing.l);
   }

@@ -1,4 +1,5 @@
 export '../src/base_modules/errors_management/core_of_module/_errors_handling_entry_point.dart';
+export '../src/base_modules/errors_management/core_of_module/core_utils/consumable/consumable.dart';
 export '../src/base_modules/errors_management/core_of_module/core_utils/errors_observing/loggers/errors_log_util.dart';
 export '../src/base_modules/errors_management/core_of_module/core_utils/errors_observing/loggers/failure_logger_x.dart';
 export '../src/base_modules/errors_management/core_of_module/core_utils/errors_observing/result_loggers/result_logger_x.dart';
@@ -9,7 +10,6 @@ export '../src/base_modules/errors_management/core_of_module/core_utils/extensio
 export '../src/base_modules/errors_management/core_of_module/core_utils/extensions_on_failure/failure_to_either_x.dart';
 export '../src/base_modules/errors_management/core_of_module/core_utils/result_handler.dart';
 export '../src/base_modules/errors_management/core_of_module/core_utils/result_handler_async.dart';
-export '../src/base_modules/errors_management/core_of_module/core_utils/specific_for_bloc/consumable.dart';
 export '../src/base_modules/errors_management/core_of_module/either.dart';
 export '../src/base_modules/errors_management/core_of_module/failure_entity.dart';
 export '../src/base_modules/errors_management/core_of_module/failure_type.dart'; // has `part`s for concrete types

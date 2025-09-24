@@ -6,26 +6,6 @@ part of 'input_fields_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$changePasswordFormIsValidHash() =>
-    r'be7ac9e5b5ecdafca92b787a36c0ddb0214cdea2'; ////
-////
-/// ✅ Returns form validity as primitive bool (minimal rebuilds)
-///
-/// Copied from [changePasswordFormIsValid].
-@ProviderFor(changePasswordFormIsValid)
-final changePasswordFormIsValidProvider = AutoDisposeProvider<bool>.internal(
-  changePasswordFormIsValid,
-  name: r'changePasswordFormIsValidProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$changePasswordFormIsValidHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ChangePasswordFormIsValidRef = AutoDisposeProviderRef<bool>;
 String _$changePasswordFormHash() =>
     r'd6e7e64bb9c508db1083148adf62f998da21ad32';
 

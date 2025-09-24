@@ -6,26 +6,6 @@ part of 'sign_up__provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signUpSubmitIsLoadingHash() =>
-    r'c28ec61ea8934eb2f173dcb74d1f5275595296fb'; ////
-////
-/// ⏳ Returns loading state for submission (primitive bool)
-///
-/// Copied from [signUpSubmitIsLoading].
-@ProviderFor(signUpSubmitIsLoading)
-final signUpSubmitIsLoadingProvider = AutoDisposeProvider<bool>.internal(
-  signUpSubmitIsLoading,
-  name: r'signUpSubmitIsLoadingProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$signUpSubmitIsLoadingHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SignUpSubmitIsLoadingRef = AutoDisposeProviderRef<bool>;
 String _$signUpHash() => r'0411b269c5c7b3f12a40c0b833f64a422178dbea';
 
 /// 🧩 [signUpProvider] — Riverpod Notifier with shared ButtonSubmissionState
