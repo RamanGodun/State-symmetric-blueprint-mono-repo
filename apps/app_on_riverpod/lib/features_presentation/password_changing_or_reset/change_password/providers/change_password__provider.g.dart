@@ -6,10 +6,11 @@ part of 'change_password__provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$changePasswordHash() => r'918fa6cc583af87d43d5900e897672ae41ad23ff';
+String _$changePasswordHash() => r'cc70ecbe17fd117379cdc9807db903754b4a2463';
 
-/// 🧩 [changePasswordProvider] — Riverpod Notifier with shared ButtonSubmissionState
-/// ✅ Mirrors BLoC semantics (Initial → Loading → Success / Error / RequiresReauth)
+/// 🔐 [changePasswordProvider] — Handles password-change submission & side-effects.
+/// 🧰 Uses shared [ButtonSubmissionState].
+/// 🔁 Symmetric to BLoC 'ChangePasswordCubit' (Initial → Loading → Success/Error/RequiresReauth).
 ///
 /// Copied from [ChangePassword].
 @ProviderFor(ChangePassword)

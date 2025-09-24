@@ -8,11 +8,9 @@ part of 'sign_in__provider.dart';
 
 String _$signInHash() => r'81c475ac19b4728ae002ae7176353d86f13aad26';
 
-/// 🧩 [signInProvider] — async notifier that handles user sign-in
-/// 🧼 Uses [SafeAsyncState] to prevent post-dispose state updates
-/// 🧼 Wraps logic in [AsyncValue.guard] for robust error handling
-/// 🧩 [signInProvider] — Riverpod Notifier with shared ButtonSubmissionState
-/// ✅ Mirrors BLoC Submit Cubit semantics (Initial → Loading → Success/Error)
+/// 🔐 [signInProvider] — Handles sign-in submission & side-effects.
+/// 🧰 Uses shared [ButtonSubmissionState].
+/// 🔁 Symmetric to BLoC 'SignInCubit' (Initial → Loading → Success/Error).
 ///
 /// Copied from [SignIn].
 @ProviderFor(SignIn)

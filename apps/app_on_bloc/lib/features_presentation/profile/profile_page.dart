@@ -70,9 +70,9 @@ final class _ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const _ProfileAppBar(),
-
-      ///
+      //
       body: state.when(
+        //
         /// ⏳ Loading
         loading: () => const AppLoader(),
 

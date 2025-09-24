@@ -1,6 +1,5 @@
 import 'package:core/base_modules/forms.dart' show SignInFormState;
 import 'package:core/utils.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' show StateNotifier;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'input_form_fields_provider.g.dart';

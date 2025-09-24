@@ -6,10 +6,11 @@ part of 'input_fields_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$resetPasswordFormHash() => r'4d8c8e4524696ec63a512bbd892297ca28d1015c';
+String _$resetPasswordFormHash() => r'fd2e14da80d8e923efb2a75cf4ec39c7a80599a3';
 
-/// 🧩 [ResetPasswordForm] — Manages the state of the reset password form using [StateNotifier].
-/// Handles input updates, validation, and future extensibility.
+/// 📝 [ResetPasswordForm] — Handles reset-password form field & validation.
+/// 🧰 Uses shared [ResetPasswordFormState].
+/// 🔁 Symmetric to BLoC 'ResetPasswordFormCubit' (Form only).
 ///
 /// Copied from [ResetPasswordForm].
 @ProviderFor(ResetPasswordForm)

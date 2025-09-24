@@ -8,8 +8,9 @@ part of 'reset_password__provider.dart';
 
 String _$resetPasswordHash() => r'10cb0dab7b0399222f852659e11ef818e238b099';
 
-/// 🧩 [resetPasswordProvider] — Riverpod Notifier with shared ButtonSubmissionState
-/// ✅ Mirrors BLoC submit Cubit semantics (Initial → Loading → Success/Error)
+/// 🔐 [resetPasswordProvider] — Handles reset-password submission & side-effects.
+/// 🧰 Uses shared [ButtonSubmissionState].
+/// 🔁 Symmetric to BLoC 'ResetPasswordCubit' (Initial → Loading → Success/Error).
 ///
 /// Copied from [ResetPassword].
 @ProviderFor(ResetPassword)

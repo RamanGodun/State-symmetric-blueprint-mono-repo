@@ -1,7 +1,7 @@
 import 'package:core/core.dart';
 import 'package:features/features.dart' show SignInUseCase;
 import 'package:riverpod_adapter/riverpod_adapter.dart'
-    show SafeAsyncState, signInUseCaseProvider;
+    show signInUseCaseProvider;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sign_in__provider.g.dart';

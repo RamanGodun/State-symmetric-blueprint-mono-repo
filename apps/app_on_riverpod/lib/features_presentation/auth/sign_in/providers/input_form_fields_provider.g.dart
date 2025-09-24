@@ -6,10 +6,11 @@ part of 'input_form_fields_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signInFormHash() => r'f667f50d1a0d69468e1556fa6628a7eedadc78c4';
+String _$signInFormHash() => r'6bd3ae066c33682e6603bee98d9b5e0685251728';
 
-/// 🧩 [SignInForm] — Manages the state of the sign-in form using [StateNotifier].
-/// Handles input updates, validation, and visibility toggling for password field.
+/// 📝 [signInFormProvider] — Handles sign-in form fields & validation.
+/// 🧰 Uses shared [SignInFormState].
+/// 🔁 Symmetric to BLoC ['SignInFormCubit'] (Form only).
 ///
 /// Copied from [SignInForm].
 @ProviderFor(SignInForm)

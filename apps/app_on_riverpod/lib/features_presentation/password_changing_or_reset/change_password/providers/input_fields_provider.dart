@@ -1,5 +1,4 @@
 import 'package:core/core.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' show StateNotifier;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'input_fields_provider.g.dart';

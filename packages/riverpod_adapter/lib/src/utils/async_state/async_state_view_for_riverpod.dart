@@ -21,6 +21,9 @@ final class AsyncStateViewForRiverpod<T> implements AsyncStateView<T> {
     required R Function(T data) data,
     required R Function(Failure failure) error,
   }) {
+    if (_value.isLoading && _value.hasValue) {
+      return data(_value.value as T);
+    }
     return _value.when(
       loading: loading,
       data: data,
@@ -65,13 +68,6 @@ final class AsyncStateViewForRiverpod<T> implements AsyncStateView<T> {
 ////
 ////
 
-/// 🛡️ Default mapper: Exception/Error → Failure (centralized).
-//
-Failure _defaultMap(Object e, StackTrace st) => e.mapToFailure(st);
-
-////
-////
-
 /// ✨ Sugar: `asyncValue.asAsyncLike()` in widgets
 //
 extension AsAsyncLike<T> on AsyncValue<T> {
@@ -83,3 +79,6 @@ extension AsAsyncLike<T> on AsyncValue<T> {
   }) => AsyncStateViewForRiverpod<T>(this, map ?? _defaultMap);
   //
 }
+
+/// 🛡️ Default mapper: Exception/Error → Failure (centralized).
+Failure _defaultMap(Object e, StackTrace st) => e.mapToFailure(st);

@@ -13,10 +13,9 @@ export 'src/utils/safe_async_state.dart';
 export 'src/utils/typedefs.dart';
 
 /// --- Async States utils
-export 'src/utils/async/async_state_view_for_riverpod.dart';
-export 'src/utils/async/async_error_listener.dart';
-export 'src/utils/async/async_value_to_core_async.dart';
-export 'src/utils/async/async_multi_errors_listener.dart';
+export 'src/utils/async_state/async_state_view_for_riverpod.dart';
+export 'src/utils/async_state/async_error_listener.dart';
+export 'src/utils/async_state/async_multi_errors_listener.dart';
 export 'src/base_modules/errors_handling_module/submission_effect_x_on_ref.dart';
 
 /// --- Base Modules: Errors

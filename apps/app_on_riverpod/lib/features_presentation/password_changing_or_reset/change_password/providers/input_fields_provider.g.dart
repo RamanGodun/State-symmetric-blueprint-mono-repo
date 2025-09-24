@@ -7,10 +7,11 @@ part of 'input_fields_provider.dart';
 // **************************************************************************
 
 String _$changePasswordFormHash() =>
-    r'd6e7e64bb9c508db1083148adf62f998da21ad32';
+    r'58ae2a411175ab3df52bf79cfeb64175f8f804a9';
 
-/// 🧩 [ChangePasswordForm] — Manages the state of the change password form using [StateNotifier].
-/// Handles input updates, validation, and visibility toggling for password field.
+/// 📝 [ChangePasswordForm] — Handles change-password form fields & validation.
+/// 🧰 Uses shared [ChangePasswordFormState].
+/// 🔁 Symmetric to BLoC 'ChangePasswordFormFieldsCubit' (Form only).
 ///
 /// Copied from [ChangePasswordForm].
 @ProviderFor(ChangePasswordForm)

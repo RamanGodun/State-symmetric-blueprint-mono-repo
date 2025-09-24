@@ -9,59 +9,51 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'email_verification_provider.g.dart';
 
-/// 🧩 [EmailVerificationNotifier] — orchestrates email verification flow
-/// - Immediately sends a verification email on creation
-/// - Polls every 3s for up to 1min until the email is verified
-/// - On success: reloads Firebase user + triggers [AuthGateway.refresh]
-/// - Exposes async state for UI feedback
+/// 📧 [EmailVerificationNotifier] — Orchestrates the email-verification flow (Riverpod).
+/// 🧰 Uses shared async state: [AsyncValue<void>] via [SafeAsyncState].
+/// 🔁 Symmetric to BLoC 'EmailVerificationCubit' (bootstrap → polling → success/timeout).
 //
 @riverpod
 final class EmailVerificationNotifier extends _$EmailVerificationNotifier
     with SafeAsyncState<void> {
   ///-------------------------------------------------------------
-
-  /// ⏱ Timer for periodic polling
+  //
+  // 📦 Injected use case for email verification operations
+  late final EmailVerificationUseCase _emailVerificationUseCase;
+  // ⏱ Periodic polling timer
   Timer? _timer;
-
-  /// ⏱ Max allowed polling duration before timeout
+  // ⏱ Max allowed polling duration before timeout
   static const Duration _maxPollingDuration = AppDurations.min1;
-
-  /// ⏱ Stopwatch to track elapsed time
+  // ⏱ Elapsed time tracker
   final Stopwatch _stopwatch = Stopwatch();
 
-  /// 📦 Injected use case for email verification operations
-  late final EmailVerificationUseCase _emailVerificationUseCase;
+  ////
 
-  /// 🏗 Initializes notifier:
-  /// - Reads the use case from DI
-  /// - Sends verification email
-  /// - Starts polling loop
+  /// ▶️ One-shot bootstrap: send verification email + start polling.
   @override
   FutureOr<void> build() {
     _emailVerificationUseCase = ref.read(emailVerificationUseCaseProvider);
     initSafe();
     debugPrint('VerificationNotifier: build() called...');
-
-    ///
+    //
+    /// 🌀 Initial loader visible while starting the flow
     state = const AsyncLoading();
-
-    /// ✉️ Fire off email immediately and start polling
+    //
+    /// ✉️ Fire immediately and start polling
     unawaited(_emailVerificationUseCase.sendVerificationEmail());
     _startPolling();
-
-    // 🔌 Ensure timer is cleaned up on dispose
+    // 🧹 Cleanup timer on dispose
     ref.onDispose(() => _timer?.cancel());
   }
 
   ////
 
-  /// 🔁 Polls every 3 seconds until verified or timeout reached
+  /// 🔁 Polls every 3s until verified or timeout reached.
   void _startPolling() {
     _stopwatch.start();
-    //
-    /// When ticker starts — we in state "polling → loader"
+    // 🌀 Show loader during active polling
     state = const AsyncLoading();
-
+    //
     _timer = Timer.periodic(AppDurations.sec3, (_) {
       if (_stopwatch.elapsed > _maxPollingDuration) {
         // ⏳ Timeout — stop polling and emit failure
@@ -74,42 +66,33 @@ final class EmailVerificationNotifier extends _$EmailVerificationNotifier
         return;
       }
       //
-      /// On each tick we give visualization: "active polling"
+      // Visualize active polling tick
       state = const AsyncLoading();
       _checkEmailVerified();
     });
   }
 
-  /// ✅ Checks email verification status:
-  /// - If not verified → continue polling
-  /// - If verified:
-  ///   1) Cancel polling
-  ///   2) Reload Firebase user
-  ///   3) Trigger [AuthGateway.refresh] to notify router
-  ///   4) Mark notifier state as success
-  Future<void> _checkEmailVerified() async {
-    debugPrint('EmailVerificationNotifier: checking email verification…');
-    final result = await _emailVerificationUseCase.checkIfEmailVerified();
+  ////
 
+  /// ✅ Check verification; if verified → reload user, stop polling, emit success.
+  Future<void> _checkEmailVerified() async {
+    final result = await _emailVerificationUseCase.checkIfEmailVerified();
     await result.fold((_) => null, (isVerified) async {
       if (!isVerified) return;
-
-      // 🛑 Stop polling
+      //
+      /// 🛑 Stop polling
       _timer?.cancel();
-
       // 🔄 Reload current Firebase user
       await _emailVerificationUseCase.reloadUser();
-
-      // 📢 Trigger gateway refresh to update GoRouter redirect instantly
+      //
+      /// 📢 Notify router via gateway refresh
       final gateway = ref.read(authGatewayProvider);
       await gateway.refresh();
-
-      final refreshed = FirebaseRefs.auth.currentUser;
       debugPrint(
-        '🔁 After reload + refresh: emailVerified=${refreshed?.emailVerified}',
+        '🔁 After reload + refresh: emailVerified=${FirebaseRefs.auth.currentUser?.emailVerified}',
       );
-
-      // 🎉 Mark state as success
+      //
+      /// 🎉 Mark state as success
       state = const AsyncData(null);
     });
   }

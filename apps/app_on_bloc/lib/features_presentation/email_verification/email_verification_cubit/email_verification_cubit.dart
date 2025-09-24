@@ -4,55 +4,58 @@ import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
 import 'package:features/features_barrels/email_verification/email_verification.dart';
 
-/// 🧩 [EmailVerificationCubit] — orchestrates email verification flow (BLoC)
-/// ✅ Emits [AsyncState<void>] to mirror Riverpod's notifier
-/// ✅ Keeps polling/timeout logic + inline loader UX
+/// 📧 [EmailVerificationCubit] — Orchestrates the email-verification flow (BLoC).
+/// 🧰 Uses shared async state: [AsyncState<void>] (loader / data / error).
+/// 🔁 Symmetric to Riverpod 'EmailVerificationNotifier' (bootstrap → polling → success/timeout).
 //
 final class EmailVerificationCubit extends CubitWithAsyncValue<void> {
-  ///-----------------------------------------------
+  ///--------------------------------------------------------------
   EmailVerificationCubit(this._useCase) : super() {
-    // ▶️ Fire-and-forget bootstrap: starts polling flow after construction
-    //    - microtask guarantees init runs after listeners are attached
-    //    - guarded by [_started] flag to avoid double-start
+    // ▶️ Fire-and-forget bootstrap after listeners attach (microtask)
+    //    Guarded by [_started] to avoid double start.
     scheduleMicrotask(_bootstrap);
   }
-  //
+  // 📦 Injected use case for email verification operations
   final EmailVerificationUseCase _useCase;
-
+  // ⏱ Periodic polling timer
   Timer? _pollingTimer;
-  final Stopwatch _stopwatch = Stopwatch();
+  // ⏱ Max allowed polling duration before timeout
   static const Duration _maxPollingDuration = AppDurations.min1;
+  // ⏱ Elapsed time tracker
+  final Stopwatch _stopwatch = Stopwatch();
   bool _started = false;
 
-  /// ▶️ One-shot bootstrap: send email + start polling
+  ////
+
+  /// ▶️ One-shot bootstrap: send verification email + start polling.
   Future<void> _bootstrap() async {
     if (_started) return;
     _started = true;
-    //
-    /// show inline loader while we kick things off
+    // 🌀 Inline loader while we kick things off
     emit(const AsyncState.loading());
     //
     final sent = await _useCase.sendVerificationEmail();
     sent.fold(
-      // show error overlay via listener
-      (f) => emit(AsyncState<void>.error(f)),
+      // ❌ Error shown by listener via state.error
+      (failure) => emit(AsyncState<void>.error(failure)),
       (_) => _startPolling(),
     );
   }
 
-  /// 🔁 Poll every 3s; stop on verified or timeout
+  ////
+
+  /// 🔁 Polls every 3s until verified or timeout reached.
   void _startPolling() {
     // ensure clean start
     _pollingTimer?.cancel();
     _stopwatch
       ..reset()
       ..start();
-    //
-    /// keep loader visible during active polling
+    // 🌀 Keep loader visible during active polling
     emit(const AsyncState.loading());
     //
     _pollingTimer = Timer.periodic(AppDurations.sec3, (_) async {
-      // timeout → stop + error
+      // ⏳ Timeout → stop + emit timeout failure
       if (_stopwatch.elapsed >= _maxPollingDuration) {
         _stopPolling();
         emit(
@@ -65,14 +68,16 @@ final class EmailVerificationCubit extends CubitWithAsyncValue<void> {
         );
         return;
       }
-
+      //
       await _checkVerified();
     });
   }
 
-  /// ✅ Check verification; on success → reload and emit data(null)
+  ////
+
+  /// ✅ Check verification; if verified → reload user, stop polling, emit success.
   Future<void> _checkVerified() async {
-    // keep loader while checking
+    // 🌀 Keep loader while checking
     emit(const AsyncState.loading());
     //
     final result = await _useCase.checkIfEmailVerified();
@@ -80,7 +85,7 @@ final class EmailVerificationCubit extends CubitWithAsyncValue<void> {
       (f) => emit(AsyncState<void>.error(f)),
       (isVerified) async {
         if (!isVerified) {
-          // still not verified → keep loader for inline spinner UX
+          // Not verified yet → keep inline spinner UX
           emit(const AsyncState.loading());
           return;
         }
@@ -88,22 +93,21 @@ final class EmailVerificationCubit extends CubitWithAsyncValue<void> {
         /// verified → reload + stop + signal success
         await _useCase.reloadUser();
         _stopPolling();
-        //
-        /// convention: success = AsyncState.data(null)
+        // 🎉 Success convention: AsyncState.data(null)
         emit(const AsyncState<void>.data(null));
       },
     );
   }
 
-  /// 🛑 Stops the polling loop and halts the stopwatch
-  /// ✅ Ensures no background timers keep running
+  ////
+
+  /// 🛑 Stops the polling loop and halts the stopwatch.
   void _stopPolling() {
     _pollingTimer?.cancel();
     _stopwatch.stop();
   }
 
-  /// 🧹 Dispose hook — cancels polling before closing Cubit
-  /// ✅ Prevents leaks and dangling timers
+  /// 🧹 Dispose hook — cancel polling to prevent leaks.
   @override
   Future<void> close() {
     _stopPolling();

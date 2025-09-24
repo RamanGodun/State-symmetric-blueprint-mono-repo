@@ -1,0 +1,27 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'profile_page_provider.dart';
+
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+String _$profileHash() => r'd3a4a90a147f5f9f6651c7077af193f92f4a77a3';
+
+/// 👤 [profileProvider] — async notifier that fetches user profile
+///
+/// Copied from [Profile].
+@ProviderFor(Profile)
+final profileProvider = AsyncNotifierProvider<Profile, UserEntity>.internal(
+  Profile.new,
+  name: r'profileProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$profileHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$Profile = AsyncNotifier<UserEntity>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

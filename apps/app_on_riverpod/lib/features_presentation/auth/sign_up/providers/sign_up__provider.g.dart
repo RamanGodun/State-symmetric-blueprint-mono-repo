@@ -6,10 +6,11 @@ part of 'sign_up__provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signUpHash() => r'0411b269c5c7b3f12a40c0b833f64a422178dbea';
+String _$signUpHash() => r'86a40f166530753faa1a1339b7270456c9d5aa65';
 
-/// 🧩 [signUpProvider] — Riverpod Notifier with shared ButtonSubmissionState
-/// ✅ Mirrors BLoC submit Cubit semantics (Initial → Loading → Success/Error)
+/// 🔐 [signUpProvider] — Handles sign-up submission & side-effects.
+/// 🧰 Uses shared [ButtonSubmissionState].
+/// 🔁 Symmetric to BLoC 'SignUpCubit' (Initial → Loading → Success/Error).
 ///
 /// Copied from [SignUp].
 @ProviderFor(SignUp)

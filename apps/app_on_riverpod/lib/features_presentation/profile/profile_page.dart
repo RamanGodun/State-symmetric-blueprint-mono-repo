@@ -2,7 +2,7 @@ import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.d
 import 'package:app_on_riverpod/features_presentation/auth/sign_out/sign_out_provider.dart';
 import 'package:app_on_riverpod/features_presentation/auth/sign_out/sign_out_widgets.dart'
     show SignOutIconButton;
-import 'package:app_on_riverpod/features_presentation/profile/providers/profile_provider.dart';
+import 'package:app_on_riverpod/features_presentation/profile/providers/profile_page_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart'
     show CachedNetworkImage;
 import 'package:core/core.dart';
@@ -63,9 +63,9 @@ final class _ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const _ProfileAppBar(),
-
-      ///
+      //
       body: state.when(
+        //
         /// ⏳ Loading
         loading: () => const AppLoader(),
 

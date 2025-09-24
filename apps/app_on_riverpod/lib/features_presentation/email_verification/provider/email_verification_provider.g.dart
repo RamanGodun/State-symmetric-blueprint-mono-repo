@@ -7,13 +7,11 @@ part of 'email_verification_provider.dart';
 // **************************************************************************
 
 String _$emailVerificationNotifierHash() =>
-    r'20fb9aa6757c2d6e823adb28752b3b3eb5720917';
+    r'b635db7daed1d4098a28c7c613f7e9dd8c79dc53';
 
-/// 🧩 [EmailVerificationNotifier] — orchestrates email verification flow
-/// - Immediately sends a verification email on creation
-/// - Polls every 3s for up to 1min until the email is verified
-/// - On success: reloads Firebase user + triggers [AuthGateway.refresh]
-/// - Exposes async state for UI feedback
+/// 📧 [EmailVerificationNotifier] — Orchestrates the email-verification flow (Riverpod).
+/// 🧰 Uses shared async state: [AsyncValue<void>] via [SafeAsyncState].
+/// 🔁 Symmetric to BLoC 'EmailVerificationCubit' (bootstrap → polling → success/timeout).
 ///
 /// Copied from [EmailVerificationNotifier].
 @ProviderFor(EmailVerificationNotifier)
