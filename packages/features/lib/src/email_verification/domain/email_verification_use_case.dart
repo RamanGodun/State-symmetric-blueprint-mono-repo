@@ -1,4 +1,5 @@
-import 'package:core/utils.dart' show AuthGateway, ResultFuture;
+import 'package:core/base_modules/errors_management.dart';
+import 'package:core/utils.dart' show AuthGateway;
 import 'package:features/src/email_verification/domain/repo_contract.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 

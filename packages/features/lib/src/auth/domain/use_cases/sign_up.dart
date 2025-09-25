@@ -1,5 +1,4 @@
 import 'package:core/base_modules/errors_management.dart';
-import 'package:core/utils.dart' show ResultFuture;
 import 'package:features/src/auth/domain/repo_contracts.dart';
 
 /// 📦 [SignUpUseCase] — Handles user registration via [ISignUpRepo]

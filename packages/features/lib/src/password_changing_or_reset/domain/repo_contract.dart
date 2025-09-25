@@ -1,4 +1,4 @@
-import 'package:core/utils.dart' show ResultFuture;
+import 'package:core/base_modules/errors_management.dart';
 
 /// 🧼 Contract for password-related operations with user account
 //

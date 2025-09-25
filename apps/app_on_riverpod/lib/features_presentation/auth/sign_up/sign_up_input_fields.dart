@@ -18,13 +18,11 @@ final class _SignUpUserNameInputField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final (errorText, epoch) = ref.watch(
-      signUpFormProvider.select(
-        (state) => (state.name.uiErrorKey, state.epoch),
-      ),
+    final (:errorText, :epoch) = ref.watch(
+      signUpFormProvider.select(selectNameSlice),
     );
     final formNotifier = ref.read(signUpFormProvider.notifier);
-
+    //
     return InputFieldFactory.create(
       fieldKeyOverride: ValueKey('name_$epoch'),
       type: InputFieldType.name,
@@ -32,8 +30,10 @@ final class _SignUpUserNameInputField extends ConsumerWidget {
       errorText: errorText,
       textInputAction: TextInputAction.next,
       autofillHints: const [AutofillHints.name],
+      //
       onChanged: formNotifier.onNameChanged,
       onSubmitted: goNext(focusNodes.email),
+      //
     ).withPaddingBottom(AppSpacing.xm);
   }
 }
@@ -59,13 +59,11 @@ final class _SignUpEmailInputField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final (errorText, epoch) = ref.watch(
-      signUpFormProvider.select(
-        (state) => (state.email.uiErrorKey, state.epoch),
-      ),
+    final (:errorText, :epoch) = ref.watch(
+      signUpFormProvider.select(selectEmailSlice),
     );
-    final formNotifier = ref.read(signUpFormProvider.notifier);
-
+    final form = ref.read(signUpFormProvider.notifier);
+    //
     return InputFieldFactory.create(
       fieldKeyOverride: ValueKey('email_$epoch'),
       type: InputFieldType.email,
@@ -73,8 +71,10 @@ final class _SignUpEmailInputField extends ConsumerWidget {
       errorText: errorText,
       textInputAction: TextInputAction.next,
       autofillHints: const [AutofillHints.username, AutofillHints.email],
-      onChanged: formNotifier.onEmailChanged,
+      //
+      onChanged: form.onEmailChanged,
       onSubmitted: goNext(focusNodes.password),
+      //
     ).withPaddingBottom(AppSpacing.xm);
   }
 }
@@ -100,27 +100,26 @@ final class _SignUpPasswordInputField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final (errorText, isObscure, epoch) = ref.watch(
-      signUpFormProvider.select(
-        (state) =>
-            (state.password.uiErrorKey, state.isPasswordObscure, state.epoch),
-      ),
+    final (:errorText, :isObscure, :epoch) = ref.watch(
+      signUpFormProvider.select(selectPasswordSlice),
     );
-    final formNotifier = ref.read(signUpFormProvider.notifier);
+    final form = ref.read(signUpFormProvider.notifier);
 
     return InputFieldFactory.create(
+      fieldKeyOverride: ValueKey('password_$epoch'),
       type: InputFieldType.password,
       focusNode: focusNodes.password,
       errorText: errorText,
       textInputAction: TextInputAction.next,
-      // autofillHints: const [AutofillHints.password],
       isObscure: isObscure,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
-        onPressed: formNotifier.togglePasswordVisibility,
+        onPressed: form.togglePasswordVisibility,
       ),
-      onChanged: formNotifier.onPasswordChanged,
+      //
+      onChanged: form.onPasswordChanged,
       onSubmitted: goNext(focusNodes.confirmPassword),
+      //
     ).withPaddingBottom(AppSpacing.xm);
   }
 }
@@ -146,17 +145,10 @@ final class _SignUpConfirmPasswordInputField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final (errorText, isObscure, isValid, epoch) = ref.watch(
-      signUpFormProvider.select(
-        (state) => (
-          state.confirmPassword.uiErrorKey,
-          state.isConfirmPasswordObscure,
-          state.isValid,
-          state.epoch,
-        ),
-      ),
+    final (:errorText, :isObscure, :isValid, :epoch) = ref.watch(
+      signUpFormProvider.select(selectConfirmSlice),
     );
-    final formNotifier = ref.read(signUpFormProvider.notifier);
+    final form = ref.read(signUpFormProvider.notifier);
 
     return InputFieldFactory.create(
       fieldKeyOverride: ValueKey('confirm_$epoch'),
@@ -164,14 +156,15 @@ final class _SignUpConfirmPasswordInputField extends ConsumerWidget {
       focusNode: focusNodes.confirmPassword,
       errorText: errorText,
       textInputAction: TextInputAction.done,
-      // autofillHints: const [AutofillHints.password],
       isObscure: isObscure,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
-        onPressed: formNotifier.toggleConfirmPasswordVisibility,
+        onPressed: form.toggleConfirmPasswordVisibility,
       ),
-      onChanged: formNotifier.onConfirmPasswordChanged,
+      //
+      onChanged: form.onConfirmPasswordChanged,
       onSubmitted: isValid ? () => ref.submitSignUp() : null,
+      //
     ).withPaddingBottom(AppSpacing.xl);
   }
 }

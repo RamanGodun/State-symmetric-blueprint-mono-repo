@@ -59,40 +59,31 @@ final class _PasswordInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<
-      ChangePasswordFormFieldsCubit,
-      ChangePasswordFormState,
-      (FormFieldUiState, int)
-    >(
-      selector: (state) => (
-        (
-          errorText: state.password.uiErrorKey,
-          isObscure: state.isPasswordObscure,
-        ),
-        state.epoch,
+    final (:errorText, :isObscure, :epoch) = context
+        .watchSelect<
+          ChangePasswordFormFieldsCubit,
+          ChangePasswordFormState,
+          PwdEpoch
+        >(selectChangePasswordSlice);
+    final form = context.read<ChangePasswordFormFieldsCubit>();
+    //
+    return InputFieldFactory.create(
+      fieldKeyOverride: ValueKey('password_$epoch'),
+      type: InputFieldType.password,
+      focusNode: focusNodes.password,
+      errorText: errorText,
+      textInputAction: TextInputAction.next,
+      autofillHints: const [AutofillHints.password],
+      isObscure: isObscure,
+      suffixIcon: ObscureToggleIcon(
+        isObscure: isObscure,
+        onPressed: form.togglePasswordVisibility,
       ),
-      builder: (context, pair) {
-        final (field, epoch) = pair;
-        final (:errorText, :isObscure) = field;
-        final formCubit = context.read<ChangePasswordFormFieldsCubit>();
-
-        return InputFieldFactory.create(
-          fieldKeyOverride: ValueKey('password_$epoch'),
-          type: InputFieldType.password,
-          focusNode: focusNodes.password,
-          errorText: errorText,
-          textInputAction: TextInputAction.next,
-          autofillHints: const [AutofillHints.password],
-          isObscure: isObscure,
-          suffixIcon: ObscureToggleIcon(
-            isObscure: isObscure,
-            onPressed: formCubit.togglePasswordVisibility,
-          ),
-          onChanged: formCubit.onPasswordChanged,
-          onSubmitted: goNext(focusNodes.confirmPassword),
-        ).withPaddingBottom(AppSpacing.m);
-      },
-    );
+      //
+      onChanged: form.onPasswordChanged,
+      onSubmitted: goNext(focusNodes.confirmPassword),
+      //
+    ).withPaddingBottom(AppSpacing.m);
   }
 }
 
@@ -111,43 +102,34 @@ final class _ConfirmPasswordInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<
-      ChangePasswordFormFieldsCubit,
-      ChangePasswordFormState,
-      (FormFieldUiState, int)
-    >(
-      selector: (state) => (
-        (
-          errorText: state.confirmPassword.uiErrorKey,
-          isObscure: state.isConfirmPasswordObscure,
-        ),
-        state.epoch,
+    //
+    final (:errorText, :isObscure, :isValid, :epoch) = context
+        .watchSelect<
+          ChangePasswordFormFieldsCubit,
+          ChangePasswordFormState,
+          CmpValidEpoch
+        >(
+          selectChangeConfirmSlice,
+        );
+    final form = context.read<ChangePasswordFormFieldsCubit>();
+    //
+    return InputFieldFactory.create(
+      fieldKeyOverride: ValueKey('confirm_$epoch'),
+      type: InputFieldType.confirmPassword,
+      focusNode: focusNodes.confirmPassword,
+      errorText: errorText,
+      textInputAction: TextInputAction.done,
+      autofillHints: const [AutofillHints.password],
+      isObscure: isObscure,
+      suffixIcon: ObscureToggleIcon(
+        isObscure: isObscure,
+        onPressed: form.toggleConfirmPasswordVisibility,
       ),
-      builder: (context, pair) {
-        final (field, epoch) = pair;
-        final (:errorText, :isObscure) = field;
-        final formCubit = context.read<ChangePasswordFormFieldsCubit>();
-        final currentState = formCubit.state;
-
-        return InputFieldFactory.create(
-          fieldKeyOverride: ValueKey('confirm_$epoch'),
-          type: InputFieldType.confirmPassword,
-          focusNode: focusNodes.confirmPassword,
-          errorText: errorText,
-          textInputAction: TextInputAction.done,
-          autofillHints: const [AutofillHints.password],
-          isObscure: isObscure,
-          suffixIcon: ObscureToggleIcon(
-            isObscure: isObscure,
-            onPressed: formCubit.toggleConfirmPasswordVisibility,
-          ),
-          onChanged: formCubit.onConfirmPasswordChanged,
-          onSubmitted: currentState.isValid
-              ? () => context.submitChangePassword()
-              : null,
-        ).withPaddingBottom(AppSpacing.xxxl);
-      },
-    );
+      //
+      onChanged: form.onConfirmPasswordChanged,
+      onSubmitted: isValid ? () => context.submitChangePassword() : null,
+      //
+    ).withPaddingBottom(AppSpacing.xxxl);
   }
 }
 

@@ -3,8 +3,7 @@ import 'package:core/base_modules/localization.dart' show LocaleKeys;
 import 'package:core/shared_layers/data.dart'
     show UserDTO, UserDTOFactories, UserDTOX;
 import 'package:core/shared_layers/domain.dart' show UserEntity;
-import 'package:core/utils.dart'
-    show AppDurations, CacheManager, CacheStats, ResultFuture;
+import 'package:core/utils.dart' show AppDurations, CacheManager, CacheStats;
 import 'package:features/src/profile/data/remote_database_contract.dart';
 import 'package:features/src/profile/domain/repo_contract.dart';
 

@@ -43,22 +43,22 @@ final class _ResetPasswordEmailInputField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final (emailError, isValid, epoch) = ref.watch(
-      resetPasswordFormProvider.select(
-        (state) => (state.email.uiErrorKey, state.isValid, state.epoch),
-      ),
+    final (:errorText, :isValid, :epoch) = ref.watch(
+      resetPasswordFormProvider.select(selectResetEmailSlice),
     );
-    final notifier = ref.read(resetPasswordFormProvider.notifier);
-
+    final form = ref.read(resetPasswordFormProvider.notifier);
+    //
     return InputFieldFactory.create(
       fieldKeyOverride: ValueKey('email_$epoch'),
       type: InputFieldType.email,
       focusNode: focusNodes.email,
-      errorText: emailError,
+      errorText: errorText,
       textInputAction: TextInputAction.done,
       autofillHints: const [AutofillHints.username, AutofillHints.email],
-      onChanged: notifier.onEmailChanged,
+      //
+      onChanged: form.onEmailChanged,
       onSubmitted: isValid ? () => ref.submitResetPassword() : null,
+      //
     ).withPaddingBottom(AppSpacing.huge);
   }
 }
@@ -138,7 +138,7 @@ final class _ResetPasswordPageFooter extends StatelessWidget {
         const TextWidget(
           LocaleKeys.reset_password_remember,
           TextType.bodyLarge,
-        ).withPaddingBottom(AppSpacing.xs),
+        ),
         //
         AppTextButton(
           label: LocaleKeys.buttons_sign_in,

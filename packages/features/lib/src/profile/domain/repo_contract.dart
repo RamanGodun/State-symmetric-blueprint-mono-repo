@@ -1,5 +1,5 @@
+import 'package:core/base_modules/errors_management.dart';
 import 'package:core/shared_layers/domain.dart' show UserEntity;
-import 'package:core/utils.dart' show ResultFuture;
 import 'package:features/src/profile/domain/fetch_profile_use_case.dart';
 
 /// 📦 [IProfileRepo] — Contract for [FetchProfileUseCase] repo

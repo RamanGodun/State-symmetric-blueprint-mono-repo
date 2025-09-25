@@ -10,6 +10,7 @@ export '../src/base_modules/errors_management/core_of_module/core_utils/extensio
 export '../src/base_modules/errors_management/core_of_module/core_utils/extensions_on_failure/failure_to_either_x.dart';
 export '../src/base_modules/errors_management/core_of_module/core_utils/result_handler.dart';
 export '../src/base_modules/errors_management/core_of_module/core_utils/result_handler_async.dart';
+export '../src/base_modules/errors_management/core_of_module/core_utils/typedefs_for_errors_management.dart';
 export '../src/base_modules/errors_management/core_of_module/either.dart';
 export '../src/base_modules/errors_management/core_of_module/failure_entity.dart';
 export '../src/base_modules/errors_management/core_of_module/failure_type.dart'; // has `part`s for concrete types

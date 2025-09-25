@@ -59,14 +59,11 @@ final class _PasswordInputField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final (errorText, isObscure, epoch) = ref.watch(
-      changePasswordFormProvider.select(
-        (state) =>
-            (state.password.uiErrorKey, state.isPasswordObscure, state.epoch),
-      ),
+    final (:errorText, :isObscure, :epoch) = ref.watch(
+      changePasswordFormProvider.select(selectChangePasswordSlice),
     );
     final notifier = ref.read(changePasswordFormProvider.notifier);
-
+    //
     return InputFieldFactory.create(
       fieldKeyOverride: ValueKey('password_$epoch'),
       type: InputFieldType.password,
@@ -79,8 +76,10 @@ final class _PasswordInputField extends ConsumerWidget {
         isObscure: isObscure,
         onPressed: notifier.togglePasswordVisibility,
       ),
+      //
       onChanged: notifier.onPasswordChanged,
       onSubmitted: goNext(focusNodes.confirmPassword),
+      //
     ).withPaddingBottom(AppSpacing.m);
   }
 }
@@ -100,18 +99,11 @@ final class _ConfirmPasswordInputField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final (errorText, isObscure, isValid, epoch) = ref.watch(
-      changePasswordFormProvider.select(
-        (state) => (
-          state.confirmPassword.uiErrorKey,
-          state.isConfirmPasswordObscure,
-          state.isValid,
-          state.epoch,
-        ),
-      ),
+    final (:errorText, :isObscure, :isValid, :epoch) = ref.watch(
+      changePasswordFormProvider.select(selectChangeConfirmSlice),
     );
     final notifier = ref.read(changePasswordFormProvider.notifier);
-
+    //
     return InputFieldFactory.create(
       fieldKeyOverride: ValueKey('confirm_$epoch'),
       type: InputFieldType.confirmPassword,
@@ -124,8 +116,10 @@ final class _ConfirmPasswordInputField extends ConsumerWidget {
         isObscure: isObscure,
         onPressed: notifier.toggleConfirmPasswordVisibility,
       ),
+      //
       onChanged: notifier.onConfirmPasswordChanged,
       onSubmitted: isValid ? () => ref.submitChangePassword() : null,
+      //
     ).withPaddingBottom(AppSpacing.xxxl);
   }
 }

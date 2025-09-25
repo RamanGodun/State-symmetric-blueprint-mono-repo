@@ -50,13 +50,11 @@ final class _SignInEmailInputField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final (errorText, epoch) = ref.watch(
-      signInFormProvider.select(
-        (state) => (state.email.uiErrorKey, state.epoch),
-      ),
+    final (:errorText, :epoch) = ref.watch(
+      signInFormProvider.select(selectSignInEmailSlice),
     );
-    final formNotifier = ref.read(signInFormProvider.notifier);
-
+    final form = ref.read(signInFormProvider.notifier);
+    //
     return InputFieldFactory.create(
       fieldKeyOverride: ValueKey('email_$epoch'),
       type: InputFieldType.email,
@@ -64,8 +62,10 @@ final class _SignInEmailInputField extends ConsumerWidget {
       errorText: errorText,
       textInputAction: TextInputAction.next,
       autofillHints: const [AutofillHints.username, AutofillHints.email],
-      onChanged: formNotifier.onEmailChanged,
+      //
+      onChanged: form.onEmailChanged,
       onSubmitted: goNext(focusNodes.password),
+      //
     ).withPaddingBottom(AppSpacing.xm);
   }
 }
@@ -85,18 +85,11 @@ final class _SignInPasswordInputField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final (errorText, isObscure, isValid, epoch) = ref.watch(
-      signInFormProvider.select(
-        (state) => (
-          state.password.uiErrorKey,
-          state.isPasswordObscure,
-          state.isValid,
-          state.epoch,
-        ),
-      ),
+    final (:errorText, :isObscure, :isValid, :epoch) = ref.watch(
+      signInFormProvider.select(selectSignInPasswordSlice),
     );
-    final formNotifier = ref.read(signInFormProvider.notifier);
-
+    final form = ref.read(signInFormProvider.notifier);
+    //
     return InputFieldFactory.create(
       fieldKeyOverride: ValueKey('password_$epoch'),
       type: InputFieldType.password,
@@ -107,10 +100,12 @@ final class _SignInPasswordInputField extends ConsumerWidget {
       isObscure: isObscure,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
-        onPressed: formNotifier.togglePasswordVisibility,
+        onPressed: form.togglePasswordVisibility,
       ),
-      onChanged: formNotifier.onPasswordChanged,
+      //
+      onChanged: form.onPasswordChanged,
       onSubmitted: isValid ? () => ref.submitSignIn() : null,
+      //
     ).withPaddingBottom(AppSpacing.xl);
   }
 }
@@ -179,6 +174,7 @@ final class _SignInPageFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -186,7 +182,7 @@ final class _SignInPageFooter extends StatelessWidget {
         const TextWidget(
           LocaleKeys.buttons_redirect_to_sign_up,
           TextType.bodyLarge,
-        ).withPaddingBottom(AppSpacing.s),
+        ),
         AppTextButton(
           label: LocaleKeys.buttons_sign_up,
           isEnabled: isEnabled,
@@ -197,7 +193,7 @@ final class _SignInPageFooter extends StatelessWidget {
         const TextWidget(
           LocaleKeys.sign_in_forgot_password,
           TextType.bodyLarge,
-        ).withPaddingBottom(AppSpacing.s),
+        ),
         AppTextButton(
           label: LocaleKeys.buttons_reset_password,
           foregroundColor: AppColors.forErrors,

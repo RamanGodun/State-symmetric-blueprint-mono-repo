@@ -1,6 +1,5 @@
 import 'package:core/core.dart';
-import 'package:features/features.dart' show PasswordRelatedUseCases;
-import 'package:features/features_barrels/auth/auth.dart' show SignOutUseCase;
+import 'package:features/features.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_bloc/flutter_bloc.dart';
 

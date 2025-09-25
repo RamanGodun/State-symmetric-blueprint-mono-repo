@@ -43,33 +43,28 @@ final class _ResetPasswordEmailInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return BlocSelector<
-      ResetPasswordFormFieldsCubit,
-      ResetPasswordFormState,
-      (String?, int)
-    >(
-      selector: (state) => (state.email.uiErrorKey, state.epoch),
-      builder: (context, tuple) {
-        final (errorText, epoch) = tuple;
-        final isValid = context
-            .read<ResetPasswordFormFieldsCubit>()
-            .state
-            .isValid;
-
-        return InputFieldFactory.create(
-          fieldKeyOverride: ValueKey('email_$epoch'),
-          type: InputFieldType.email,
-          focusNode: focusNodes.email,
-          errorText: errorText,
-          textInputAction: TextInputAction.done,
-          autofillHints: const [AutofillHints.username, AutofillHints.email],
-          onChanged: context
-              .read<ResetPasswordFormFieldsCubit>()
-              .onEmailChanged,
-          onSubmitted: isValid ? () => context.submitResetPassword() : null,
-        ).withPaddingBottom(AppSpacing.huge);
-      },
-    );
+    final (:errorText, :isValid, :epoch) = context
+        .watchSelect<
+          ResetPasswordFormFieldsCubit,
+          ResetPasswordFormState,
+          ErrValidEpoch
+        >(
+          selectResetEmailSlice,
+        );
+    final form = context.read<ResetPasswordFormFieldsCubit>();
+    //
+    return InputFieldFactory.create(
+      fieldKeyOverride: ValueKey('email_$epoch'),
+      type: InputFieldType.email,
+      focusNode: focusNodes.email,
+      errorText: errorText,
+      textInputAction: TextInputAction.done,
+      autofillHints: const [AutofillHints.username, AutofillHints.email],
+      //
+      onChanged: form.onEmailChanged,
+      onSubmitted: isValid ? () => context.submitResetPassword() : null,
+      //
+    ).withPaddingBottom(AppSpacing.huge);
   }
 }
 
@@ -143,7 +138,7 @@ final class _ResetPasswordPageFooter extends StatelessWidget {
         const TextWidget(
           LocaleKeys.reset_password_remember,
           TextType.bodyLarge,
-        ).withPaddingBottom(AppSpacing.xs),
+        ),
         //
         AppTextButton(
           label: LocaleKeys.buttons_sign_in,

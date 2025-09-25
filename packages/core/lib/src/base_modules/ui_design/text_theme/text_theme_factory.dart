@@ -38,22 +38,22 @@ abstract final class TextThemeFactory {
       // DISPLAY — accent (Montserrat)
       displayLarge: t(color, FontWeight.w300, 57, accent),
       displayMedium: t(color, FontWeight.w300, 45, accent),
-      displaySmall: t(color, FontWeight.w400, 36, accent),
+      displaySmall: t(color, FontWeight.w400, 35, accent),
 
       // HEADLINE — accent (Montserrat)
-      headlineLarge: t(color, FontWeight.w400, 32, accent),
-      headlineMedium: t(color, FontWeight.w500, 28, accent),
+      headlineLarge: t(color, FontWeight.w400, 31, accent),
+      headlineMedium: t(color, FontWeight.w500, 27, accent),
       headlineSmall: t(color, FontWeight.w600, 24, accent),
 
       // TITLE — mix: large = accent, medium/small = primary
       titleLarge: t(color, FontWeight.w600, 22, accent),
-      titleMedium: t(color, FontWeight.w500, 16, primary),
-      titleSmall: t(color, FontWeight.w500, 14, primary),
+      titleMedium: t(color, FontWeight.w500, 18, primary),
+      titleSmall: t(color, FontWeight.w500, 16, primary),
 
       // BODY — primary (Inter)
-      bodyLarge: t(color, FontWeight.w400, 16, primary),
-      bodyMedium: t(color, FontWeight.w400, 14, primary),
-      bodySmall: t(color, FontWeight.w400, 12, primary),
+      bodyLarge: t(color, FontWeight.w400, 15, primary),
+      bodyMedium: t(color, FontWeight.w400, 13, primary),
+      bodySmall: t(color, FontWeight.w400, 11, primary),
 
       // LABEL — primary (Inter)
       labelLarge: t(color, FontWeight.w600, 14, primary),

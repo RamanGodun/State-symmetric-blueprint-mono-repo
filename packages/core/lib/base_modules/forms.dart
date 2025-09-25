@@ -9,6 +9,7 @@ export '../src/base_modules/forms/input_validation/x_on_forms_submission_status.
 export '../src/base_modules/forms/utils/focus_nodes_generator.dart'
     show generateFocusNodes;
 export '../src/base_modules/forms/utils/forms_utils.dart';
+export '../src/base_modules/forms/utils/typedefs_for_forms.dart';
 export '../src/base_modules/forms/utils/use_auth_focus_nodes.dart'
     show
         useChangePasswordFocusNodes,
