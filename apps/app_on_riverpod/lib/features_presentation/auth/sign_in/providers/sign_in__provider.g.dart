@@ -6,7 +6,7 @@ part of 'sign_in__provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signInHash() => r'81c475ac19b4728ae002ae7176353d86f13aad26';
+String _$signInHash() => r'fbddeea9e5b268e06f73e053598b85202c0a4a46';
 
 /// 🔐 [signInProvider] — Handles sign-in submission & side-effects.
 /// 🧰 Uses shared [ButtonSubmissionState].

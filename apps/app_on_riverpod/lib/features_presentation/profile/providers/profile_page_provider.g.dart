@@ -6,9 +6,11 @@ part of 'profile_page_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$profileHash() => r'd3a4a90a147f5f9f6651c7077af193f92f4a77a3';
+String _$profileHash() => r'9d0a9731851c61fc5d896b4b0f28b1ba7c4473b6';
 
-/// 👤 [profileProvider] — async notifier that fetches user profile
+/// 👤 [profileProvider] — keeps the authenticated user's profile.
+/// ✅ Mirrors the BLoC counterpart ['ProfileCubit'] API (prime / refresh / reset).
+/// 🎯 UX: preserves existing UI on background updates (no full-screen loader).
 ///
 /// Copied from [Profile].
 @ProviderFor(Profile)

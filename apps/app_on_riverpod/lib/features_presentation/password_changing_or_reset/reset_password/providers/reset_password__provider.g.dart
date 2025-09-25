@@ -6,7 +6,7 @@ part of 'reset_password__provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$resetPasswordHash() => r'10cb0dab7b0399222f852659e11ef818e238b099';
+String _$resetPasswordHash() => r'93fc56a07f9792d79aa6363f8f6c9ca25995f2da';
 
 /// 🔐 [resetPasswordProvider] — Handles reset-password submission & side-effects.
 /// 🧰 Uses shared [ButtonSubmissionState].

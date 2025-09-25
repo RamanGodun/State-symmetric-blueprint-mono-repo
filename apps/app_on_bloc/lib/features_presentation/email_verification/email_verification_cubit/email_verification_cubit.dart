@@ -1,118 +1,71 @@
-import 'dart:async' show Timer, scheduleMicrotask;
+// ignore_for_file: public_member_api_docs
+
+import 'dart:async' show scheduleMicrotask;
 
 import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
 import 'package:features/features_barrels/email_verification/email_verification.dart';
+import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseRefs;
+import 'package:flutter/foundation.dart' show debugPrint;
 
-/// 📧 [EmailVerificationCubit] — Orchestrates the email-verification flow (BLoC).
-/// 🧰 Uses shared async state: [AsyncState<void>] (loader / data / error).
-/// 🔁 Symmetric to Riverpod 'EmailVerificationNotifier' (bootstrap → polling → success/timeout).
-//
 final class EmailVerificationCubit extends CubitWithAsyncValue<void> {
-  ///--------------------------------------------------------------
-  EmailVerificationCubit(this._useCase) : super() {
-    // ▶️ Fire-and-forget bootstrap after listeners attach (microtask)
-    //    Guarded by [_started] to avoid double start.
+  EmailVerificationCubit(this._useCase, this.gateway)
+    : _poller = VerificationPoller(
+        interval: AppDurations.sec3,
+        timeout: AppDurations.min1,
+      ),
+      super() {
     scheduleMicrotask(_bootstrap);
   }
-  // 📦 Injected use case for email verification operations
+
   final EmailVerificationUseCase _useCase;
-  // ⏱ Periodic polling timer
-  Timer? _pollingTimer;
-  // ⏱ Max allowed polling duration before timeout
-  static const Duration _maxPollingDuration = AppDurations.min1;
-  // ⏱ Elapsed time tracker
-  final Stopwatch _stopwatch = Stopwatch();
+  final VerificationPoller _poller;
+  final AuthGateway gateway;
+
   bool _started = false;
 
-  ////
-
-  /// ▶️ One-shot bootstrap: send verification email + start polling.
   Future<void> _bootstrap() async {
     if (_started) return;
     _started = true;
-    // 🌀 Inline loader while we kick things off
+
     emit(const AsyncValueForBLoC.loading());
-    //
+
     final sent = await _useCase.sendVerificationEmail();
     sent.fold(
-      // ❌ Error shown by listener via state.error
       (failure) => emit(AsyncValueForBLoC<void>.error(failure)),
       (_) => _startPolling(),
     );
   }
 
-  ////
-
-  /// 🔁 Polls every 3s until verified or timeout reached.
   void _startPolling() {
-    // ensure clean start
-    _pollingTimer?.cancel();
-    _stopwatch
-      ..reset()
-      ..start();
-    // 🌀 Keep loader visible during active polling
-    emit(const AsyncValueForBLoC.loading());
-    //
-    _pollingTimer = Timer.periodic(AppDurations.sec3, (_) async {
-      // ⏳ Timeout → stop + emit timeout failure
-      if (_stopwatch.elapsed >= _maxPollingDuration) {
-        _stopPolling();
-        emit(
-          const AsyncValueForBLoC<void>.error(
-            Failure(
-              type: EmailVerificationTimeoutFailureType(),
-              message: 'Timeout exceeded',
-            ),
-          ),
-        );
-        return;
-      }
-      //
-      await _checkVerified();
-    });
-  }
-
-  ////
-
-  /// ✅ Check verification; if verified → reload user, stop polling, emit success.
-  Future<void> _checkVerified() async {
-    // 🌀 Keep loader while checking
-    emit(const AsyncValueForBLoC.loading());
-    //
-    final result = await _useCase.checkIfEmailVerified();
-    result.fold(
-      (f) => emit(AsyncValueForBLoC<void>.error(f)),
-      (isVerified) async {
-        if (!isVerified) {
-          // Not verified yet → keep inline spinner UX
-          emit(const AsyncValueForBLoC.loading());
-          return;
-        }
-        //
-        /// verified → reload + stop + signal success
+    _poller.start(
+      onLoadingTick: () => emit(const AsyncValueForBLoC.loading()),
+      onTimeout: () => emit(
+        const AsyncValueForBLoC<void>.error(
+          Failure(type: EmailVerificationTimeoutFailureType()),
+        ),
+      ),
+      check: () async {
+        final result = await _useCase.checkIfEmailVerified();
+        return result.fold((_) => false, (v) => v);
+      },
+      onVerified: () async {
         await _useCase.reloadUser();
-        _stopPolling();
-        // 🎉 Success convention: AsyncState.data(null)
+
+        // 🔔 ensure router refresh (симетрично Riverpod-реалізації)
+        await gateway.refresh();
+        debugPrint(
+          '🔁 After reload + refresh: emailVerified=${FirebaseRefs.auth.currentUser?.emailVerified}',
+        );
+
         emit(const AsyncValueForBLoC<void>.data(null));
       },
     );
   }
 
-  ////
-
-  /// 🛑 Stops the polling loop and halts the stopwatch.
-  void _stopPolling() {
-    _pollingTimer?.cancel();
-    _stopwatch.stop();
-  }
-
-  /// 🧹 Dispose hook — cancel polling to prevent leaks.
   @override
   Future<void> close() {
-    _stopPolling();
+    _poller.cancel();
     return super.close();
   }
-
-  //
 }

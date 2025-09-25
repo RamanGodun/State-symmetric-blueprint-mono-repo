@@ -7,13 +7,9 @@ part of 'email_verification_provider.dart';
 // **************************************************************************
 
 String _$emailVerificationNotifierHash() =>
-    r'b635db7daed1d4098a28c7c613f7e9dd8c79dc53';
+    r'bc7b7a4abc347e7083719745796e4a01e32bfce3';
 
-/// 📧 [EmailVerificationNotifier] — Orchestrates the email-verification flow (Riverpod).
-/// 🧰 Uses shared async state: [AsyncValue<void>] via [SafeAsyncState].
-/// 🔁 Symmetric to BLoC 'EmailVerificationCubit' (bootstrap → polling → success/timeout).
-///
-/// Copied from [EmailVerificationNotifier].
+/// See also [EmailVerificationNotifier].
 @ProviderFor(EmailVerificationNotifier)
 final emailVerificationNotifierProvider =
     AutoDisposeAsyncNotifierProvider<EmailVerificationNotifier, void>.internal(

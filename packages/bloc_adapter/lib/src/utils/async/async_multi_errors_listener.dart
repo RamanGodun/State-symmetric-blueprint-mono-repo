@@ -1,12 +1,12 @@
 import 'package:core/base_modules/errors_management.dart'
     show Failure, FailureToUIEntityX;
 import 'package:core/base_modules/overlays.dart' show ContextXForOverlays;
-import 'package:core/core.dart' show AsyncStateError, AsyncValueForBLoC;
+import 'package:core/core.dart' show AsyncErrorForBLoC, AsyncValueForBLoC;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// ⛑️ [ErrorsListenerForAppOnCubit] — listen multiple BLoC/Cubit sources at once
-/// ✅ Enter-only: reacts only on transition into [AsyncStateError]
+/// ✅ Enter-only: reacts only on transition into [AsyncErrorForBLoC]
 /// ✅ Reusable: accepts heterogeneous cubits (payload type-agnostic via `dynamic`)
 //
 final class ErrorsListenerForAppOnCubit extends StatelessWidget {
@@ -43,9 +43,9 @@ final class ErrorsListenerForAppOnCubit extends StatelessWidget {
                 >(
                   bloc: bloc,
                   listenWhen: (prev, curr) =>
-                      prev is! AsyncStateError && curr is AsyncStateError,
+                      prev is! AsyncErrorForBLoC && curr is AsyncErrorForBLoC,
                   listener: (ctx, state) {
-                    final failure = (state as AsyncStateError).failure;
+                    final failure = (state as AsyncErrorForBLoC).failure;
                     if (onError != null) {
                       onError!(ctx, failure);
                     } else {

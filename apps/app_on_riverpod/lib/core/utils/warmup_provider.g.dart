@@ -8,7 +8,11 @@ part of 'warmup_provider.dart';
 
 String _$warmupHash() => r'61c5628deb0694ad7ac17145d047965fe2a1174a';
 
-/// 🚀 Препідігрів профілю: як тільки з’явився uid — підвантажити профіль
+///
+/// ✅ Current behavior:
+/// - Listens to [authUidProvider].
+/// - 👤 When a `uid` appears → primes the [profileProvider] (fetch without clearing UI).
+/// - 🚪 When `uid` disappears → resets the profile state.
 ///
 /// Copied from [warmup].
 @ProviderFor(warmup)

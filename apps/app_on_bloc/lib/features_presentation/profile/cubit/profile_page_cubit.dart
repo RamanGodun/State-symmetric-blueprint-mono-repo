@@ -26,7 +26,7 @@ final class ProfileCubit extends Cubit<AsyncValueForBLoC<UserEntity>> {
   /// 🚀 Internal loader with optional UI preservation.
   Future<void> _load(String uid, {required bool preserveUi}) async {
     // 🔑 Preserve UI? → don’t emit loading if data is already present.
-    final keepUi = preserveUi && state is AsyncStateData<UserEntity>;
+    final keepUi = preserveUi && state is AsyncDataForBLoC<UserEntity>;
     if (!keepUi) emit(const AsyncValueForBLoC<UserEntity>.loading());
     //
     final result = await _fetchProfileUsecase(uid);

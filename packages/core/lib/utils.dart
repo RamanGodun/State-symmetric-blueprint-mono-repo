@@ -27,6 +27,7 @@ export 'src/utils_shared/type_definitions.dart';
 
 // ── Timing control ───────────────────────────────────────────────────────────
 export 'src/utils_shared/timing_control/timing_control_barrel.dart';
+export 'src/utils_shared/timing_control/verification_poller.dart';
 
 // ── Assets (Spider) ──────────────────────────────────────────────────────────
 export 'src/utils_shared/spider/app_images_paths.dart';

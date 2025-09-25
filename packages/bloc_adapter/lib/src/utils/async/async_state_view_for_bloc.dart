@@ -18,32 +18,32 @@ final class AsyncStateViewForBloc<T> implements AsyncStateView<T> {
     required R Function(Failure failure) error,
   }) {
     return switch (_state) {
-      AsyncStateLoading<T>() => loading(),
-      AsyncStateData<T>(:final value) => data(value),
-      AsyncStateError<T>(:final failure) => error(failure),
+      AsyncLoadingForBLoC<T>() => loading(),
+      AsyncDataForBLoC<T>(:final value) => data(value),
+      AsyncErrorForBLoC<T>(:final failure) => error(failure),
     };
   }
 
   /// 🧭 True when underlying state is in loading phase.
   @override
-  bool get isLoading => _state is AsyncStateLoading<T>;
+  bool get isLoading => _state is AsyncLoadingForBLoC<T>;
 
   /// 🧭 True when underlying state carries a value.
   @override
-  bool get hasValue => _state is AsyncStateData<T>;
+  bool get hasValue => _state is AsyncDataForBLoC<T>;
 
   /// 🧭 True when underlying state represents an error.
   @override
-  bool get hasError => _state is AsyncStateError<T>;
+  bool get hasError => _state is AsyncErrorForBLoC<T>;
 
   /// 📦 Returns current value or `null` if none.
   @override
-  T? get valueOrNull => _state is AsyncStateData<T> ? _state.value : null;
+  T? get valueOrNull => _state is AsyncDataForBLoC<T> ? _state.value : null;
 
   /// 📦 Returns current [Failure] or `null` if none.
   @override
   Failure? get failureOrNull =>
-      _state is AsyncStateError<T> ? _state.failure : null;
+      _state is AsyncErrorForBLoC<T> ? _state.failure : null;
 }
 
 ////

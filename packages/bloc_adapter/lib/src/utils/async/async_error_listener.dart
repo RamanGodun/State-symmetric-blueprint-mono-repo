@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// ⛑️ [AsyncErrorListener] — reusable listener for any [AsyncState<T>]
-/// ✅ Triggers overlay on entering [AsyncStateError]
+/// ✅ Triggers overlay on entering [AsyncErrorForBLoC]
 /// 💡 Accepts optional [onError] hook for custom handling
 //
 final class AsyncErrorListener<T> extends StatelessWidget {
@@ -31,10 +31,10 @@ final class AsyncErrorListener<T> extends StatelessWidget {
 
       /// 🚨 Enter-only: fire only when entering error state
       listenWhen: (prev, curr) =>
-          prev is! AsyncStateError<T> && curr is AsyncStateError<T>,
+          prev is! AsyncErrorForBLoC<T> && curr is AsyncErrorForBLoC<T>,
 
       listener: (context, state) {
-        final failure = (state as AsyncStateError<T>).failure;
+        final failure = (state as AsyncErrorForBLoC<T>).failure;
         if (onError != null) {
           onError!(context, failure);
         } else {
