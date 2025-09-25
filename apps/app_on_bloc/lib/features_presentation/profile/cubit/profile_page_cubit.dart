@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// 🎯 UX: preserves existing UI on background updates (no full-screen loader).
 //
 final class ProfileCubit extends Cubit<AsyncState<UserEntity>> {
-  ///--------------------------------------------------------
+  ///-------------------------------------------------------
   /// Creates a cubit bound to domain [FetchProfileUseCase]
   ProfileCubit(this._fetchProfileUsecase)
     : super(const AsyncState<UserEntity>.loading());

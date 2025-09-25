@@ -42,6 +42,8 @@ final class SignInCubit extends Cubit<ButtonSubmissionState> {
     });
   }
 
+  ////
+
   /// ♻️ Reset to initial (e.g., after dialogs/navigation)
   void resetState() => emit(const ButtonSubmissionInitialState());
 

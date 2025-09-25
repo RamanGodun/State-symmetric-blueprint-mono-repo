@@ -9,8 +9,7 @@ import 'package:riverpod_adapter/riverpod_adapter.dart';
 
 part 'widgets_for_reset_password_page.dart';
 
-/// 🔐 [ResetPasswordPage] — Entry point for the request-password feature,
-/// 📩 Sends reset link to user's email using [resetPasswordProvider]
+/// 🔐 [ResetPasswordPage] — Entry point for the reset-password feature,
 //
 final class ResetPasswordPage extends ConsumerWidget {
   ///----------------------------------------------
@@ -19,30 +18,33 @@ final class ResetPasswordPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    /// 🛡️ Riverpod-side effects listener (symmetry with BLoC SubmissionSideEffects)
+    /// 🦻 Riverpod-side effects listener (symmetry with BLoC 'SubmissionSideEffects')
+    /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
     ref.listenSubmissionSideEffects(
       resetPasswordProvider,
       context,
+      // ✅ Success → snackbar + go [SignInPage]
       onSuccess: (ctx, _) => ctx
         ..showSnackbar(message: LocaleKeys.reset_password_success)
         ..goTo(RoutesNames.signIn),
+      // 🔁 Retry with current form state
       onRetry: (ref) => ref.submitResetPassword(),
     );
 
     /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
-    return const _ResetPasswordView();
+    return const _ResetPasswordScreen();
   }
 }
 
 ////
 ////
 
-/// 🔐 [_ResetPasswordView] — Screen that allows the user to reset password.
+/// 🔐 [_ResetPasswordScreen] — Screen that allows the user to reset password.
 /// ✅ Same widget used in BLoC app for perfect parity
 //
-final class _ResetPasswordView extends HookWidget {
-  ///------------------------------------------------
-  const _ResetPasswordView();
+final class _ResetPasswordScreen extends HookWidget {
+  ///---------------------------------------------
+  const _ResetPasswordScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -60,23 +62,24 @@ final class _ResetPasswordView extends HookWidget {
             builder: (context, constraints) {
               return ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: FocusTraversalGroup(
+                  ///
+                  child: ListView(
+                    children: [
+                      /// ℹ️ Info section for [ResetPasswordPage]
+                      const _ResetPasswordHeader(),
 
-                ///
-                child: ListView(
-                  children: [
-                    /// ℹ️ Info section for [ResetPasswordPage]
-                    const _ResetPasswordHeader(),
+                      /// 📧 Email input field
+                      _ResetPasswordEmailInputField(focusNodes),
 
-                    /// 🔒 Password input field
-                    _ResetPasswordEmailInputField(focusNodes),
+                      /// 🚀 Primary submit button
+                      const _ResetPasswordSubmitButton(),
 
-                    /// 🚀 Primary submit button
-                    const _ResetPasswordSubmitButton(),
-
-                    /// 🔁 Links to redirect to sign-in screen
-                    const _WrapperForFooter(),
-                  ],
-                ).withPaddingHorizontal(AppSpacing.l),
+                      /// 🔁 Links to redirect to sign-in screen
+                      const _ResetPasswordFooterGuard(),
+                    ],
+                  ).withPaddingHorizontal(AppSpacing.l),
+                ),
               );
             },
           ),
@@ -89,9 +92,11 @@ final class _ResetPasswordView extends HookWidget {
 ////
 ////
 
-/// 🧩 [ResetPasswordRefX] — extension for WidgetRef to handle Reset Password submit.
+/// 🧩 [ResetPasswordRefX] — Triggers reset-password using current form state (reads form provider).
+/// 🧼 UX: unfocus keyboard before submit to avoid field glitches on navigation
 //
 extension ResetPasswordRefX on WidgetRef {
+  ///----------------------------------
   /// 📤 Submits the password reset request using the current form state.
   void submitResetPassword() {
     final form = read(resetPasswordFormProvider);

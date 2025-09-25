@@ -51,7 +51,7 @@ final class _ChangePasswordInfo extends StatelessWidget {
 /// ✅ Rebuilds only when password error or visibility state changes
 //
 final class _PasswordInputField extends ConsumerWidget {
-  ///-------------------------------------------
+  ///------------------------------------------------
   const _PasswordInputField(this.focusNodes);
   //
   final ({FocusNode password, FocusNode confirmPassword}) focusNodes;
@@ -59,25 +59,28 @@ final class _PasswordInputField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final passwordError = ref.watch(
-      changePasswordFormProvider.select((f) => f.password.uiErrorKey),
-    );
-    final isObscure = ref.watch(
-      changePasswordFormProvider.select((f) => f.isPasswordObscure),
+    final (errorText, isObscure, epoch) = ref.watch(
+      changePasswordFormProvider.select(
+        (state) =>
+            (state.password.uiErrorKey, state.isPasswordObscure, state.epoch),
+      ),
     );
     final notifier = ref.read(changePasswordFormProvider.notifier);
 
     return InputFieldFactory.create(
+      fieldKeyOverride: ValueKey('password_$epoch'),
       type: InputFieldType.password,
       focusNode: focusNodes.password,
-      errorText: passwordError,
+      errorText: errorText,
+      textInputAction: TextInputAction.next,
+      autofillHints: const [AutofillHints.password],
       isObscure: isObscure,
-      onChanged: notifier.onPasswordChanged,
-      onSubmitted: goNext(focusNodes.confirmPassword),
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
         onPressed: notifier.togglePasswordVisibility,
       ),
+      onChanged: notifier.onPasswordChanged,
+      onSubmitted: goNext(focusNodes.confirmPassword),
     ).withPaddingBottom(AppSpacing.m);
   }
 }
@@ -89,7 +92,7 @@ final class _PasswordInputField extends ConsumerWidget {
 /// ✅ Rebuilds only when 'confirm password' error or visibility state changes
 //
 final class _ConfirmPasswordInputField extends ConsumerWidget {
-  ///--------------------------------------------------
+  ///-------------------------------------------------------
   const _ConfirmPasswordInputField(this.focusNodes);
   //
   final ({FocusNode password, FocusNode confirmPassword}) focusNodes;
@@ -97,28 +100,32 @@ final class _ConfirmPasswordInputField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final confirmPasswordError = ref.watch(
-      changePasswordFormProvider.select((f) => f.confirmPassword.uiErrorKey),
-    );
-    final isObscure = ref.watch(
-      changePasswordFormProvider.select((f) => f.isConfirmPasswordObscure),
-    );
-    final isValid = ref.watch(
-      changePasswordFormProvider.select((f) => f.isValid),
+    final (errorText, isObscure, isValid, epoch) = ref.watch(
+      changePasswordFormProvider.select(
+        (state) => (
+          state.confirmPassword.uiErrorKey,
+          state.isConfirmPasswordObscure,
+          state.isValid,
+          state.epoch,
+        ),
+      ),
     );
     final notifier = ref.read(changePasswordFormProvider.notifier);
 
     return InputFieldFactory.create(
+      fieldKeyOverride: ValueKey('confirm_$epoch'),
       type: InputFieldType.confirmPassword,
       focusNode: focusNodes.confirmPassword,
-      errorText: confirmPasswordError,
+      errorText: errorText,
+      textInputAction: TextInputAction.done,
+      autofillHints: const [AutofillHints.password],
       isObscure: isObscure,
-      onChanged: notifier.onConfirmPasswordChanged,
-      onSubmitted: isValid ? () => ref.submitChangePassword() : null,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
         onPressed: notifier.toggleConfirmPasswordVisibility,
       ),
+      onChanged: notifier.onConfirmPasswordChanged,
+      onSubmitted: isValid ? () => ref.submitChangePassword() : null,
     ).withPaddingBottom(AppSpacing.xxxl);
   }
 }

@@ -10,8 +10,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 part 'widgets_for_reset_password_page.dart';
 
-/// 🔐 [ResetPasswordPage] — Entry point for the sign-up feature,
-/// 🧾 that allows user to request password reset
+/// 🔐 [ResetPasswordPage] — Entry point for the reset-password feature,
 //
 final class ResetPasswordPage extends StatelessWidget {
   ///---------------------------------------
@@ -27,35 +26,41 @@ final class ResetPasswordPage extends StatelessWidget {
           create: (_) => ResetPasswordCubit(di<PasswordRelatedUseCases>()),
         ),
         BlocProvider(
-          create: (_) => ResetPasswordFormCubit(),
+          create: (_) => ResetPasswordFormFieldsCubit(),
         ),
       ],
 
-      /// 🛡️ Wraps [_ResetPasswordView] with side-effect listeners (handles ❌Error & ✅Success cases)
+      /// 🦻 Bloc side-effect listener (symmetry with Riverpod 'ref.listenSubmissionSideEffects')
+      /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
       child: SubmissionSideEffects<ResetPasswordCubit>(
+        // ✅ Success → snackbar + go [SignInPage]
         onSuccess: (ctx, _) => ctx
           ..showSnackbar(message: LocaleKeys.reset_password_success)
           ..goTo(RoutesNames.signIn),
-        onResetForm: (ctx) => ctx.read<ResetPasswordFormCubit>().resetState(),
+        // 🔁 Retry with current form state
+        onRetry: (ctx) => ctx.submitResetPassword(),
         //
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-        child: const _ResetPasswordView(),
+        child: const _ResetPasswordScreen(),
       ),
     );
   }
 }
 
-/// 🔐 [_ResetPasswordView] — Screen that allows user to request password reset
+/// 🔐 [_ResetPasswordScreen] — Screen that allows user to request password reset
 /// 📩 Sends reset link to user's email using [ResetPasswordCubit]
 /// ✅ Same widget used in Riverpod app for perfect parity
 //
-final class _ResetPasswordView extends StatelessWidget {
-  ///------------------------------------------------
-  const _ResetPasswordView();
+final class _ResetPasswordScreen extends HookWidget {
+  ///--------------------------------------------------
+  const _ResetPasswordScreen();
 
   @override
   Widget build(BuildContext context) {
     //
+    /// 📌 Shared focus nodes for form fields
+    final focusNodes = useResetPasswordFocusNodes();
+
     return Scaffold(
       body: SafeArea(
         child: GestureDetector(
@@ -69,18 +74,18 @@ final class _ResetPasswordView extends StatelessWidget {
                 child: FocusTraversalGroup(
                   ///
                   child: ListView(
-                    children: const [
+                    children: [
                       /// ℹ️ Info section for [ResetPasswordPage]
-                      _ResetPasswordHeader(),
+                      const _ResetPasswordHeader(),
 
-                      /// 🔒 Password input field
-                      _ResetPasswordEmailInputField(),
+                      /// 📧 Email input field
+                      _ResetPasswordEmailInputField(focusNodes),
 
                       /// 🚀 Primary submit button
-                      _ResetPasswordSubmitButton(),
+                      const _ResetPasswordSubmitButton(),
 
                       /// 🔁 [_ResetPasswordPageFooter] — sign in redirect link with guard (during form submission or active overlay)
-                      _ResetPasswordFooterGuard(),
+                      const _ResetPasswordFooterGuard(),
                       //
                     ],
                   ).withPaddingHorizontal(AppSpacing.l),
@@ -91,6 +96,24 @@ final class _ResetPasswordView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+////
+////
+
+/// 🧩 [ResetPasswordContextX] — Triggers reset-password using current form state (reads form cubit).
+/// 🧼 UX: unfocus keyboard before submit to avoid field glitches on navigation
+//
+extension ResetPasswordContextX on BuildContext {
+  ///-----------------------------------------
+  /// 🚀 Perform submit, using current form state
+  void submitResetPassword() {
+    unfocusKeyboard();
+    final currentState = read<ResetPasswordFormFieldsCubit>().state;
+    read<ResetPasswordCubit>().submit(
+      currentState.email.value,
     );
   }
 }

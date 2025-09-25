@@ -60,8 +60,5 @@ export 'src/features_providers/password_changing_or_reset/domain_layer_providers
 export 'src/features_providers/profile/data_layers_providers/data_layer_providers.dart';
 export 'src/features_providers/profile/domain_layer_providers/use_case_provider.dart';
 
-/// --- Others utils
-export 'src/utils/forms_utils.dart';
-
 /// --- Widgets
 export 'src/presentation/form_submit_button.dart';

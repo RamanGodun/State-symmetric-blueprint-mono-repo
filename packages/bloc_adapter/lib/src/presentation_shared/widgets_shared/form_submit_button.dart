@@ -1,4 +1,5 @@
 import 'package:bloc_adapter/src/base_modules/overlays_module/overlay_status_cubit.dart';
+import 'package:core/base_modules/localization.dart' show LocaleKeys;
 import 'package:core/shared_layers/presentation.dart'
     show
         ButtonSubmissionErrorState,
@@ -17,24 +18,24 @@ typedef SubmitCallback = void Function();
 ////
 ////
 
-/// 🚀 [UniversalSubmitButton] — universal submit button aware of two cubits (FormCubit + SubmitCubit)
+/// 🚀 [FormSubmitButtonForBLoCApps] — universal submit button aware of two cubits (FormCubit + SubmitCubit)
 /// ✅ Automatically:
 ///   - shows loader while submitting
 ///   - disables itself when form is invalid / overlay is active / submitting
 ///   - prevents “button flicker” after Success/Error by using a short transient-lock
 //
-final class UniversalSubmitButton<
+final class FormSubmitButtonForBLoCApps<
   FormsCubit extends StateStreamable<FormsState>,
   FormsState,
   SubmitCubit extends StateStreamable<ButtonSubmissionState>
 >
     extends StatefulWidget {
   ///-------------------------------
-  const UniversalSubmitButton({
+  const FormSubmitButtonForBLoCApps({
     required this.label,
-    required this.loadingLabel,
     required this.isFormValid,
     required this.onPressed,
+    this.loadingLabel = LocaleKeys.buttons_submitting,
     this.padding,
     super.key,
   });
@@ -55,21 +56,24 @@ final class UniversalSubmitButton<
   final EdgeInsets? padding;
 
   @override
-  State<UniversalSubmitButton<FormsCubit, FormsState, SubmitCubit>>
+  State<FormSubmitButtonForBLoCApps<FormsCubit, FormsState, SubmitCubit>>
   createState() =>
-      _UniversalSubmitButtonState<FormsCubit, FormsState, SubmitCubit>();
+      _FormSubmitButtonForBLoCAppsState<FormsCubit, FormsState, SubmitCubit>();
 }
 
 ////
 
 /// 🏗️ Internal state — holds transient-lock to smooth UX
 //
-final class _UniversalSubmitButtonState<
+final class _FormSubmitButtonForBLoCAppsState<
   FormsCubit extends StateStreamable<FormsState>,
   FormsState,
   SubmitCubit extends StateStreamable<ButtonSubmissionState>
 >
-    extends State<UniversalSubmitButton<FormsCubit, FormsState, SubmitCubit>> {
+    extends
+        State<
+          FormSubmitButtonForBLoCApps<FormsCubit, FormsState, SubmitCubit>
+        > {
   ///---------------------------------------------------------------------
   //
   bool _transientLock = false;
@@ -116,8 +120,12 @@ final class _UniversalSubmitButtonState<
               final isEnabled =
                   isValid && !isLoading && !isOverlayActive && !_transientLock;
 
+              final currentLabel = isLoading
+                  ? widget.loadingLabel
+                  : widget.label;
+
               final btn = CustomFilledButton(
-                label: isLoading ? widget.loadingLabel : widget.label,
+                label: currentLabel,
                 onPressed: isEnabled ? widget.onPressed : null,
                 isLoading: isLoading,
                 isEnabled: isEnabled,

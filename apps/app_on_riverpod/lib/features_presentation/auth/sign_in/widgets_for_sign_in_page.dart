@@ -5,7 +5,7 @@ part of 'sign_in__page.dart';
 /// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _SignInHeader extends StatelessWidget {
-  ///------------------------------------------
+  ///-------------------------------------------
   const _SignInHeader();
 
   @override
@@ -42,25 +42,30 @@ final class _SignInHeader extends StatelessWidget {
 /// ✅ Rebuilds only when `email.uiError` changes
 //
 final class _SignInEmailInputField extends ConsumerWidget {
-  ///--------------------------------------------------
-  const _SignInEmailInputField(this.focusNode);
+  ///---------------------------------------------------
+  const _SignInEmailInputField(this.focusNodes);
   //
-  final ({FocusNode email, FocusNode password}) focusNode;
+  final ({FocusNode email, FocusNode password}) focusNodes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final emailError = ref.watch(
-      signInFormProvider.select((f) => f.email.uiErrorKey),
+    final (errorText, epoch) = ref.watch(
+      signInFormProvider.select(
+        (state) => (state.email.uiErrorKey, state.epoch),
+      ),
     );
     final formNotifier = ref.read(signInFormProvider.notifier);
 
     return InputFieldFactory.create(
+      fieldKeyOverride: ValueKey('email_$epoch'),
       type: InputFieldType.email,
-      focusNode: focusNode.email,
-      errorText: emailError,
+      focusNode: focusNodes.email,
+      errorText: errorText,
+      textInputAction: TextInputAction.next,
+      autofillHints: const [AutofillHints.username, AutofillHints.email],
       onChanged: formNotifier.onEmailChanged,
-      onSubmitted: goNext(focusNode.password),
+      onSubmitted: goNext(focusNodes.password),
     ).withPaddingBottom(AppSpacing.xm);
   }
 }
@@ -73,35 +78,39 @@ final class _SignInEmailInputField extends ConsumerWidget {
 //
 final class _SignInPasswordInputField extends ConsumerWidget {
   ///------------------------------------------------------
-  const _SignInPasswordInputField(this.focusNode);
+  const _SignInPasswordInputField(this.focusNodes);
   //
-  final ({FocusNode email, FocusNode password}) focusNode;
+  final ({FocusNode email, FocusNode password}) focusNodes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final passwordError = ref.watch(
-      signInFormProvider.select((state) => state.password.uiErrorKey),
-    );
-    final isObscure = ref.watch(
-      signInFormProvider.select((state) => state.isPasswordObscure),
-    );
-    final isValid = ref.watch(
-      signInFormProvider.select((state) => state.isValid),
+    final (errorText, isObscure, isValid, epoch) = ref.watch(
+      signInFormProvider.select(
+        (state) => (
+          state.password.uiErrorKey,
+          state.isPasswordObscure,
+          state.isValid,
+          state.epoch,
+        ),
+      ),
     );
     final formNotifier = ref.read(signInFormProvider.notifier);
 
     return InputFieldFactory.create(
+      fieldKeyOverride: ValueKey('password_$epoch'),
       type: InputFieldType.password,
-      focusNode: focusNode.password,
-      errorText: passwordError,
+      focusNode: focusNodes.password,
+      errorText: errorText,
+      textInputAction: TextInputAction.done,
+      autofillHints: const [AutofillHints.password],
       isObscure: isObscure,
-      onChanged: formNotifier.onPasswordChanged,
-      onSubmitted: isValid ? () => ref.submitSignIn() : null,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
         onPressed: formNotifier.togglePasswordVisibility,
       ),
+      onChanged: formNotifier.onPasswordChanged,
+      onSubmitted: isValid ? () => ref.submitSignIn() : null,
     ).withPaddingBottom(AppSpacing.xl);
   }
 }
@@ -132,12 +141,12 @@ final class _SignInSubmitButton extends ConsumerWidget {
 ////
 ////
 
-/// 🔁 [_WrapperForFooter] — sign up & reset password links
+/// 🔁 [_SignInPageFooterGuard] — sign up & reset password links
 /// ✅ Disabled during form submission or overlay
 //
-final class _WrapperForFooter extends ConsumerWidget {
-  ///-------------------------------------------
-  const _WrapperForFooter();
+final class _SignInPageFooterGuard extends ConsumerWidget {
+  ///----------------------------------------------
+  const _SignInPageFooterGuard();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -159,7 +168,7 @@ final class _WrapperForFooter extends ConsumerWidget {
 ////
 ////
 
-/// 🔁 [_SignInPageFooter] — sign up & reset password links
+/// 🔁 [_SignInPageFooter] — Sign up & reset password links
 /// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _SignInPageFooter extends StatelessWidget {

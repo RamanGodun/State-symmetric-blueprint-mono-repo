@@ -5,7 +5,7 @@ part of 'sign_up__page.dart';
 /// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class _SignUpHeader extends StatelessWidget {
-  ///-----------------------------------------
+  ///-------------------------------------------
   const _SignUpHeader();
 
   @override
@@ -14,7 +14,6 @@ final class _SignUpHeader extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        /// 🖼️ App logo
         Hero(
           tag: 'Logo',
           child: const FlutterLogo(
@@ -40,34 +39,24 @@ final class _SignUpHeader extends StatelessWidget {
 
 /// 🚀 [_SignUpSubmitButton] — Button for triggering sign-up logic
 /// 🧠 Rebuilds only on `isValid` or `isLoading` changes
-/// ✅ Delegates behavior to [UniversalSubmitButton]
+/// ✅ Delegates behavior to [FormSubmitButtonForBLoCApps]
 //
 final class _SignUpSubmitButton extends StatelessWidget {
-  ///-------------------------------------------
+  ///-------------------------------------------------
   const _SignUpSubmitButton();
 
   @override
   Widget build(BuildContext context) {
     //
-    return UniversalSubmitButton<
+    return FormSubmitButtonForBLoCApps<
           SignUpFormFieldCubit,
           SignUpFormState,
           SignUpCubit
         >(
           label: LocaleKeys.buttons_sign_up,
-          loadingLabel: LocaleKeys.buttons_submitting,
           isFormValid: (state) => state.isValid,
           //
-          onPressed: () {
-            context.unfocusKeyboard();
-            final current = context.read<SignUpFormFieldCubit>().state;
-            context.read<SignUpCubit>().submit(
-              name: current.name.value,
-              email: current.email.value,
-              password: current.password.value,
-            );
-          },
-          //
+          onPressed: () => context.submitSignUp(),
         )
         .withPaddingBottom(AppSpacing.l);
   }
@@ -78,7 +67,7 @@ final class _SignUpSubmitButton extends StatelessWidget {
 /// 🛡️ [_SignUpFooterGuard] — Make footer disable during form submission or active overlay
 //
 final class _SignUpFooterGuard extends StatelessWidget {
-  ///------------------------------------------------------
+  ///------------------------------------------------
   const _SignUpFooterGuard();
 
   @override
@@ -96,7 +85,7 @@ final class _SignUpFooterGuard extends StatelessWidget {
 ////
 ////
 
-/// 🔁 [_SignUpPageFooter] — sign in redirect link
+/// 🧭 [_SignUpPageFooter] —  Redirect link to [SignInPage]
 /// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class _SignUpPageFooter extends StatelessWidget {
@@ -110,11 +99,10 @@ final class _SignUpPageFooter extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        /// 🧭 Redirect to [SignUpPage]
         const TextWidget(
           LocaleKeys.buttons_redirect_to_sign_in,
           TextType.bodyLarge,
-        ).withPaddingBottom(AppSpacing.s),
+        ).withPaddingBottom(AppSpacing.xs),
         AppTextButton(
           label: LocaleKeys.pages_sign_in,
           isEnabled: isEnabled,

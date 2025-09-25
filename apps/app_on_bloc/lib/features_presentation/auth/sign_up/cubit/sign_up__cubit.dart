@@ -7,7 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// 🔁 Symmetric to Riverpod 'signUpProvider' (Initial → Loading → Success/Error).
 //
 final class SignUpCubit extends Cubit<ButtonSubmissionState> {
-  ///------------------------------------------------
+  ///-----------------------------------------------------
+  /// Creates a cubit bound to the domain [SignUpCubit].
   SignUpCubit(this._signUpUseCase)
     : super(const ButtonSubmissionInitialState());
   //

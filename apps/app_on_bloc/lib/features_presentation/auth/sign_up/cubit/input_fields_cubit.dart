@@ -1,5 +1,3 @@
-//
-// ignore_for_file: public_member_api_docs
 import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,6 +11,8 @@ final class SignUpFormFieldCubit extends Cubit<SignUpFormState> {
   //
   // For anti input-spam / micro debouncing of validation (smooth UX, fewer rebuilds).
   final _debouncer = Debouncer(AppDurations.ms100);
+
+  ////
 
   /// 👤 Handles name input with validation, trimming and debounce
   void onNameChanged(String value) {
@@ -49,6 +49,8 @@ final class SignUpFormFieldCubit extends Cubit<SignUpFormState> {
       revalidate: false,
     ),
   );
+
+  ////
 
   /// ♻️ Full state reset (bump epoch to force field rebuilds)
   void resetState() => emit(SignUpFormState(epoch: state.epoch + 1));

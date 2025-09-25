@@ -1,3 +1,5 @@
+import 'package:app_on_riverpod/features_presentation/auth/sign_in/sign_in__page.dart'
+    show SignInPage;
 import 'package:app_on_riverpod/features_presentation/auth/sign_up/providers/input_form_fields_provider.dart';
 import 'package:app_on_riverpod/features_presentation/auth/sign_up/providers/sign_up__provider.dart';
 import 'package:core/core.dart';
@@ -18,31 +20,33 @@ final class SignUpPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    /// 🛡️ Riverpod-side effects listener (symmetry with BLoC SubmissionSideEffects)
+    /// 🦻 Riverpod-side effects listener (symmetry with BLoC 'SubmissionSideEffects')
+    /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
     ref.listenSubmissionSideEffects(
       signUpProvider,
       context,
+      // ✅ Success → snackbar + go [VerifyEmailPage]
       onSuccess: (ctx, _) =>
           ctx.showSnackbar(message: LocaleKeys.sign_up_already_have_account),
-      // onResetForm: (ctx) => ref.read(signUpFormProvider.notifier).resetState(),
+      // 🔁 Retry with current form state
       onRetry: (ref) => ref.submitSignUp(),
     );
 
     /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
-    return const _SignUpView();
+    return const _SignUpScreen();
   }
 }
 
 ////
 ////
 
-/// 🔐 [_SignUpView] — Main UI layout for the sign-up form
-///    Uses HookWidget for managing focus nodes & rebuild optimization
+/// 🔐 [_SignUpScreen] — Main UI layout for the sign-up form
+/// ✅ Uses HookWidget for managing focus nodes & rebuild optimization
 /// ✅ Same widget used in BLoC app for perfect parity
 //
-final class _SignUpView extends HookWidget {
-  ///------------------------------------
-  const _SignUpView();
+final class _SignUpScreen extends HookWidget {
+  ///--------------------------------------
+  const _SignUpScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +88,7 @@ final class _SignUpView extends HookWidget {
                         const _SignUpSubmitButton(),
 
                         /// 🔁 Links to redirect to sign-in screen
-                        const _WrapperForFooter(),
+                        const _SignUpFooterGuard(),
                       ],
                     ).centered().withPaddingHorizontal(AppSpacing.xxxm),
                     //
@@ -105,12 +109,12 @@ final class _SignUpView extends HookWidget {
 /// 📩 Handles form validation and submission to [signUpProvider].
 //
 extension SignUpRefX on WidgetRef {
-  ///-------------------------------
+  ///---------------------------
   //
   /// 📩 Triggers sign-up logic based on current form state
   void submitSignUp() {
-    final form = read(signUpFormProvider);
     context.unfocusKeyboard();
+    final form = read(signUpFormProvider);
     read(signUpProvider.notifier).submit(
       name: form.name.value,
       email: form.email.value,

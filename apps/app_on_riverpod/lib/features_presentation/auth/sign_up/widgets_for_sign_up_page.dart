@@ -5,7 +5,7 @@ part of 'sign_up__page.dart';
 /// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _SignUpHeader extends StatelessWidget {
-  ///------------------------------------------
+  ///-------------------------------------------
   const _SignUpHeader();
 
   @override
@@ -60,12 +60,12 @@ final class _SignUpSubmitButton extends ConsumerWidget {
 ////
 ////
 
-/// 🔁 [_WrapperForFooter] — sign in redirect link
+/// 🔁 [_SignUpFooterGuard] — sign in redirect link
 /// ✅ Disabled during form submission or overlay
 //
-final class _WrapperForFooter extends ConsumerWidget {
-  ///-------------------------------------------
-  const _WrapperForFooter();
+final class _SignUpFooterGuard extends ConsumerWidget {
+  ///----------------------------------------------
+  const _SignUpFooterGuard();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -87,11 +87,11 @@ final class _WrapperForFooter extends ConsumerWidget {
 ////
 ////
 
-/// 🔁 [_SignUpPageFooter] — sign in redirect link
+/// 🧭 [_SignUpPageFooter] —  Redirect link to [SignInPage]
 /// ✅ Same widget used in BLoC app for perfect parity
 //
 final class _SignUpPageFooter extends StatelessWidget {
-  ///-------------------------------------------
+  ///-----------------------------------------------
   const _SignUpPageFooter({required this.isEnabled});
   //
   final bool isEnabled;
@@ -102,7 +102,6 @@ final class _SignUpPageFooter extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        /// 🧭 Redirect to [SignUpPage]
         const TextWidget(
           LocaleKeys.buttons_redirect_to_sign_in,
           TextType.bodyLarge,

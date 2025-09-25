@@ -16,13 +16,14 @@ final class ChangePasswordCubit extends Cubit<ButtonSubmissionState> {
   //
   final PasswordRelatedUseCases _useCases;
   final SignOutUseCase _signOutUseCase;
-  // For anti double-tap protection for the submit action.
+  //
+  /// For anti double-tap protection for the submit action.
   final _submitDebouncer = Debouncer(AppDurations.ms600);
 
   ////
 
   /// 🚀 Triggers password update with the provided `newPassword`.
-  ///    Delegates domain logic to [_useCases] and emits ButtonSubmission states.
+  /// ✅ Delegates domain logic to [_useCases] and emits ButtonSubmission states.
   Future<void> submit(String newPassword) async {
     if (state is ButtonSubmissionLoadingState) return;
     //

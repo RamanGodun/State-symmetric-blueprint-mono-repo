@@ -7,12 +7,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// 🔁 Symmetric to Riverpod 'resetPasswordProvider' (Initial → Loading → Success/Error).
 //
 final class ResetPasswordCubit extends Cubit<ButtonSubmissionState> {
-  ///-------------------------------------------------------------
+  ///------------------------------------------------------------
+  /// Creates a cubit bound to the domain [PasswordRelatedUseCases].
   ResetPasswordCubit(this._useCases)
     : super(const ButtonSubmissionInitialState());
   //
   final PasswordRelatedUseCases _useCases;
-  // For anti double-tap protection on submit action.
+  //
+  /// For anti double-tap protection on submit action.
   final _submitDebouncer = Debouncer(AppDurations.ms600);
 
   ////

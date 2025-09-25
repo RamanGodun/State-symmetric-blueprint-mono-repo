@@ -10,11 +10,11 @@ part 'reset_password__provider.g.dart';
 /// 🧰 Uses shared [ButtonSubmissionState].
 /// 🔁 Symmetric to BLoC 'ResetPasswordCubit' (Initial → Loading → Success/Error).
 //
-@Riverpod(keepAlive: false)
+@riverpod
 final class ResetPassword extends _$ResetPassword {
   ///-------------------------------------------
   //
-  // For anti double-tap protection on submit action.
+  /// For anti double-tap protection on submit action.
   final _submitDebouncer = Debouncer(AppDurations.ms600);
 
   /// 🧱 Initial state (idle)

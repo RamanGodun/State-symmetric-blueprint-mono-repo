@@ -1,3 +1,5 @@
+import 'package:app_on_bloc/features_presentation/auth/sign_in/sign_in__page.dart'
+    show SignInPage;
 import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/input_fields_cubit.dart';
 import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/sign_up__cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';
@@ -7,13 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' show HookWidget;
 
-part 'sign_up_page_input_fields.dart';
+part 'sign_up_input_fields.dart';
 part 'widgets_for_sign_up_page.dart';
 
 /// 🧾🔐 [SignUpPage] — Entry point for the sign-up feature
 //
 final class SignUpPage extends StatelessWidget {
-  ///-----------------------------------------
+  ///----------------------------------------
   const SignUpPage({super.key});
 
   @override
@@ -28,15 +30,17 @@ final class SignUpPage extends StatelessWidget {
         ),
       ],
 
-      /// 🛡️ Wrap with Bloc side-effect listeners (with optional "retry" logic)
-      /// 🧠 OverlayDispatcher resolves conflicts/priority internally
+      /// 🦻 Bloc side-effect listener (symmetry with Riverpod 'ref.listenSubmissionSideEffects')
+      /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
       child: SubmissionSideEffects<SignUpCubit>(
+        /// ✅ Success → snackbar + go [VerifyEmailPage]
         onSuccess: (ctx, _) =>
             ctx.showSnackbar(message: LocaleKeys.sign_up_already_have_account),
-        onResetForm: (ctx) => ctx.read<SignUpFormFieldCubit>().resetState(),
+        // 🔁 Retry with current form state
+        onRetry: (ctx) => ctx.submitSignUp(),
 
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-        child: const _SignUpView(),
+        child: const _SignUpScreen(),
       ),
     );
   }
@@ -45,13 +49,13 @@ final class SignUpPage extends StatelessWidget {
 ////
 ////
 
-/// 🔐 [_SignUpView] — Main UI layout for the sign-up form
-///    Uses HookWidget for managing focus nodes & rebuild optimization
+/// 🔐 [_SignUpScreen] — Main UI layout for the sign-up form
+/// ✅ Uses HookWidget for managing focus nodes & rebuild optimization
 /// ✅ Same widget used in Riverpod app for perfect parity
 //
-final class _SignUpView extends HookWidget {
-  ///------------------------------------
-  const _SignUpView();
+final class _SignUpScreen extends HookWidget {
+  ///--------------------------------------
+  const _SignUpScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +96,7 @@ final class _SignUpView extends HookWidget {
                         /// 🚀 Primary submit button
                         const _SignUpSubmitButton(),
 
-                        /// 🔁 Links to redirect to sign-up or reset-password screen
+                        /// 🔁 Links to redirect to sign-in screen
                         const _SignUpFooterGuard(),
                       ],
                     ).centered().withPaddingHorizontal(AppSpacing.xxxm),
@@ -104,6 +108,26 @@ final class _SignUpView extends HookWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+////
+////
+
+/// 🧩 [SignUpContextX] — Triggers sign-up using current form state (reads form cubit).
+/// 🧼 UX: unfocus keyboard before submit to avoid field glitches on navigation
+//
+extension SignUpContextX on BuildContext {
+  ///----------------------------------
+  /// 🚀 Perform submit, using current form state
+  void submitSignUp() {
+    unfocusKeyboard();
+    final currentForm = read<SignUpFormFieldCubit>().state;
+    read<SignUpCubit>().submit(
+      name: currentForm.name.value,
+      email: currentForm.email.value,
+      password: currentForm.password.value,
     );
   }
 }

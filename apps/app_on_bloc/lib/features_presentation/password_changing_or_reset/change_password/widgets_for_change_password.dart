@@ -1,4 +1,4 @@
-part of 'change_password__page.dart';
+part of 'change_password_page.dart';
 
 /// ℹ️ Info section for [ChangePasswordPage]
 /// ✅ Same widget used in Riverpod app for perfect parity
@@ -47,10 +47,11 @@ final class _ChangePasswordInfo extends StatelessWidget {
 ////
 ////
 
-/// 🧾 [_PasswordInputField] — input for the new password
+/// 🧾 [_PasswordInputField] — Password input field with localized validation
+/// ✅ Rebuilds only when password error or visibility state changes
 //
 final class _PasswordInputField extends StatelessWidget {
-  ///-------------------------------------------
+  ///-------------------------------------------------
   const _PasswordInputField(this.focusNodes);
   //
   final ({FocusNode password, FocusNode confirmPassword}) focusNodes;
@@ -76,6 +77,7 @@ final class _PasswordInputField extends StatelessWidget {
         final formCubit = context.read<ChangePasswordFormFieldsCubit>();
 
         return InputFieldFactory.create(
+          fieldKeyOverride: ValueKey('password_$epoch'),
           type: InputFieldType.password,
           focusNode: focusNodes.password,
           errorText: errorText,
@@ -86,11 +88,8 @@ final class _PasswordInputField extends StatelessWidget {
             isObscure: isObscure,
             onPressed: formCubit.togglePasswordVisibility,
           ),
-          //
           onChanged: formCubit.onPasswordChanged,
-          onEditingComplete: context.focusNext(focusNodes.confirmPassword),
-          fieldKeyOverride: ValueKey('password_$epoch'),
-          //
+          onSubmitted: goNext(focusNodes.confirmPassword),
         ).withPaddingBottom(AppSpacing.m);
       },
     );
@@ -100,8 +99,9 @@ final class _PasswordInputField extends StatelessWidget {
 ////
 ////
 
-/// 🧾 [_ConfirmPasswordInputField] — confirmation input
-//w
+/// 🧾 [_ConfirmPasswordInputField] — Confirm password input field with localized validation
+/// ✅ Rebuilds only when 'confirm password' error or visibility state changes
+//
 final class _ConfirmPasswordInputField extends StatelessWidget {
   ///---------------------------------------------------
   const _ConfirmPasswordInputField(this.focusNodes);
@@ -127,8 +127,10 @@ final class _ConfirmPasswordInputField extends StatelessWidget {
         final (field, epoch) = pair;
         final (:errorText, :isObscure) = field;
         final formCubit = context.read<ChangePasswordFormFieldsCubit>();
+        final currentState = formCubit.state;
 
         return InputFieldFactory.create(
+          fieldKeyOverride: ValueKey('confirm_$epoch'),
           type: InputFieldType.confirmPassword,
           focusNode: focusNodes.confirmPassword,
           errorText: errorText,
@@ -139,18 +141,10 @@ final class _ConfirmPasswordInputField extends StatelessWidget {
             isObscure: isObscure,
             onPressed: formCubit.toggleConfirmPasswordVisibility,
           ),
-          //
           onChanged: formCubit.onConfirmPasswordChanged,
-          onEditingComplete: () {
-            final currentState = formCubit.state;
-            if (currentState.isValid) {
-              context.read<ChangePasswordCubit>().submit(
-                currentState.password.value,
-              );
-            }
-          },
-          fieldKeyOverride: ValueKey('confirm_$epoch'),
-          //
+          onSubmitted: currentState.isValid
+              ? () => context.submitChangePassword()
+              : null,
         ).withPaddingBottom(AppSpacing.xxxl);
       },
     );
@@ -162,7 +156,7 @@ final class _ConfirmPasswordInputField extends StatelessWidget {
 
 /// 🔐 [_ChangePasswordSubmitButton] — dispatches the password change request
 /// 🧠 Rebuilds only on `isValid` or `isLoading` changes
-/// ✅ Delegates behavior to [UniversalSubmitButton]
+/// ✅ Delegates behavior to [FormSubmitButtonForBLoCApps]
 //
 final class _ChangePasswordSubmitButton extends StatelessWidget {
   ///--------------------------------------------------------
@@ -171,25 +165,14 @@ final class _ChangePasswordSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return UniversalSubmitButton<
+    return FormSubmitButtonForBLoCApps<
           ChangePasswordFormFieldsCubit,
           ChangePasswordFormState,
           ChangePasswordCubit
         >(
           label: LocaleKeys.change_password_title,
-          loadingLabel: LocaleKeys.buttons_submitting,
           isFormValid: (state) => state.isValid,
-          //
-          onPressed: () {
-            context.unfocusKeyboard();
-            final currentState = context
-                .read<ChangePasswordFormFieldsCubit>()
-                .state;
-            context.read<ChangePasswordCubit>().submit(
-              currentState.password.value,
-            );
-          },
-          //
+          onPressed: () => context.submitChangePassword(),
         )
         .withPaddingBottom(AppSpacing.l);
   }

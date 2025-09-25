@@ -1,11 +1,11 @@
 part of 'profile_page.dart';
 
-/// [_ProfileAppBar] — Top bar with profile title, language and sign-out actions.
+/// 👤 [_ProfileAppBar] — Top bar with profile title, language and sign-out actions.
 /// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class _ProfileAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  ///----------------------------
+  ///---------------------------------------------------------------------------
   const _ProfileAppBar();
 
   @override
@@ -13,6 +13,7 @@ final class _ProfileAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    //
     return const CustomAppBar(
       title: LocaleKeys.pages_profile,
       actionWidgets: [LanguageToggleButton(), SignOutIconButton()],
@@ -27,11 +28,10 @@ final class _ProfileAppBar extends StatelessWidget
 /// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class _UserProfileCard extends StatelessWidget {
-  ///-----------------------------------------------
+  ///----------------------------------------------
   const _UserProfileCard({required this.user});
   //
   final UserEntity user;
-  //
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +64,7 @@ final class _UserProfileCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    //
                     /// 👤 Name
                     KeyValueTextWidget(
                       labelKey: LocaleKeys.profile_name,
@@ -103,10 +104,10 @@ final class _UserProfileCard extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.l),
 
-                    ///
+                    /// 🎛 Theme & appearance
                     const _ThemeSection(),
-                    const SizedBox(height: AppSpacing.xl),
 
+                    /// 🚀 Redirect button to [ChangePasswordPage]
                     const _ChangePasswordButton(),
                     //
                   ],
@@ -121,17 +122,18 @@ final class _UserProfileCard extends StatelessWidget {
 }
 
 ////
-
 ////
 
 /// 🎨 [_ThemeSection] — UI section for selecting app theme and toggling appearance.
 /// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class _ThemeSection extends StatelessWidget {
+  ///-------------------------------------------
   const _ThemeSection();
 
   @override
   Widget build(BuildContext context) {
+    //
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -149,22 +151,23 @@ final class _ThemeSection extends StatelessWidget {
           ],
         ),
       ],
-    );
+    ).withPaddingBottom(AppSpacing.l);
   }
 }
 
 ////
-
 ////
 
 /// 🔒 [_ChangePasswordButton] — Navigates user to Change Password screen.
 /// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class _ChangePasswordButton extends StatelessWidget {
+  ///---------------------------------------------------
   const _ChangePasswordButton();
 
   @override
   Widget build(BuildContext context) {
+    //
     return CustomFilledButton(
       onPressed: () => context.goTo(RoutesNames.changePassword),
       label: LocaleKeys.change_password_title,

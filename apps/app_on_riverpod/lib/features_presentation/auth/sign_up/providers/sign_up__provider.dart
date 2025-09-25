@@ -11,7 +11,7 @@ part 'sign_up__provider.g.dart';
 /// 🧰 Uses shared [ButtonSubmissionState].
 /// 🔁 Symmetric to BLoC 'SignUpCubit' (Initial → Loading → Success/Error).
 //
-@Riverpod(keepAlive: false)
+@riverpod
 final class SignUp extends _$SignUp {
   ///-----------------------------
   //

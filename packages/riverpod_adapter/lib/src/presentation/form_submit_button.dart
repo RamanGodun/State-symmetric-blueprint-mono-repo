@@ -20,11 +20,15 @@ final class FormSubmitButtonForRiverpodApps extends ConsumerWidget {
     required this.onPressed,
     required this.isValidProvider,
     required this.isLoadingProvider,
+    this.loadingLabel,
     super.key,
   });
 
   /// Button label (usually localized)
   final String label;
+
+  /// 🔄 Label text shown while submitting
+  final String? loadingLabel;
 
   /// Triggered only when button is enabled
   final VoidCallback onPressed;
@@ -43,12 +47,16 @@ final class FormSubmitButtonForRiverpodApps extends ConsumerWidget {
 
     // 🧱 Overlay guard to avoid double submissions
     final isOverlayActive = ref.isOverlayActive;
-
     final isEnabled = isValid && !isLoading && !isOverlayActive;
 
+    final currentLabel = isLoading
+        ? (loadingLabel ?? LocaleKeys.buttons_submitting)
+        : label;
+
     return CustomFilledButton(
-      label: isLoading ? LocaleKeys.buttons_submitting : label,
+      label: currentLabel,
       isEnabled: isEnabled,
+      isValidated: isValid,
       isLoading: isLoading,
       onPressed: isEnabled ? onPressed : null,
     );

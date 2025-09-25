@@ -9,14 +9,16 @@ part 'input_form_fields_provider.g.dart';
 //
 @riverpod
 final class SignUpForm extends _$SignUpForm {
-  ///------------------------------------
+  ///-------------------------------------
   //
-  // For anti input-spam / micro debouncing of validation (smooth UX, fewer rebuilds).
+  /// For anti input-spam / micro debouncing of validation (smooth UX, fewer rebuilds).
   final _debouncer = Debouncer(AppDurations.ms100);
 
   /// Initializes the form state with default (pure) values.
   @override
   SignUpFormState build() => const SignUpFormState();
+
+  ////
 
   /// 👤 Handles name input with validation, trimming and debounce
   void onNameChanged(String value) {
@@ -49,6 +51,8 @@ final class SignUpForm extends _$SignUpForm {
     isConfirmPasswordObscure: !state.isConfirmPasswordObscure,
     revalidate: false,
   );
+
+  ////
 
   /// ♻️ Full state reset (bump epoch to force field rebuilds)
   void resetState() => state = SignUpFormState(epoch: state.epoch + 1);

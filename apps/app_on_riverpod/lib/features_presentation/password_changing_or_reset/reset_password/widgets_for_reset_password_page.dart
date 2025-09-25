@@ -35,7 +35,7 @@ final class _ResetPasswordHeader extends StatelessWidget {
 /// ✅ Rebuilds only when `email.uiError` changes
 //
 final class _ResetPasswordEmailInputField extends ConsumerWidget {
-  ///--------------------------------------------------------------
+  ///----------------------------------------------------------
   const _ResetPasswordEmailInputField(this.focusNodes);
   //
   final ({FocusNode email}) focusNodes;
@@ -43,19 +43,20 @@ final class _ResetPasswordEmailInputField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-
-    final emailError = ref.watch(
-      resetPasswordFormProvider.select((f) => f.email.uiErrorKey),
-    );
-    final isValid = ref.watch(
-      resetPasswordFormProvider.select((f) => f.isValid),
+    final (emailError, isValid, epoch) = ref.watch(
+      resetPasswordFormProvider.select(
+        (state) => (state.email.uiErrorKey, state.isValid, state.epoch),
+      ),
     );
     final notifier = ref.read(resetPasswordFormProvider.notifier);
 
     return InputFieldFactory.create(
+      fieldKeyOverride: ValueKey('email_$epoch'),
       type: InputFieldType.email,
       focusNode: focusNodes.email,
       errorText: emailError,
+      textInputAction: TextInputAction.done,
+      autofillHints: const [AutofillHints.username, AutofillHints.email],
       onChanged: notifier.onEmailChanged,
       onSubmitted: isValid ? () => ref.submitResetPassword() : null,
     ).withPaddingBottom(AppSpacing.huge);
@@ -66,6 +67,8 @@ final class _ResetPasswordEmailInputField extends ConsumerWidget {
 ////
 
 /// 🔘 [_ResetPasswordSubmitButton] — Confirms reset action button
+/// 🧠 Rebuilds only on `isValid` or `isLoading` changes
+/// ✅ Delegates behavior to [FormSubmitButtonForRiverpodApps]
 //
 final class _ResetPasswordSubmitButton extends ConsumerWidget {
   ///-------------------------------------------------------
@@ -90,12 +93,11 @@ final class _ResetPasswordSubmitButton extends ConsumerWidget {
 ////
 ////
 
-/// 🔁 [_WrapperForFooter] — sign in redirect link
-/// ✅ Disabled during form submission or overlay
+/// 🛡️ [_ResetPasswordFooterGuard] — Make footer disable during form submission or active overlay
 //
-final class _WrapperForFooter extends ConsumerWidget {
-  ///-------------------------------------------
-  const _WrapperForFooter();
+final class _ResetPasswordFooterGuard extends ConsumerWidget {
+  ///----------------------------------------------
+  const _ResetPasswordFooterGuard();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -110,19 +112,19 @@ final class _WrapperForFooter extends ConsumerWidget {
     final isEnabled = !isLoading && !isOverlayActive;
 
     /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
-    return _ResetPasswordFooter(isEnabled: isEnabled);
+    return _ResetPasswordPageFooter(isEnabled: isEnabled);
   }
 }
 
 ////
 ////
 
-/// 🔁 [_ResetPasswordFooter] — sign in redirect link
+/// 🔁 [_ResetPasswordPageFooter] — sign in redirect link
 /// ✅ Same widget used in BLoC app for perfect parity
 //
-final class _ResetPasswordFooter extends StatelessWidget {
+final class _ResetPasswordPageFooter extends StatelessWidget {
   ///--------------------------------------------------
-  const _ResetPasswordFooter({required this.isEnabled});
+  const _ResetPasswordPageFooter({required this.isEnabled});
   //
   final bool isEnabled;
 
@@ -141,7 +143,7 @@ final class _ResetPasswordFooter extends StatelessWidget {
         AppTextButton(
           label: LocaleKeys.buttons_sign_in,
           isEnabled: isEnabled,
-          onPressed: () => context.goTo(RoutesNames.signIn),
+          onPressed: () => context.popView(),
         ).withPaddingBottom(AppSpacing.xxxm),
       ],
     );

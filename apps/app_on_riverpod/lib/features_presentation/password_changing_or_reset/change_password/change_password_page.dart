@@ -10,50 +10,50 @@ import 'package:riverpod_adapter/riverpod_adapter.dart';
 
 part 'widgets_for_change_password.dart';
 
-/// 🔐 [ChangePasswordPage] — Entry point for the sign-up feature,
-/// 🧾 that allows user to request password change
+/// 🔐 [ChangePasswordPage] — Entry point for the change-password feature,
 //
 final class ChangePasswordPage extends ConsumerWidget {
-  ///-------------------------------------------
+  ///-----------------------------------------------
   const ChangePasswordPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    /// 🔄 Riverpod side-effects listener (symmetry with BLoC SubmissionSideEffects)
+    /// 🦻 Riverpod-side effects listener (symmetry with BLoC 'SubmissionSideEffects')
+    /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
     ref.listenSubmissionSideEffects(
-      changePasswordProvider, // <-- ButtonSubmissionState
+      changePasswordProvider,
       context,
       // ✅ Success → snackbar + go home
       onSuccess: (ctx, _) => ctx
         ..showSnackbar(message: LocaleKeys.reauth_password_updated.tr())
         ..goIfMounted(RoutesNames.home),
       // 🔄 Requires reauth → dialog with confirm → signOut
-      onRequiresReauth: (ctx, ui, _) => ctx.showError(
-        ui,
-        onConfirm: ref.read(changePasswordProvider.notifier).confirmReauth,
-      ),
+      onRequiresReauth: (ctx, ui, _) =>
+          ctx.showError(ui, onConfirm: ref.onReAuthConfirm),
+      // 🔁 Retry with current form state
       onRetry: (ref) => ref.submitChangePassword(),
     );
 
     /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
-    return const _ChangePasswordView();
+    return const _ChangePasswordScreen();
   }
 }
 
 ////
 ////
 
-/// 🔐 [_ChangePasswordView] — Screen that allows the user to update their password.
+/// 🔐 [_ChangePasswordScreen] — Screen that allows the user to update their password.
 /// ✅ Same widget used in BLoC app for perfect parity
 //
-final class _ChangePasswordView extends HookWidget {
-  ///--------------------------------------------
-  const _ChangePasswordView();
+final class _ChangePasswordScreen extends HookWidget {
+  ///----------------------------------------------
+  const _ChangePasswordScreen();
 
   @override
   Widget build(BuildContext context) {
     //
+    /// 📌 Shared focus nodes for form fields
     final focusNodes = useChangePasswordFocusNodes();
 
     return Scaffold(
@@ -99,17 +99,20 @@ final class _ChangePasswordView extends HookWidget {
 ////
 ////
 
-/// 🛡️📤 Submits the password change request (when the form is valid)
+/// 🧩 [PasswordActionsRefX] — UI-side actions for ChangePassword flow (Riverpod)
 //
 extension PasswordActionsRefX on WidgetRef {
-  ///------------------------------------
+  /// 📤 Submit password change using current form values (and hide keyboard)
   Future<void> submitChangePassword() async {
     final form = read(changePasswordFormProvider);
-    // if (!form.isValid) return;
-    //
     context.unfocusKeyboard();
     await read(
       changePasswordProvider.notifier,
     ).changePassword(form.password.value);
   }
+
+  /// ✅ Confirm the re-authentication requirement (delegated to notifier)
+  void onReAuthConfirm() =>
+      read(changePasswordProvider.notifier).confirmReauth();
+  //
 }

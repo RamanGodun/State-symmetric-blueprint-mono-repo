@@ -12,7 +12,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 part 'widgets_for_sign_in_page.dart';
 
 /// 🔐 [SignInPage] — Entry point for the sign-in feature
-/// ✅ Provides scoped cubit with injected services
 //
 final class SignInPage extends StatelessWidget {
   ///----------------------------------------
@@ -21,22 +20,24 @@ final class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    /// 🧩 Provide screen-scoped cubits (disposed on pop)
+    /// ✅ Provides screen-scoped cubits with injected services (disposed on pop)
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => SignInCubit(di<SignInUseCase>())),
         BlocProvider(create: (_) => SignInFormCubit()),
       ],
 
-      /// 🛡️ Wrap with side-effect Bloc listeners
-      /// 🧠 OverlayDispatcher resolves conflicts/priority internally
+      /// 🦻 Bloc side-effect listener (symmetry with Riverpod 'ref.listenSubmissionSideEffects')
+      /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
       child: SubmissionSideEffects<SignInCubit>(
+        // ✅ Success → snackbar + go home
         onSuccess: (ctx, _) =>
             ctx.showSnackbar(message: LocaleKeys.sign_in_forgot_password),
+        // 🔁 Retry with current form state
         onRetry: (ctx) => ctx.submitSignIn(),
 
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-        child: const _SignInPageView(),
+        child: const _SignInScreen(),
       ),
     );
   }
@@ -45,13 +46,13 @@ final class SignInPage extends StatelessWidget {
 ////
 ////
 
-/// 🔐 [_SignInPageView] — Main UI layout for the sign-in form
-///    Uses HookWidget for managing focus nodes & rebuild optimization
+/// 🔐 [_SignInScreen] — Main UI layout for the sign-in form
+/// ✅ Uses HookWidget for managing focus nodes & rebuild optimization
 /// ✅ Same widget used in Riverpod app for perfect parity
 //
-final class _SignInPageView extends HookWidget {
-  ///----------------------------------------------
-  const _SignInPageView();
+final class _SignInScreen extends HookWidget {
+  ///--------------------------------------
+  const _SignInScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -105,11 +106,14 @@ final class _SignInPageView extends HookWidget {
 ////
 ////
 
-/// 🧩 [SignInContextX] — extension for SignIn submit action
+/// 🧩 [SignInContextX] — Triggers sign-in using current form state (reads form cubit).
+/// 🧼 UX: unfocus keyboard before submit to avoid field glitches on navigation
 //
 extension SignInContextX on BuildContext {
+  ///----------------------------------
   /// 🚀 Perform submit, using current form state
   void submitSignIn() {
+    unfocusKeyboard();
     final form = read<SignInFormCubit>().state;
     read<SignInCubit>().submit(
       email: form.email.value,

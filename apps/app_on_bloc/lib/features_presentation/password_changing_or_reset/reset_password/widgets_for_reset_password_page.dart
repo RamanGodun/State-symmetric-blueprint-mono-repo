@@ -34,38 +34,39 @@ final class _ResetPasswordHeader extends StatelessWidget {
 /// 🧩 [_ResetPasswordEmailInputField] — User email input field with localized validation
 /// ✅ Rebuilds only when `email.uiError` changes
 //
-final class _ResetPasswordEmailInputField extends HookWidget {
+final class _ResetPasswordEmailInputField extends StatelessWidget {
   ///------------------------------------------------------
-  const _ResetPasswordEmailInputField();
+  const _ResetPasswordEmailInputField(this.focusNodes);
+  //
+  final ({FocusNode email}) focusNodes;
 
   @override
   Widget build(BuildContext context) {
     //
-    final focusNode = useResetPasswordFocusNodes().email;
-    //
     return BlocSelector<
-      ResetPasswordFormCubit,
+      ResetPasswordFormFieldsCubit,
       ResetPasswordFormState,
       (String?, int)
     >(
       selector: (state) => (state.email.uiErrorKey, state.epoch),
       builder: (context, tuple) {
         final (errorText, epoch) = tuple;
+        final isValid = context
+            .read<ResetPasswordFormFieldsCubit>()
+            .state
+            .isValid;
 
         return InputFieldFactory.create(
+          fieldKeyOverride: ValueKey('email_$epoch'),
           type: InputFieldType.email,
-          focusNode: focusNode,
+          focusNode: focusNodes.email,
           errorText: errorText,
           textInputAction: TextInputAction.done,
           autofillHints: const [AutofillHints.username, AutofillHints.email],
-          onChanged: context.read<ResetPasswordFormCubit>().onEmailChanged,
-          onEditingComplete: () {
-            final current = context.read<ResetPasswordFormCubit>().state;
-            if (current.isValid) {
-              context.read<ResetPasswordCubit>().submit(current.email.value);
-            }
-          },
-          fieldKeyOverride: ValueKey('email_$epoch'),
+          onChanged: context
+              .read<ResetPasswordFormFieldsCubit>()
+              .onEmailChanged,
+          onSubmitted: isValid ? () => context.submitResetPassword() : null,
         ).withPaddingBottom(AppSpacing.huge);
       },
     );
@@ -77,7 +78,7 @@ final class _ResetPasswordEmailInputField extends HookWidget {
 
 /// 🔘 [_ResetPasswordSubmitButton] — Confirms reset action button
 /// 🧠 Rebuilds only on `isValid` or `isLoading` changes
-/// ✅ Delegates behavior to [UniversalSubmitButton]
+/// ✅ Delegates behavior to [FormSubmitButtonForBLoCApps]
 //
 final class _ResetPasswordSubmitButton extends StatelessWidget {
   ///--------------------------------------------------------
@@ -86,22 +87,14 @@ final class _ResetPasswordSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return UniversalSubmitButton<
-          ResetPasswordFormCubit,
+    return FormSubmitButtonForBLoCApps<
+          ResetPasswordFormFieldsCubit,
           ResetPasswordFormState,
           ResetPasswordCubit
         >(
           label: LocaleKeys.buttons_reset_password,
-          loadingLabel: LocaleKeys.buttons_submitting,
           isFormValid: (state) => state.isValid,
-          //
-          onPressed: () {
-            final formState = context.read<ResetPasswordFormCubit>().state;
-            context.unfocusKeyboard().read<ResetPasswordCubit>().submit(
-              formState.email.value,
-            );
-          },
-          //
+          onPressed: () => context.submitResetPassword(),
         )
         .withPaddingBottom(AppSpacing.xl);
   }
@@ -143,19 +136,21 @@ final class _ResetPasswordPageFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
+        /// 🧭 Redirect to [SignInPage]
         const TextWidget(
           LocaleKeys.reset_password_remember,
-          TextType.titleSmall,
-        ),
+          TextType.bodyLarge,
+        ).withPaddingBottom(AppSpacing.xs),
+        //
         AppTextButton(
           label: LocaleKeys.buttons_sign_in,
           isEnabled: isEnabled,
           onPressed: () => context.popView(),
-        ),
+        ).withPaddingBottom(AppSpacing.xxxm),
       ],
-    ).withPaddingBottom(AppSpacing.xxxm);
+    );
   }
 }

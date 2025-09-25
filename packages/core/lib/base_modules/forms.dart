@@ -8,6 +8,7 @@ export '../src/base_modules/forms/input_validation/validation_enums.dart';
 export '../src/base_modules/forms/input_validation/x_on_forms_submission_status.dart';
 export '../src/base_modules/forms/utils/focus_nodes_generator.dart'
     show generateFocusNodes;
+export '../src/base_modules/forms/utils/forms_utils.dart';
 export '../src/base_modules/forms/utils/use_auth_focus_nodes.dart'
     show
         useChangePasswordFocusNodes,

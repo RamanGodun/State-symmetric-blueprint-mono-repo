@@ -12,7 +12,7 @@ part 'input_form_fields_provider.g.dart';
 final class SignInForm extends _$SignInForm {
   ///-------------------------------------
   //
-  // For anti double-tap protection for the submit action.
+  /// For anti double-tap protection for the submit action.
   final _debouncer = Debouncer(AppDurations.ms100);
 
   ////
@@ -38,6 +38,8 @@ final class SignInForm extends _$SignInForm {
       revalidate: false,
     );
   }
+
+  ////
 
   /// ♻️  Resets the form state to its initial (pure) values.
   void resetState() => state = SignInFormState(epoch: state.epoch + 1);

@@ -10,12 +10,14 @@ part 'sign_in__provider.g.dart';
 /// 🧰 Uses shared [ButtonSubmissionState].
 /// 🔁 Symmetric to BLoC 'SignInCubit' (Initial → Loading → Success/Error).
 //
-@Riverpod(keepAlive: false)
+@riverpod
 final class SignIn extends _$SignIn {
   ///-----------------------------
-  ///
-  // For anti double-tap protection for the submit action.
+  //
+  /// For anti double-tap protection for the submit action.
   final _submitDebouncer = Debouncer(AppDurations.ms600);
+
+  ////
 
   /// 🧱 Initial state (idle)
   @override
@@ -43,6 +45,8 @@ final class SignIn extends _$SignIn {
       );
     });
   }
+
+  ////
 
   /// ♻️ Reset to initial (e.g., after dialogs/navigation)
   void reset() => state = const ButtonSubmissionInitialState();

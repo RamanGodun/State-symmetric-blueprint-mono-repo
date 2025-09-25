@@ -42,7 +42,7 @@ final class _SignInHeader extends StatelessWidget {
 /// ✅ Rebuilds only when `email.uiError` changes
 //
 final class _SignInEmailInputField extends StatelessWidget {
-  ///-----------------------------------------
+  ///----------------------------------------------------
   const _SignInEmailInputField(this.focusNodes);
   //
   final ({FocusNode email, FocusNode password}) focusNodes;
@@ -54,15 +54,16 @@ final class _SignInEmailInputField extends StatelessWidget {
       selector: (state) => (state.email.uiErrorKey, state.epoch),
       builder: (context, tuple) {
         final (errorText, epoch) = tuple;
+
         return InputFieldFactory.create(
+          fieldKeyOverride: ValueKey('email_$epoch'),
           type: InputFieldType.email,
           focusNode: focusNodes.email,
           errorText: errorText,
           textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.username, AutofillHints.email],
           onChanged: context.read<SignInFormCubit>().onEmailChanged,
-          onEditingComplete: () => context.requestFocus(focusNodes.password),
-          fieldKeyOverride: ValueKey('email_$epoch'),
+          onSubmitted: goNext(focusNodes.password),
         ).withPaddingBottom(AppSpacing.xm);
       },
     );
@@ -76,7 +77,7 @@ final class _SignInEmailInputField extends StatelessWidget {
 /// ✅ Rebuilds only when password error or visibility state changes
 //
 final class _SignInPasswordInputField extends StatelessWidget {
-  ///--------------------------------------------
+  ///-------------------------------------------------------
   const _SignInPasswordInputField(this.focusNodes);
   //
   final ({FocusNode email, FocusNode password}) focusNodes;
@@ -100,8 +101,10 @@ final class _SignInPasswordInputField extends StatelessWidget {
         final (field, epoch) = pair;
         final (:errorText, :isObscure) = field;
         final formCubit = context.read<SignInFormCubit>();
+        final form = formCubit.state;
 
         return InputFieldFactory.create(
+          fieldKeyOverride: ValueKey('password_$epoch'),
           type: InputFieldType.password,
           focusNode: focusNodes.password,
           errorText: errorText,
@@ -113,16 +116,7 @@ final class _SignInPasswordInputField extends StatelessWidget {
             onPressed: formCubit.togglePasswordVisibility,
           ),
           onChanged: formCubit.onPasswordChanged,
-          onEditingComplete: () {
-            final form = formCubit.state;
-            if (form.isValid) {
-              context.read<SignInCubit>().submit(
-                email: form.email.value,
-                password: form.password.value,
-              );
-            }
-          },
-          fieldKeyOverride: ValueKey('password_$epoch'),
+          onSubmitted: form.isValid ? () => context.submitSignIn() : null,
         ).withPaddingBottom(AppSpacing.xl);
       },
     );
@@ -134,21 +128,25 @@ final class _SignInPasswordInputField extends StatelessWidget {
 
 /// 🚀 [_SignInSubmitButton] — Button for triggering sign-in logic
 /// 🧠 Rebuilds only on `isValid` or `isLoading` changes
-/// ✅ Delegates behavior to [UniversalSubmitButton]
+/// ✅ Delegates behavior to [FormSubmitButtonForBLoCApps]
 //
 final class _SignInSubmitButton extends StatelessWidget {
-  ///--------------------------------------------
+  ///-------------------------------------------------
   const _SignInSubmitButton();
 
   @override
   Widget build(BuildContext context) {
     //
-    return UniversalSubmitButton<SignInFormCubit, SignInFormState, SignInCubit>(
-      label: LocaleKeys.buttons_sign_in,
-      loadingLabel: LocaleKeys.buttons_submitting,
-      isFormValid: (state) => state.isValid,
-      onPressed: () => context.unfocusKeyboard().submitSignIn,
-    ).withPaddingBottom(AppSpacing.l);
+    return FormSubmitButtonForBLoCApps<
+          SignInFormCubit,
+          SignInFormState,
+          SignInCubit
+        >(
+          label: LocaleKeys.buttons_sign_in,
+          isFormValid: (state) => state.isValid,
+          onPressed: () => context.submitSignIn(),
+        )
+        .withPaddingBottom(AppSpacing.l);
   }
 }
 
@@ -158,7 +156,7 @@ final class _SignInSubmitButton extends StatelessWidget {
 /// 🛡️ [_SignInPageFooterGuard] — Make footer disable during form submission or active overlay
 //
 final class _SignInPageFooterGuard extends StatelessWidget {
-  ///------------------------------------------------------
+  ///----------------------------------------------------
   const _SignInPageFooterGuard();
 
   @override
@@ -176,7 +174,7 @@ final class _SignInPageFooterGuard extends StatelessWidget {
 ////
 ////
 
-/// 🔁 [_SignInPageFooter] — sign up & reset password links
+/// 🔁 [_SignInPageFooter] — Sign up & reset password links
 /// ✅ Same widget used in Riverpod app for perfect parity
 //
 final class _SignInPageFooter extends StatelessWidget {

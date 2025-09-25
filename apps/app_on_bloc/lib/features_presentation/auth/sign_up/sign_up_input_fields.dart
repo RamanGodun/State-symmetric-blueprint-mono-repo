@@ -4,7 +4,7 @@ part of 'sign_up__page.dart';
 /// ✅ Rebuilds only when `name.uiError` changes
 //
 final class _SignUpUserNameInputField extends StatelessWidget {
-  ///---------------------------------------
+  ///-------------------------------------------------------
   const _SignUpUserNameInputField(this.focusNodes);
   //
   final ({
@@ -24,14 +24,14 @@ final class _SignUpUserNameInputField extends StatelessWidget {
         final (errorText, epoch) = tuple;
         //
         return InputFieldFactory.create(
+          fieldKeyOverride: ValueKey('name_$epoch'),
           type: InputFieldType.name,
           focusNode: focusNodes.name,
           errorText: errorText,
           textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.name],
           onChanged: context.read<SignUpFormFieldCubit>().onNameChanged,
-          onSubmitted: focusNodes.email.requestFocus,
-          fieldKeyOverride: ValueKey('name_$epoch'),
+          onSubmitted: goNext(focusNodes.email),
         ).withPaddingBottom(AppSpacing.xm);
       },
     );
@@ -45,7 +45,7 @@ final class _SignUpUserNameInputField extends StatelessWidget {
 /// ✅ Rebuilds only when `email.uiError` changes
 //
 final class _SignUpEmailInputField extends StatelessWidget {
-  ///-----------------------------------------
+  ///----------------------------------------------------
   const _SignUpEmailInputField(this.focusNodes);
   //
   final ({
@@ -65,6 +65,7 @@ final class _SignUpEmailInputField extends StatelessWidget {
         final (errorText, epoch) = tuple;
         //
         return InputFieldFactory.create(
+          fieldKeyOverride: ValueKey('email_$epoch'),
           type: InputFieldType.email,
           focusNode: focusNodes.email,
           errorText: errorText,
@@ -72,8 +73,6 @@ final class _SignUpEmailInputField extends StatelessWidget {
           autofillHints: const [AutofillHints.username, AutofillHints.email],
           onChanged: context.read<SignUpFormFieldCubit>().onEmailChanged,
           onSubmitted: goNext(focusNodes.password),
-          // onEditingComplete: () => context.requestFocus(focusNodes.password),
-          fieldKeyOverride: ValueKey('email_$epoch'),
         ).withPaddingBottom(AppSpacing.xm);
       },
     );
@@ -87,7 +86,7 @@ final class _SignUpEmailInputField extends StatelessWidget {
 /// ✅ Rebuilds only when password error or visibility state changes
 //
 final class _SignUpPasswordInputField extends StatelessWidget {
-  ///--------------------------------------------
+  ///-------------------------------------------------------
   const _SignUpPasswordInputField(this.focusNodes);
   //
   final ({
@@ -119,11 +118,12 @@ final class _SignUpPasswordInputField extends StatelessWidget {
         final formCubit = context.read<SignUpFormFieldCubit>();
         //
         return InputFieldFactory.create(
+          fieldKeyOverride: ValueKey('password_$epoch'),
           type: InputFieldType.password,
           focusNode: focusNodes.password,
           errorText: errorText,
           textInputAction: TextInputAction.next,
-          // autofillHints: const [AutofillHints.password],
+          autofillHints: const [AutofillHints.password],
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
@@ -131,8 +131,6 @@ final class _SignUpPasswordInputField extends StatelessWidget {
           ),
           onChanged: formCubit.onPasswordChanged,
           onSubmitted: goNext(focusNodes.confirmPassword),
-          // onEditingComplete: () => context.requestFocus(focusNodes.confirmPassword),
-          fieldKeyOverride: ValueKey('password_$epoch'),
         ).withPaddingBottom(AppSpacing.xm);
       },
     );
@@ -146,7 +144,7 @@ final class _SignUpPasswordInputField extends StatelessWidget {
 /// ✅ Rebuilds only when 'confirm password' error or visibility state changes
 //
 final class _SignUpConfirmPasswordInputField extends StatelessWidget {
-  ///---------------------------------------------------
+  ///--------------------------------------------------------------
   const _SignUpConfirmPasswordInputField(this.focusNodes);
   //
   final ({
@@ -176,32 +174,23 @@ final class _SignUpConfirmPasswordInputField extends StatelessWidget {
         final (field, epoch) = pair;
         final (:errorText, :isObscure) = field;
         final formCubit = context.read<SignUpFormFieldCubit>();
+        final formState = formCubit.state;
 
         //
         return InputFieldFactory.create(
+          fieldKeyOverride: ValueKey('confirm_$epoch'),
           type: InputFieldType.confirmPassword,
           focusNode: focusNodes.confirmPassword,
           errorText: errorText,
           textInputAction: TextInputAction.done,
-          // autofillHints: const [AutofillHints.password],
+          autofillHints: const [AutofillHints.password],
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
             onPressed: formCubit.toggleConfirmPasswordVisibility,
           ),
           onChanged: formCubit.onConfirmPasswordChanged,
-          onSubmitted: () {
-            final formCubitState = formCubit.state;
-            if (formCubit.state.isValid) {
-              context.read<SignUpCubit>().submit(
-                name: formCubitState.name.value,
-                email: formCubitState.email.value,
-                password: formCubitState.password.value,
-              );
-            }
-          },
-          fieldKeyOverride: ValueKey('confirm_$epoch'),
-          //
+          onSubmitted: formState.isValid ? () => context.submitSignUp() : null,
         ).withPaddingBottom(AppSpacing.xl);
       },
     );

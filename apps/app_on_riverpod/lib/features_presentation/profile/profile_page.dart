@@ -13,20 +13,19 @@ import 'package:riverpod_adapter/riverpod_adapter.dart';
 
 part 'widgets_for_profile_page.dart';
 
-/// 👤 [ProfilePage] — profile with reactive auth-driven state
-///     ✅ Centralized top-level error listeners (SignOut + Profile)
-///     ✅ State-agnostic UI via [_ProfileView] + [AsyncStateView]
-///     ✅ Riverpod flavor: `AsyncValue<T>` adapted to `AsyncStateView<T>`
+/// 👤 [ProfilePage] - Entry point for profile feature
+/// ✅ State-agnostic UI via [_ProfileScreen] + [AsyncStateView]
+/// ✅ `AsyncValue<T>` adapted to `AsyncStateView<T>`
+/// ✅  Top-level error listeners (SignOut + Profile) are centralized
 //
 final class ProfilePage extends ConsumerWidget {
   ///----------------------------------
   const ProfilePage({super.key});
-  //
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    /// 🖼️ Declarative UI bound to [profileProvider(uid)]
+    /// 👀🖼️ Declarative UI bound to [profileProvider(uid)]
     final asyncUser = ref.watch<AsyncValue<UserEntity>>(profileProvider);
 
     /// 🔌 Adapter: `AsyncValue<UserEntity>` → `AsyncStateView<UserEntity>` (for state-agnostic UI)
@@ -41,7 +40,7 @@ final class ProfilePage extends ConsumerWidget {
       ],
       //
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
-      child: _ProfileView(state: profileViewState),
+      child: _ProfileScreen(state: profileViewState),
     );
   }
 }
@@ -49,18 +48,18 @@ final class ProfilePage extends ConsumerWidget {
 ////
 ////
 
-/// 📄 [_ProfileView] — State-agnostic rendering via [AsyncStateView]
-///     ✅ Same widget used in Cubit/BLoc app for perfect parity
+/// 📄 [_ProfileScreen] — State-agnostic rendering via [AsyncStateView]
+/// ✅ Same widget used in BLoC app for perfect parity
 //
-final class _ProfileView extends StatelessWidget {
-  ///------------------------------------------
-  const _ProfileView({required this.state});
-
-  ///
+final class _ProfileScreen extends StatelessWidget {
+  ///--------------------------------------------
+  const _ProfileScreen({required this.state});
+  //
   final AsyncStateView<UserEntity> state;
 
   @override
   Widget build(BuildContext context) {
+    //
     return Scaffold(
       appBar: const _ProfileAppBar(),
       //
@@ -74,6 +73,7 @@ final class _ProfileView extends StatelessWidget {
 
         /// 🧨 Error — handled by overlay listener (silent here)
         error: (_) => const SizedBox.shrink(),
+        //
       ),
     );
   }

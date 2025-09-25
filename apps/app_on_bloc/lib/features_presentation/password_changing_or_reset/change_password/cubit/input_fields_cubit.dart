@@ -1,5 +1,3 @@
-//
-// ignore_for_file: public_member_api_docs
 import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,10 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 //
 final class ChangePasswordFormFieldsCubit
     extends Cubit<ChangePasswordFormState> {
-  ///-----------------------------------------------------------
+  ///-------------------------------------------------------------------------
   ChangePasswordFormFieldsCubit() : super(const ChangePasswordFormState());
   //
-  // For anti double-tap protection on input updates.
+  /// For anti double-tap protection on input updates.
   final _debouncer = Debouncer(AppDurations.ms100);
 
   ////

@@ -11,8 +11,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 part 'widgets_for_change_password.dart';
 
-/// 🔐 [ChangePasswordPage] — Entry point for the sign-up feature,
-/// 🧾 that allows user to request password change
+/// 🔐 [ChangePasswordPage] — Entry point for the change-password feature,
 //
 final class ChangePasswordPage extends StatelessWidget {
   ///---------------------------------------
@@ -24,9 +23,7 @@ final class ChangePasswordPage extends StatelessWidget {
     /// 🧩 Provide screen-scoped cubits (disposed on pop)
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => ChangePasswordFormFieldsCubit(),
-        ),
+        BlocProvider(create: (_) => ChangePasswordFormFieldsCubit()),
         BlocProvider(
           create: (_) => ChangePasswordCubit(
             di<PasswordRelatedUseCases>(),
@@ -35,21 +32,21 @@ final class ChangePasswordPage extends StatelessWidget {
         ),
       ],
 
-      /// 🔄 Bloc listener for one-shot error handling (with optional "retry" logic) via overlays
-      /// 🧠 OverlayDispatcher resolves conflicts/priority internally
+      /// 🦻 Bloc side-effect listener (symmetry with Riverpod 'ref.listenSubmissionSideEffects')
+      /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
       child: SubmissionSideEffects<ChangePasswordCubit>(
+        // ✅ Success → snackbar + go home
         onSuccess: (ctx, _) => ctx
           ..showSnackbar(message: LocaleKeys.reauth_password_updated.tr())
           ..goIfMounted(RoutesNames.home),
-        onRequiresReauth: (ctx, ui, _) => ctx.showError(
-          ui,
-          onConfirm: ctx.read<ChangePasswordCubit>().confirmReauth,
-        ),
-        onResetForm: (ctx) =>
-            ctx.read<ChangePasswordFormFieldsCubit>().resetState(),
+        // 🔄 Requires reauth → dialog with confirm → signOut
+        onRequiresReauth: (ctx, ui, _) =>
+            ctx.showError(ui, onConfirm: ctx.onReAuthConfirm),
+        // 🔁 Retry with current form state
+        onRetry: (ctx) => ctx.submitChangePassword(),
 
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-        child: const _ChangePasswordView(),
+        child: const _ChangePasswordScreen(),
       ),
     );
   }
@@ -58,16 +55,17 @@ final class ChangePasswordPage extends StatelessWidget {
 ////
 ////
 
-/// 🔐 [_ChangePasswordView] — Screen that allows the user to update their password.
+/// 🔐 [_ChangePasswordScreen] — Screen that allows the user to update their password.
 /// ✅ Same widget used in Riverpod app for perfect parity
 //
-final class _ChangePasswordView extends HookWidget {
-  ///-------------------------------------------
-  const _ChangePasswordView();
+final class _ChangePasswordScreen extends HookWidget {
+  ///----------------------------------------------
+  const _ChangePasswordScreen();
 
   @override
   Widget build(BuildContext context) {
     //
+    /// 📌 Shared focus nodes for form fields
     final focusNodes = useChangePasswordFocusNodes();
 
     return Scaffold(
@@ -108,4 +106,22 @@ final class _ChangePasswordView extends HookWidget {
       ),
     );
   }
+}
+
+////
+////
+
+/// 🧩 [ChangePasswordContextX] — UI-side actions for ChangePassword flow (BLoC)
+//
+extension ChangePasswordContextX on BuildContext {
+  /// 📤 Submit password change using current form values (and hide keyboard)
+  void submitChangePassword() {
+    unfocusKeyboard();
+    final currentState = read<ChangePasswordFormFieldsCubit>().state;
+    read<ChangePasswordCubit>().submit(currentState.password.value);
+  }
+
+  /// ✅ Confirm the re-authentication requirement (delegated to cubit)
+  void onReAuthConfirm() => read<ChangePasswordCubit>().confirmReauth();
+  //
 }

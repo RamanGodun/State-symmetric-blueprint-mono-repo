@@ -11,7 +11,7 @@ part 'input_fields_provider.g.dart';
 final class ResetPasswordForm extends _$ResetPasswordForm {
   ///---------------------------------------------------
   //
-  // For anti double-tap protection on input updates.
+  /// For anti double-tap protection on input updates.
   final _debouncer = Debouncer(AppDurations.ms100);
 
   /// Initializes the form state with default (pure) values.
@@ -24,6 +24,8 @@ final class ResetPasswordForm extends _$ResetPasswordForm {
   void onEmailChanged(String value) {
     _debouncer.run(() => state = state.updateState(email: value));
   }
+
+  ////
 
   /// ♻️ Resets the form to its initial state.
   void resetState() => state = ResetPasswordFormState(epoch: state.epoch + 1);
