@@ -123,7 +123,7 @@ final class _SignUpPasswordInputField extends StatelessWidget {
           focusNode: focusNodes.password,
           errorText: errorText,
           textInputAction: TextInputAction.next,
-          autofillHints: const [AutofillHints.password],
+          // autofillHints: const [AutofillHints.password],
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,
@@ -183,7 +183,7 @@ final class _SignUpConfirmPasswordInputField extends StatelessWidget {
           focusNode: focusNodes.confirmPassword,
           errorText: errorText,
           textInputAction: TextInputAction.done,
-          autofillHints: const [AutofillHints.password],
+          // autofillHints: const [AutofillHints.password],
           isObscure: isObscure,
           suffixIcon: ObscureToggleIcon(
             isObscure: isObscure,

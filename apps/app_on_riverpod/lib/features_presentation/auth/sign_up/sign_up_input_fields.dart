@@ -113,7 +113,7 @@ final class _SignUpPasswordInputField extends ConsumerWidget {
       focusNode: focusNodes.password,
       errorText: errorText,
       textInputAction: TextInputAction.next,
-      autofillHints: const [AutofillHints.password],
+      // autofillHints: const [AutofillHints.password],
       isObscure: isObscure,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
@@ -164,7 +164,7 @@ final class _SignUpConfirmPasswordInputField extends ConsumerWidget {
       focusNode: focusNodes.confirmPassword,
       errorText: errorText,
       textInputAction: TextInputAction.done,
-      autofillHints: const [AutofillHints.password],
+      // autofillHints: const [AutofillHints.password],
       isObscure: isObscure,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,

@@ -90,7 +90,7 @@ final class _VerifyEmailScreen extends StatelessWidget {
             ],
           ).withPaddingSymmetric(h: AppSpacing.xl, v: AppSpacing.xxl),
         ),
-      ),
+      ).withPaddingSymmetric(h: AppSpacing.xxs),
     );
   }
 }
