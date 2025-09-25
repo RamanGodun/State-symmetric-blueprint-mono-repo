@@ -1,8 +1,8 @@
 import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/core.dart' show AsyncState;
+import 'package:core/core.dart' show AsyncValueForBLoC;
 import 'package:features/features.dart' show SignOutUseCase;
 
-/// 🚪 [SignOutCubit] — sign out through unified [AsyncState]
+/// 🚪 [SignOutCubit] — sign out through unified [AsyncValueForBLoC]
 ///     ✅ success => AsyncState.data(null)
 ///     ✅ error   => AsyncState.error(Failure)
 ///     ✅ loading => AsyncState.loading()

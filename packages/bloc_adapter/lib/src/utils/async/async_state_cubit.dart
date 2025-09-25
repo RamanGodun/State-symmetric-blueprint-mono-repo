@@ -1,13 +1,13 @@
 import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 🧩 [CubitWithAsyncValue] — base Cubit for [AsyncState] state
+/// 🧩 [CubitWithAsyncValue] — base Cubit for [AsyncValueForBLoC] state
 /// ✅ Unified loader + Either helper
 /// ✅ Ready for distinct-emits (pair with Equatable AsyncState)
 ///
-abstract class CubitWithAsyncValue<T> extends Cubit<AsyncState<T>> {
+abstract class CubitWithAsyncValue<T> extends Cubit<AsyncValueForBLoC<T>> {
   ///--------------------------------------------------------
-  CubitWithAsyncValue() : super(const AsyncState.loading());
+  CubitWithAsyncValue() : super(const AsyncValueForBLoC.loading());
 
   /// 🗺️ Centralized mapping (errors_management): Exception/Error → Failure
   Failure mapError(Object e, StackTrace st) => e.mapToFailure(st);
@@ -15,21 +15,21 @@ abstract class CubitWithAsyncValue<T> extends Cubit<AsyncState<T>> {
   /// 🔁 Universal loader: loading → task → data/error
   /// 💡 Override if you need side-effects around load boundaries
   Future<void> loadTask(Future<T> Function() task) async {
-    emit(const AsyncState.loading());
+    emit(const AsyncValueForBLoC.loading());
     try {
       final v = await task();
-      emit(AsyncState<T>.data(v));
+      emit(AsyncValueForBLoC<T>.data(v));
     } on Object catch (e, st) {
       // 🛡️ IMPORTANT: 'on Object catch (...)' to capture everything
-      emit(AsyncState<T>.error(mapError(e, st)));
+      emit(AsyncValueForBLoC<T>.error(mapError(e, st)));
     }
   }
 
   /// ♻️ Helper for [Either<Failure, T>] sources
   void emitFromEither(Either<Failure, T> result) {
     result.fold(
-      (f) => emit(AsyncState<T>.error(f)),
-      (v) => emit(AsyncState<T>.data(v)),
+      (f) => emit(AsyncValueForBLoC<T>.error(f)),
+      (v) => emit(AsyncValueForBLoC<T>.data(v)),
     );
   }
 

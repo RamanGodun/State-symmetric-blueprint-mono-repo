@@ -25,6 +25,7 @@ final class ProfilePage extends StatelessWidget {
     //
     return BlocProvider<SignOutCubit>(
       create: (_) => di<SignOutCubit>(),
+
       child: const _ProfileView(),
     );
   }

@@ -16,7 +16,7 @@ final class AsyncErrorListener<T> extends StatelessWidget {
   });
 
   /// 🔌 Cubit/Bloc emitting [AsyncState<T>]
-  final BlocBase<AsyncState<T>> bloc;
+  final BlocBase<AsyncValueForBLoC<T>> bloc;
 
   /// 🖼️ Child widget
   final Widget child;
@@ -26,7 +26,7 @@ final class AsyncErrorListener<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<BlocBase<AsyncState<T>>, AsyncState<T>>(
+    return BlocListener<BlocBase<AsyncValueForBLoC<T>>, AsyncValueForBLoC<T>>(
       bloc: bloc,
 
       /// 🚨 Enter-only: fire only when entering error state

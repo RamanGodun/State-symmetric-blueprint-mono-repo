@@ -32,12 +32,12 @@ final class EmailVerificationCubit extends CubitWithAsyncValue<void> {
     if (_started) return;
     _started = true;
     // 🌀 Inline loader while we kick things off
-    emit(const AsyncState.loading());
+    emit(const AsyncValueForBLoC.loading());
     //
     final sent = await _useCase.sendVerificationEmail();
     sent.fold(
       // ❌ Error shown by listener via state.error
-      (failure) => emit(AsyncState<void>.error(failure)),
+      (failure) => emit(AsyncValueForBLoC<void>.error(failure)),
       (_) => _startPolling(),
     );
   }
@@ -52,14 +52,14 @@ final class EmailVerificationCubit extends CubitWithAsyncValue<void> {
       ..reset()
       ..start();
     // 🌀 Keep loader visible during active polling
-    emit(const AsyncState.loading());
+    emit(const AsyncValueForBLoC.loading());
     //
     _pollingTimer = Timer.periodic(AppDurations.sec3, (_) async {
       // ⏳ Timeout → stop + emit timeout failure
       if (_stopwatch.elapsed >= _maxPollingDuration) {
         _stopPolling();
         emit(
-          const AsyncState<void>.error(
+          const AsyncValueForBLoC<void>.error(
             Failure(
               type: EmailVerificationTimeoutFailureType(),
               message: 'Timeout exceeded',
@@ -78,15 +78,15 @@ final class EmailVerificationCubit extends CubitWithAsyncValue<void> {
   /// ✅ Check verification; if verified → reload user, stop polling, emit success.
   Future<void> _checkVerified() async {
     // 🌀 Keep loader while checking
-    emit(const AsyncState.loading());
+    emit(const AsyncValueForBLoC.loading());
     //
     final result = await _useCase.checkIfEmailVerified();
     result.fold(
-      (f) => emit(AsyncState<void>.error(f)),
+      (f) => emit(AsyncValueForBLoC<void>.error(f)),
       (isVerified) async {
         if (!isVerified) {
           // Not verified yet → keep inline spinner UX
-          emit(const AsyncState.loading());
+          emit(const AsyncValueForBLoC.loading());
           return;
         }
         //
@@ -94,7 +94,7 @@ final class EmailVerificationCubit extends CubitWithAsyncValue<void> {
         await _useCase.reloadUser();
         _stopPolling();
         // 🎉 Success convention: AsyncState.data(null)
-        emit(const AsyncState<void>.data(null));
+        emit(const AsyncValueForBLoC<void>.data(null));
       },
     );
   }

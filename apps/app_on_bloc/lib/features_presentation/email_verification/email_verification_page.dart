@@ -11,11 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'widgets_for_email_verification_page.dart';
 
-/// 🧼 [VerifyEmailPage] — screen that handles email verification flow
-///     ✅ Automatically redirects when email gets verified
-///     ✅ Centralized top-level error listeners (SignOut + EmailVerification)
-///     ✅ State-agnostic UI via [_VerifyEmailView] + [AsyncStateView]
-///     ✅ BLoC flavor: `AsyncState<T>` adapted to `AsyncStateView<T>`
+/// 🧼 [VerifyEmailPage] — Entry point of email-verification feature
+/// 🧩 Provide screen-scoped cubits (disposed on pop)
 //
 final class VerifyEmailPage extends StatelessWidget {
   ///---------------------------------------------
@@ -24,7 +21,6 @@ final class VerifyEmailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    /// 🧩 Provide screen-scoped cubits (disposed on pop)
     return MultiBlocProvider(
       providers: [
         BlocProvider<EmailVerificationCubit>(
@@ -33,26 +29,89 @@ final class VerifyEmailPage extends StatelessWidget {
         BlocProvider<SignOutCubit>(create: (_) => di<SignOutCubit>()),
       ],
 
-      /// ⛑️ Centralized (SignOut + EmailVerification) one-shot errors handling via overlays
-      ///    - OverlayDispatcher resolves conflicts/priority internally
-      child: ErrorsListenerForAppOnCubit(
-        resolveBlocs: (ctx) => [
-          ctx.read<SignOutCubit>(), // ⛑️ catch SignOut errors
-          ctx
-              .read<
-                EmailVerificationCubit
-              >(), // ⛑️ catch EmailVerification errors
-        ],
+      child: const _VerifyEmailView(),
+    );
+  }
+}
 
-        /// 🖼️ Declarative UI bound to [EmailVerificationCubit]
-        child: BlocBuilder<EmailVerificationCubit, AsyncState<void>>(
-          builder: (context, state) {
-            /// 🔌 Adapter: `AsyncState<void>` → `AsyncStateView<void>` (for state-agnostic UI)
-            final emailVerificationState = state.asCubitAsyncStateView();
+////
+////
 
-            /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-            return _VerifyEmailView(state: emailVerificationState);
-          },
+/// 🧼 [_VerifyEmailView] - Provides reactive auth-driven state for state-agnostic UI
+/// ✅ State-agnostic UI via [_VerifyEmailScreen] + [AsyncStateView]
+/// ✅ `AsyncState<T>` adapted to `AsyncStateView<T>`
+/// ✅  Top-level error listeners (SignOut + EmailVerification) are centralized
+/// ✅ Automatically redirects when email gets verified
+//
+final class _VerifyEmailView extends StatelessWidget {
+  ///----------------------------------------------
+  const _VerifyEmailView();
+
+  @override
+  Widget build(BuildContext context) {
+    //
+    // 👀🖼️ Declarative UI bound directly via context.select
+    final asyncState = context.select(
+      (EmailVerificationCubit cubit) => cubit.state,
+    );
+    //
+    /// 🔌 Adapter: `AsyncState<void>` → `AsyncStateView<void>` (for state-agnostic UI)
+    final emailVerificationState = asyncState.asCubitAsyncStateView();
+
+    /// ⛑️ Centralized (SignOut + EmailVerification) one-shot errors handling via overlays
+    ///    - OverlayDispatcher resolves conflicts/priority internally
+    return ErrorsListenerForAppOnCubit(
+      resolveBlocs: (ctx) => [
+        ctx.read<SignOutCubit>(), // ⛑️ catch SignOut errors
+        ctx.read<EmailVerificationCubit>(), // ⛑️ catch EmailVerification errors
+      ],
+
+      /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
+      child: _VerifyEmailScreen(state: emailVerificationState),
+    );
+  }
+}
+
+////
+////
+
+/// 📄 [_VerifyEmailScreen] — renders state-agnostic verification UI
+/// ✅ Shows instructions, inline loader, and cancel button
+/// ✅ Works with both BLoC & Riverpod via [AsyncStateView]
+//
+final class _VerifyEmailScreen extends StatelessWidget {
+  ///---------------------------------------------
+  const _VerifyEmailScreen({required this.state});
+  //
+  /// 🔌 Unified async facade
+  final AsyncStateView<void> state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: AppColors.white.withOpacity(context.isDarkMode ? 0.05 : 0.9),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.07),
+                blurRadius: 20,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+
+          /// ℹ️ Info + loader + cancel
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const _VerifyEmailInfo(), // ℹ️ instructions
+              if (state.isLoading) const AppLoader(), // ⏳ loader
+              const VerifyEmailCancelButton(), // ❌ cancel
+            ],
+          ).withPaddingSymmetric(h: AppSpacing.xl, v: AppSpacing.xxl),
         ),
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:core/core.dart';
 
-/// 🔌 [AsyncStateViewForBloc] — AsyncStateView facade over [AsyncState] for Cubit/BLoC
+/// 🔌 [AsyncStateViewForBloc] — AsyncStateView facade over [AsyncValueForBLoC] for Cubit/BLoC
 /// ✅ Gives a single UI API: loading/data/error
 ///
 final class AsyncStateViewForBloc<T> implements AsyncStateView<T> {
@@ -8,7 +8,7 @@ final class AsyncStateViewForBloc<T> implements AsyncStateView<T> {
   AsyncStateViewForBloc(this._state);
 
   /// 🌊 Source state
-  final AsyncState<T> _state;
+  final AsyncValueForBLoC<T> _state;
 
   /// 🔁 Pattern-match style rendering: loading/data/error.
   @override
@@ -51,7 +51,7 @@ final class AsyncStateViewForBloc<T> implements AsyncStateView<T> {
 ////
 
 /// ✨ Sugar: `asyncState.asAsyncStateView()` in widgets
-extension AsyncStateAsViewX<T> on AsyncState<T> {
+extension AsyncStateAsViewX<T> on AsyncValueForBLoC<T> {
   ///-----------------------------------------
   /// 🔁 Convert `AsyncState<T>` to [AsyncStateView] facade.
   AsyncStateView<T> asCubitAsyncStateView() => AsyncStateViewForBloc<T>(this);

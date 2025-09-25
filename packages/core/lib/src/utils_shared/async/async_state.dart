@@ -2,23 +2,23 @@ import 'package:core/src/base_modules/errors_management/core_of_module/failure_e
     show Failure;
 import 'package:equatable/equatable.dart';
 
-/// 🧩 [AsyncState] — state-agnostic async shape (BLoC side)
+/// 🧩 [AsyncValueForBLoC] — state-agnostic async shape (BLoC side)
 /// ✅ Equatable-based equality → enables distinct-emits in Cubit
 /// ✅ Mirrors Riverpod's AsyncValue ergonomics
 //
-sealed class AsyncState<T> extends Equatable {
+sealed class AsyncValueForBLoC<T> extends Equatable {
   ///-------------------------------------
   /// 🏗️ Base constructor (sealed hierarchy)
-  const AsyncState();
+  const AsyncValueForBLoC();
 
   /// ⏳ Factory — creates a loading state.
-  const factory AsyncState.loading() = AsyncStateLoading<T>;
+  const factory AsyncValueForBLoC.loading() = AsyncStateLoading<T>;
 
   /// ✅ Factory — creates a data state with [value].
-  const factory AsyncState.data(T value) = AsyncStateData<T>;
+  const factory AsyncValueForBLoC.data(T value) = AsyncStateData<T>;
 
   /// 🧨 Factory — creates an error state with [failure].
-  const factory AsyncState.error(Failure failure) = AsyncStateError<T>;
+  const factory AsyncValueForBLoC.error(Failure failure) = AsyncStateError<T>;
 
   /// 🧭 True when current state is [AsyncStateLoading].
   bool get isLoading => this is AsyncStateLoading<T>;
@@ -65,10 +65,10 @@ sealed class AsyncState<T> extends Equatable {
   }
 
   /// 🔀 Maps payload in the data branch, preserving other branches.
-  AsyncState<R> map<R>(R Function(T) mapper) => when(
-    loading: AsyncState<R>.loading,
-    data: (v) => AsyncState<R>.data(mapper(v)),
-    error: AsyncState<R>.error,
+  AsyncValueForBLoC<R> map<R>(R Function(T) mapper) => when(
+    loading: AsyncValueForBLoC<R>.loading,
+    data: (v) => AsyncValueForBLoC<R>.data(mapper(v)),
+    error: AsyncValueForBLoC<R>.error,
   );
   //
 }
@@ -79,7 +79,7 @@ sealed class AsyncState<T> extends Equatable {
 
 /// ⏳ Loading — equals any other Loading of same T.
 //
-final class AsyncStateLoading<T> extends AsyncState<T> {
+final class AsyncStateLoading<T> extends AsyncValueForBLoC<T> {
   ///----------------------------------------------
   /// ⏳ Constructs the loading state.
   const AsyncStateLoading();
@@ -104,7 +104,7 @@ final class AsyncStateLoading<T> extends AsyncState<T> {
 /// ✅ Data — equality relies on [value].
 /// 💡 Prefer `T` to implement `Equatable` for deep equality.
 //
-final class AsyncStateData<T> extends AsyncState<T> {
+final class AsyncStateData<T> extends AsyncValueForBLoC<T> {
   ///------------------------------------------
   /// ✅ Constructs the data state with [value].
   const AsyncStateData(this.value);
@@ -130,7 +130,7 @@ final class AsyncStateData<T> extends AsyncState<T> {
 
 /// 🧨 Error — equals by semantic code + message.
 //
-final class AsyncStateError<T> extends AsyncState<T> {
+final class AsyncStateError<T> extends AsyncValueForBLoC<T> {
   ///------------------------------------------
   /// 🧨 Constructs the error state with [failure].
   const AsyncStateError(this.failure);

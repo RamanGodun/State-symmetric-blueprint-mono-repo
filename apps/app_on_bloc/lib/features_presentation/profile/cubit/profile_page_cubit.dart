@@ -6,11 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// ✅ Mirrors the Riverpod profile provider API (prime / refresh / reset).
 /// 🎯 UX: preserves existing UI on background updates (no full-screen loader).
 //
-final class ProfileCubit extends Cubit<AsyncState<UserEntity>> {
+final class ProfileCubit extends Cubit<AsyncValueForBLoC<UserEntity>> {
   ///-------------------------------------------------------
   /// Creates a cubit bound to domain [FetchProfileUseCase]
   ProfileCubit(this._fetchProfileUsecase)
-    : super(const AsyncState<UserEntity>.loading());
+    : super(const AsyncValueForBLoC<UserEntity>.loading());
   //
   final FetchProfileUseCase _fetchProfileUsecase;
 
@@ -27,16 +27,16 @@ final class ProfileCubit extends Cubit<AsyncState<UserEntity>> {
   Future<void> _load(String uid, {required bool preserveUi}) async {
     // 🔑 Preserve UI? → don’t emit loading if data is already present.
     final keepUi = preserveUi && state is AsyncStateData<UserEntity>;
-    if (!keepUi) emit(const AsyncState<UserEntity>.loading());
+    if (!keepUi) emit(const AsyncValueForBLoC<UserEntity>.loading());
     //
     final result = await _fetchProfileUsecase(uid);
     result.fold(
-      (failure) => emit(AsyncState<UserEntity>.error(failure)),
-      (userData) => emit(AsyncState<UserEntity>.data(userData)),
+      (failure) => emit(AsyncValueForBLoC<UserEntity>.error(failure)),
+      (userData) => emit(AsyncValueForBLoC<UserEntity>.data(userData)),
     );
   }
 
   /// ♻️ Reset state (e.g., on logout).
-  void resetState() => emit(const AsyncState<UserEntity>.loading());
+  void resetState() => emit(const AsyncValueForBLoC<UserEntity>.loading());
   //
 }

@@ -1,7 +1,7 @@
 import 'package:core/base_modules/errors_management.dart'
     show Failure, FailureToUIEntityX;
 import 'package:core/base_modules/overlays.dart' show ContextXForOverlays;
-import 'package:core/core.dart' show AsyncState, AsyncStateError;
+import 'package:core/core.dart' show AsyncStateError, AsyncValueForBLoC;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,7 +19,8 @@ final class ErrorsListenerForAppOnCubit extends StatelessWidget {
   });
 
   /// 🧠 Lazy resolver: called inside build with a *valid* context
-  final List<BlocBase<AsyncState<dynamic>>> Function(BuildContext) resolveBlocs;
+  final List<BlocBase<AsyncValueForBLoC<dynamic>>> Function(BuildContext)
+  resolveBlocs;
 
   /// 🖼️ Child subtree
   final Widget child;
@@ -37,8 +38,8 @@ final class ErrorsListenerForAppOnCubit extends StatelessWidget {
           .map(
             (bloc) =>
                 BlocListener<
-                  BlocBase<AsyncState<dynamic>>,
-                  AsyncState<dynamic>
+                  BlocBase<AsyncValueForBLoC<dynamic>>,
+                  AsyncValueForBLoC<dynamic>
                 >(
                   bloc: bloc,
                   listenWhen: (prev, curr) =>
