@@ -31,6 +31,8 @@ abstract class LocaleKeys {
   static const change_password_warning = 'change_password.warning';
   static const change_password_prefix = 'change_password.prefix';
   static const change_password_signed_out = 'change_password.signed_out';
+  static const change_password_password_updated =
+      'change_password.password_updated';
   static const change_password_success = 'change_password.success';
   static const change_password = 'change_password';
   static const sign_in_header = 'sign_in.header';
@@ -38,14 +40,15 @@ abstract class LocaleKeys {
   static const sign_in_forgot_password = 'sign_in.forgot_password';
   static const sign_in_not_member = 'sign_in.not_member';
   static const sign_in_button = 'sign_in.button';
+  static const sign_in_success = 'sign_in.success';
   static const sign_in = 'sign_in';
   static const sign_up_sub_header = 'sign_up.sub_header';
   static const sign_up_already_have_account = 'sign_up.already_have_account';
   static const sign_up_button = 'sign_up.button';
+  static const sign_up_success = 'sign_up.success';
   static const sign_up = 'sign_up';
   static const reauth_label = 'reauth.label';
   static const reauth_description = 'reauth.description';
-  static const reauth_password_updated = 'reauth.password_updated';
   static const reauth_redirect_note = 'reauth.redirect_note';
   static const reauth_page = 'reauth.page';
   static const reauth = 'reauth';

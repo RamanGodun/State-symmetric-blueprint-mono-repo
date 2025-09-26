@@ -36,6 +36,7 @@
     "warning": "If you change your password,",
     "prefix": "you will be ",
     "signed_out": "signed out!",
+    "password_updated": "password updating succeed",
     "success": "Successfully reauthenticated"
   },
 
@@ -44,19 +45,20 @@
     "sub_header": "Please sign in to continue.",
     "forgot_password": "Forgot Password?",
     "not_member": "Not a member?",
-    "button": "Sign In"
+    "button": "Sign In",
+    "success": "Login successful"
   },
 
   "sign_up": {
     "sub_header": "Create an account to get started.",
     "already_have_account": "Already have an account?",
-    "button": "Sign Up"
+    "button": "Sign Up",
+    "success": "Account successfully registered"
   },
 
   "reauth": {
     "label": "Reauthenticate",
     "description": "This is a security-sensitive operation, you must have recently signed in!",
-    "password_updated": "password updating succeed",
     "redirect_note": "Or you can go     ",
     "page": "   page"
   },

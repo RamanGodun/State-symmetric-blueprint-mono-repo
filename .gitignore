@@ -114,6 +114,7 @@ node_modules
 ios/vendor/
 ios/vendor/bundle/
 **/vendor/
+**/sf_fonts
 
 
 

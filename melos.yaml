@@ -231,3 +231,29 @@ scripts:
           shasum src/staging/res/mipmap-*/ic_launcher.png | sort | head -n1);
       done
     '
+
+  #--------- Localozation code generatin ------------------------
+  localization:gen:core:
+    run: |
+      melos exec --scope="core" --concurrency=1 -- \
+        "dart run easy_localization:generate -S assets/translations -O lib/src/base_modules/localization/generated -o codegen_loader.g.dart"
+      melos exec --scope="core" --concurrency=1 -- \
+        "dart run easy_localization:generate -f keys -S assets/translations -O lib/src/base_modules/localization/generated -o locale_keys.g.dart"
+
+  # ---------- Spider (assets paths) ----------
+  # One-time instalation of Spider
+  spider:activate: dart pub global activate spider
+
+  # Paths gen for core package
+  spider:core:gen: |
+    melos exec --scope="core" -- bash -lc 'export PATH="$PATH:$HOME/.pub-cache/bin"; \
+      spider -p lib/src/utils_shared/spider/spider.yaml build'
+
+  # Watch-mode
+  spider:core:watch: |
+    melos exec --scope="core" -- bash -lc 'export PATH="$PATH:$HOME/.pub-cache/bin"; \
+      spider -p lib/src/utils_shared/spider/spider.yaml --watch'
+
+  # General script for all Spider-configs
+  spider:build: melos run spider:core:build
+  spider:watch: melos run spider:core:watch

@@ -46,6 +46,7 @@ class CodegenLoader extends AssetLoader {
       "warning": "Jeśli zmienisz hasło,",
       "prefix": "zostaniesz ",
       "signed_out": "wylogowany!",
+      "password_updated": "Пароль успішно оновлено",
       "success": "Pomyślnie uwierzytelniono ponownie",
     },
     "sign_in": {
@@ -54,17 +55,18 @@ class CodegenLoader extends AssetLoader {
       "forgot_password": "Nie pamiętasz hasła?",
       "not_member": "Nie masz konta?",
       "button": "Zaloguj się",
+      "success": "Logowanie zakończone pomyślnie",
     },
     "sign_up": {
       "sub_header": "Utwórz konto, aby rozpocząć.",
       "already_have_account": "Masz już konto?",
       "button": "Zarejestruj się",
+      "success": "Konto zostało pomyślnie zarejestrowane",
     },
     "reauth": {
       "label": "Ponowna autoryzacja",
       "description":
           "To operacja wymagająca bezpieczeństwa — musisz być ostatnio zalogowany!",
-      "password_updated": "Hasło zostało zaktualizowane",
       "redirect_note": "Lub możesz przejść do     ",
       "page": "   strony",
     },
@@ -194,6 +196,7 @@ class CodegenLoader extends AssetLoader {
       "warning": "Якщо ви зміните пароль,",
       "prefix": "ви будете ",
       "signed_out": "вилогінені з системи!",
+      "password_updated": "Пароль успішно оновлено",
       "success": "Успішна повторна аутентифікація",
     },
     "sign_in": {
@@ -202,17 +205,18 @@ class CodegenLoader extends AssetLoader {
       "forgot_password": "Забули пароль?",
       "not_member": "Ще не зареєстровані?",
       "button": "Увійти",
+      "success": "Авторизація успішна",
     },
     "sign_up": {
       "sub_header": "Створіть акаунт, щоб почати.",
       "already_have_account": "Вже маєте акаунт?",
       "button": "Зареєструватися",
+      "success": "Акаунт успішно зареєстровано",
     },
     "reauth": {
       "label": "Повторна аутентифікація",
       "description":
           "Це операція, чутлива до безпеки, ви повинні нещодавно увійти!",
-      "password_updated": "Пароль успішно оновлено",
       "redirect_note": "Або ви можете перейти на     ",
       "page": "   сторінку",
     },
@@ -337,6 +341,7 @@ class CodegenLoader extends AssetLoader {
       "warning": "If you change your password,",
       "prefix": "you will be ",
       "signed_out": "signed out!",
+      "password_updated": "password updating succeed",
       "success": "Successfully reauthenticated",
     },
     "sign_in": {
@@ -345,17 +350,18 @@ class CodegenLoader extends AssetLoader {
       "forgot_password": "Forgot Password?",
       "not_member": "Not a member?",
       "button": "Sign In",
+      "success": "Login successful",
     },
     "sign_up": {
       "sub_header": "Create an account to get started.",
       "already_have_account": "Already have an account?",
       "button": "Sign Up",
+      "success": "Account successfully registered",
     },
     "reauth": {
       "label": "Reauthenticate",
       "description":
           "This is a security-sensitive operation, you must have recently signed in!",
-      "password_updated": "password updating succeed",
       "redirect_note": "Or you can go     ",
       "page": "   page",
     },

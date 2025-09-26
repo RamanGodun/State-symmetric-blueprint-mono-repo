@@ -35,7 +35,7 @@ final class SignUpPage extends StatelessWidget {
       child: SubmissionSideEffects<SignUpCubit>(
         /// ✅ Success → snackbar + go [VerifyEmailPage]
         onSuccess: (ctx, _) =>
-            ctx.showSnackbar(message: LocaleKeys.sign_up_already_have_account),
+            ctx.showSnackbar(message: LocaleKeys.sign_up_success),
         // 🔁 Retry with current form state
         onRetry: (ctx) => ctx.submitSignUp(),
 

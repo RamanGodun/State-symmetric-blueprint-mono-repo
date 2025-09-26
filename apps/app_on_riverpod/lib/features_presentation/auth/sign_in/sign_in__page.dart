@@ -25,7 +25,7 @@ final class SignInPage extends ConsumerWidget {
       context,
       // ✅ Success → snackbar + go home
       onSuccess: (ctx, _) =>
-          ctx.showSnackbar(message: LocaleKeys.sign_in_forgot_password),
+          ctx.showSnackbar(message: LocaleKeys.sign_in_success),
       // 🔁 Retry with current form state
       onRetry: (ref) => ref.submitSignIn(),
     );

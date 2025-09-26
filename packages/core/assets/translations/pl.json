@@ -36,6 +36,7 @@
     "warning": "Jeśli zmienisz hasło,",
     "prefix": "zostaniesz ",
     "signed_out": "wylogowany!",
+    "password_updated": "Пароль успішно оновлено",
     "success": "Pomyślnie uwierzytelniono ponownie"
   },
 
@@ -44,19 +45,20 @@
     "sub_header": "Zaloguj się, aby kontynuować.",
     "forgot_password": "Nie pamiętasz hasła?",
     "not_member": "Nie masz konta?",
-    "button": "Zaloguj się"
+    "button": "Zaloguj się",
+    "success": "Logowanie zakończone pomyślnie"
   },
 
   "sign_up": {
     "sub_header": "Utwórz konto, aby rozpocząć.",
     "already_have_account": "Masz już konto?",
-    "button": "Zarejestruj się"
+    "button": "Zarejestruj się",
+    "success": "Konto zostało pomyślnie zarejestrowane"
   },
 
   "reauth": {
     "label": "Ponowna autoryzacja",
     "description": "To operacja wymagająca bezpieczeństwa — musisz być ostatnio zalogowany!",
-    "password_updated": "Hasło zostało zaktualizowane",
     "redirect_note": "Lub możesz przejść do     ",
     "page": "   strony"
   },

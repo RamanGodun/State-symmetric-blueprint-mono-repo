@@ -32,7 +32,7 @@ final class SignInPage extends StatelessWidget {
       child: SubmissionSideEffects<SignInCubit>(
         // ✅ Success → snackbar + go home
         onSuccess: (ctx, _) =>
-            ctx.showSnackbar(message: LocaleKeys.sign_in_forgot_password),
+            ctx.showSnackbar(message: LocaleKeys.sign_in_success),
         // 🔁 Retry with current form state
         onRetry: (ctx) => ctx.submitSignIn(),
 

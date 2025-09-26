@@ -37,7 +37,9 @@ final class ChangePasswordPage extends StatelessWidget {
       child: SubmissionSideEffects<ChangePasswordCubit>(
         // ✅ Success → snackbar + go home
         onSuccess: (ctx, _) => ctx
-          ..showSnackbar(message: LocaleKeys.reauth_password_updated.tr())
+          ..showSnackbar(
+            message: LocaleKeys.change_password_password_updated.tr(),
+          )
           ..goIfMounted(RoutesNames.home),
         // 🔄 Requires reauth → dialog with confirm → signOut
         onRequiresReauth: (ctx, ui, _) =>
