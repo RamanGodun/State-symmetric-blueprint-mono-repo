@@ -2,7 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 🔌 [AsyncStateViewForRiverpod] — AsyncLike facade for Riverpod's AsyncValue
-/// ✅ Unifies UI branch rendering with BLoC's [AsyncValueForBLoC]
+/// ✅ Unifies UI branch rendering with BLoC's ['AsyncValueForBLoC']
 //
 final class AsyncStateViewForRiverpod<T> implements AsyncStateView<T> {
   ///----------------------------------------------

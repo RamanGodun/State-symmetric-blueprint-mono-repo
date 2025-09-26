@@ -1,3 +1,4 @@
+import 'package:bloc_adapter/src/utils/async_state/async_value_for_bloc.dart';
 import 'package:core/core.dart';
 
 /// 🔌 [AsyncStateViewForBloc] — AsyncStateView facade over [AsyncValueForBLoC] for Cubit/BLoC

@@ -1,3 +1,5 @@
+import 'package:bloc_adapter/bloc_adapter.dart'
+    show AsyncDataForBLoC, AsyncValueForBLoC;
 import 'package:core/core.dart';
 import 'package:features/features.dart' show FetchProfileUseCase;
 import 'package:flutter_bloc/flutter_bloc.dart';

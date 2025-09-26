@@ -1,5 +1,4 @@
 import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/core.dart' show AsyncValueForBLoC;
 import 'package:features/features.dart' show SignOutUseCase;
 
 /// 🚪 [SignOutCubit] — sign out through unified [AsyncValueForBLoC]

@@ -1,5 +1,4 @@
-import 'package:core/src/base_modules/errors_management/core_of_module/failure_entity.dart'
-    show Failure;
+import 'package:core/base_modules/errors_management.dart';
 import 'package:equatable/equatable.dart';
 
 /// 🧩 [AsyncValueForBLoC] — Riverpod-like async union for BLoC UI.

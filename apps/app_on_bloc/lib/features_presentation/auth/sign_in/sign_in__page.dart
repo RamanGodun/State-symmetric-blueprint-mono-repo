@@ -30,7 +30,7 @@ final class SignInPage extends StatelessWidget {
 
       /// 🦻 Bloc side-effect listener (symmetry with Riverpod 'ref.listenSubmissionSideEffects')
       /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
-      child: SubmissionSideEffects<SignInCubit>(
+      child: SubmissionStateSideEffects<SignInCubit>(
         // ✅ Success → snackbar + go home
         onSuccess: (ctx, _) =>
             ctx.showSnackbar(message: LocaleKeys.sign_in_success),

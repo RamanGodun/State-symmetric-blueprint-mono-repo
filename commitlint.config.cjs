@@ -5,7 +5,7 @@ module.exports = {
   extends: ['@commitlint/config-conventional'],
   rules: {
     'type-enum': [2, 'always', [
-      'feat', 'fix', 'perf', 'refactor', 'docs', 'test', 'build', 'ci', 'chore'
+      'feat', 'fix', 'perf', 'refactor', 'docs', 'test', 'build', 'ci', 'chore', 'style'
     ]],
     'scope-enum': [2, 'always', scopes],
     'subject-empty': [2, 'never'],

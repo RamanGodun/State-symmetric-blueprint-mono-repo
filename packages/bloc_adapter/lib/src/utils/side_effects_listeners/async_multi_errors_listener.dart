@@ -1,7 +1,7 @@
+import 'package:bloc_adapter/src/utils/async_state/async_value_for_bloc.dart';
 import 'package:core/base_modules/errors_management.dart'
     show Failure, FailureToUIEntityX;
 import 'package:core/base_modules/overlays.dart' show ContextXForOverlays;
-import 'package:core/core.dart' show AsyncErrorForBLoC, AsyncValueForBLoC;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

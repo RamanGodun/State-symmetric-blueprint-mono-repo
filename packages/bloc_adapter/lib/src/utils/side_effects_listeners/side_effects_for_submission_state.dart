@@ -2,7 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 🧯 [SubmissionSideEffects] — universal BLoC listener for button-driven flows
+/// 🧯 [SubmissionStateSideEffects] — universal BLoC listener for button-driven flows
 /// ✅ Handles three common branches:
 ///    - Success → `onSuccess`
 ///    - Error → `onError` (auto-consumes `Consumable<Failure>`)
@@ -19,12 +19,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 ///   child: MyView(),
 /// )
 /// ```
-final class SubmissionSideEffects<
+final class SubmissionStateSideEffects<
   C extends StateStreamable<ButtonSubmissionState>
 >
     extends StatelessWidget {
   ///----------------------------
-  const SubmissionSideEffects({
+  const SubmissionStateSideEffects({
     required this.child,
     this.listenWhen,
     this.onSuccess,

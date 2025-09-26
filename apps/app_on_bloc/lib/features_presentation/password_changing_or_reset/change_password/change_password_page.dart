@@ -34,7 +34,7 @@ final class ChangePasswordPage extends StatelessWidget {
 
       /// 🦻 Bloc side-effect listener (symmetry with Riverpod 'ref.listenSubmissionSideEffects')
       /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
-      child: SubmissionSideEffects<ChangePasswordCubit>(
+      child: SubmissionStateSideEffects<ChangePasswordCubit>(
         // ✅ Success → snackbar + go home
         onSuccess: (ctx, _) => ctx
           ..showSnackbar(
