@@ -70,7 +70,7 @@ final class _ResetPasswordScreen extends HookWidget {
                       const _ResetPasswordHeader(),
 
                       /// 📧 Email input field
-                      _ResetPasswordEmailInputField(focusNodes),
+                      _EmailFormField(focusNodes),
 
                       /// 🚀 Primary submit button
                       const _ResetPasswordSubmitButton(),

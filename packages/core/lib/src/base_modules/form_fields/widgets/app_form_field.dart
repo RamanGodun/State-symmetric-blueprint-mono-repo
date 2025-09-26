@@ -5,7 +5,7 @@ import 'package:core/src/base_modules/localization/core_of_module/init_localizat
 import 'package:core/src/base_modules/localization/utils/string_x.dart';
 import 'package:flutter/material.dart';
 
-/// 🧱 [AppTextField] — Reusable, styled text input field used across the app.
+/// 🧱 [AppFormField] — Reusable, styled text input field used across the app.
 /// Supports:
 ///   - label & prefix icon
 ///   - error display
@@ -13,9 +13,9 @@ import 'package:flutter/material.dart';
 ///   - submit action
 ///   - obscured (e.g. password) mode
 //
-final class AppTextField extends StatelessWidget {
+final class AppFormField extends StatelessWidget {
   ///------------------------------------------
-  const AppTextField({
+  const AppFormField({
     required this.focusNode,
     required this.label,
     required this.icon,

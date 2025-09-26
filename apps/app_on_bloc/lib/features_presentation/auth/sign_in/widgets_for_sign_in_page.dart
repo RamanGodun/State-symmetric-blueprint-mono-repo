@@ -38,25 +38,29 @@ final class _SignInHeader extends StatelessWidget {
 ////
 ////
 
-/// 📧 [_SignInEmailInputField] — Email input field with validation & focus handling
+/// 📧 [_EmailFormField] — Email input field with validation & focus handling
 /// ✅ Rebuilds only when `email.uiError` changes
 //
-final class _SignInEmailInputField extends StatelessWidget {
-  ///----------------------------------------------------
-  const _SignInEmailInputField(this.focusNodes);
+final class _EmailFormField extends StatelessWidget {
+  ///---------------------------------------------
+  const _EmailFormField(this.focusNodes);
   //
-  final ({FocusNode email, FocusNode password}) focusNodes;
+  final NodesForSignInPage focusNodes;
 
   @override
   Widget build(BuildContext context) {
     //
-    final (:errorText, :epoch) = context
-        .watchSelect<SignInFormCubit, SignInFormState, ErrEpoch>(
-          selectSignInEmailSlice,
+    final (:errorText, :isValid, :epoch) = context
+        .watchAndSelect<
+          SignInFormCubit,
+          SignInFormState,
+          SelectedValuesForEmailFormField
+        >(
+          recordsForEmailFormField(),
         );
     final formCubit = context.read<SignInFormCubit>();
     //
-    return InputFieldFactory.create(
+    return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('email_$epoch'),
       type: InputFieldType.email,
       focusNode: focusNodes.email,
@@ -74,25 +78,29 @@ final class _SignInEmailInputField extends StatelessWidget {
 ////
 ////
 
-/// 🔒 [_SignInPasswordInputField] — Password field with toggle visibility logic
+/// 🔒 [_PasswordFormField] — Password field with toggle visibility logic
 /// ✅ Rebuilds only when password error or visibility state changes
 //
-final class _SignInPasswordInputField extends StatelessWidget {
-  ///-------------------------------------------------------
-  const _SignInPasswordInputField(this.focusNodes);
+final class _PasswordFormField extends StatelessWidget {
+  ///-------------------------------------------------
+  const _PasswordFormField(this.focusNodes);
   //
-  final ({FocusNode email, FocusNode password}) focusNodes;
+  final NodesForSignInPage focusNodes;
 
   @override
   Widget build(BuildContext context) {
     //
     final (:errorText, :isObscure, :isValid, :epoch) = context
-        .watchSelect<SignInFormCubit, SignInFormState, PwdValidEpoch>(
-          selectSignInPasswordSlice,
+        .watchAndSelect<
+          SignInFormCubit,
+          SignInFormState,
+          SelectedValuesForPasswordFormField
+        >(
+          recordsForPasswordFormField(useFormValidity: true),
         );
     final formCubit = context.read<SignInFormCubit>();
     //
-    return InputFieldFactory.create(
+    return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('password_$epoch'),
       type: InputFieldType.password,
       focusNode: focusNodes.password,

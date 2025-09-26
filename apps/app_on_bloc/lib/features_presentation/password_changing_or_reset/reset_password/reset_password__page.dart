@@ -1,6 +1,6 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:app_on_bloc/features_presentation/password_changing_or_reset/reset_password/cubits/input_fields_cubit.dart';
-import 'package:app_on_bloc/features_presentation/password_changing_or_reset/reset_password/cubits/reset_password__cubit.dart';
+import 'package:app_on_bloc/features_presentation/password_changing_or_reset/reset_password/cubits/form_fields_cubit.dart';
+import 'package:app_on_bloc/features_presentation/password_changing_or_reset/reset_password/cubits/reset_password_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
 import 'package:features/features_barrels/password_changing_or_reset/password_changing_or_reset.dart';
@@ -79,7 +79,7 @@ final class _ResetPasswordScreen extends HookWidget {
                       const _ResetPasswordHeader(),
 
                       /// 📧 Email input field
-                      _ResetPasswordEmailInputField(focusNodes),
+                      _EmailFormField(focusNodes),
 
                       /// 🚀 Primary submit button
                       const _ResetPasswordSubmitButton(),

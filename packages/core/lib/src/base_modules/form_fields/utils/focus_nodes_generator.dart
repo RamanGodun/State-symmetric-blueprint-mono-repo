@@ -1,4 +1,4 @@
-import 'package:core/src/base_modules/forms/input_validation/validation_enums.dart';
+import 'package:core/src/base_modules/form_fields/input_validation/validation_enums.dart';
 import 'package:flutter/material.dart';
 
 /// For custom focus nodes generating

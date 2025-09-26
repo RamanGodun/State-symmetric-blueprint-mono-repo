@@ -1,7 +1,7 @@
 import 'package:app_on_bloc/features_presentation/auth/sign_in/sign_in__page.dart'
     show SignInPage;
-import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/input_fields_cubit.dart';
-import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/sign_up__cubit.dart';
+import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/form_fields_cubit.dart';
+import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/sign_up_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
 import 'package:features/features.dart' show SignUpUseCase;
@@ -82,16 +82,16 @@ final class _SignUpScreen extends HookWidget {
                         const _SignUpHeader(),
 
                         /// 👤 Name input field
-                        _SignUpUserNameInputField(focusNodes),
+                        _UserNameFormField(focusNodes),
 
                         /// 📧 Email input
-                        _SignUpEmailInputField(focusNodes),
+                        _EmailFormField(focusNodes),
 
                         /// 🔒 Password input field
-                        _SignUpPasswordInputField(focusNodes),
+                        _PasswordFormField(focusNodes),
 
                         /// 🔐 Confirm password input
-                        _SignUpConfirmPasswordInputField(focusNodes),
+                        _ConfirmPasswordFormField(focusNodes),
 
                         /// 🚀 Primary submit button
                         const _SignUpSubmitButton(),

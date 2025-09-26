@@ -47,27 +47,29 @@ final class _ChangePasswordInfo extends StatelessWidget {
 ////
 ////
 
-/// 🧾 [_PasswordInputField] — Password input field with localized validation
+/// 🧾 [_PasswordFormField] — Password input field with localized validation
 /// ✅ Rebuilds only when password error or visibility state changes
 //
-final class _PasswordInputField extends StatelessWidget {
+final class _PasswordFormField extends StatelessWidget {
   ///-------------------------------------------------
-  const _PasswordInputField(this.focusNodes);
+  const _PasswordFormField(this.focusNodes);
   //
-  final ({FocusNode password, FocusNode confirmPassword}) focusNodes;
+  final NodesForChangePasswordPage focusNodes;
 
   @override
   Widget build(BuildContext context) {
     //
-    final (:errorText, :isObscure, :epoch) = context
-        .watchSelect<
+    final (:errorText, :isObscure, :isValid, :epoch) = context
+        .watchAndSelect<
           ChangePasswordFormFieldsCubit,
           ChangePasswordFormState,
-          PwdEpoch
-        >(selectChangePasswordSlice);
+          SelectedValuesForPasswordFormField
+        >(
+          recordsForPasswordFormField(),
+        );
     final form = context.read<ChangePasswordFormFieldsCubit>();
     //
-    return InputFieldFactory.create(
+    return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('password_$epoch'),
       type: InputFieldType.password,
       focusNode: focusNodes.password,
@@ -90,30 +92,29 @@ final class _PasswordInputField extends StatelessWidget {
 ////
 ////
 
-/// 🧾 [_ConfirmPasswordInputField] — Confirm password input field with localized validation
+/// 🧾 [_ConfirmPasswordFormField] — Confirm password input field with localized validation
 /// ✅ Rebuilds only when 'confirm password' error or visibility state changes
 //
-final class _ConfirmPasswordInputField extends StatelessWidget {
-  ///---------------------------------------------------
-  const _ConfirmPasswordInputField(this.focusNodes);
+final class _ConfirmPasswordFormField extends StatelessWidget {
+  ///-------------------------------------------------------
+  const _ConfirmPasswordFormField(this.focusNodes);
   //
-  final ({FocusNode password, FocusNode confirmPassword}) focusNodes;
+  final NodesForChangePasswordPage focusNodes;
 
   @override
   Widget build(BuildContext context) {
     //
-    //
     final (:errorText, :isObscure, :isValid, :epoch) = context
-        .watchSelect<
+        .watchAndSelect<
           ChangePasswordFormFieldsCubit,
           ChangePasswordFormState,
-          CmpValidEpoch
+          SelectedValuesForConfirmPasswordFormField
         >(
-          selectChangeConfirmSlice,
+          recordsForConfirmPasswordFormField(useFormValidity: true),
         );
     final form = context.read<ChangePasswordFormFieldsCubit>();
     //
-    return InputFieldFactory.create(
+    return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('confirm_$epoch'),
       type: InputFieldType.confirmPassword,
       focusNode: focusNodes.confirmPassword,

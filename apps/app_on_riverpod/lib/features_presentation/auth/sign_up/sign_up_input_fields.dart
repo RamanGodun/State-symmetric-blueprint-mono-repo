@@ -1,29 +1,23 @@
 part of 'sign_up__page.dart';
 
-/// 👤  [_SignUpUserNameInputField] — User name input field with localized validation
+/// 👤  [_UserNameFormField] — User name input field with localized validation
 /// ✅ Rebuilds only when `name.uiError` changes
 //
-final class _SignUpUserNameInputField extends ConsumerWidget {
-  ///------------------------------------------------------
-  const _SignUpUserNameInputField(this.focusNodes);
+final class _UserNameFormField extends ConsumerWidget {
+  ///-----------------------------------------------
+  const _UserNameFormField(this.focusNodes);
   //
-  final ({
-    FocusNode name,
-    FocusNode email,
-    FocusNode password,
-    FocusNode confirmPassword,
-  })
-  focusNodes;
+  final NodesForSignUpPage focusNodes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final (:errorText, :epoch) = ref.watch(
-      signUpFormProvider.select(selectNameSlice),
+    final (:errorText, :isValid, :epoch) = ref.watch(
+      signUpFormProvider.select(recordsForNameFormField()),
     );
     final formNotifier = ref.read(signUpFormProvider.notifier);
     //
-    return InputFieldFactory.create(
+    return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('name_$epoch'),
       type: InputFieldType.name,
       focusNode: focusNodes.name,
@@ -41,30 +35,24 @@ final class _SignUpUserNameInputField extends ConsumerWidget {
 ////
 ////
 
-/// 🧩 [_SignUpEmailInputField] — User email input field with localized validation
+/// 🧩 [_EmailFormField] — User email input field with localized validation
 /// ✅ Rebuilds only when `email.uiError` changes
 //
-final class _SignUpEmailInputField extends ConsumerWidget {
-  ///---------------------------------------------------
-  const _SignUpEmailInputField(this.focusNodes);
+final class _EmailFormField extends ConsumerWidget {
+  ///--------------------------------------------
+  const _EmailFormField(this.focusNodes);
   //
-  final ({
-    FocusNode name,
-    FocusNode email,
-    FocusNode password,
-    FocusNode confirmPassword,
-  })
-  focusNodes;
+  final NodesForSignUpPage focusNodes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final (:errorText, :epoch) = ref.watch(
-      signUpFormProvider.select(selectEmailSlice),
+    final (:errorText, :isValid, :epoch) = ref.watch(
+      signUpFormProvider.select(recordsForEmailFormField()),
     );
     final form = ref.read(signUpFormProvider.notifier);
     //
-    return InputFieldFactory.create(
+    return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('email_$epoch'),
       type: InputFieldType.email,
       focusNode: focusNodes.email,
@@ -82,30 +70,24 @@ final class _SignUpEmailInputField extends ConsumerWidget {
 ////
 ////
 
-/// 🔒 [_SignUpPasswordInputField] — Password input field with localized validation
+/// 🔒 [_PasswordFormField] — Password input field with localized validation
 /// ✅ Rebuilds only when password error or visibility state changes
 //
-final class _SignUpPasswordInputField extends ConsumerWidget {
-  ///------------------------------------------------------
-  const _SignUpPasswordInputField(this.focusNodes);
+final class _PasswordFormField extends ConsumerWidget {
+  ///-----------------------------------------------
+  const _PasswordFormField(this.focusNodes);
   //
-  final ({
-    FocusNode name,
-    FocusNode email,
-    FocusNode password,
-    FocusNode confirmPassword,
-  })
-  focusNodes;
+  final NodesForSignUpPage focusNodes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    final (:errorText, :isObscure, :epoch) = ref.watch(
-      signUpFormProvider.select(selectPasswordSlice),
+    final (:errorText, :isObscure, :isValid, :epoch) = ref.watch(
+      signUpFormProvider.select(recordsForPasswordFormField()),
     );
     final form = ref.read(signUpFormProvider.notifier);
 
-    return InputFieldFactory.create(
+    return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('password_$epoch'),
       type: InputFieldType.password,
       focusNode: focusNodes.password,
@@ -127,30 +109,26 @@ final class _SignUpPasswordInputField extends ConsumerWidget {
 ////
 ////
 
-/// 🔐 [_SignUpConfirmPasswordInputField] — Confirm password input field with localized validation
+/// 🔐 [_ConfirmPasswordFormField] — Confirm password input field with localized validation
 /// ✅ Rebuilds only when 'confirm password' error or visibility state changes
 //
-final class _SignUpConfirmPasswordInputField extends ConsumerWidget {
-  ///-------------------------------------------------------------
-  const _SignUpConfirmPasswordInputField(this.focusNodes);
+final class _ConfirmPasswordFormField extends ConsumerWidget {
+  ///------------------------------------------------------
+  const _ConfirmPasswordFormField(this.focusNodes);
   //
-  final ({
-    FocusNode name,
-    FocusNode email,
-    FocusNode password,
-    FocusNode confirmPassword,
-  })
-  focusNodes;
+  final NodesForSignUpPage focusNodes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
     final (:errorText, :isObscure, :isValid, :epoch) = ref.watch(
-      signUpFormProvider.select(selectConfirmSlice),
+      signUpFormProvider.select(
+        recordsForConfirmPasswordFormField(useFormValidity: true),
+      ),
     );
     final form = ref.read(signUpFormProvider.notifier);
 
-    return InputFieldFactory.create(
+    return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('confirm_$epoch'),
       type: InputFieldType.confirmPassword,
       focusNode: focusNodes.confirmPassword,

@@ -1,30 +1,28 @@
 part of 'sign_up__page.dart';
 
-/// 👤  [_SignUpUserNameInputField] — User name input field with localized validation
+/// 👤  [_UserNameFormField] — User name input field with localized validation
 /// ✅ Rebuilds only when `name.uiError` changes
 //
-final class _SignUpUserNameInputField extends StatelessWidget {
-  ///-------------------------------------------------------
-  const _SignUpUserNameInputField(this.focusNodes);
+final class _UserNameFormField extends StatelessWidget {
+  ///------------------------------------------------
+  const _UserNameFormField(this.focusNodes);
   //
-  final ({
-    FocusNode name,
-    FocusNode email,
-    FocusNode password,
-    FocusNode confirmPassword,
-  })
-  focusNodes;
+  final NodesForSignUpPage focusNodes;
 
   @override
   Widget build(BuildContext context) {
     //
-    final (:errorText, :epoch) = context
-        .watchSelect<SignUpFormFieldCubit, SignUpFormState, ErrEpoch>(
-          selectNameSlice,
+    final (:errorText, :isValid, :epoch) = context
+        .watchAndSelect<
+          SignUpFormFieldCubit,
+          SignUpFormState,
+          SelectedValuesForNameFormField
+        >(
+          recordsForNameFormField(),
         );
     final formFieldCubit = context.read<SignUpFormFieldCubit>();
     //
-    return InputFieldFactory.create(
+    return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('name_$epoch'),
       type: InputFieldType.name,
       focusNode: focusNodes.name,
@@ -42,31 +40,29 @@ final class _SignUpUserNameInputField extends StatelessWidget {
 ////
 ////
 
-/// 🧩 [_SignUpEmailInputField] — User email input field with localized validation
+/// 🧩 [_EmailFormField] — User email input field with localized validation
 /// ✅ Rebuilds only when `email.uiError` changes
 //
-final class _SignUpEmailInputField extends StatelessWidget {
-  ///----------------------------------------------------
-  const _SignUpEmailInputField(this.focusNodes);
+final class _EmailFormField extends StatelessWidget {
+  ///---------------------------------------------
+  const _EmailFormField(this.focusNodes);
   //
-  final ({
-    FocusNode name,
-    FocusNode email,
-    FocusNode password,
-    FocusNode confirmPassword,
-  })
-  focusNodes;
+  final NodesForSignUpPage focusNodes;
 
   @override
   Widget build(BuildContext context) {
     //
-    final (:errorText, :epoch) = context
-        .watchSelect<SignUpFormFieldCubit, SignUpFormState, ErrEpoch>(
-          selectEmailSlice,
+    final (:errorText, :isValid, :epoch) = context
+        .watchAndSelect<
+          SignUpFormFieldCubit,
+          SignUpFormState,
+          SelectedValuesForEmailFormField
+        >(
+          recordsForEmailFormField(),
         );
     final cubit = context.read<SignUpFormFieldCubit>();
     //
-    return InputFieldFactory.create(
+    return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('email_$epoch'),
       type: InputFieldType.email,
       focusNode: focusNodes.email,
@@ -84,31 +80,29 @@ final class _SignUpEmailInputField extends StatelessWidget {
 ////
 ////
 
-/// 🔒 [_SignUpPasswordInputField] — Password input field with localized validation
+/// 🔒 [_PasswordFormField] — Password input field with localized validation
 /// ✅ Rebuilds only when password error or visibility state changes
 //
-final class _SignUpPasswordInputField extends StatelessWidget {
-  ///-------------------------------------------------------
-  const _SignUpPasswordInputField(this.focusNodes);
+final class _PasswordFormField extends StatelessWidget {
+  ///------------------------------------------------
+  const _PasswordFormField(this.focusNodes);
   //
-  final ({
-    FocusNode name,
-    FocusNode email,
-    FocusNode password,
-    FocusNode confirmPassword,
-  })
-  focusNodes;
+  final NodesForSignUpPage focusNodes;
 
   @override
   Widget build(BuildContext context) {
     //
-    final (:errorText, :isObscure, :epoch) = context
-        .watchSelect<SignUpFormFieldCubit, SignUpFormState, PwdEpoch>(
-          selectPasswordSlice,
+    final (:errorText, :isObscure, :isValid, :epoch) = context
+        .watchAndSelect<
+          SignUpFormFieldCubit,
+          SignUpFormState,
+          SelectedValuesForPasswordFormField
+        >(
+          recordsForPasswordFormField(),
         );
     final cubit = context.read<SignUpFormFieldCubit>();
     //
-    return InputFieldFactory.create(
+    return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('password_$epoch'),
       type: InputFieldType.password,
       focusNode: focusNodes.password,
@@ -130,31 +124,29 @@ final class _SignUpPasswordInputField extends StatelessWidget {
 ////
 ////
 
-/// 🔐 [_SignUpConfirmPasswordInputField] — Confirm password input field with localized validation
+/// 🔐 [_ConfirmPasswordFormField] — Confirm password input field with localized validation
 /// ✅ Rebuilds only when 'confirm password' error or visibility state changes
 //
-final class _SignUpConfirmPasswordInputField extends StatelessWidget {
-  ///--------------------------------------------------------------
-  const _SignUpConfirmPasswordInputField(this.focusNodes);
+final class _ConfirmPasswordFormField extends StatelessWidget {
+  ///------------------------------------------------------
+  const _ConfirmPasswordFormField(this.focusNodes);
   //
-  final ({
-    FocusNode name,
-    FocusNode email,
-    FocusNode password,
-    FocusNode confirmPassword,
-  })
-  focusNodes;
+  final NodesForSignUpPage focusNodes;
 
   @override
   Widget build(BuildContext context) {
     //
     final (:errorText, :isObscure, :isValid, :epoch) = context
-        .watchSelect<SignUpFormFieldCubit, SignUpFormState, CmpEpoch>(
-          selectConfirmSlice,
+        .watchAndSelect<
+          SignUpFormFieldCubit,
+          SignUpFormState,
+          SelectedValuesForConfirmPasswordFormField
+        >(
+          recordsForConfirmPasswordFormField(useFormValidity: true),
         );
     final cubit = context.read<SignUpFormFieldCubit>();
     //
-    return InputFieldFactory.create(
+    return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('confirm_$epoch'),
       type: InputFieldType.confirmPassword,
       focusNode: focusNodes.confirmPassword,

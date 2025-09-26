@@ -75,10 +75,10 @@ final class _ChangePasswordScreen extends HookWidget {
                       const _ChangePasswordInfo(),
 
                       /// 🔒 Password input field
-                      _PasswordInputField(focusNodes),
+                      _PasswordFormField(focusNodes),
 
                       /// 🔐 Confirm password input
-                      _ConfirmPasswordInputField(focusNodes),
+                      _ConfirmPasswordFormField(focusNodes),
 
                       /// 🚀 Primary submit button
                       const _ChangePasswordSubmitButton(),

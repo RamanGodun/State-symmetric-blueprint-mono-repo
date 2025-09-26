@@ -1,7 +1,7 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart'
     show RoutesNames;
-import 'package:app_on_bloc/features_presentation/auth/sign_in/cubit/input_fields_cubit.dart';
-import 'package:app_on_bloc/features_presentation/auth/sign_in/cubit/sign_in__cubit.dart';
+import 'package:app_on_bloc/features_presentation/auth/sign_in/cubit/form_fields_cubit.dart';
+import 'package:app_on_bloc/features_presentation/auth/sign_in/cubit/sign_in_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:core/core.dart';
 import 'package:features/features_barrels/auth/auth.dart';
@@ -79,10 +79,10 @@ final class _SignInScreen extends HookWidget {
                         const _SignInHeader(),
 
                         /// 📧 Email input field
-                        _SignInEmailInputField(focusNodes),
+                        _EmailFormField(focusNodes),
 
                         /// 🔒 Password input field
-                        _SignInPasswordInputField(focusNodes),
+                        _PasswordFormField(focusNodes),
 
                         /// 🚀 Primary submit button
                         const _SignInSubmitButton(),

@@ -1,16 +1,16 @@
-import 'package:core/src/base_modules/forms/input_validation/validation_enums.dart';
-import 'package:core/src/base_modules/forms/utils/keys.dart';
-import 'package:core/src/base_modules/forms/widgets/app_text_field.dart';
+import 'package:core/src/base_modules/form_fields/input_validation/validation_enums.dart';
+import 'package:core/src/base_modules/form_fields/utils/keys.dart';
+import 'package:core/src/base_modules/form_fields/widgets/app_form_field.dart';
 import 'package:core/src/base_modules/localization/generated/locale_keys.g.dart';
 import 'package:core/src/base_modules/ui_design/ui_constants/_app_constants.dart';
 import 'package:flutter/material.dart';
 
-/// 🏗️ Factory method that returns a themed [AppTextField], based on the [InputFieldType].
+/// 🏗️ Factory method that returns a themed [AppFormField], based on the [InputFieldType].
 /// Ensures consistent look & feel across forms (SignUp/Login).
 //
-abstract final class InputFieldFactory {
+abstract final class FormFieldFactory {
   ///--------------------------------
-  InputFieldFactory._();
+  FormFieldFactory._();
 
   ///
   static Widget create({
@@ -30,7 +30,7 @@ abstract final class InputFieldFactory {
     ///
     return switch (type) {
       ///
-      InputFieldType.name => AppTextField(
+      InputFieldType.name => AppFormField(
         key: fieldKeyOverride ?? FormFieldsKeys.nameField,
         focusNode: focusNode,
         label: LocaleKeys.form_name,
@@ -47,7 +47,7 @@ abstract final class InputFieldFactory {
       ),
 
       ///
-      InputFieldType.email => AppTextField(
+      InputFieldType.email => AppFormField(
         key: fieldKeyOverride ?? FormFieldsKeys.emailField,
         focusNode: focusNode,
         label: LocaleKeys.form_email,
@@ -64,7 +64,7 @@ abstract final class InputFieldFactory {
       ),
 
       ///
-      InputFieldType.password => AppTextField(
+      InputFieldType.password => AppFormField(
         key: fieldKeyOverride ?? FormFieldsKeys.passwordField,
         focusNode: focusNode,
         label: LocaleKeys.form_password,
@@ -82,7 +82,7 @@ abstract final class InputFieldFactory {
       ),
 
       ///
-      InputFieldType.confirmPassword => AppTextField(
+      InputFieldType.confirmPassword => AppFormField(
         key: fieldKeyOverride ?? FormFieldsKeys.confirmPasswordField,
         focusNode: focusNode,
         label: LocaleKeys.form_confirm_password,

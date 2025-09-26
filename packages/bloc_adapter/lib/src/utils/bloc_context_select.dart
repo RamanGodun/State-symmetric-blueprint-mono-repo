@@ -9,7 +9,7 @@ extension BlocWatchSelectX on BuildContext {
   //
 
   /// 🎯 Watch + select a slice of [B]’s state (clean & efficient rebuilds).
-  R watchSelect<B extends StateStreamable<S>, S, R>(R Function(S) selector) {
+  R watchAndSelect<B extends StateStreamable<S>, S, R>(R Function(S) selector) {
     return select<B, R>((b) => selector((b as dynamic).state as S));
   }
 

@@ -71,10 +71,10 @@ final class _SignInScreen extends HookWidget {
                         const _SignInHeader(),
 
                         /// 📧 Email input field
-                        _SignInEmailInputField(focusNodes),
+                        _EmailFormField(focusNodes),
 
                         /// 🔒 Password input field
-                        _SignInPasswordInputField(focusNodes),
+                        _PasswordFormField(focusNodes),
 
                         /// 🚀 Primary submit button
                         const _SignInSubmitButton(),

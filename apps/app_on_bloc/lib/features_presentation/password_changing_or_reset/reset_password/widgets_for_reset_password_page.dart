@@ -31,29 +31,29 @@ final class _ResetPasswordHeader extends StatelessWidget {
 ////
 ////
 
-/// 🧩 [_ResetPasswordEmailInputField] — User email input field with localized validation
+/// 🧩 [_EmailFormField] — User email input field with localized validation
 /// ✅ Rebuilds only when `email.uiError` changes
 //
-final class _ResetPasswordEmailInputField extends StatelessWidget {
-  ///------------------------------------------------------
-  const _ResetPasswordEmailInputField(this.focusNodes);
+final class _EmailFormField extends StatelessWidget {
+  ///---------------------------------------------
+  const _EmailFormField(this.focusNodes);
   //
-  final ({FocusNode email}) focusNodes;
+  final NodesForResetPasswordPage focusNodes;
 
   @override
   Widget build(BuildContext context) {
     //
     final (:errorText, :isValid, :epoch) = context
-        .watchSelect<
+        .watchAndSelect<
           ResetPasswordFormFieldsCubit,
           ResetPasswordFormState,
-          ErrValidEpoch
+          SelectedValuesForEmailFormField
         >(
-          selectResetEmailSlice,
+          recordsForEmailFormField(useFormValidity: true),
         );
     final form = context.read<ResetPasswordFormFieldsCubit>();
     //
-    return InputFieldFactory.create(
+    return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('email_$epoch'),
       type: InputFieldType.email,
       focusNode: focusNodes.email,
