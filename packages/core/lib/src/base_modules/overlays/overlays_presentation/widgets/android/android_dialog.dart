@@ -57,7 +57,7 @@ final class AndroidDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     // final dispatcher = di<OverlayDispatcher>();
-    // final dispatcher = context.readDI(overla/yDispatcherProvider);
+    // final dispatcher = context.readDI(overlayDispatcherProvider);
     final dispatcher = resolveOverlayDispatcher(context);
     //
     final isDark = context.isDarkMode;
@@ -92,12 +92,18 @@ final class AndroidDialog extends StatelessWidget {
                           child: Column(
                             children: [
                               const SizedBox(height: AppSpacing.xxxm),
-                              TextWidget(title, TextType.titleMedium),
-                              const SizedBox(height: AppSpacing.xxxm),
+                              TextWidget(
+                                title,
+                                TextType.titleMedium,
+                                color: colorScheme.errorContainer,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
+                              const SizedBox(height: AppSpacing.xm),
                               TextWidget(
                                 content,
-                                TextType.bodyLarge,
-                                fontWeight: FontWeight.w200,
+                                TextType.titleSmall,
+                                fontWeight: FontWeight.w400,
                                 isTextOnFewStrings: true,
                                 alignment: TextAlign.center,
                               ),
@@ -159,7 +165,7 @@ final class AndroidDialog extends StatelessWidget {
     );
   }
 
-  /// ✅ Dissmis overlay, then run callback (if available)
+  /// ✅ Dismiss overlay, then run callback (if available)
   VoidCallback _dismissThen(
     OverlayDispatcher dispatcher,
     VoidCallback? action,

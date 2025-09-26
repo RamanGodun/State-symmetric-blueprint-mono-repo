@@ -33,19 +33,18 @@ This creates: `packages/core/lib/utils_shared/spider/spider.yaml`
 
 ```yaml
 # spider.yaml (in lib/utils_shared/spider/spider.yaml)
-
 generate_tests: false
 no_comments: true
-export: true
+export: false
 use_part_of: false
 
-package: core
+package: src/utils_shared/spider/
 
 groups:
   - path: assets/images
     class_name: AppImagesPaths
     types: [.png, .jpg, .jpeg, .webp, .gif]
-    output: utils_shared/spider/images_paths.dart
+    output: src/utils_shared/spider/images_paths.dart
 ```
 
 ---

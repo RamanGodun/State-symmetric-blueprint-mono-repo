@@ -1,6 +1,7 @@
 // 📌 No need for public API docs.
 // ignore_for_file: public_member_api_docs
 
+import 'package:core/base_modules/ui_design.dart' show AppFontFamily;
 import 'package:core/src/base_modules/localization/core_of_module/init_localization.dart';
 import 'package:core/src/base_modules/ui_design/ui_constants/app_colors.dart'
     show AppColors;
@@ -28,6 +29,7 @@ final class TextWidget extends StatelessWidget {
     this.enableShadow = false,
     this.isTextOnFewStrings,
     this.isUnderlined,
+    this.isItalic,
   });
 
   ///
@@ -45,6 +47,7 @@ final class TextWidget extends StatelessWidget {
   final bool enableShadow;
   final bool? isTextOnFewStrings;
   final bool? isUnderlined;
+  final bool? isItalic;
 
   //
 
@@ -75,7 +78,10 @@ final class TextWidget extends StatelessWidget {
           fontSize: fontSize ?? effectiveStyle.fontSize,
           letterSpacing: letterSpacing ?? effectiveStyle.letterSpacing,
           height: height ?? effectiveStyle.height,
-          // fontFamily: 'SFProText',
+          fontFamily: AppFontFamily.montserrat.value,
+          fontStyle: isItalic ?? false
+              ? FontStyle.italic
+              : effectiveStyle.fontStyle,
           decoration: switch (isUnderlined) {
             true => TextDecoration.underline,
             false => TextDecoration.none,
@@ -129,7 +135,7 @@ final class TextWidget extends StatelessWidget {
       case TextType.labelSmall:
         return buildText(textTheme.labelSmall);
       case TextType.button:
-        return buildText(textTheme.titleSmall);
+        return buildText(textTheme.titleMedium);
       case TextType.error:
         final errorStyle = textTheme.bodyLarge ?? const TextStyle();
         return buildText(errorStyle.copyWith(color: AppColors.forErrors));

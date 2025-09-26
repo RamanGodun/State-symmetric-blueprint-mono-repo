@@ -59,7 +59,8 @@ final class ThemePickerView extends StatelessWidget {
               value: type,
               child: TextWidget(
                 _themeLabel(type),
-                TextType.titleMedium,
+                TextType.titleSmall,
+                fontWeight: FontWeight.w400,
               ),
             ),
           )

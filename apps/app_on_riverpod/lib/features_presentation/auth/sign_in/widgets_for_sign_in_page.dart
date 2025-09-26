@@ -17,8 +17,10 @@ final class _SignInHeader extends StatelessWidget {
         /// 🖼️ App logo with Hero animation for smooth transitions
         Hero(
           tag: 'Logo',
-          child: const FlutterLogo(
-            size: AppSpacing.massive,
+          child: Image.asset(
+            FlavorX.appIcon,
+            width: AppSpacing.massive,
+            height: AppSpacing.massive,
           ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.xxl),
         ),
         //

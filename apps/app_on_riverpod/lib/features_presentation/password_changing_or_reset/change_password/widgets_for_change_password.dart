@@ -15,17 +15,17 @@ final class _ChangePasswordInfo extends StatelessWidget {
         const SizedBox(height: AppSpacing.massive),
         const TextWidget(
           LocaleKeys.change_password_title,
-          TextType.headlineMedium,
+          TextType.headlineSmall,
         ),
         const SizedBox(height: AppSpacing.xxxs),
         const TextWidget(
           LocaleKeys.change_password_warning,
-          TextType.bodyMedium,
+          TextType.titleSmall,
         ),
         Text.rich(
           TextSpan(
             text: LocaleKeys.change_password_prefix.tr(),
-            style: const TextStyle(fontSize: 16),
+            style: context.textTheme.titleSmall,
             children: [
               TextSpan(
                 text: LocaleKeys.change_password_signed_out.tr(),

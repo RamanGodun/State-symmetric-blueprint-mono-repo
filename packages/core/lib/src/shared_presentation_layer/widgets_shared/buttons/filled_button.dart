@@ -19,12 +19,16 @@ final class CustomFilledButton extends StatelessWidget {
     this.isLoading = false,
     this.isEnabled = true,
     this.isValidated = true,
+    this.labelFontsize = 18,
+    this.loaderSize = 20,
     super.key,
   });
   //
   final String label;
+  final double labelFontsize;
   final VoidCallback? onPressed;
   final bool isLoading;
+  final double loaderSize;
   final bool isEnabled;
   final bool? isValidated;
 
@@ -45,7 +49,7 @@ final class CustomFilledButton extends StatelessWidget {
           child:
               (isLoading
                       ? AppLoader(
-                          size: 20,
+                          size: loaderSize,
                           cupertinoRadius: 12,
                           color: colorScheme.onSurface,
                         )
@@ -54,8 +58,8 @@ final class CustomFilledButton extends StatelessWidget {
                           TextType.titleMedium,
                           fontWeight: !isEnabled
                               ? FontWeight.w300
-                              : FontWeight.w400,
-                          fontSize: 18,
+                              : FontWeight.w600,
+                          fontSize: labelFontsize,
                           letterSpacing: 0.9,
                           color: (isLoading || !isEnabled)
                               ? colorScheme.inverseSurface

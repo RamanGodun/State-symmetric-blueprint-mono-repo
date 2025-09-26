@@ -12,16 +12,21 @@ final class _ResetPasswordHeader extends StatelessWidget {
     //
     return Column(
       children: [
-        const FlutterLogo(
-          size: AppSpacing.great,
-        ).withPaddingOnly(top: AppSpacing.great, bottom: AppSpacing.l),
+        Hero(
+          tag: 'Logo',
+          child: Image.asset(
+            FlavorX.appIcon,
+            width: AppSpacing.great,
+            height: AppSpacing.great,
+          ).withPaddingOnly(top: AppSpacing.great, bottom: AppSpacing.l),
+        ),
         const TextWidget(
           LocaleKeys.reset_password_header,
           TextType.headlineSmall,
         ),
         const TextWidget(
           LocaleKeys.reset_password_sub_header,
-          TextType.bodyMedium,
+          TextType.titleSmall,
         ).withPaddingBottom(AppSpacing.xxl),
       ],
     );
@@ -138,6 +143,7 @@ final class _ResetPasswordPageFooter extends StatelessWidget {
         const TextWidget(
           LocaleKeys.reset_password_remember,
           TextType.bodyLarge,
+          fontWeight: FontWeight.w300,
         ),
         //
         AppTextButton(

@@ -80,20 +80,22 @@ final class IOSAppDialog extends StatelessWidget {
                   TextWidget(
                     title,
                     TextType.titleMedium,
+                    color: colorScheme.errorContainer,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
                     isTextOnFewStrings: true,
                   ),
                 ],
-              ).centered(),
+              ).centered().withPaddingTop(AppSpacing.s),
 
-              content: Padding(
-                padding: const EdgeInsets.only(top: AppSpacing.xxxs),
-                child: TextWidget(
-                  content,
-                  TextType.bodyLarge,
-                  fontWeight: FontWeight.w200,
-                  isTextOnFewStrings: true,
-                ),
-              ),
+              content: TextWidget(
+                content,
+                TextType.titleSmall,
+                fontWeight: FontWeight.w400,
+                fontSize: 18,
+                isTextOnFewStrings: true,
+                alignment: TextAlign.start,
+              ).withPaddingSymmetric(h: AppSpacing.m, v: AppSpacing.m),
 
               actions: isInfoDialog
                   ? [
@@ -139,7 +141,7 @@ final class IOSAppDialog extends StatelessWidget {
     );
   }
 
-  /// ✅ Dissmis overlay, then run callback (if available)
+  /// ✅ Dismiss overlay, then run callback (if available)
   VoidCallback _dismissThen(
     OverlayDispatcher dispatcher,
     VoidCallback? action,

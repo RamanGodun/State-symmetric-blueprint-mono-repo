@@ -16,9 +16,11 @@ final class _SignUpHeader extends StatelessWidget {
       children: [
         Hero(
           tag: 'Logo',
-          child: const FlutterLogo(
-            size: AppSpacing.massive,
-          ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.l),
+          child: Image.asset(
+            FlavorX.appIcon,
+            width: AppSpacing.massive,
+            height: AppSpacing.massive,
+          ).withPaddingOnly(top: AppSpacing.xl, bottom: AppSpacing.l),
         ),
         //
         /// 🏷️ Header text

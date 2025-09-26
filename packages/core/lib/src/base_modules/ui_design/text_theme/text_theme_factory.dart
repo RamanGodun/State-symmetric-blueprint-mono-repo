@@ -36,27 +36,27 @@ abstract final class TextThemeFactory {
 
     return TextTheme(
       // DISPLAY — accent (Montserrat)
-      displayLarge: t(color, FontWeight.w300, 57, accent),
-      displayMedium: t(color, FontWeight.w300, 45, accent),
-      displaySmall: t(color, FontWeight.w400, 35, accent),
+      displayLarge: t(color, FontWeight.w500, 57, accent),
+      displayMedium: t(color, FontWeight.w500, 45, accent),
+      displaySmall: t(color, FontWeight.w500, 35, accent),
 
       // HEADLINE — accent (Montserrat)
-      headlineLarge: t(color, FontWeight.w400, 31, accent),
-      headlineMedium: t(color, FontWeight.w500, 27, accent),
+      headlineLarge: t(color, FontWeight.w600, 31, accent),
+      headlineMedium: t(color, FontWeight.w600, 27, accent),
       headlineSmall: t(color, FontWeight.w600, 24, accent),
 
       // TITLE — mix: large = accent, medium/small = primary
       titleLarge: t(color, FontWeight.w600, 22, accent),
-      titleMedium: t(color, FontWeight.w500, 18, primary),
-      titleSmall: t(color, FontWeight.w500, 16, primary),
+      titleMedium: t(color, FontWeight.w600, 18, primary),
+      titleSmall: t(color, FontWeight.w600, 16, primary),
 
       // BODY — primary (Inter)
-      bodyLarge: t(color, FontWeight.w400, 15, primary),
-      bodyMedium: t(color, FontWeight.w400, 13, primary),
-      bodySmall: t(color, FontWeight.w400, 11, primary),
+      bodyLarge: t(color, FontWeight.w300, 17, primary),
+      bodyMedium: t(color, FontWeight.w300, 15, primary),
+      bodySmall: t(color, FontWeight.w300, 13, primary),
 
       // LABEL — primary (Inter)
-      labelLarge: t(color, FontWeight.w600, 14, primary),
+      labelLarge: t(color, FontWeight.w500, 14, primary),
       labelMedium: t(color, FontWeight.w500, 12, primary),
       labelSmall: t(color, FontWeight.w500, 11, primary),
     );

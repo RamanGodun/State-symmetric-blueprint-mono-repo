@@ -139,7 +139,7 @@ final class _ThemeSection extends StatelessWidget {
         TextWidget(
           LocaleKeys.theme_choose_theme.tr(),
           TextType.titleMedium,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w500,
         ),
         Row(
           children: [
