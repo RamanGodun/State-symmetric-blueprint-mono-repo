@@ -7,41 +7,64 @@
 
 ## ✨ Overview
 
-This modular showcase monorepo demonstrates how to build a **90%+ state-agnostic Flutter codebase**.
-(More than 90% of the code remains unchanged, regardless of whether the app uses Riverpod, Cubit/BLoC, or Provider.)
+This modular showcase monorepo demonstrates an example of **90%+ state-agnostic Flutter codebase**.
+(More than 90% of the code remains unchanged, regardless of whether the app uses **Riverpod**, **Cubit/BLoC**, or **Provider**.)
 
-✅ Advantages
-• Code Reusability → Shared modules can be used across multiple projects, improving efficiency and saving time.
-• Development Flexibility → Developers can seamlessly move between projects and teams, ensuring fast onboarding and easier scaling of teams during critical tasks.
-• Scalability & Maintainability → Enforcing clean architecture naturally results in a codebase that is easier to maintain and expand.
+### ✅ Advantages
 
-⚠️ Trade-offs
-• Increased Complexity (additional abstractions, wrappers, and files) => may add to the size of the codebase.
-• Higher Initial Investment → Building such a state-agnostic architecture requires more upfront effort, resources, and a steeper learning curve for new contributors.
+- **Code Reusability** → Shared modules can be reused across projects, improving efficiency and reducing time-to-market.
+- **Development Flexibility** → Developers can seamlessly move between projects/teams with minimal context-switch overhead => easier scaling of teams during critical tasks
+- **Scalability & Maintainability** → This approach requires/enforced clean architecture, that makes the codebase easier to maintain and extend.
+
+### ⚠️ **Trade-offs**
+
+- **Increased Complexity** (additional abstractions, wrappers, and files) => may add to the size of the codebase.
+- **Higher Initial Investment** → More effort and resources are required upfront; onboarding may be slower for new contributors.
 
 ---
 
-Apps designed as a **foundation for maximum state-agnostic Flutter apps** with built-in support for custom:
+### 🧩 Two Identical Demo Apps
 
-- 🌐 Localization via `easy_localization` (with built-in widgets auto-localization and fallbacks, as well as for errors managing and overlays flow)
-- 🎨 Theming and unified UI/UX (with dark/light/amoled themes, persistent states, text theme factories)
-- 🧭 Navigation via GoRouter (with declarative auth-aware redirect)
-- ✨ Common animations (page transitions, overlay/widget animations)
-- ⚠️ Error managing system
-- 🪟 Overlays system (with quenue, overlays engine/dispatcher and police resolver)
-  = 📄 Loggers (for lifecycle tracking of cubit/Bloc - [AppBlocObserver], for Riverpod - [ProviderDebugObserver])
-- 🛠 FormFields System (with custom field factory + validation, localization, declarative inputs)
+The repository includes **two demo applications**:
 
-### 🔥 Features
+- One built with **Cubit**
+- One built with **Riverpod**
+
+Both apps share **identical functionality, UI, and UX**. The choice of Cubit and Riverpod was deliberate — it’s enough to **visualize the approach** and demonstrate interoperability:
+
+- To migrate from **Cubit → Bloc**, simply replace method calls with event dispatching (replace Cubit with BLoC, add Events and adjust the DI bindings).
+- To migrate from **Cubit → Provider**, slightly more changes are required, since Provider depends on `BuildContext` and usually integrates with `GetIt`. The process includes adjusting the DI bindings and replacing Cubit with equivalent Providers exposing symmetric methods.
+- **Riverpod** stays the most state-agnostic, as it requires no external DI and integrates seamlessly.
+
+(!) This shows that one well-structured base is sufficient for all these state managers.
+
+### 🛠️ Foundation for State-Agnostic Apps
+
+These apps are designed as a **foundation for maximum state-agnostic Flutter development**, with built-in support for:
+
+- 🌐 **Localization** via `easy_localization` (with built-in widgets auto-localization and fallbacks, as well as for errors managing and overlays flow)
+- 🎨 **Theming** and unified UI/UX (with dark/light/amoled themes, persistent states, text theme factories)
+- 🧭 **Navigation** via GoRouter (with declarative auth-aware redirect)
+- ✨ **Common animations** (page transitions, overlay/widget animations)
+- ⚠️ **Error managing system** (with centralized declarative functional errors handling)
+- 🪟 **Overlays system** (with queue, overlays engine/dispatcher and policy resolver)
+  = 📄 **Loggers** (for lifecycle tracking of cubit/Bloc - [AppBlocObserver], for Riverpod - [ProviderDebugObserver])
+- 🛠 **FormFields System** (with custom field factory + validation, localization, declarative inputs)
+
+### 🔐 Demo Features
+
+To visualize the accepted approach, the following **next features** were implemented:
+
+- 👤 **Auth Flow**: Sign In, Sign Out, Sign Up
+- 📧 **E-mail Verification**
+- 🔑 **Password Management**: Change password, Reset password
+- 🪪 **Profile** feature
+
+These familiar features make it easier to understand and evaluate the **state-agnostic approach** in real-life use cases.
 
 ---
 
 ## 📲 Tech Stack
-
-### 🎯 Framework & Language
-
-- 🐦 **Flutter SDK** (>=3.22, SDK ^3.8.0)
-- 🎯 **Dart**
 
 ### ⚡ State Management & DI
 
@@ -49,6 +72,12 @@ Apps designed as a **foundation for maximum state-agnostic Flutter apps** with b
 - 🧩 **BLoC / Cubit**: `flutter_bloc`
 - 🛠 **GetIt** (dependency injection)
 - 🚀 **Productivity**: `equatable`, `rxdart`
+
+### 🎯 Framework & Language & Navigation/Routing
+
+- 🐦 **Flutter SDK** (>=3.22, SDK ^3.8.0)
+- 🌐 **easy_localization** (with codegen & keys generation)
+- 🧭 **go_router** (auth-aware navigation with declarative redirects)
 
 ### 🔥 Firebase & Local Storages
 
@@ -59,14 +88,6 @@ Apps designed as a **foundation for maximum state-agnostic Flutter apps** with b
 - 📜 `flutter_dotenv` (env configs & secrets)
 - 💾 `hydrated_bloc`, `get_storage`
 - 📦 `path_provider`
-
-### 🌐 Navigation & Routing
-
-- 🧭 **go_router** (auth-aware navigation with declarative redirects)
-
-### 🌍 Localization & i18n
-
-- 🌐 **easy_localization** (with codegen & keys generation)
 
 ### 🎨 UI & Theming
 
