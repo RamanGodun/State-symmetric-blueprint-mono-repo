@@ -2,6 +2,9 @@ name: bloc_adapter
 description: >
   Lightweight adapters that connect core ports to BLoC/cubit.
 
+# (!) This package is UI/adapter glue for BLoC/Cubit apps.
+# Avoid depending on app-specific code to prevent cycles.
+
 version: 0.1.0
 publish_to: none
 
@@ -9,7 +12,7 @@ publish_to: none
 # ENVIRONMENT
 # =============================
 environment:
-  flutter: ">=3.22.0" # keep alphabetical: 'flutter' before 'sdk'
+  flutter: ">=3.22.0"
   sdk: ">=3.8.0 <4.0.0"
 
 # =============================
@@ -26,9 +29,6 @@ dependencies:
   formz: ^0.8.0
   get_it: ^8.2.0
   hydrated_bloc: ^10.1.1
-
-# (!) This package is UI/adapter glue for BLoC.
-# Avoid depending on app-specific code to prevent cycles.
 
 # =============================
 # DEV DEPENDENCIES

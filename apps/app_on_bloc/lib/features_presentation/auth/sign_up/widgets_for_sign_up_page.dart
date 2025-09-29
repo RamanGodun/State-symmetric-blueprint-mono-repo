@@ -30,7 +30,7 @@ final class _SignUpHeader extends StatelessWidget {
         const TextWidget(
           LocaleKeys.sign_up_sub_header,
           TextType.bodyLarge,
-        ).withPaddingBottom(AppSpacing.xl),
+        ).withPaddingBottom(AppSpacing.l),
       ],
     );
   }

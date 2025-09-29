@@ -11,7 +11,7 @@ publish_to: none
 # ENVIRONMENT
 # =============================
 environment:
-  flutter: ">=3.22.0" # keep alphabetical (flutter before sdk)
+  flutter: ">=3.22.0"
   sdk: ^3.8.0
 
 # =============================
@@ -31,7 +31,6 @@ dependencies:
   flutter_dotenv: ^5.2.1
   rxdart: ^0.28.0
 
-# (!) IMPORTANT: do not add a dependency on `features` here — it creates cycles.
 # =============================
 # DEV DEPENDENCIES
 # =============================
@@ -44,5 +43,4 @@ dev_dependencies:
 # FLUTTER CONFIG
 # =============================
 flutter:
-  # No assets/fonts — only code and types.
   generate: true

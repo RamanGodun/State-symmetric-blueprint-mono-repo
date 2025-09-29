@@ -18,7 +18,7 @@ final class _ResetPasswordHeader extends StatelessWidget {
             FlavorX.appIcon,
             width: AppSpacing.great,
             height: AppSpacing.great,
-          ).withPaddingOnly(top: AppSpacing.great, bottom: AppSpacing.l),
+          ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.l),
         ),
         const TextWidget(
           LocaleKeys.reset_password_header,
@@ -27,6 +27,7 @@ final class _ResetPasswordHeader extends StatelessWidget {
         const TextWidget(
           LocaleKeys.reset_password_sub_header,
           TextType.titleSmall,
+          isTextOnFewStrings: true,
         ).withPaddingBottom(AppSpacing.xxl),
       ],
     );

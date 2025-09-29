@@ -21,7 +21,7 @@ final class _SignInHeader extends StatelessWidget {
             FlavorX.appIcon,
             width: AppSpacing.massive,
             height: AppSpacing.massive,
-          ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.xxl),
+          ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.l),
         ),
         //
         /// 🏷️ Main header text
@@ -31,7 +31,7 @@ final class _SignInHeader extends StatelessWidget {
         const TextWidget(
           LocaleKeys.sign_in_sub_header,
           TextType.bodyLarge,
-        ).withPaddingBottom(AppSpacing.xxxl),
+        ).withPaddingBottom(AppSpacing.xl),
       ],
     );
   }

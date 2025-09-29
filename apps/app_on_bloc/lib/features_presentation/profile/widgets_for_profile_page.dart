@@ -36,87 +36,89 @@ final class _UserProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return Center(
-      child: BlurContainer(
-        child: Card(
-          margin: const EdgeInsets.all(AppSpacing.xxm),
-          clipBehavior: Clip.antiAlias,
-          elevation: 3,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CachedNetworkImage(
-                imageUrl: user.profileImage,
-                placeholder: (_, _) => Image.asset(
-                  AppImagesPaths.loading,
-                  package: 'core',
+    return SingleChildScrollView(
+      child: Center(
+        child: BlurContainer(
+          child: Card(
+            margin: const EdgeInsets.all(AppSpacing.xxm),
+            clipBehavior: Clip.antiAlias,
+            elevation: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CachedNetworkImage(
+                  imageUrl: user.profileImage,
+                  placeholder: (_, _) => Image.asset(
+                    AppImagesPaths.loading,
+                    package: 'core',
+                    width: double.infinity,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
+                  errorWidget: (_, _, _) => const Icon(Icons.error, size: 48),
                   width: double.infinity,
                   height: 200,
                   fit: BoxFit.cover,
                 ),
-                errorWidget: (_, _, _) => const Icon(Icons.error, size: 48),
-                width: double.infinity,
-                height: 200,
-                fit: BoxFit.cover,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(AppSpacing.l),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //
-                    /// 👤 Name
-                    KeyValueTextWidget(
-                      labelKey: LocaleKeys.profile_name,
-                      value: user.name,
-                      labelTextType: TextType.bodyMedium,
-                      valueTextType: TextType.titleMedium,
-                    ),
+                Padding(
+                  padding: const EdgeInsets.all(AppSpacing.l),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //
+                      /// 👤 Name
+                      KeyValueTextWidget(
+                        labelKey: LocaleKeys.profile_name,
+                        value: user.name,
+                        labelTextType: TextType.bodyMedium,
+                        valueTextType: TextType.titleMedium,
+                      ),
 
-                    /// 🆔 ID
-                    KeyValueTextWidget(
-                      labelKey: LocaleKeys.profile_id,
-                      value: user.id,
-                      labelTextType: TextType.bodyMedium,
-                      valueTextType: TextType.bodySmall,
-                    ),
+                      /// 🆔 ID
+                      KeyValueTextWidget(
+                        labelKey: LocaleKeys.profile_id,
+                        value: user.id,
+                        labelTextType: TextType.bodyMedium,
+                        valueTextType: TextType.bodySmall,
+                      ),
 
-                    /// 📧 Email
-                    KeyValueTextWidget(
-                      labelKey: LocaleKeys.profile_email,
-                      value: user.email,
-                      labelTextType: TextType.bodyMedium,
-                      valueTextType: TextType.titleSmall,
-                    ),
+                      /// 📧 Email
+                      KeyValueTextWidget(
+                        labelKey: LocaleKeys.profile_email,
+                        value: user.email,
+                        labelTextType: TextType.bodyMedium,
+                        valueTextType: TextType.titleSmall,
+                      ),
 
-                    /// 📊 Points
-                    KeyValueTextWidget(
-                      labelKey: LocaleKeys.profile_points,
-                      value: user.point.toString(),
-                      labelTextType: TextType.bodyMedium,
-                    ),
+                      /// 📊 Points
+                      KeyValueTextWidget(
+                        labelKey: LocaleKeys.profile_points,
+                        value: user.point.toString(),
+                        labelTextType: TextType.bodyMedium,
+                      ),
 
-                    /// 🏆 Rank
-                    KeyValueTextWidget(
-                      labelKey: LocaleKeys.profile_rank,
-                      value: user.rank,
-                      labelTextType: TextType.bodyMedium,
-                    ),
-                    const SizedBox(height: AppSpacing.l),
+                      /// 🏆 Rank
+                      KeyValueTextWidget(
+                        labelKey: LocaleKeys.profile_rank,
+                        value: user.rank,
+                        labelTextType: TextType.bodyMedium,
+                      ),
+                      const SizedBox(height: AppSpacing.l),
 
-                    /// 🎛 Theme & appearance
-                    const _ThemeSection(),
+                      /// 🎛 Theme & appearance
+                      const _ThemeSection(),
 
-                    /// 🚀 Redirect button to [ChangePasswordPage]
-                    const _ChangePasswordButton(),
-                    //
-                  ],
+                      /// 🚀 Redirect button to [ChangePasswordPage]
+                      const _ChangePasswordButton(),
+                      //
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ).withPaddingOnly(bottom: AppSpacing.huge),
+        ).withPaddingOnly(bottom: AppSpacing.huge),
+      ),
     );
   }
 }

@@ -41,14 +41,14 @@ abstract final class TextThemeFactory {
       displaySmall: t(color, FontWeight.w500, 35, accent),
 
       // HEADLINE — accent (Montserrat)
-      headlineLarge: t(color, FontWeight.w600, 31, accent),
-      headlineMedium: t(color, FontWeight.w600, 27, accent),
-      headlineSmall: t(color, FontWeight.w600, 24, accent),
+      headlineLarge: t(color, FontWeight.w500, 31, accent),
+      headlineMedium: t(color, FontWeight.w500, 27, accent),
+      headlineSmall: t(color, FontWeight.w500, 24, accent),
 
       // TITLE — mix: large = accent, medium/small = primary
-      titleLarge: t(color, FontWeight.w600, 22, accent),
-      titleMedium: t(color, FontWeight.w600, 18, primary),
-      titleSmall: t(color, FontWeight.w600, 16, primary),
+      titleLarge: t(color, FontWeight.w500, 22, accent),
+      titleMedium: t(color, FontWeight.w500, 18, primary),
+      titleSmall: t(color, FontWeight.w500, 16, primary),
 
       // BODY — primary (Inter)
       bodyLarge: t(color, FontWeight.w300, 17, primary),
@@ -56,9 +56,9 @@ abstract final class TextThemeFactory {
       bodySmall: t(color, FontWeight.w300, 13, primary),
 
       // LABEL — primary (Inter)
-      labelLarge: t(color, FontWeight.w500, 14, primary),
-      labelMedium: t(color, FontWeight.w500, 12, primary),
-      labelSmall: t(color, FontWeight.w500, 11, primary),
+      labelLarge: t(color, FontWeight.w400, 14, primary),
+      labelMedium: t(color, FontWeight.w400, 12, primary),
+      labelSmall: t(color, FontWeight.w400, 11, primary),
     );
   }
 

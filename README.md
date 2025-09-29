@@ -1,113 +1,160 @@
-# Blueprint monorepo
+# Blueprint Monorepo
 
 ![coverage][coverage_badge]
-[![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
-[!LICENSE]([license_badge] LICENSE).
-
----
-
-A **modular starter project** with Clean Architecture and 90%+ state-agnostic codebase (works with cubit/BLoC/Riverpod)
-Might be as base for apps with built-in support for **localization**, **theming**, **GoRouter navigation**,
-**animations**, **custom error handling system**, **custom overlays system** and more.
+[![LICENSE][license_badge]](LICENSE)
 
 ---
 
 ## ✨ Overview
 
-This project acts as a robust foundation for Flutter apps that require:
+This modular showcase monorepo demonstrates how to build a **90%+ state-agnostic Flutter codebase**.
+(More than 90% of the code remains unchanged, regardless of whether the app uses Riverpod, Cubit/BLoC, or Provider.)
 
-- ✅ Fully structured Clean Architecture
-- ✅ Ready-to-use systems: overlays, theming, localization, error handling, navigation, animations
-- ✅ Scalable modularity and dependency injection via GetIt
-- ✅ In one app Riverpod as state management, in another - cubit/BLoC
-- ✅ A few features (auth, profile, password actions, etc...)
+✅ Advantages
+• Code Reusability → Shared modules can be used across multiple projects, improving efficiency and saving time.
+• Development Flexibility → Developers can seamlessly move between projects and teams, ensuring fast onboarding and easier scaling of teams during critical tasks.
+• Scalability & Maintainability → Enforcing clean architecture naturally results in a codebase that is easier to maintain and expand.
 
-> Perfect for rapid prototyping or extending into a complex production app.
+⚠️ Trade-offs
+• Increased Complexity (additional abstractions, wrappers, and files) => may add to the size of the codebase.
+• Higher Initial Investment → Building such a state-agnostic architecture requires more upfront effort, resources, and a steeper learning curve for new contributors.
 
 ---
 
-## 🔥 Features
+Apps designed as a **foundation for maximum state-agnostic Flutter apps** with built-in support for custom:
+
+- 🌐 Localization via `easy_localization` (with built-in widgets auto-localization and fallbacks, as well as for errors managing and overlays flow)
+- 🎨 Theming and unified UI/UX (with dark/light/amoled themes, persistent states, text theme factories)
+- 🧭 Navigation via GoRouter (with declarative auth-aware redirect)
+- ✨ Common animations (page transitions, overlay/widget animations)
+- ⚠️ Error managing system
+- 🪟 Overlays system (with quenue, overlays engine/dispatcher and police resolver)
+  = 📄 Loggers (for lifecycle tracking of cubit/Bloc - [AppBlocObserver], for Riverpod - [ProviderDebugObserver])
+- 🛠 FormFields System (with custom field factory + validation, localization, declarative inputs)
+
+### 🔥 Features
+
+---
+
+## 📲 Tech Stack
+
+### 🎯 Framework & Language
+
+- 🐦 **Flutter SDK** (>=3.22, SDK ^3.8.0)
+- 🎯 **Dart**
+
+### ⚡ State Management & DI
+
+- 🌱 **Riverpod**: `flutter_riverpod`, `riverpod_annotation`, `riverpod_generator`
+- 🧩 **BLoC / Cubit**: `flutter_bloc`
+- 🛠 **GetIt** (dependency injection)
+- 🚀 **Productivity**: `equatable`, `rxdart`
+
+### 🔥 Firebase & Local Storages
+
+- 🔑 `firebase_core`
+- 👤 `firebase_auth`
+- 📂 `cloud_firestore`
+- 💥 `firebase_crashlytics`
+- 📜 `flutter_dotenv` (env configs & secrets)
+- 💾 `hydrated_bloc`, `get_storage`
+- 📦 `path_provider`
+
+### 🌐 Navigation & Routing
+
+- 🧭 **go_router** (auth-aware navigation with declarative redirects)
+
+### 🌍 Localization & i18n
+
+- 🌐 **easy_localization** (with codegen & keys generation)
+
+### 🎨 UI & Theming
+
+- 🎨 **Theme system** (dark/light/amoled, persistent states, text theme factories)
+- 🕸 **Spider** (assets path generator)
+- 🪝 **UI Hooks**: `flutter_hooks`
+- 🖼 **cached_network_image**
+- 📝 **Forms & Validation**: `formz`
+
+### 🧪 Testing
+
+- 🧾 **flutter_test**
+- 🎭 **mocktail**
+- ✅ **very_good test runner**
+- 📊 Coverage reporting via **lcov**
+
+### ⚙️ Tooling & Code Quality
+
+- 📦 **Melos** (monorepo manager: bootstrap, scripts, CI)
+- 🧩 **build_runner** (codegen orchestrator)
+- 🖼 **flutter_launcher_icons** (per-flavor icons)
+- 🔍 **very_good_analysis** (linting ruleset by Very Good Ventures)
+- 📏 **custom_lint** (Riverpod-related rules)
+- 📊 **dart_code_metrics** (static analysis + HTML reports)
+- 📝 **commitlint** + **husky** + **lint-staged** (commit conventions, pre-commit checks)
+- 🤖 **GitHub Actions CI** (tests, analysis, coverage)
+- 📈 **lcov** (coverage visualization)
+- 🏷 **meta** (annotations)
+
+---
+
+## 🧠 Concept of State-Agnostic Style
+
+The approach is based on strict separation of concerns:
 
 - 🧱 **Core**: Logging, routing, DI, overlays, error handling
-- 🎨 **Theme System**: dark/light theme, persistent state
-- 🌐 **Localization**: Code-generated with `easy_localization`
-- 🧭 **Navigation**: `GoRouter` with auth-aware redirect
-- 🧰 **Overlays**: Snackbars, dialogs, banners via overlay engine
-- 🛠 **Form System**: Validated, declarative inputs with custom field factory
-- 📄 **Custom Loggers**: for lifecycle tracking of cubit/Bloc - `AppBlocObserver`, for Riverpod - `Logger`
+- **Core Layer** → reusable modules (DI, theming, overlays, navigation, forms, localization, error handling).
+- **Features Layer** → feature-driven modules (`auth`, `profile`, `password actions`, etc).
+- **Adapters Layer** → thin bridges to chosen state manager (`bloc_adapter`, `riverpod_adapter`).
+- **App Bootstrap** → environment configs & initialization.
+- **Firebase Adapter** → seamless Firebase integration.
 
-- 🧪 **Firebase Config**: via `.env` + `flutter_dotenv`
-- 🧬 **Code Generation**: `JsonSerializable`, `Spider`, `EasyLocalization`, etc.
+### Key Architectural Decisions
+
+- Shared layers (`data → domain → presentation`) are **state-independent**.
+- Adapters only implement bindings for a specific state manager.
+- Dependency injection handled via **GetIt**.
+- Navigation unified with **GoRouter factories** per adapter.
+- Unified error handling & overlays system.
+
+See [`ADR.md`](ADR/ADR.md) for full decision records.
 
 ---
 
-## 🧩 Tech Stack
+## 🚀 Usage & Setup
 
-## add here...
-
-## 🧠 Architecture
-
-### 🧾 ADR / Architecture Philosophy
-
-See [`ADR.md`](ADR/ADR.md) for:
-
-- ...
-
-The app is built with strict **Modular and Clean Architecture**, following AMC principles:
-
-```
-lib/
-|
-├── app_bootstrap_and_config
-├── core/                     # Global systems (di, overlays, navigation, theme, etc)
-│   └── base_modules/         # Reusable modules: errors, localization, forms, etc
-├── features/                 # Feature-driven modular structure (auth, profile...)
-│   └── feature_name/         # Follows Domain → Data → Presentation layering
-└── main.dart                 # App entry point with DI + observers setup
-```
-
-## Getting Started 🚀
+### Getting Started 🚀
 
 ```bash
-git clone https://github.com/....git
-flutter pub get
+# Clone the repository
+git clone https://github.com/RamanGodun/State-agnostic-blueprint-mono-repo
+cd blueprint_monorepo
 flutter run
+
+# Install Melos (monorepo manager)
+dart pub global activate melos
+
+# Bootstrap all packages
+melos bootstrap
+
+# To run the desired flavor either use the launch configuration in VSCode/Android Studio or use the following commands:
+flutter run --flavor development --target lib/main_development.dart # Development flavor
+flutter run --flavor staging --target lib/main_staging.dart # Staging flavor
+# Currently `main_production.dart` was deleted, as there is no intentions to deploy this code
 ```
 
-For localization/codegen:
+### ⚙️ Firebase Configuration
 
-```bash
-flutter pub run build_runner build --delete-conflicting-outputs
-```
+#### Firebase configured via `.env` + `flutter_dotenv`
 
-This project contains 3 flavors:
+Use granted `.env` files or create your owns, in this case:
 
-- development
-- staging
-- production
+1. ```bash
+   flutterfire configure --project=<your_project_id>
+   ```
 
-To run the desired flavor either use the launch configuration in VSCode/Android Studio or use the following commands:
-
-```sh
-# Development
-$ flutter run --flavor development --target lib/main_development.dart
-# Staging
-$ flutter run --flavor staging --target lib/main_staging.dart
-# Production
-$ flutter run --flavor production --target lib/main_production.dart
-```
-
-\_\*Currently `main_production.dart` was deleted, as there is no intentions to deploy this code
-
-## ⚙️ Firebase Configuration
-
-1. Install deps and configure:
-
-````bash
-flutter pub get
-flutterfire configure --project=<your_project_id>
-
-2. Create `.env` file:
+````
+2. After firebase configuration put into created `.env` files next info:
 ```env
 FIREBASE_API_KEY=...
 FIREBASE_APP_ID=...
@@ -117,8 +164,6 @@ FIREBASE_STORAGE_BUCKET=...
 FIREBASE_AUTH_DOMAIN=...
 FIREBASE_IOS_BUNDLE_ID=...
 ````
-
----
 
 ---
 
@@ -132,11 +177,13 @@ Designed with the testing pyramid in mind:
 
 ---
 
-## Running Tests 🧪
+### Running Tests 🧪
 
 To run all unit and widget tests use the following command:
 
 ```sh
+# Run all tests with coverage
+melos run test
 $ very_good test --coverage --test-randomize-ordering-seed random
 ```
 
@@ -155,11 +202,6 @@ $ open coverage/index.html
 
 This monorepo is licensed under the [LICENSE](LICENSE).
 
-> Built with ❤️ for clean, scalable and robust Flutter apps.
-
 [coverage_badge]: coverage_badge.svg
-[flutter_localizations_link]: https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html
 [internationalization_link]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
-[very_good_cli_link]: https://github.com/VeryGoodOpenSource/very_good_cli

@@ -37,7 +37,7 @@ Despite different state managers, more then 90% of the code remained identical, 
 Adopt a **State Agnostic Clean Architecture**, using Riverpod as the default state manager for orchestration,
 but ensuring all core business logic and modules are fully decoupled from any particular state manager.
 
-- All shared modules (Animation, Error Handling, Localization, Overlay, Theme, etc.) are practically (>95%) independent from state manager logic.
+- All shared modules (Animation, Error Handling, Localization, Overlay, Theme, etc.) are practically (>97%) independent from state manager logic.
 - The state manager’s only responsibility is orchestration — all business logic lives in use cases.
 - UI layer is as thin as possible; nearly all widgets are stateless and simply react to state changes.
 - DI is provided by Riverpod’s ProviderScope; no additional DI container needed (unlike Bloc + GetIt or Provider+GetIt).
@@ -94,7 +94,7 @@ but ensuring all core business logic and modules are fully decoupled from any pa
 
 ## Success Criteria
 
-- [ ] Features migrate between projects with <5% code change.
+- [ ] Features migrate between projects with <10% code change.
 - [ ] Code coverage >80% on business logic.
 - [ ] New dev onboarding <1 week.
 - [ ] Feature delivery cycle <2 weeks.

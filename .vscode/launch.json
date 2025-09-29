@@ -9,7 +9,7 @@
       "cwd": "${workspaceFolder}/apps/app_on_bloc",
       "program": "lib/main_development.dart",
       "args": ["--flavor", "development"],
-      "deviceId": "BBDFD907-B7B0-4471-9B9C-A091053B81C9"
+      "deviceId": "96748265-B907-4F14-A4E5-0E01AEADC540"
     },
     {
       "name": "Android (cubit app - dev)",
@@ -27,7 +27,7 @@
       "cwd": "${workspaceFolder}/apps/app_on_bloc",
       "program": "lib/main_staging.dart",
       "args": ["--flavor", "staging"],
-      "deviceId": "BBDFD907-B7B0-4471-9B9C-A091053B81C9"
+      "deviceId": "96748265-B907-4F14-A4E5-0E01AEADC540"
     },
     {
       "name": "Android (cubit app - stg)",
@@ -47,7 +47,7 @@
       "cwd": "${workspaceFolder}/apps/app_on_riverpod",
       "program": "lib/main_development.dart",
       "args": ["--flavor", "development"],
-      "deviceId": "BBDFD907-B7B0-4471-9B9C-A091053B81C9"
+      "deviceId": "96748265-B907-4F14-A4E5-0E01AEADC540"
     },
     {
       "name": "Android (riverpod dev)",
@@ -65,7 +65,7 @@
       "cwd": "${workspaceFolder}/apps/app_on_riverpod",
       "program": "lib/main_staging.dart",
       "args": ["--flavor", "staging"],
-      "deviceId": "BBDFD907-B7B0-4471-9B9C-A091053B81C9"
+      "deviceId": "96748265-B907-4F14-A4E5-0E01AEADC540"
     },
     {
       "name": "Android (riverpod stg)",

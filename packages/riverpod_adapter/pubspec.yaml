@@ -2,6 +2,9 @@ name: riverpod_adapter
 description: >
   Lightweight Riverpod adapters that connect core ports and features to concrete infra (Firebase, storage, overlays, theming).
 
+# (!) This package is UI/adapter glue for BLoC/Cubit apps.
+# Avoid depending on app-specific code to prevent cycles.
+
 version: 0.1.0
 publish_to: none
 
@@ -9,7 +12,7 @@ publish_to: none
 # ENVIRONMENT
 # =============================
 environment:
-  flutter: ">=3.22.0" # keep alphabetical (flutter before sdk)
+  flutter: ">=3.22.0"
   sdk: ">=3.8.0 <4.0.0"
 
 # =============================
