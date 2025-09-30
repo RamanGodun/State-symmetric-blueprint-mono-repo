@@ -64,7 +64,7 @@ final class AndroidBanner extends StatelessWidget {
                   Flexible(
                     child: TextWidget(
                       message,
-                      TextType.titleSmall,
+                      TextType.bodyMedium,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       isTextOnFewStrings: true,

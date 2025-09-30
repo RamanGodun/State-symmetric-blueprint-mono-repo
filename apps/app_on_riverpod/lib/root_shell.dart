@@ -21,7 +21,6 @@ final class AppLocalizationShell extends StatelessWidget {
 }
 
 ////
-
 ////
 
 /// 🌳🧩 [_AppViewShell] — reactive entry shell
@@ -37,23 +36,21 @@ final class _AppViewShell extends ConsumerWidget {
     ///
     /// 🧭 Stable GoRouter instance (updates only if replaced in DI)
     final router = ref.watch(routerProvider);
-
-    /// 🎯 Select only precise theme dependencies
+    //
+    /// 🎯 Granular subscriptions, select only precise theme dependencies
     final themeMode = ref.watch(themeProvider.select((p) => p.mode));
     final font = ref.watch(themeProvider.select((p) => p.font));
     final themeVariant = ref.watch(themeProvider.select((p) => p.theme));
-
+    //
     /// 🌓 Build themes through cache (without catching the whole prefs object)
     final lightTheme = ThemePreferences(
       theme: ThemeVariantsEnum.light,
       font: font,
     ).buildLight();
-
     final darkTheme = ThemePreferences(
       theme: themeVariant,
       font: font,
     ).buildDark();
-    //
 
     return _AppRootView(
       router: router,
@@ -65,7 +62,6 @@ final class _AppViewShell extends ConsumerWidget {
 }
 
 ////
-
 ////
 
 /// 📱🧱 [_AppRootView] — Final stateless [MaterialApp.router] widget.
@@ -84,31 +80,30 @@ final class _AppRootView extends StatelessWidget {
   final ThemeData darkTheme;
   final ThemeMode themeMode;
   final GoRouter router;
+  //
 
   @override
   Widget build(BuildContext context) {
-    //
+    ///
     return MaterialApp.router(
       title: LocaleKeys.app_title.tr(),
-
-      // 🌍 Localization config
+      //
+      /// 🌍 Localization setup via EasyLocalization
       locale: context.locale,
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
-
-      // 🔀 GoRouter configuration
+      //
+      /// 🧭 GoRouter configuration for declarative navigation
       routerConfig: router,
-
+      //
       /// 🎨 Theme configuration
       theme: theme,
       darkTheme: darkTheme,
       themeMode: themeMode,
-
-      /// To right catch of system text scale/locale/etc
-      useInheritedMediaQuery: true,
-
-      // 🧩 Gesture handler to dismiss overlays and keyboard
+      //
+      /// 🧩 Gesture handler to dismiss overlays and keyboard
       builder: (context, child) => GlobalOverlayHandler(child: child!),
+      //
     );
   }
 }

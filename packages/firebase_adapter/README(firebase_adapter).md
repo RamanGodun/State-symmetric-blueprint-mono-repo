@@ -3,7 +3,7 @@
 **Firebase Adapter** centralizes all Firebase-related code (init, types, gateways, utils)
 so that apps and feature modules never depend on Firebase SDKs directly.
 
-Swap the backend by replacing this package (e.g., with a future `supabase_adapter`) without touching other code.
+Swap the backend by replacing this package (e.g., with another remote database) without touching other code.
 
 - ✅ **Single entry point** — one public barrel to import.
 - ✅ **Clean boundaries** — no Firebase deps leakage into `features`/apps.

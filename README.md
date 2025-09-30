@@ -7,7 +7,7 @@
 
 ## ✨ Overview
 
-This modular showcase monorepo demonstrates an example of **90%+ state-agnostic Flutter codebase**.
+This modular showcase monorepo demonstrates an example of **codebase, that 90%+ agnostic to state manager**.
 (More than 90% of the code remains unchanged, regardless of whether the app uses **Riverpod**, **Cubit/BLoC**, or **Provider**.)
 
 ### ✅ Advantages
@@ -23,44 +23,154 @@ This modular showcase monorepo demonstrates an example of **90%+ state-agnostic 
 
 ---
 
-### 🧩 Two Identical Demo Apps
+## 🧠 Main Concepts
 
-The repository includes **two demo applications**:
+The monorepo is structured into **two fully symmetrical apps (Cubit-based and Riverpod-based) and **packages/\*\*
 
-- One built with **Cubit**
-- One built with **Riverpod**
+```files tree
+|
+├── apps/                        # Symmetric demo-apps
+│   ├── cubit_app/
+│   │   ├── app_bootstrap/
+│   │   ├── core/
+│   │   │   ├── base_modules/
+│   │   │   ├── shared_presentation/
+│   │   │   └── utils/
+│   │   └── features_presentation/
+│   │       └── ...
+|   |
+│   └── riverpod_app/
+│       ├── app_bootstrap/
+│       ├── core/
+│       │   ├── base_modules/
+│       │   ├── shared_presentation/
+│       │   └── utils/
+│       └── features_presentation/
+│           ├── ...
+│
+├── packages/                    # Flutter-packages, that plugs-in to apps
+│   ├── app_bootstrap/
+│   ├── core/
+│   ├── features/
+│   ├── firebase_adapter/
+│   ├── bloc_adapter/
+│   └── riverpod_adapter/
+│
+|
+├── ADR/                         # Architecture Decision Records
+├── melos.yaml                   # Monorepo manager
+├── pubspec.yaml
+├── README.md
+└── LICENSE
+```
 
-Both apps share **identical functionality, UI, and UX**. The choice of Cubit and Riverpod was deliberate — it’s enough to **visualize the approach** and demonstrate interoperability:
+**The overall structure follows a universal organizational principle applied consistently to apps and packages.**
+
+Each object (an app or a package) is divided into three major areas:
+
+- **`app_bootstrap/`** → everything related to application setup and initialization (DI, configs, environment).
+- **`core/`** → shared codebase, split into `base_modules` (navigation, overlays, localization, theming, error handling, etc.), shared layers (`presentation`, `domain`, `data`) and general `utils`.
+- **`features/`** → feature-first design containing UI, view, and state-manager logic. The deeper layers (use cases, repositories, gateways) live in dedicated shared Flutter packages like [`features/`] or [`firebase_adapter/`].
+  - This approach provides **clear boundaries, symmetry, and predictable discoverability**.
+
+- If something relates to **app startup**, it is always in `app_bootstrap` (with reusable parts extracted into the [app_bootstrap] package).
+- If it’s a **feature**, its **presentation layer** stays inside the app (`features_presentation/`), while its **domain/data layers** live in the shared [features] package.
+- All **Firebase-related code** belongs exclusively to the [firebase_adapter] package, making it easy to swap with another backend (e.g., Supabase, Isar).
+
+Inside **`core/`** (both in apps and packages), files are organized with the following rules:
+
+1. If code belongs to a **fundamental module** (localization, overlays, UI design, navigation, animations, error handling, forms, loggers) → put it in `base_modules/`.
+2. If code is reused but scoped to a **single architectural layer** only (e.g., a model used only in domain, or a widget used only in presentation) → place it in `shared_domain/`, `shared_data/`, or `shared_presentation/`.
+3. If the code is **generic and cross-cutting**, and does not fit the above categories → put it in `utils/`.
+
+This systematic organization ensures every piece of code has a natural home, making the monorepo **predictable, scalable, discoverable and maximum-possibly state-agnostic**.
+
+### 🧩 Two Symmetric Demo Apps
+
+📱 [Cubit Demo App](apps/cubit_app/README.md)
+A fully functional demo built with **Cubit**, showcasing the state-agnostic architecture in action.
+Demonstrates how Cubit integrates with `core`, `features`, and `adapters` while keeping **90% of the codebase unchanged**.
+
+📱 [Riverpod Demo App](apps/riverpod_app/README.md)
+A symmetrical demo app built with **Riverpod**, featuring the exact same functionality and UI/UX as the Cubit app.
+Proves that the architecture is truly **state-agnostic** and reusable across different state managers.
+
+**Both apps share identical functionality, UI, and UX**.
+The choice of Cubit and Riverpod was deliberate — it’s enough to **visualize the approach** and demonstrate interoperability:
 
 - To migrate from **Cubit → Bloc**, simply replace method calls with event dispatching (replace Cubit with BLoC, add Events and adjust the DI bindings).
-- To migrate from **Cubit → Provider**, slightly more changes are required, since Provider depends on `BuildContext` and usually integrates with `GetIt`. The process includes adjusting the DI bindings and replacing Cubit with equivalent Providers exposing symmetric methods.
+- To migrate from **Cubit → Provider**, slightly more changes are required, since Provider depends on `BuildContext` and usually integrates with `GetIt`.
+  The process includes adjusting the DI bindings and replacing Cubit with equivalent Providers exposing symmetric methods.
 - **Riverpod** stays the most state-agnostic, as it requires no external DI and integrates seamlessly.
 
 (!) This shows that one well-structured base is sufficient for all these state managers.
 
-### 🛠️ Foundation for State-Agnostic Apps
-
-These apps are designed as a **foundation for maximum state-agnostic Flutter development**, with built-in support for:
-
-- 🌐 **Localization** via `easy_localization` (with built-in widgets auto-localization and fallbacks, as well as for errors managing and overlays flow)
-- 🎨 **Theming** and unified UI/UX (with dark/light/amoled themes, persistent states, text theme factories)
-- 🧭 **Navigation** via GoRouter (with declarative auth-aware redirect)
-- ✨ **Common animations** (page transitions, overlay/widget animations)
-- ⚠️ **Error managing system** (with centralized declarative functional errors handling)
-- 🪟 **Overlays system** (with queue, overlays engine/dispatcher and policy resolver)
-  = 📄 **Loggers** (for lifecycle tracking of cubit/Bloc - [AppBlocObserver], for Riverpod - [ProviderDebugObserver])
-- 🛠 **FormFields System** (with custom field factory + validation, localization, declarative inputs)
-
 ### 🔐 Demo Features
 
-To visualize the accepted approach, the following **next features** were implemented:
+These apps are designed as a **foundation for small-mid size apps with codestyle, almost agnostic to state-managers**, also there is built-in support for:
+
+- 🌐 **Localization** via `easy_localization` ([docs](<packages/core/lib/src/base_modules/localization/README(localization).md>))
+  (with built-in widgets auto-localization and fallbacks, as well as for errors managing and overlays flow)
+- 🎨 **Theming** and unified UI/UX ([docs](packages/core/lib/src/base_modules/ui_design/Theme_module_README.md))
+  (with dark/light/amoled themes, persistent states, text theme factories)
+- 🧭 **Navigation** via GoRouter ([docs](<packages/core/lib/src/base_modules/navigation/README(navigation).md>))
+  (with declarative auth-aware redirect)
+- ✨ **Common animations** ([docs](<packages/core/lib/src/base_modules/animations/README(animations).md>))
+  (page transitions, overlay/widget animations)
+- ⚠️ **Error managing system** ([docs](<packages/core/lib/src/base_modules/errors_management/README(errors_handling).md>))
+  (with centralized declarative functional errors handling)
+- 🪟 **Overlays system** ([docs](<packages/core/lib/src/base_modules/overlays/README(overlays).md>))
+  (with queue, overlays engine/dispatcher and policy resolver)
+- 🛠 **FormFields System** ([docs](<packages/core/lib/src/base_modules/form_fields/README(form_fields).md>))
+  (with custom field factory + validation, localization, declarative inputs)
+- 📄 **Loggers**
+  ([AppBlocObserver](packages/bloc_adapter/lib/src/base_modules/observer/bloc_observer.dart),
+  [ProviderDebugObserver](packages/riverpod_adapter/lib/src/base_modules/observing/providers_debug_observer.dart))
+
+  **To visualize the accepted approach, also the following next features were implemented**:
 
 - 👤 **Auth Flow**: Sign In, Sign Out, Sign Up
 - 📧 **E-mail Verification**
 - 🔑 **Password Management**: Change password, Reset password
 - 🪪 **Profile** feature
 
-These familiar features make it easier to understand and evaluate the **state-agnostic approach** in real-life use cases.
+* These familiar features make it easier to understand and evaluate the **state-agnostic approach** in real-life use cases
+  (also note, that ideal UI/UX app design was not the primary goal of this monorepo)
+
+### Created Flutter Packages
+
+#### 📦 [App Bootstrap](<packages/app_bootstrap/README(app_bootstrap).md>)
+
+Provides a deterministic startup pipeline shared by all apps — platform validation, env loading, storage init,
+Firebase config, and DI setup. Keeps app bootstrapping **consistent and agnostic to state-manager technology**.
+
+#### 📦 [Core](<packages/core/README%20(core%20package).md>)
+
+Holds the **base modules** (navigation, overlays, theming, localization, forms, animations, error handling)
+and shared **data/domain/presentation layers**. Ensures code reusability and clean architecture boundaries.
+This package is **consistent and agnostic to state-manager technology**.
+
+#### 📦 [Features](<packages/features/README(features).md>)
+
+Implements reusable **domain and data layers** for app features (Auth, Email Verification, Password Reset/Change, Profile).
+Designed to be **consistent and agnostic to state-manager technology**, so features plug into Cubit, BLoC, or Riverpod apps without changes.
+
+#### 📦 [Firebase Adapter](<packages/firebase_adapter/README(firebase_adapter).md>)
+
+Centralizes Firebase initialization, gateways, and utils. Prevents Firebase SDK leakage into apps/features,
+making backend **swappable** (e.g., in future can be easily replaced with another remote/local database).
+
+#### 📦 [BLoC Adapter](packages/bloc_adapter/README.md)
+
+Provides lightweight glue between `core`/`features` and the BLoC ecosystem. Ships **observers, DI helpers, theming, overlays**,
+and BLoC-friendly widgets, making BLoC/Cubit integration seamless/ergonomic and keeping business logic isolated from presentation.
+
+#### 📦 [Riverpod Adapter](<packages/riverpod_adapter/README(riveroid_adapter).md>)
+
+Supplies ready-made providers for Firebase, features, and UI modules. Adds **error handling, overlays, theming**,
+and global DI container support, making Riverpod integration seamless/ergonomic and keeping business logic isolated from presentation.
+
+See [`ADR.md`](ADR/ADR.md) for full decision records.
 
 ---
 
@@ -84,7 +194,6 @@ These familiar features make it easier to understand and evaluate the **state-ag
 - 🔑 `firebase_core`
 - 👤 `firebase_auth`
 - 📂 `cloud_firestore`
-- 💥 `firebase_crashlytics`
 - 📜 `flutter_dotenv` (env configs & secrets)
 - 💾 `hydrated_bloc`, `get_storage`
 - 📦 `path_provider`
@@ -116,29 +225,6 @@ These familiar features make it easier to understand and evaluate the **state-ag
 - 🤖 **GitHub Actions CI** (tests, analysis, coverage)
 - 📈 **lcov** (coverage visualization)
 - 🏷 **meta** (annotations)
-
----
-
-## 🧠 Concept of State-Agnostic Style
-
-The approach is based on strict separation of concerns:
-
-- 🧱 **Core**: Logging, routing, DI, overlays, error handling
-- **Core Layer** → reusable modules (DI, theming, overlays, navigation, forms, localization, error handling).
-- **Features Layer** → feature-driven modules (`auth`, `profile`, `password actions`, etc).
-- **Adapters Layer** → thin bridges to chosen state manager (`bloc_adapter`, `riverpod_adapter`).
-- **App Bootstrap** → environment configs & initialization.
-- **Firebase Adapter** → seamless Firebase integration.
-
-### Key Architectural Decisions
-
-- Shared layers (`data → domain → presentation`) are **state-independent**.
-- Adapters only implement bindings for a specific state manager.
-- Dependency injection handled via **GetIt**.
-- Navigation unified with **GoRouter factories** per adapter.
-- Unified error handling & overlays system.
-
-See [`ADR.md`](ADR/ADR.md) for full decision records.
 
 ---
 

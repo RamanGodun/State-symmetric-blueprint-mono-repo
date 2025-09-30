@@ -20,7 +20,6 @@ final class AppLocalizationShell extends StatelessWidget {
 }
 
 ////
-
 ////
 
 /// 🌳🧩 [_AppViewShell] — reactive entry shell
@@ -36,42 +35,41 @@ final class _AppViewShell extends StatelessWidget {
     //
     /// 🧭 Stable GoRouter instance from DI/context
     final router = context.read<GoRouter>();
-
-    /// 🎯 Select only (theme, font) for precise rebuilds
-    return BlocSelector<
-      AppThemeCubit,
-      ThemePreferences,
-      (ThemeVariantsEnum, AppFontFamily)
-    >(
-      selector: (s) => (s.theme, s.font),
-      builder: (context, sel) {
-        final (theme, font) = sel;
-        // Local prefs for mode + darkTheme calculation
-        final prefs = ThemePreferences(theme: theme, font: font);
-
-        return _AppRootView(
-          router: router,
-
-          /// 🌞 Light theme always based on [light] + current font
-          lightTheme: ThemePreferences(
-            theme: ThemeVariantsEnum.light,
-            font: font,
-          ).buildLight(),
-
-          /// 🌙 Dark/AMOLED based on current variant
-          darkTheme: prefs.buildDark(),
-
-          /// 🌓 ThemeMode resolved from prefs
-          themeMode: prefs.mode,
-          //
+    //
+    /// 🎯 Granular subscriptions, select only precise theme dependencies
+    final themeMode = context
+        .watchAndSelect<AppThemeCubit, ThemePreferences, ThemeMode>(
+          (s) => s.mode,
         );
-      },
+    final font = context
+        .watchAndSelect<AppThemeCubit, ThemePreferences, AppFontFamily>(
+          (s) => s.font,
+        );
+    final themeVariant = context
+        .watchAndSelect<AppThemeCubit, ThemePreferences, ThemeVariantsEnum>(
+          (s) => s.theme,
+        );
+    //
+    /// 🌓 Build themes through cache (without catching the whole prefs object)
+    final lightTheme = ThemePreferences(
+      theme: ThemeVariantsEnum.light,
+      font: font,
+    ).buildLight();
+    final darkTheme = ThemePreferences(
+      theme: themeVariant,
+      font: font,
+    ).buildDark();
+
+    return _AppRootView(
+      router: router,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: themeMode,
     );
   }
 }
 
 ////
-
 ////
 
 /// 📱🧱 [_AppRootView] — Final stateless [MaterialApp.router] widget.
@@ -81,44 +79,38 @@ final class _AppRootView extends StatelessWidget {
   ///------------------------------------------
   const _AppRootView({
     required this.router,
-    required this.lightTheme,
+    required this.theme,
     required this.darkTheme,
     required this.themeMode,
   });
   //
   final GoRouter router;
-  final ThemeData lightTheme;
+  final ThemeData theme;
   final ThemeData darkTheme;
   final ThemeMode themeMode;
-
   //
 
   @override
   Widget build(BuildContext context) {
     ///
     return MaterialApp.router(
-      ///
       title: LocaleKeys.app_title.tr(),
-
-      /// 🌐  Localization setup via EasyLocalization
+      //
+      /// 🌍 Localization setup via EasyLocalization
       locale: context.locale,
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
-
+      //
+      /// 🧭 GoRouter configuration for declarative navigation
+      routerConfig: router,
+      //
       /// 🎨 Theme configuration
-      theme: lightTheme,
+      theme: theme,
       darkTheme: darkTheme,
       themeMode: themeMode,
-
-      /// To right catch of system text scale/locale/etc
-      useInheritedMediaQuery: true,
-
-      /// 🔁 Router setup for declarative navigation
-      routerConfig: router,
-
-      // 🧩 Gesture handler to dismiss overlays and keyboard
+      //
+      /// 🧩 Gesture handler to dismiss overlays and keyboard
       builder: (context, child) => GlobalOverlayHandler(child: child!),
-
       //
     );
   }

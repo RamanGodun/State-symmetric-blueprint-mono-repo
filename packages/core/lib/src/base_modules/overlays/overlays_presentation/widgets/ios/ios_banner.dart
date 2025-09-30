@@ -70,7 +70,7 @@ final class IOSBanner extends StatelessWidget {
               children: [
                 Icon(icon, color: color, size: 22),
                 const SizedBox(width: AppSpacing.xxxs),
-                TextWidget(message, TextType.titleSmall, color: color),
+                TextWidget(message, TextType.bodyMedium, color: color),
               ],
             ),
           ),
