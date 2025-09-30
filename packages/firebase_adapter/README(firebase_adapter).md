@@ -46,23 +46,24 @@ import 'package:firebase_adapter/firebase_adapter.dart';
 
 ```
 firebase_adapter/lib
-├─ firebase_adapter.dart                 # ← Barrel (public API)
+├─ firebase_adapter.dart                  # 🧱 Public barrel (facade API)
 │
-└─ src
-   ├─ bootstrap/
-   │   ├─ env_loader.dart                # 🧪 Load .env (throw on missing keys)
-   │   ├─ firebase_env_options.dart      # 🧭 FirebaseOptions from .env (per-platform)
-   │   └─ firebase_init.dart             # 🛡️ Safe init (idempotent, project verification)
+└─ src/
+   ├─ app_bootstrap/
+   │   ├─ env_loader.dart                 # 🧪 Load .env and verify required keys
+   │   ├─ firebase_env_options.dart       # 🧭 FirebaseOptions from env (per-platform)
+   │   └─ firebase_init.dart              # 🛡️ Safe Firebase init (idempotent, validated)
    │
-   ├─ auth_and_firestore/
-   │   ├─ auth_user_utils.dart           # 👤 currentUserOrThrow / uid / email / reload
-   │   ├─ firebase_auth_gateway.dart     # 🔐 AuthGateway impl over FirebaseAuth (+stream)
-   │   └─ firebase_refs.dart             # 📚 Strong refs for FirebaseAuth & Firestore collections
-   │
-   ├─ typedefs.dart                      # 🔤 Typedefs & curated type exports (FBException, etc.)
+   ├─ core/
+   │   ├─ placeholder.dart                # 📌 Placeholder for future core wiring
+   │   └─ utils/
+   │       └─ firebase_auth_gateway.dart  # 🔐 AuthGateway impl wrapping FirebaseAuth
    │
    └─ utils/
-       └─ crash_analytics_logger.dart    # 🧰 Thin wrapper for crash/analytics logging
+       ├─ crash_analytics_logger.dart     # 🧰 Thin wrapper for Crashlytics/Analytics
+       ├─ firebase_refs.dart              # 📚 Strong refs for FirebaseAuth & Firestore
+       ├─ guarded_fb_user.dart            # 👤 Guarded FirebaseUser helpers
+       └─ typedefs.dart                   # 🔤 Curated typedefs & exported Firebase types
 ```
 
 > If `utils/firebase_utils.dart` duplicates initialization logic — fold it into `bootstrap/firebase_initializer.dart`

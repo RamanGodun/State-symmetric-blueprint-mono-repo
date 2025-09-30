@@ -1,10 +1,10 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart'
     show RoutesNames;
-import 'package:app_on_bloc/core/utils/flavor_x.dart';
+import 'package:app_on_bloc/core/shared_presentation/utils/images_paths/flavor_x.dart';
 import 'package:app_on_bloc/features_presentation/auth/sign_in/cubit/form_fields_cubit.dart';
 import 'package:app_on_bloc/features_presentation/auth/sign_in/cubit/sign_in_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:features/features_barrels/auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -2,7 +2,7 @@ import 'package:app_on_bloc/app_bootstrap/di_container/modules/auth_module.dart'
 import 'package:app_on_bloc/app_bootstrap/di_container/modules/firebase_module.dart';
 import 'package:app_on_bloc/features_presentation/email_verification/email_verification_cubit/email_verification_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:features/features.dart';
 import 'package:firebase_adapter/firebase_adapter.dart';
 

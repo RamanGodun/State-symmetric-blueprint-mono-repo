@@ -5,7 +5,7 @@ import 'package:app_on_riverpod/features_presentation/auth/sign_out/sign_out_wid
 import 'package:app_on_riverpod/features_presentation/profile/providers/profile_page_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart'
     show CachedNetworkImage;
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

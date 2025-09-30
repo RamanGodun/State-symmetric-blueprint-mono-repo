@@ -1,7 +1,7 @@
 import 'dart:async' show scheduleMicrotask;
 
 import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:features/features_barrels/email_verification/email_verification.dart';
 import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseRefs;
 import 'package:flutter/foundation.dart' show debugPrint;

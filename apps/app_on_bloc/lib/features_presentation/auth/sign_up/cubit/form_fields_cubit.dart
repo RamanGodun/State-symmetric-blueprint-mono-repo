@@ -1,4 +1,4 @@
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// 📝 [SignUpFormFieldCubit] — Handles sign-up form fields & validation (UI-only).

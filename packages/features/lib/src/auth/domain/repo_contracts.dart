@@ -1,4 +1,4 @@
-import 'package:core/base_modules/errors_management.dart';
+import 'package:core/public_api/base_modules/errors_management.dart';
 
 /// 🔐 [ISignInRepo] — contract for signing in user with email/password
 //

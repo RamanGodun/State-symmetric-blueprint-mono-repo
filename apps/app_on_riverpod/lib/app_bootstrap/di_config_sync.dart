@@ -1,6 +1,6 @@
 import 'package:app_on_riverpod/core/base_modules/navigation/module_core/go_router_factory.dart';
 import 'package:app_on_riverpod/core/base_modules/navigation/module_core/router_provider.dart';
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:firebase_adapter/firebase_adapter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';

@@ -8,7 +8,7 @@ import 'package:core/src/base_modules/ui_design/ui_constants/_app_constants.dart
 import 'package:core/src/base_modules/ui_design/ui_constants/app_colors.dart';
 import 'package:core/src/base_modules/ui_design/widgets_and_utils/box_decorations/_box_decorations_factory.dart';
 import 'package:core/src/base_modules/ui_design/widgets_and_utils/extensions/theme_x.dart';
-import 'package:core/src/utils_shared/extensions/context_extensions/_context_extensions.dart';
+import 'package:core/src/shared_presentation_layer/extensions/context_extensions/_context_extensions.dart';
 import 'package:flutter/material.dart';
 
 /// 🍞 [AndroidSnackbarCard] — Native-like Android snackbar with M3 style

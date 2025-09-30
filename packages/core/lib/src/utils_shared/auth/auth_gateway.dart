@@ -15,13 +15,12 @@ abstract interface class AuthGateway {
   ///   [AuthLoading] | [AuthFailure] | [AuthReady]
   /// Consumed by the presentation layer to react to auth changes.
   Stream<AuthSnapshot> get snapshots$;
-
+  //
   /// 📊 Current synchronous snapshot
   /// Used inside `GoRouter.redirect` for deterministic decisions.
   AuthSnapshot get currentSnapshot;
-
+  //
   /// 🔄 Manual refresh (e.g., reload tokens or user session)
   Future<void> refresh();
-
   //
 }

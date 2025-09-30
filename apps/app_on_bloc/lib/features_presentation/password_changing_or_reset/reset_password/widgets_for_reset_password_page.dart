@@ -143,8 +143,7 @@ final class _ResetPasswordPageFooter extends StatelessWidget {
         /// 🧭 Redirect to [SignInPage]
         const TextWidget(
           LocaleKeys.reset_password_remember,
-          TextType.bodyLarge,
-          fontWeight: FontWeight.w300,
+          TextType.bodyMedium,
         ),
         //
         AppTextButton(

@@ -106,7 +106,7 @@ final class _SignUpPageFooter extends StatelessWidget {
       children: [
         const TextWidget(
           LocaleKeys.buttons_redirect_to_sign_in,
-          TextType.bodyLarge,
+          TextType.bodyMedium,
         ),
         //
         AppTextButton(

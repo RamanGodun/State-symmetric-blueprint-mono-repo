@@ -1,4 +1,4 @@
-import 'package:core/base_modules/errors_management.dart'
+import 'package:core/public_api/base_modules/errors_management.dart'
     show Failure, FailureX;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;

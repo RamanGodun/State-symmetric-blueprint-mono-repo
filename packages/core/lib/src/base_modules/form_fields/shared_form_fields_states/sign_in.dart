@@ -1,6 +1,6 @@
 //
 // ignore_for_file: public_member_api_docs
-import 'package:core/core.dart';
+import 'package:core/public_api/base_modules/forms.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 

@@ -1,6 +1,6 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart';
 import 'package:app_on_bloc/core/shared_presentation/pages/page_not_found.dart';
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
 import 'package:go_router/go_router.dart';
 

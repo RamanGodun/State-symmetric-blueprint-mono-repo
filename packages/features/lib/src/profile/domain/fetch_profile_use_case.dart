@@ -1,5 +1,5 @@
-import 'package:core/base_modules/errors_management.dart';
-import 'package:core/shared_layers/domain.dart' show UserEntity;
+import 'package:core/public_api/base_modules/errors_management.dart';
+import 'package:core/public_api/shared_layers/domain.dart' show UserEntity;
 import 'package:features/src/profile/domain/repo_contract.dart';
 
 /// 🧩 [FetchProfileUseCase] — Encapsulates domain logic of

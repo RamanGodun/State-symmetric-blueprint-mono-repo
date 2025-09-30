@@ -1,4 +1,4 @@
-import 'package:core/base_modules/forms.dart';
+import 'package:core/public_api/base_modules/forms.dart';
 import 'package:flutter/widgets.dart';
 
 /// 🎯 [goNext] — returns a callback that jumps focus to [next] (perfect for onSubmitted).
@@ -91,7 +91,9 @@ recordsForPasswordFormField({bool useFormValidity = false}) {
 ///    useFormValidity=false → confirmPassword.isValid (field-level)
 ///    useFormValidity=true  → state.isValid (form-level)
 SelectedValuesForConfirmPasswordFormField Function(Object)
-recordsForConfirmPasswordFormField({bool useFormValidity = false}) {
+recordsForConfirmPasswordFormField({
+  bool useFormValidity = false,
+}) {
   return (Object s) => switch (s) {
     SignUpFormState(
       :final confirmPassword,

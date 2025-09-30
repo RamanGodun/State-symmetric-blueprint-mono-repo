@@ -7,7 +7,7 @@ import 'package:app_on_riverpod/features_presentation/email_verification/email_v
 import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/change_password/change_password_page.dart';
 import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/reset_password/reset_password_page.dart';
 import 'package:app_on_riverpod/features_presentation/profile/profile_page.dart';
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:go_router/go_router.dart';
 
 part 'route_paths.dart';

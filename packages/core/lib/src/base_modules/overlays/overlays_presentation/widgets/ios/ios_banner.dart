@@ -10,7 +10,7 @@ import 'package:core/src/base_modules/ui_design/ui_constants/app_colors.dart';
 import 'package:core/src/base_modules/ui_design/widgets_and_utils/blur_wrapper.dart';
 import 'package:core/src/base_modules/ui_design/widgets_and_utils/box_decorations/_box_decorations_factory.dart';
 import 'package:core/src/base_modules/ui_design/widgets_and_utils/extensions/theme_x.dart';
-import 'package:core/src/utils_shared/extensions/extension_on_widget/_widget_x.dart';
+import 'package:core/src/shared_presentation_layer/extensions/extension_on_widget/_widget_x.dart';
 import 'package:flutter/material.dart'
     show
         Align,

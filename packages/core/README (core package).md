@@ -34,41 +34,39 @@ import 'package:core/core.dart';
 
 ```
 core/lib
-├─ README (core package)
-|
-├─ base_modules/
-|   ├─ animations.dart
-|   ├─ errors_management.dart
-|   ├─ forms.dart
-|   ├─ localization.dart
-|   ├─ navigation.dart
-|   ├─ overlays.dart
-|   └─ ui_design.dart
-|
-├─ shared_layers/
-|   ├─ data.dart
-|   ├─ domain.dart
-|   └─ presentation.dart
-|
-├─ utils.dart
-└─ core.dart
-
-# Internal Sources (all implementations live here)
-
-src/
-├─ base_modules/
-│   ├─ animations/
-│   ├─ errors_management/
-│   ├─ forms/
-│   ├─ localization/
-│   ├─ navigation/
-│   ├─ overlays/
-│   └─ ui_design/
+├─ public_api/
+│   ├─ base_modules/
+│   │   ├─ animations.dart             # Barrel for animations module
+│   │   ├─ errors_management.dart      # Barrel for error handling module
+│   │   ├─ forms.dart                  # Barrel for form fields module
+│   │   ├─ localization.dart           # Barrel for localization module
+│   │   ├─ navigation.dart             # Barrel for navigation module
+│   │   ├─ overlays.dart               # Barrel for overlays module
+│   │   └─ ui_design.dart              # Barrel for theme & UI design module
+│   │
+│   ├─ shared_layers/
+│   │   ├─ data.dart                   # Barrel for shared data layer
+│   │   ├─ domain.dart                 # Barrel for shared domain layer
+│   │   └─ presentation.dart           # Barrel for shared presentation layer
+│   │
+│   ├─ utils.dart                      # Barrel for cross-cutting utilities
+│   └─ core.dart                       # 🧱 Single entry point (re-exports all barrels)
 │
-├─ shared_data_layer/
-├─ shared_domain_layer/
-├─ shared_presentation_layer/
-└─ utils_shared/
+|  # Internal Sources (all implementations live here)
+└─ src/
+    ├─ base_modules/
+    │   ├─ animations/                 # Implementation of animations module
+    │   ├─ errors_management/          # Implementation of error handling module
+    │   ├─ form_fields/                # Implementation of form fields module
+    │   ├─ localization/               # Implementation of localization module
+    │   ├─ navigation/                 # Implementation of navigation module
+    │   ├─ overlays/                   # Implementation of overlays module
+    │   └─ ui_design/                  # Implementation of UI design module
+    │
+    ├─ shared_data_layer/              # DTOs, cache, user transfer objects
+    ├─ shared_domain_layer/            # Entities, value objects, domain contracts
+    ├─ shared_presentation_layer/      # Shared widgets, pages, states, extensions
+    └─ utils_shared/                   # Cross-cutting utilities (auth, timing, streams)
 ```
 
 > **Rule of thumb:**
@@ -81,7 +79,7 @@ src/
 ## Modules
 
 Each module in `core` has its own detailed README.
-Below are entry points with direct links:
+Below are docs with direct links:
 
 ### [Animations](./lib/base_modules/animations/Animations_module_README.md)
 

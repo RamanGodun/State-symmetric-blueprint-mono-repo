@@ -1,7 +1,7 @@
 //
 // ignore_for_file: public_member_api_docs
 
-import 'package:core/core.dart';
+import 'package:core/public_api/base_modules/errors_management.dart';
 import 'package:equatable/equatable.dart';
 
 /// 🧾 [ButtonSubmissionState] — general state for simple forms with submission.

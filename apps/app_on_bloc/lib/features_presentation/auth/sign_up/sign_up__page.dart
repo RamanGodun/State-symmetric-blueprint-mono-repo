@@ -1,10 +1,10 @@
-import 'package:app_on_bloc/core/utils/flavor_x.dart';
+import 'package:app_on_bloc/core/shared_presentation/utils/images_paths/flavor_x.dart';
 import 'package:app_on_bloc/features_presentation/auth/sign_in/sign_in__page.dart'
     show SignInPage;
 import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/form_fields_cubit.dart';
 import 'package:app_on_bloc/features_presentation/auth/sign_up/cubit/sign_up_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:features/features.dart' show SignUpUseCase;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,5 +1,5 @@
 import 'package:core/src/base_modules/overlays/core/_context_x_for_overlays.dart';
-import 'package:core/src/utils_shared/extensions/context_extensions/_context_extensions.dart';
+import 'package:core/src/shared_presentation_layer/extensions/context_extensions/_context_extensions.dart';
 import 'package:flutter/material.dart';
 
 /// 🧩 [GlobalOverlayHandler] — Universal gesture wrapper for screen-wide UX improvements:

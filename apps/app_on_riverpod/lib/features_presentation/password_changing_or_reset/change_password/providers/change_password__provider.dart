@@ -1,4 +1,4 @@
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:riverpod_adapter/riverpod_adapter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

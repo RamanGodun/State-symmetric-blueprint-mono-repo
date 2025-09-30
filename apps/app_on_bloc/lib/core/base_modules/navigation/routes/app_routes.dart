@@ -6,8 +6,10 @@ import 'package:app_on_bloc/features_presentation/email_verification/email_verif
 import 'package:app_on_bloc/features_presentation/password_changing_or_reset/change_password/change_password_page.dart';
 import 'package:app_on_bloc/features_presentation/password_changing_or_reset/reset_password/reset_password__page.dart';
 import 'package:app_on_bloc/features_presentation/profile/profile_page.dart';
-import 'package:core/base_modules/animations.dart' show AppTransitions;
-import 'package:core/shared_layers/presentation.dart' show SplashPage;
+import 'package:core/public_api/base_modules/animations.dart'
+    show AppTransitions;
+import 'package:core/public_api/shared_layers/presentation.dart'
+    show SplashPage;
 import 'package:go_router/go_router.dart';
 
 part 'route_paths.dart';

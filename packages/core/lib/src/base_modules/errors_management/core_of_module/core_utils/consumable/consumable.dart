@@ -1,5 +1,5 @@
-import 'package:core/base_modules/errors_management.dart';
-import 'package:core/base_modules/overlays.dart';
+import 'package:core/public_api/base_modules/errors_management.dart';
+import 'package:core/public_api/base_modules/overlays.dart';
 import 'package:flutter/material.dart';
 
 /// 🧩 [Consumable] — Wraps a value for one-time consumption.

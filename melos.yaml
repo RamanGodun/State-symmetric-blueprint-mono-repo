@@ -247,7 +247,7 @@ scripts:
   # Paths gen for core package
   spider:core:gen: |
     melos exec --scope="core" -- bash -lc 'export PATH="$PATH:$HOME/.pub-cache/bin"; \
-      spider -p lib/src/utils_shared/spider/spider.yaml build'
+      spider -p lib/src/shared_presentation_layer/spider/spider.yaml build'
 
   # General script for all Spider-configs
   spider:build: melos run spider:core:build
@@ -255,6 +255,6 @@ scripts:
   # Generate path for both apps
   spider:apps:gen: |
     melos exec --scope="app_on_bloc" -- bash -lc 'export PATH="$PATH:$HOME/.pub-cache/bin"; \
-      spider -p lib/core/utils/spider/spider.yaml build'
+      spider -p lib/core/shared_presentation/utils/images_paths/spider.yaml build'
     melos exec --scope="app_on_riverpod" -- bash -lc 'export PATH="$PATH:$HOME/.pub-cache/bin"; \
-      spider -p lib/core/utils/spider/spider.yaml build'
+      spider -p lib/core/shared_presentation/utils/images_paths/spider.yaml build'

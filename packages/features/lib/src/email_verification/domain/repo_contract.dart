@@ -1,4 +1,4 @@
-import 'package:core/base_modules/errors_management.dart';
+import 'package:core/public_api/base_modules/errors_management.dart';
 
 /// 🧼 Contract for email verification and user reload operations
 //

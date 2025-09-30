@@ -9,7 +9,7 @@
    	<string>uk</string>
 		<string>pl</string>
 	</array>
-
+	<!-- Localization -->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

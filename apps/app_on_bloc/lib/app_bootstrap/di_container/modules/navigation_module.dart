@@ -2,7 +2,7 @@ import 'package:app_on_bloc/app_bootstrap/di_container/modules/auth_module.dart'
 import 'package:app_on_bloc/core/base_modules/navigation/module_core/go_router_factory.dart'
     show buildGoRouter;
 import 'package:bloc_adapter/bloc_adapter.dart' show DIModule, di;
-import 'package:core/utils.dart' show AuthGateway;
+import 'package:core/public_api/utils.dart' show AuthGateway;
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:go_router/go_router.dart';
 

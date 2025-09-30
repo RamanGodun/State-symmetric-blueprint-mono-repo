@@ -1,4 +1,4 @@
-import 'package:core/base_modules/errors_management.dart';
+import 'package:core/public_api/base_modules/errors_management.dart';
 
 /// 🧩 [ResultFuture] — Represents async result with [Either<Failure, T>]
 typedef ResultFuture<T> = Future<Either<Failure, T>>;

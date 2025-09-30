@@ -1,7 +1,7 @@
 import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
 import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/change_password/providers/change_password__provider.dart';
 import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/change_password/providers/input_fields_provider.dart';
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

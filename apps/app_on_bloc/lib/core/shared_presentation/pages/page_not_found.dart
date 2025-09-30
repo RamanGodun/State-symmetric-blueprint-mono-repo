@@ -1,5 +1,5 @@
 import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:flutter/material.dart';
 
 /// 🧭 [PageNotFound] — generic 404 fallback UI for unknown routes

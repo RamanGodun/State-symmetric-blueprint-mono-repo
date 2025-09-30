@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:features/features.dart' show EmailVerificationUseCase;
 import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseRefs;
 import 'package:flutter/foundation.dart' show debugPrint;

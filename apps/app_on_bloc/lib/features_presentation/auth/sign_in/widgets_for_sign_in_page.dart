@@ -191,7 +191,7 @@ final class _SignInPageFooter extends StatelessWidget {
         /// 🧭 Redirect to [SignUpPage]
         const TextWidget(
           LocaleKeys.buttons_redirect_to_sign_up,
-          TextType.bodyLarge,
+          TextType.bodyMedium,
         ),
         AppTextButton(
           label: LocaleKeys.buttons_sign_up,
@@ -202,7 +202,7 @@ final class _SignInPageFooter extends StatelessWidget {
         /// 🧭 Redirect to [ResetPasswordPage]
         const TextWidget(
           LocaleKeys.sign_in_forgot_password,
-          TextType.bodyLarge,
+          TextType.bodyMedium,
         ),
         AppTextButton(
           label: LocaleKeys.buttons_reset_password,

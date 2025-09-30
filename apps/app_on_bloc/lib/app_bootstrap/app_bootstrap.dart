@@ -4,7 +4,8 @@ import 'package:app_on_bloc/app_bootstrap/di_container/di_container_init.dart';
 import 'package:app_on_bloc/app_bootstrap/firebase_initializer.dart';
 import 'package:app_on_bloc/app_bootstrap/local_storage_init.dart';
 import 'package:bloc_adapter/bloc_adapter.dart' show AppBlocObserver;
-import 'package:core/base_modules/localization.dart' show AppLocalizer;
+import 'package:core/public_api/base_modules/localization.dart'
+    show AppLocalizer;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/material.dart' show WidgetsFlutterBinding;

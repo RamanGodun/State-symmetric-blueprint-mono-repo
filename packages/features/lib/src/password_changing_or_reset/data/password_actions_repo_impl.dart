@@ -1,4 +1,4 @@
-import 'package:core/base_modules/errors_management.dart';
+import 'package:core/public_api/base_modules/errors_management.dart';
 import 'package:features/src/password_changing_or_reset/data/remote_database_contract.dart';
 import 'package:features/src/password_changing_or_reset/domain/repo_contract.dart';
 

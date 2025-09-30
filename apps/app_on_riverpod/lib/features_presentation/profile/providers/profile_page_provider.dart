@@ -1,4 +1,4 @@
-import 'package:core/core.dart' show AuthReady, UserEntity;
+import 'package:core/public_api/core.dart' show AuthReady, UserEntity;
 import 'package:riverpod_adapter/riverpod_adapter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

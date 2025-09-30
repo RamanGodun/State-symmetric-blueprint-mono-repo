@@ -1,4 +1,4 @@
-import 'package:core/base_modules/errors_management.dart';
+import 'package:core/public_api/base_modules/errors_management.dart';
 import 'package:features/src/auth/domain/repo_contracts.dart';
 
 /// 📦 [SignOutUseCase] — Handles sign-out logic via [ISignOutRepo]

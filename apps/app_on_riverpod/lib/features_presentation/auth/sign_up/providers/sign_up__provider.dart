@@ -1,4 +1,4 @@
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:features/features.dart' show SignUpUseCase;
 import 'package:features/features_barrels/auth/auth.dart' show SignUpUseCase;
 import 'package:riverpod_adapter/riverpod_adapter.dart'

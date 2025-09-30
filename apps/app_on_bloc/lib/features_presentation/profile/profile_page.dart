@@ -6,7 +6,7 @@ import 'package:app_on_bloc/features_presentation/profile/cubit/profile_page_cub
 import 'package:bloc_adapter/bloc_adapter.dart';
 import 'package:cached_network_image/cached_network_image.dart'
     show CachedNetworkImage;
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

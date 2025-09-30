@@ -1,5 +1,4 @@
-import 'package:core/base_modules/errors_management.dart';
-import 'package:core/base_modules/overlays.dart';
+import 'package:core/public_api/core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

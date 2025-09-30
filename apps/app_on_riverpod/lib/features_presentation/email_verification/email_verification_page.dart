@@ -1,7 +1,7 @@
 import 'package:app_on_riverpod/features_presentation/auth/sign_out/sign_out_provider.dart';
 import 'package:app_on_riverpod/features_presentation/auth/sign_out/sign_out_widgets.dart';
 import 'package:app_on_riverpod/features_presentation/email_verification/provider/email_verification_provider.dart';
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseRefs;
 import 'package:flutter/material.dart';

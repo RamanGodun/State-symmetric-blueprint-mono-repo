@@ -1,7 +1,7 @@
 // 📌 No need for public API docs.
 // ignore_for_file: public_member_api_docs
 
-import 'package:core/base_modules/ui_design.dart' show AppFontFamily;
+import 'package:core/public_api/base_modules/ui_design.dart' show AppFontFamily;
 import 'package:core/src/base_modules/localization/core_of_module/init_localization.dart';
 import 'package:core/src/base_modules/ui_design/ui_constants/app_colors.dart'
     show AppColors;

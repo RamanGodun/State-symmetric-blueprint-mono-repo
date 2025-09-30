@@ -1,8 +1,8 @@
 import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:app_on_riverpod/core/utils/flavor_x.dart';
+import 'package:app_on_riverpod/core/shared_presentation/utils/images_paths/flavor_x.dart';
 import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/reset_password/providers/input_fields_provider.dart';
 import 'package:app_on_riverpod/features_presentation/password_changing_or_reset/reset_password/providers/reset_password__provider.dart';
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

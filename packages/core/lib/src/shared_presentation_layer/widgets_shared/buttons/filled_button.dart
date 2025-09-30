@@ -4,8 +4,8 @@ import 'package:core/src/base_modules/animations/widget_animations/widget_animat
 import 'package:core/src/base_modules/localization/module_widgets/text_widget.dart';
 import 'package:core/src/base_modules/ui_design/ui_constants/_app_constants.dart';
 import 'package:core/src/base_modules/ui_design/widgets_and_utils/extensions/theme_x.dart';
+import 'package:core/src/shared_presentation_layer/extensions/extension_on_widget/_widget_x.dart';
 import 'package:core/src/shared_presentation_layer/widgets_shared/loader.dart';
-import 'package:core/src/utils_shared/extensions/extension_on_widget/_widget_x.dart';
 import 'package:flutter/material.dart';
 
 /// 🧩 [CustomFilledButton] — Animated filled button with loader/text switch.

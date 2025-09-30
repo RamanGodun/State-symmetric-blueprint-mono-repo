@@ -2,7 +2,7 @@ import 'package:app_on_bloc/core/base_modules/navigation/routes/app_routes.dart'
 import 'package:app_on_bloc/features_presentation/password_changing_or_reset/change_password/cubit/change_password_cubit.dart';
 import 'package:app_on_bloc/features_presentation/password_changing_or_reset/change_password/cubit/form_fields_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:features/features.dart';
 import 'package:flutter/material.dart';

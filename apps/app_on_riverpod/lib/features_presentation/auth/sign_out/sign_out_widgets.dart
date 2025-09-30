@@ -2,10 +2,7 @@ import 'package:app_on_riverpod/core/base_modules/navigation/module_core/go_rout
 import 'package:app_on_riverpod/features_presentation/auth/sign_in/sign_in__page.dart'
     show SignInPage;
 import 'package:app_on_riverpod/features_presentation/auth/sign_out/sign_out_provider.dart';
-import 'package:core/base_modules/localization.dart' show LocaleKeys;
-import 'package:core/base_modules/ui_design.dart' show AppSpacing;
-import 'package:core/shared_layers/presentation.dart' show AppTextButton;
-import 'package:core/utils.dart';
+import 'package:core/public_api/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

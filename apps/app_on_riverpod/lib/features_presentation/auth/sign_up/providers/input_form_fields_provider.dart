@@ -1,4 +1,4 @@
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'input_form_fields_provider.g.dart';

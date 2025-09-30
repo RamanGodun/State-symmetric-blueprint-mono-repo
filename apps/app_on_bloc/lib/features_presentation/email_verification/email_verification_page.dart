@@ -3,7 +3,7 @@ import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_widgets
     show VerifyEmailCancelButton;
 import 'package:app_on_bloc/features_presentation/email_verification/email_verification_cubit/email_verification_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/core.dart';
+import 'package:core/public_api/core.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseRefs;
 import 'package:flutter/material.dart';
