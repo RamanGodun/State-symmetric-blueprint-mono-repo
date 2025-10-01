@@ -1,4 +1,4 @@
-# ADR-001: State Management Strategy — State Agnostic Clean Architecture (Riverpod as Default)
+# ADR-001: State Management Strategy — State Agnostic Clean Architecture
 
 ## Status
 
@@ -12,13 +12,21 @@ Accepted
 
 ## Context and Problem
 
-The project's goal is to build an **advanced, scalable, and maintainable Flutter blueprint** for mid-to-large scale apps,
-focusing on maximizing codebase reusability and minimizing dependency on a specific state manager.
-The key challenge: make at least 90% of the codebase **state-agnostic**, allowing rapid onboarding,
-flexibility in team allocation, and effortless feature migration across projects, regardless of the chosen state manager.
+This monorepo created to demonstrate an example of **codebase, that 90%+ agnostic to state manager**.
+(More than 90% of the code remains unchanged, regardless of whether the app uses **Riverpod**, **Cubit/BLoC**, or **Provider**.)
 
-The blueprint was validated by developing two parallel apps — one using Bloc+GetIt, the other using Riverpod.
-Despite different state managers, more then 90% of the code remained identical, demonstrating the effectiveness of clean, modular, state-agnostic architecture.
+### ✅⚠️ **Advantages and Trade-offs** of **codebase, that 90%+ agnostic to state manager**
+
+- ✅♻️ **Code Reusability** → Shared modules can be reused across projects/apps, improving efficiency and reducing time-to-market.
+- ✅🚀 **Development Flexibility** → Developers can seamlessly move between projects/teams with minimal context-switch overhead => easier scaling of teams during critical tasks
+- ✅📈 **Scalability & Maintainability** → This approach requires/enforced clean architecture, that makes the codebase easier to maintain and extend.
+
+- ⚠️ **Increased Complexity** (additional abstractions, wrappers, and files) => may add to the size of the codebase and **Higher Initial Investment** → More effort and resources are required upfront; onboarding may be slower for new contributors, also needs discipline in codebase's development
+
+Initial goal: maximize code reusability and minimize coupling to a specific state manager.
+
+The key challenge: make at least 90% of the codebase **state-agnostic**, saving benefits of state-agnostic codestyle, but avoid its fall pits
+flexibility in team allocation, and effortless feature migration across projects, regardless of the chosen state manager.
 
 ---
 
@@ -32,10 +40,9 @@ Despite different state managers, more then 90% of the code remained identical, 
 
 ---
 
-## Decision
+## Decisions
 
-Adopt a **State Agnostic Clean Architecture**, using Riverpod as the default state manager for orchestration,
-but ensuring all core business logic and modules are fully decoupled from any particular state manager.
+This monorepo achieves state-agnostic code style not by adding heavy abstractions, but by applying a thin, symmetric adapter layer on top of native state managers (BLoC/Cubit and Riverpod).
 
 - All shared modules (Animation, Error Handling, Localization, Overlay, Theme, etc.) are practically (>97%) independent from state manager logic.
 - The state manager’s only responsibility is orchestration — all business logic lives in use cases.
@@ -68,7 +75,7 @@ but ensuring all core business logic and modules are fully decoupled from any pa
 
 - **Codebase universality:** Features can be moved or shared between projects almost effortlessly, saving time and reducing bugs.
 - **Team flexibility:** Any developer can jump between codebases (Riverpod, Bloc, Provider) without learning curve.
-- **Reduced overengineering:** No need for custom abstractions or bridges that rarely deliver value.
+- **Reduced over-engineering:** No need for custom abstractions or bridges that rarely deliver value.
 - **Best practice in Clean Architecture:** Business logic, data, and UI layers are clearly separated.
 - **State-agnosticism as a side effect:** Not the goal per se, but a product of clean layering and architecture discipline.
 
@@ -154,7 +161,6 @@ graph TD
 
 ## References
 
-- [Riverpod documentation](https://riverpod.dev/)
 - [Clean Architecture in Flutter](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 - [Flutter Architecture Guidelines](https://docs.flutter.dev/app-architecture)
 

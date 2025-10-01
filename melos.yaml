@@ -19,9 +19,9 @@ scripts:
   bootstrap: melos bootstrap
   #
   # ---------- Maintenance ----------
+  #
   clean: melos exec --concurrency=1 -- "flutter clean"
   clean:deep: melos exec --concurrency=1 -- "git clean -xfd -e .idea -e .vscode" # CAREFUL: nukes untracked files
-
   #
   #
   pub:get: melos exec --concurrency=1 -- "flutter pub get"
@@ -31,138 +31,6 @@ scripts:
   pub:deps: melos exec --concurrency=1 -- "flutter pub deps --style=compact"
   pub:cache:repair: melos exec --scope="*" --concurrency=1 -- "flutter pub cache repair"
   doctor: melos exec --concurrency=1 -- "flutter doctor -v"
-  #
-  #
-  # ---------- Codegen (only where it's needed) ----------
-  # 1) First en in lib/adapters, on which apps depend
-  gen:adapters:
-    run: |
-      melos exec --scope="riverpod_adapter" --concurrency=1 -- \
-        dart run build_runner build --delete-conflicting-outputs
-
-  # 2) Then gen packages, that need codegen
-  gen:packages:
-    run: |
-      melos exec --scope="features" --dir-exists="lib" --concurrency=1 -- \
-        dart run build_runner build --delete-conflicting-outputs || true
-      melos exec --scope="core" --dir-exists="lib" --concurrency=1 -- \
-        dart run build_runner build --delete-conflicting-outputs || true
-
-  # 3) Last apps
-  gen:apps:
-    run: |
-      melos exec --scope="app_on_riverpod" --concurrency=1 -- \
-        dart run build_runner build --delete-conflicting-outputs || true
-      melos exec --scope="app_on_bloc" --concurrency=1 -- \
-        dart run build_runner build --delete-conflicting-outputs || true
-
-  # One master scripts
-  gen:
-    run: melos run gen:adapters && melos run gen:packages && melos run gen:apps
-
-  # Clean for all
-  gen:clean:
-    run: |
-      melos exec --scope="riverpod_adapter" --concurrency=1 -- dart run build_runner clean || true
-      melos exec --scope="features" --concurrency=1 -- dart run build_runner clean || true
-      melos exec --scope="core" --concurrency=1 -- dart run build_runner clean || true
-      melos exec --scope="app_on_riverpod" --concurrency=1 -- dart run build_runner clean || true
-      melos exec --scope="app_on_bloc" --concurrency=1 -- dart run build_runner clean || true
-
-  # ---------- Watch (запускай у різних терміналах за потреби) ----------
-  watch:adapters:
-    run: melos exec --scope="riverpod_adapter" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
-
-  watch:packages:
-    run: |
-      melos exec --scope="features" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
-      melos exec --scope="core" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
-
-  watch:apps:
-    run: |
-      melos exec --scope="app_on_riverpod" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
-      melos exec --scope="app_on_bloc" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
-
-  #
-  #
-  # ---------- Lints & format ----------
-  fix:dry: melos exec -- "dart fix --dry-run"
-  fix:apply: melos exec -- "dart fix --apply"
-
-  # Write formats code in-place (never fails)
-  format:write: melos exec -- "dart format ."
-  # CI check (fails if formatting is needed)
-  format:check: melos exec -- "dart format --output=none --set-exit-if-changed ."
-  # Optional quick fix across all packages
-  format:fix: melos exec -- "dart format --fix ."
-
-  #
-  # Analyzer (choose one)
-  # analyze: melos exec -- "dart analyze --fatal-infos"   # strict (fails on infos)
-  analyze: melos exec --fail-fast -- "flutter analyze" # pragmatic (fails on errors)
-
-  #
-  #
-  # ---------- Tests ----------
-  vg:test: melos exec --concurrency=1 -- "very_good test --coverage --test-randomize-ordering-seed random"
-  test: melos exec -- "flutter test --no-pub --concurrency=4"
-
-  #
-  # ------ Coverage per app -------
-  coverage: melos exec --scope="app_on_*" -- "flutter test --coverage --no-pub"
-
-  # --- Coverage per app (safe multiline) ---
-  coverage:bloc: |
-    melos exec --scope="app_on_bloc" --concurrency=1 -- \
-      bash -lc 'flutter test --coverage --no-pub && genhtml coverage/lcov.info -o coverage/html && (open coverage/html/index.html || xdg-open coverage/html/index.html || start coverage\\html\\index.html)'
-
-  coverage:riverpod: |
-    melos exec --scope="app_on_riverpod" --concurrency=1 -- \
-      bash -lc 'flutter test --coverage --no-pub && genhtml coverage/lcov.info -o coverage/html && (open coverage/html/index.html || xdg-open coverage/html/index.html || start coverage\\html\\index.html)'
-
-  #
-  #
-  # ---------- Run (per app & flavor) ----------
-
-  # ---------- Run (App on Riverpod) ----------
-  run:rp:dev: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter run --flavor development -t lib/main_development.dart"
-  run:rp:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter run --flavor staging     -t lib/main_staging.dart"
-
-  # ---------- Build (App on Riverpod) ----------
-  build:rp:apk:dev: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build apk       --flavor development -t lib/main_development.dart"
-  build:rp:aab:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build appbundle --flavor staging     -t lib/main_staging.dart"
-
-  # iOS ipa (коли буде підпис)
-  build:ios:rp:dev: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor development -t lib/main_development.dart"
-  build:ios:rp:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor staging     -t lib/main_staging.dart"
-
-  # ---------- Run app_on_bloc ----------
-  run:blueprint:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
-    "flutter run --flavor development -t lib/main_development.dart"
-  run:blueprint:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
-    "flutter run --flavor staging -t lib/main_staging.dart"
-
-  # ---------- Run app_on_bloc (explicit entrypoint paths) ----------
-  run:blueprint:main:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
-    "flutter run -t apps/app_on_bloc/lib/main_development.dart"
-  run:blueprint:main:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
-    "flutter run -t apps/app_on_bloc/lib/main_staging.dart"
-
-  #
-  # ---------- Build app_on_bloc (Android) ----------
-  build:blueprint:apk:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
-    "flutter build apk --flavor development -t lib/main_development.dart"
-  build:blueprint:apk:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
-    "flutter build apk --flavor staging -t lib/main_staging.dart"
-
-  build:blueprint:aab:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
-    "flutter build appbundle --flavor staging -t lib/main_staging.dart"
-
-  # ---------- Build app_on_bloc (iOS) ----------
-  build:ios:blueprint:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
-    "flutter build ipa --flavor development -t lib/main_development.dart"
-  build:ios:blueprint:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
-    "flutter build ipa --flavor staging -t lib/main_staging.dart"
 
   #
   #
@@ -170,7 +38,6 @@ scripts:
   check: melos run format:check && melos run analyze && melos run test
   ci: melos run check
 
-  #
   #
   # ---------- Dart Code Metrics (global-DCM) ----------
   dcm: melos exec -- "dart pub global run dart_code_metrics:metrics analyze lib --disable-sunset-warning --exclude='{/**.g.dart,/**.freezed.dart}'"
@@ -183,21 +50,106 @@ scripts:
   dcm:core: melos exec --scope="core" -- "dart pub global run dart_code_metrics:metrics analyze lib --disable-sunset-warning --exclude='{/**.g.dart,/**.freezed.dart}'"
   dcm:riverpod: melos exec --scope="app_on_riverpod" -- "dart pub global run dart_code_metrics:metrics analyze lib --disable-sunset-warning --exclude='{/**.g.dart,/**.freezed.dart}'"
 
+  #
   # ---------- Versioning (per-package releases if ever needed) ----------
+  #
   release: melos version
 
   #
   #
+  # ---------- Lints & format ----------
+  #
+  fix:dry: melos exec -- "dart fix --dry-run"
+  fix:apply: melos exec -- "dart fix --apply"
+
+  # Write formats code in-place (never fails)
+  format:write: melos exec -- "dart format ."
+  # CI check (fails if formatting is needed)
+  format:check: melos exec -- "dart format --output=none --set-exit-if-changed ."
+  # Optional quick fix across all packages
+  format:fix: melos exec -- "dart format --fix ."
+  #
+  # Analyzer (choose one)
+  # analyze: melos exec -- "dart analyze --fatal-infos"   # strict (fails on infos)
+  analyze: melos exec --fail-fast -- "flutter analyze" # pragmatic (fails on errors)
+
+  #
+  #
+  # ---------- Tests ----------
+  #
+  vg:test: melos exec --concurrency=1 -- "very_good test --coverage --test-randomize-ordering-seed random"
+  test: melos exec -- "flutter test --no-pub --concurrency=4"
+  #
+  # ------ Coverage per app -------
+  coverage: melos exec --scope="app_on_*" -- "flutter test --coverage --no-pub"
+  #
+  # --- Coverage per app (safe multiline) ---
+  coverage:bloc: |
+    melos exec --scope="app_on_bloc" --concurrency=1 -- \
+      bash -lc 'flutter test --coverage --no-pub && genhtml coverage/lcov.info -o coverage/html && (open coverage/html/index.html || xdg-open coverage/html/index.html || start coverage\\html\\index.html)'
+  #
+  coverage:riverpod: |
+    melos exec --scope="app_on_riverpod" --concurrency=1 -- \
+      bash -lc 'flutter test --coverage --no-pub && genhtml coverage/lcov.info -o coverage/html && (open coverage/html/index.html || xdg-open coverage/html/index.html || start coverage\\html\\index.html)'
+
+  #
+  #
+  # ---------- Run app (per app & flavor) ----------
+
+  # ---------- Run App on Riverpod ----------
+  run:rp:dev: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter run --flavor development -t lib/main_development.dart"
+  run:rp:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter run --flavor staging     -t lib/main_staging.dart"
+
+  # ---------- Build App on Riverpod ----------
+  build:rp:apk:dev: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build apk       --flavor development -t lib/main_development.dart"
+  build:rp:aab:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build appbundle --flavor staging     -t lib/main_staging.dart"
+
+  # iOS ipa (коли буде підпис)
+  build:ios:rp:dev: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor development -t lib/main_development.dart"
+  build:ios:rp:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor staging     -t lib/main_staging.dart"
+
+  # ---------- Run App on BLoC ----------
+  run:blueprint:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+    "flutter run --flavor development -t lib/main_development.dart"
+  run:blueprint:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+    "flutter run --flavor staging -t lib/main_staging.dart"
+
+  # ---------- Run App on BLoC (explicit entrypoint paths) ----------
+  run:blueprint:main:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+    "flutter run -t apps/app_on_bloc/lib/main_development.dart"
+  run:blueprint:main:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+    "flutter run -t apps/app_on_bloc/lib/main_staging.dart"
+
+  #
+  # ---------- Build App on BLoC (Android) ----------
+  build:blueprint:apk:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+    "flutter build apk --flavor development -t lib/main_development.dart"
+  build:blueprint:apk:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+    "flutter build apk --flavor staging -t lib/main_staging.dart"
+
+  build:blueprint:aab:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+    "flutter build appbundle --flavor staging -t lib/main_staging.dart"
+
+  # ---------- Build App on BLoC (iOS) ----------
+  build:ios:blueprint:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+    "flutter build ipa --flavor development -t lib/main_development.dart"
+  build:ios:blueprint:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+    "flutter build ipa --flavor staging -t lib/main_staging.dart"
+
+  #
+  #
   #
 
-  # --- App icons (app_on_bloc) ---
+  # ----------- App icons ------------
+
+  # App on BLoC
   icons:blueprint:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter pub run flutter_launcher_icons -f pubspec_dev.yaml"
   icons:blueprint:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter pub run flutter_launcher_icons -f pubspec_stg.yaml"
   icons:blueprint:all: |
     melos run icons:blueprint:dev
     melos run icons:blueprint:stg
 
-  # --- App icons (app_on_riverpod) ---
+  # Run App on Riverpod
   icons:riverpod:dev: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter pub run flutter_launcher_icons -f pubspec_dev.yaml"
   icons:riverpod:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter pub run flutter_launcher_icons -f pubspec_stg.yaml"
   icons:riverpod:all: |
@@ -232,7 +184,62 @@ scripts:
       done
     '
 
+  #
+  # ---------- Codegen (only where it's needed) ----------
+  #
+  # One master scripts
+  gen:
+    run: melos run gen:adapters && melos run gen:packages && melos run gen:apps
+
+  # 1) First en in lib/adapters, on which apps depend
+  gen:adapters:
+    run: |
+      melos exec --scope="riverpod_adapter" --concurrency=1 -- \
+        dart run build_runner build --delete-conflicting-outputs
+
+  # 2) Then gen packages, that need codegen
+  gen:packages:
+    run: |
+      melos exec --scope="features" --dir-exists="lib" --concurrency=1 -- \
+        dart run build_runner build --delete-conflicting-outputs || true
+      melos exec --scope="core" --dir-exists="lib" --concurrency=1 -- \
+        dart run build_runner build --delete-conflicting-outputs || true
+
+  # 3) Last apps
+  gen:apps:
+    run: |
+      melos exec --scope="app_on_riverpod" --concurrency=1 -- \
+        dart run build_runner build --delete-conflicting-outputs || true
+      melos exec --scope="app_on_bloc" --concurrency=1 -- \
+        dart run build_runner build --delete-conflicting-outputs || true
+
+  # Clean for all
+  gen:clean:
+    run: |
+      melos exec --scope="riverpod_adapter" --concurrency=1 -- dart run build_runner clean || true
+      melos exec --scope="features" --concurrency=1 -- dart run build_runner clean || true
+      melos exec --scope="core" --concurrency=1 -- dart run build_runner clean || true
+      melos exec --scope="app_on_riverpod" --concurrency=1 -- dart run build_runner clean || true
+      melos exec --scope="app_on_bloc" --concurrency=1 -- dart run build_runner clean || true
+
+  # ---------- Watch  ----------
+  watch:adapters:
+    run: melos exec --scope="riverpod_adapter" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
+
+  watch:packages:
+    run: |
+      melos exec --scope="features" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
+      melos exec --scope="core" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
+
+  watch:apps:
+    run: |
+      melos exec --scope="app_on_riverpod" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
+      melos exec --scope="app_on_bloc" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
+
+  #
+  #
   #--------- Localization code generation ------------------------
+  #
   localization:gen:core:
     run: |
       melos exec --scope="core" --concurrency=1 -- \
@@ -240,7 +247,10 @@ scripts:
       melos exec --scope="core" --concurrency=1 -- \
         "dart run easy_localization:generate -f keys -S assets/translations -O lib/src/base_modules/localization/generated -o locale_keys.g.dart"
 
+  #
+  #
   # ---------- Spider (assets paths) ----------
+  #
   # One-time installation of Spider
   spider:activate: dart pub global activate spider
 
