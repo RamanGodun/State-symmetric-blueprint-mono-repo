@@ -1,103 +1,111 @@
-# ADR-001: State Management Strategy — State Agnostic Clean Architecture
+# ADR-001: State Management Strategy — State Symmetric Architecture Style
 
-## Status
-
-Accepted
-
-**Date:** 2025-05-25
-**Author:** Roman Godun
-**Reviewers:** (Team Lead, Senior Developer)
-
----
+⸻
 
 ## Context and Problem
 
-This monorepo created to demonstrate an example of **codebase, that 90%+ agnostic to state manager**.
-(More than 90% of the code remains unchanged, regardless of whether the app uses **Riverpod**, **Cubit/BLoC**, or **Provider**.)
+There are different view points about **state-agnostic approach** (when codebase mostly remains unchanged,
+regardless of whether the app uses **Riverpod**, **Cubit/BLoC**, or **Provider**),
+that achieves via additional abstractions, wrappers, and files.
 
-### ✅⚠️ **Advantages and Trade-offs** of **codebase, that 90%+ agnostic to state manager**
+### ✅⚠️ Main **Advantages and Trade-offs** of "state-agnostic approach"
 
-- ✅♻️ **Code Reusability** → Shared modules can be reused across projects/apps, improving efficiency and reducing time-to-market.
-- ✅🚀 **Development Flexibility** → Developers can seamlessly move between projects/teams with minimal context-switch overhead => easier scaling of teams during critical tasks
-- ✅📈 **Scalability & Maintainability** → This approach requires/enforced clean architecture, that makes the codebase easier to maintain and extend.
+- ✅♻️ **Code Reusability** → Shared modules can be reused across projects/apps,
+  improving efficiency and reducing time-to-market.
 
-- ⚠️ **Increased Complexity** (additional abstractions, wrappers, and files) => may add to the size of the codebase and **Higher Initial Investment** → More effort and resources are required upfront; onboarding may be slower for new contributors, also needs discipline in codebase's development
+- ✅🚀 **Development Flexibility** → Developers can seamlessly move between projects/teams
+  with minimal context-switch overhead => easier scaling of teams during critical tasks
 
-Initial goal: maximize code reusability and minimize coupling to a specific state manager.
+- ✅📈 **Scalability & Maintainability** → This approach requires/enforced clean architecture,
+  that makes the codebase easier to maintain and extend.
 
-The key challenge: make at least 90% of the codebase **state-agnostic**, saving benefits of state-agnostic codestyle, but avoid its fall pits
-flexibility in team allocation, and effortless feature migration across projects, regardless of the chosen state manager.
+- ⚠️ **Increased Complexity** (additional abstractions, wrappers, and files)
+  => may add to the size of the codebase and **Higher Initial Investment**
+  → More effort and resources are required upfront,
+  plus onboarding may be slower for new contributors,
+  also needs discipline in codebase's development and maintenance
 
----
+### ✅ **Accepting of "State-symmetric approach"** and its requirements
 
-## Requirements
+👉 This monorepo was created to demonstrate an example of next challenge solving:
 
-- **Scalability**: Easily extend features and team size.
-- **Maintainability**: Clear separation of concerns, modular code.
-- **Testability**: Business logic can be unit-tested in isolation.
-- **Onboarding**: Easy for new devs to understand and contribute.
-- **Flexibility**: Team members and code can shift between projects without friction.
+**Implement a State-Symmetric architecture style** that _preserves the benefits of the state-agnostic approach_
+(high scalability and maintainability, flexibility in team allocation, and effortless feature migration across projects,
+regardless of the chosen state manager), _but avoid its pitfalls connected to **Increased Complexity** of such approach_.
+In other words, make research of golden mean between business effectiveness and developer experience (DX).
 
----
+Therefore, the **following requirements are adopted** for the monorepo’s codebase: - _Code Reusability_: Codebase mostly can be reused across projects/apps - _Scalability_: Easily extend features and team size. - _Maintainability_: Clear separation of concerns, modular code. - _Testability_: Business logic can be unit-tested in isolation. - _Onboarding_: Easy for new devs to understand and contribute. - _Development flexibility_: Team members and code can shift between projects without friction.
 
-## Decisions
+⸻
 
-This monorepo achieves state-agnostic code style not by adding heavy abstractions, but by applying a thin, symmetric adapter layer on top of native state managers (BLoC/Cubit and Riverpod).
+## Decisions, Key Principles
 
-- All shared modules (Animation, Error Handling, Localization, Overlay, Theme, etc.) are practically (>97%) independent from state manager logic.
-- The state manager’s only responsibility is orchestration — all business logic lives in use cases.
-- UI layer is as thin as possible; nearly all widgets are stateless and simply react to state changes.
-- DI is provided by Riverpod’s ProviderScope; no additional DI container needed (unlike Bloc + GetIt or Provider+GetIt).
-- **This is not a Bridge or interface abstraction pattern.** There is no StateManager interface.
-  State-agnosticism is achieved via strict layer separation and clean code principles.
+In this monorepo **State-Symmetric** approach was implemented by reducing of **State-agnostic approach's over-engineering**,
+that rarely delivers true value. Therefore, instead of introducing heavy abstractions, bridges, or interface patterns
+(no unified "StateManager" interface abstraction), just stick to clean architecture principles (strict layer separation)
+and applying a thin, symmetric facade and/or adapter layer on top of native state managers (BLoC/Cubit and Riverpod).
 
----
+### Accepted Decisions
+
+- **Thin Symmetric Facades**
+  Minimal wrappers-facades with identical API/signatures for BLoC & Riverpod (e.g. SubmissionStateSideEffects ↔ listenSubmissionSideEffects),
+  and which use native state managers (BLoC/Cubit and Riverpod) behind the scenes.
+  This facade widgets are located in `bloc_adapter`, `riverpod_adapter` flutter packages accordingly
+
+- **Using Adapters and codebase separation between apps and dedicated flutter packages**
+  Contracts mostly are in shared `core` flutter package, implementations – in flutter packages.
+  In other words we use different adapters, eg presentation-layer adapters (located accordingly in `bloc_adapter`, `riverpod_adapter` packages),
+  data-layer adapters (located in `firebase_adapter` flutter package)
+
+- **Selective Abstractions (only when useful)**
+  E.g. Profile feature → uses unified AsyncStateView abstraction across BLoC/Riverpod.
+
+- **Shared reactive states and state orchestration through native tools**
+  E.g. SignIn feature uses shared between apps [ButtonSubmissionState] and [SignInFormState], without extra wrappers and reuse in both apps.
+
+- **Core features are practically state-agnostic**
+  All shared foundational modules from `core` flutter package ([animation], [errors_managing], [localization], [navigation], [overlays], [ui_design], etc.) are practically independent from state manager logic and reused in all apps
+
+- **Stick to clean architecture principles**
+  Business logic, data, and UI layers should be clearly separated. The state manager’s files only responsibility is orchestration (all business logic lives in use cases), UI layer is intentionally kept thin, nearly all widgets are stateless, simply react to state changes through facades and/or adapters and can be reused 1:1 across apps
+
+- **Symmetry between Riverpod and other state managers is ensured via GetIt**
+  DI is provided by Riverpod’s ProviderScope, no additional DI container needed, unlike others state managers (Bloc/Cubit/provider), which are context dependant => with them use GetIt
+
+🟢 The result: 90%+ code reuse with minimal overhead, fast onboarding, and excellent DX — a golden mean between state-agnostic scalability and engineering pragmatism.
+
+⸻
 
 ## Alternatives Considered
 
-### 1. Bloc + GetIt (or Provider + GetIt)
+Alternatives Considered:
 
-- **Pros:** Familiar to many teams; large ecosystem; works with existing tools; decouples logic from Flutter context.
-- **Cons:** Context-bound, more boilerplate, less compile-time safety, DI is external (GetIt), less flexible than Riverpod.
+1. Pure State-Agnostic (heavy abstractions)
+   • ✅ Pros: maximal independence from state manager.
+   • ❌ Cons: complex, heavy to maintain, slower onboarding, larger apps size
 
-### 2. Bridge/Interface Abstraction Pattern
+2. Riverpod-only
+   • ✅ Pros: simpler, no symmetry layer, smaller apps size, no extra packages (like GetIt, etc)
+   • ❌ Cons: lose development flexibility, harder to codebase migrate/share, in some apps need an analog of BLoC's Event feature
 
-- **Pros:** Allows runtime swap of state managers; useful if migration between state managers is expected.
-- **Cons:** Heavy abstraction overhead; additional complexity for little real-world benefit; slows onboarding; rarely justified except for planned migration.
-
-### 3. Pure Provider (without GetIt)
-
-- **Cons:** Limited flexibility for large projects; context-bound; similar to Bloc’s context-based limitations.
-
----
-
-## Rationale
-
-- **Codebase universality:** Features can be moved or shared between projects almost effortlessly, saving time and reducing bugs.
-- **Team flexibility:** Any developer can jump between codebases (Riverpod, Bloc, Provider) without learning curve.
-- **Reduced over-engineering:** No need for custom abstractions or bridges that rarely deliver value.
-- **Best practice in Clean Architecture:** Business logic, data, and UI layers are clearly separated.
-- **State-agnosticism as a side effect:** Not the goal per se, but a product of clean layering and architecture discipline.
-
----
+⸻
 
 ## Consequences
 
 ### Positive
 
-- New features can be implemented or ported in <2 weeks.
-- Onboarding for new team members is fast (<1 week).
-- Business logic and UI are easy to test and maintain.
-- Any module (overlays, theme, error handling, etc.) is reusable across projects and teams.
-- Supports future migration to other state managers with minimal changes.
+- Same advantages as state-agnostic (reusability, flexibility, clean code).
+- Fewer abstractions → lower complexity.
+- Faster onboarding (devs familiar with Cubit/BLoC or Riverpod can jump in immediately).
+- Business logic and UI are reusable across apps.
 
 ### Negative
 
-- Requires initial investment in discipline and structure.
-- Maintaining two consistent parallel projects for validation adds initial overhead.
-- Clean layering and state-agnostic thinking require team buy-in and onboarding.
+- State-symmetric thinking require team buy-in and onboarding.
+- Requires discipline to keep symmetry in thin adapters.
+- Some code duplication (e.g., ListenerForBloc and ListenerForRiverpod), that provides symmetry
 
----
+⸻
 
 ## Success Criteria
 
@@ -105,66 +113,48 @@ This monorepo achieves state-agnostic code style not by adding heavy abstraction
 - [ ] Code coverage >80% on business logic.
 - [ ] New dev onboarding <1 week.
 - [ ] Feature delivery cycle <2 weeks.
+- [ ] Shared UI components are reused across state-manager apps without modifications.
 
----
+⸻
 
-## Flutter-Specific Sections
+## SUMMARY
 
-**Flutter version:** 3.16.0+
-**Minimum supported:** 3.13.0
+**State-Symmetric** Architecture style - is a pragmatic refinement of the state-agnostic approach,
+_designed to avoid its pitfalls and preserve its benefits_.
+(State-Symmetric is a lighter, DX-friendly evolution of state-agnostic architecture: same structure, shared code, less abstraction)
 
-**Dependency Impact:**
+Instead of introducing heavy abstractions, it uses thin, symmetric facades and adapters around native state managers (e.g., Bloc, Cubit, Riverpod, Provider),
+enabling shared UI and logic across apps while preserving native patterns.
 
-- flutter_riverpod: ^2.6.1
-- go_router: ^15.1.2
-- easy_localization: ^3.0.3
-- formz: ^0.8.0
-- get_storage: ^2.1.1
-- shared_preferences: ^2.5.3
+It delivers a balanced approach:
 
-**Performance Considerations:**
+- 💡 **Reusable business logic & UI** → code is shared across apps with minimal duplication.
+- ⚡ **Improved team productivity** → teams can be scaled quickly in critical phases.
+- 📈 **Scalability & Maintainability** → as this approach requires/enforced clean architecture,
+  that makes the codebase easier to maintain and extend.
+- 🤝 **Excellent developer experience (DX)** (at least much better then within "State-agnostic approach")
 
-- Build time impact: negligible
-- App size impact: <+100KB (mainly from state manager lib)
-- Runtime performance: No measurable impact
-
----
-
-## Testing Strategy
-
-- Unit tests for use cases and business logic
-- Widget tests for UI components (stateless, functional)
-- Integration tests for user flows (with real or mocked Riverpod container)
-
----
-
-## Architecture Diagram (Mermaid)
-
-```mermaid
-graph TD
-    UI[UI Layer (Stateless Widgets)] --> Orchestration[State Manager (Riverpod)]
-    Orchestration --> UseCases[Use Cases (Business Logic)]
-    UseCases --> Repos[Repositories]
-    Repos --> DataSources[Data Sources]
-    UI --> Overlays[Overlay, Theme, Error Handling, etc. (Shared Core)]
-```
-
----
-
-## Review and Lifecycle
-
-- Status: **Accepted** (2025-05-26)
-- Next review: **2025-07-10** or upon major project or team change
-- Revision history: First version
-
----
+⸻
 
 ## References
 
 - [Clean Architecture in Flutter](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 - [Flutter Architecture Guidelines](https://docs.flutter.dev/app-architecture)
 
----
+⸻
+
+## Status
+
+Accepted
+
+**Date:** 2025-07-25
+**Author:** Roman Godun
+**Reviewers:**
+
+### Review and Lifecycle
+
+- Status: **Accepted** (2025-09-26)
+- Revision history: First version
 
 ## Related ADRs
 

@@ -10,15 +10,6 @@
 This modular showcase monorepo demonstrates an example of **codebase, that 90%+ agnostic to state manager**.
 (More than 90% of the code remains unchanged, regardless of whether the app uses **Riverpod**, **Cubit/BLoC**, or **Provider**.)
 
-### ✅⚠️ **Advantages and Trade-offs**
-
-- ✅ **Code Reusability** → Shared modules can be reused across projects, improving efficiency and reducing time-to-market.
-- ✅ **Development Flexibility** → Developers can seamlessly move between projects/teams with minimal context-switch overhead => easier scaling of teams during critical tasks
-- ✅ **Scalability & Maintainability** → This approach requires/enforced clean architecture, that makes the codebase easier to maintain and extend.
-
-* ⚠️ **Increased Complexity** (additional abstractions, wrappers, and files) => may add to the size of the codebase.
-* ⚠️ **Higher Initial Investment** → More effort and resources are required upfront; onboarding may be slower for new contributors, also needs discipline in codebase's development
-
 ---
 
 ## 🧠 Files structure
@@ -111,7 +102,7 @@ The choice of Cubit and Riverpod was deliberate — it’s enough to **visualize
 
 - To migrate from **Cubit → Bloc**, simply replace method calls with event dispatching (replace Cubit with BLoC, add Events and adjust the DI bindings).
 - To migrate from **Cubit → Provider**, slightly more changes are required, since Provider depends on `BuildContext` => use `GetIt`.
-  The migration's process includes adjusting the DI bindings and replacing Cubit with equivalent Providers exposing symmetric methods.
+  The migration's process includes adjusting the DI bindings and replacing Cubit with equivalent Providers exposing symmetric methods. Also there are need to develop thin adapters
 
 (!) This shows that one well-structured base is sufficient for all these state managers.
 

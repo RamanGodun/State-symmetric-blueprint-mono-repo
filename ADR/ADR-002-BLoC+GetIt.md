@@ -100,3 +100,8 @@ BlocProvider.value(value: di<Authcubit>(), child: ...)
 - ADR-001: Riverpod-centric State Agnostic Clean Architecture
 - ADR-003: Navigation & Routing Strategy (planned)
 - ADR-004: Localization
+
+### 1. Bloc + GetIt (or Provider + GetIt)
+
+- **Pros:** Familiar to many teams; large ecosystem; works with existing tools; decouples logic from Flutter context.
+- **Cons:** Context-bound, more boilerplate, less compile-time safety, DI is external (GetIt), less flexible than Riverpod.
