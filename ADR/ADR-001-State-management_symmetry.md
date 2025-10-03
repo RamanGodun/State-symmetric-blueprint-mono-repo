@@ -1,29 +1,9 @@
 # ADR-001: State Management Strategy — State Symmetric Architecture Style
 
-## Status
-
-Accepted
-
-**Date:** 2025-07-25
-**Author:** Roman Godun
-**Reviewers:**
-
-### Review and Lifecycle
-
-- Status: **Accepted** (2025-09-26)
-- Revision history: First version
-
-## Related ADRs
-
-- ADR-002: Bloc + GetIt state management approach
-- ADR-003: Navigation and Routing strategy (GoRouter)
-
 ## 📌 Definition
 
 **State-Symmetric Architecture** - is a pragmatic refinement of the state-agnostic approach (with preserving all its core principles),
 designed to improve Developer Experience (DX) by replacing heavy abstraction layers with thin, symmetric facades and adapters over native state managers (e.g., Bloc, Riverpod).
-🟢 The result: 90%+ code reuse with minimal overhead, fast onboarding, and nice DX — a golden mean
-between state-agnostic benefits (business effectiveness) and engineering pragmatism (developer experience).
 
 ## Context and Problem
 
@@ -64,7 +44,8 @@ Therefore, the **following requirements are adopted** for the monorepo’s codeb
 In this monorepo **State-Symmetric** approach was implemented by reducing of _State-agnostic approach's over-engineering_ (that rarely delivers true value) and instead applying a thin, symmetric facade layer over native state managers (BLoC/Cubit and Riverpod)
 with preserving of others principle of state-agnostic architecture codestyle
 
-🟢 The result: 90%+ code reuse with minimal overhead, fast onboarding, and excellent DX — a golden mean between state-agnostic scalability and engineering pragmatism.
+🟢 The result: 90%+ code reuse with minimal overhead, fast onboarding, and nice DX — a golden mean
+between state-agnostic benefits (business effectiveness) and engineering pragmatism (developer experience).
 
 ### Accepted Decisions
 
@@ -144,6 +125,27 @@ It delivers a **balanced architecture**:
 - ⚡ **High productivity** for teams in critical phases
 - 📈 **Scalability & clean maintenance** via architecture
 - 🤝 **Much improved developer experience**
+
+🟢 The result: 90%+ code reuse with minimal overhead, fast onboarding, and nice DX — a golden mean
+between state-agnostic benefits (business effectiveness) and engineering pragmatism (developer experience).
+
+## Status
+
+Accepted
+
+**Date:** 2025-07-25
+**Author:** Roman Godun
+**Reviewers:**
+
+### Review and Lifecycle
+
+- Status: **Accepted** (2025-09-26)
+- Revision history: First version
+
+## Related ADRs
+
+- ADR-002: Bloc + GetIt state management approach
+- ADR-003: Navigation and Routing strategy (GoRouter)
 
 ## References
 
