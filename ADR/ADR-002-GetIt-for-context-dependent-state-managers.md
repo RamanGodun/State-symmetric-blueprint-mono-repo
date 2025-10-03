@@ -135,7 +135,7 @@ ProviderScope(parent: GlobalDIContainer.instance, child: MyApp())
 - **Scalability**: Add/remove feature modules independently
 - **Testability**: Inject mocks or override providers/registrations easily
 - **Stability**: Supports clean hot reload, reduces chance of registration errors
-- **No Overengineering**: No interface bridges unless necessary
+- **No Over-engineering**: No interface bridges unless necessary
 - **Consistency**: Same mental model in Riverpod and Bloc apps
 
 ---
