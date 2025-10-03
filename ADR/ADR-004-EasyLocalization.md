@@ -1,38 +1,22 @@
 # ADR-004: Localization Strategy
 
-**Status:** Accepted
-**Date:** 2025-05-27
-**Context:** Flutter App (State-agnostic, Multi-StateManager Support)
+## 1. Review and Lifecycle
 
----
+_Status_: _Accepted_ (2025-09-26)
+_Revision history:_ First version
+_Author:_ Roman Godun
 
-## 1. Context
+## 2. 🎯 Context
 
-Localization is a core requirement for modern, user-centric Flutter applications, enabling multi-language UI and consistent UX across global markets. The chosen approach must:
+Localization (i18n) is a critical requirement for modern multi-language apps. This ADR defines a **state-symmetric, modular, and testable** localization system that acomplish next **Design Goals**:
 
-- Support real-time locale switching without full app reload
-- Remain agnostic to the state management solution (Bloc, Riverpod, Provider, etc.)
-- Enable centralized, safe, and testable localization logic
-- Degrade gracefully if localization is temporarily disabled or not required (e.g., for white-label/B2B or unit-testing scenarios)
-- Easily integrate into any modern codebase with minimal friction
+- Enables **real-time locale switching** (without full app reload)
+- Supports **both Riverpod and BLoC/Cubit/Riverpod** state managers
+- Centralizes localization logic for testability and consistency
+- Degrades gracefully in apps that **don’t require localization** (fallback-only mode)
+- Is compatible with **background tasks**, headless/CLI modes, and widgets outside the tree
 
-The [easy_localization](https://pub.dev/packages/easy_localization) package is selected as the foundation due to its feature set, active maintenance, real-time switching, and codegen support.
-
----
-
-## 2. Decision
-
-- Use **EasyLocalization** as the core localization framework.
-- Encapsulate all translation logic behind a **universal AppLocalizer singleton**, which supports both EasyLocalization and fallback-only modes.
-- All UI widgets must use only the central `AppLocalizer` API or the custom `TextWidget` for translatable text. Never use `.tr()` directly in Text widgets.
-- Provide a fallback-only localization path (`LocalesFallbackMapper`) for testing, error handling, or when localization is not used in the app.
-- All domain/business logic (validation, failures, overlays, form fields) must operate on keys only; all actual translation is performed at the UI/widget layer where BuildContext is available.
-- The system must support runtime locale switching and notify all downstream widgets.
-- Ensure all localization setup is **modular** and compatible with any DI/container pattern.
-
----
-
-## 3. Design Goals
+The architecture is designed to ensure **DX, runtime performance, and extensibility**.
 
 - **State-Agnostic**: Can be used with any state management (Bloc, Riverpod, Provider, etc.) and supports global/local widget trees.
 - **Fallback-Resilient**: Always resolves a string for any key, even if no localization is configured (e.g., fallback to English or a hardcoded string).
@@ -43,136 +27,84 @@ The [easy_localization](https://pub.dev/packages/easy_localization) package is s
 - **Separation of Concerns**: Domain/logic works with keys only, UI widgets are responsible for resolving keys.
 - **Consistent API**: Unified approach for all widgets (`TextWidget`, `AppTextField`, overlays, etc.).
 - **DX-Optimized**: Developers never touch raw `.tr()`/`BuildContext` in business logic or domain models.
+- **Safe**: Keys are generated and strongly typed (via `LocaleKeys`)
 
 ---
 
-## 4. Solution Details
+## 3. ✅ Decisions, Key Principles
 
-### 4.1. Bootstrap & Initialization
+We adopt the following localization strategy:
 
-At bootstrap (in `AppBootstrap`), **choose localization mode**:
-
-```dart
-// ✅ Enable when using EasyLocalization
-AppLocalizer.init(resolver: (key) => key.tr());
-
-// 🟡 Enable fallback-only mode (e.g., early error handling)
-AppLocalizer.initWithFallback();
-```
-
-### 4.2. Key Components
-
-- **AppLocalizer**: Central singleton for translation lookup. Always initialized at app start.
-  - `AppLocalizer.translateSafely(String key, {String? fallback})`
-  - `AppLocalizer.isInitialized`
-  - Logs missing/fallback keys.
-
-- **LocalesFallbackMapper**: Fallback Map for known keys (used when localization is disabled).
-- **FallbackKeysForErrors**: Static strings for common error/failure messages.
-- **TextWidget**: Replaces standard `Text`, resolves keys and applies consistent style, supports all typography/text types.
-- **LanguageToggleButton**: iOS/macOS-style popup for runtime locale switching with visual feedback and overlays.
-- **AppStrings**: Static non-translatable texts for tests and debug UI.
-
-### 4.3. Usage Pattern
-
-- **In Domain Layer**: Pass localization keys only (`LocaleKeys.*`, `'failure.auth.unauthorized'`), no `.tr()` calls.
-- **In UI Layer**: Use `TextWidget`, `AppTextField`, або custom `_resolveText()` pattern, що використовує `AppLocalizer`.
-- **On Error/Overlay**: Always localize failure keys at UI layer, not domain/logic.
-
-### 4.4. Testability
-
-- `AppLocalizer.forceInit(resolver: (key) => 'Test $key')` for tests/mocks.
-- Can switch to fallback-only or any custom resolver at runtime.
-
-### 4.5. No-Localization Mode
-
-- If the app does not require localization, only `LocalesFallbackMapper` and `FallbackKeysForErrors` are used.
-- All text is still resolved via the same API; no code changes required elsewhere.
+- Use [`easy_localization`] package as the base engine due to its feature set, active maintenance, real-time switching, and codegen support.
+- `LocalizationWrapper.configure()` is the single source of truth for app-wide localization context. Encapsulate all translation logic behind a **universal AppLocalizer singleton**, which supports both EasyLocalization and fallback-only modes (availabble easy switching between localization and fallback-only mode at bootstrap)
+- All translation must go through `AppLocalizer.translateSafely(...)`. In non-i18n apps or early boot, fallback-only mode is enabled via `LocalesFallbackMapper`
+- For UI text: use the `TextWidget` or `_resolveText()` wrapper — never `.tr()` directly
+- All domain/business logic (validation, failures, overlays, form fields) must operate on keys only; all actual translation is performed at the UI/widget layer where BuildContext is available.
+- Ensure all localization setup is **modular** and compatible with any DI/container pattern.
+- All keys are accessed via `LocaleKeys` generated via codegen
 
 ---
 
-## 5. Flutter Widget Localization (DatePicker, Dialogs, etc.)
+## Solution Details
 
-❗️ **System Flutter Widgets (DatePicker, TimePicker, etc.) are NOT localized by EasyLocalization!**
-
-By default, only the strings you pass through `.tr()` are localized via EasyLocalization.
-But system widgets (DatePicker, TimePicker, Material dialogs, built-in banners, SnackBars, etc.) use Flutter’s native internationalization pipeline.
-
-**To ensure full localization for such widgets ALWAYS set these fields in MaterialApp:**
-
-```dart
-MaterialApp(
-  locale: context.locale, // from EasyLocalization
-  supportedLocales: context.supportedLocales, // or a direct list
-  localizationsDelegates: context.localizationDelegates, // includes both EasyLocalization & Flutter
-  ...
-)
-
-// or manually:
-
-MaterialApp(
-  localizationsDelegates: [
-    GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    EasyLocalization.of(context)!.delegate,
-  ],
-  supportedLocales: [
-    const Locale('en'),
-    const Locale('uk'),
-    const Locale('pl'),
-  ],
-  ...
-)
-```
-
-📝 _Why is this?_
-Flutter widgets rely on the standard localizationsDelegates and supportedLocales for all system text.
-EasyLocalization is only a wrapper for explicit `.tr()` calls and does NOT replace or intercept these delegates.
-
-**TL;DR:**
-
-> If your app needs DatePicker/TimePicker/Dialog to be localized, always configure MaterialApp as above. Otherwise, you will see only default local for these widgets.
+Solution Details are in [README of localization module](<../packages/core/lib/src/base_modules/localization/README(localization).md>)
 
 ---
 
-## 6. Rejected Alternatives
+## 4. 💡 Success Criteria and Alternatives Considered
 
 - **Flutter Intl / native flutter_gen**: Does not support live locale switching, less flexible for DI/testability.
-- **Storing strings in domain models**: Prevents translation at UI layer, makes localization brittle for overlays/errors.
+- **Slang**: Nice alternative. Will be considerated in next research
+
+### 🧪 Success Criteria
+
+- [ ] Features migrate between apps with <10% code change
 
 ---
 
-## 7. Consequences & Extension
+## 5. 🧨 Consequences
 
-- The system supports any future state manager, migration, or hybrid approaches (e.g., feature-based Provider + Bloc).
-- New languages or fallback sets can be added via codegen/fallback maps with no architectural impact.
-- Easily supports deep links, dynamic runtime changes, or B2B/white-label apps with custom string sets.
+### ✅ Positive
 
----
+- Unified, modular localization
+- Shared across state managers (Riverpod/Bloc)
+- Declarative and clean usage patterns
+- Runtime locale switching, error-safe
+- Easy to mock/test
 
-## 8. Sample Implementation
+### ⚠️ Negative
 
-```dart
-// AppLocalizer usage in UI:
-TextWidget(LocaleKeys.profile_email, TextType.bodySmall)
-
-// Or fallback:
-TextWidget('profile.email', TextType.bodySmall, fallback: 'Email')
-
-// In error overlays:
-final uiText = AppLocalizer.translateSafely(failure.key, fallback: failure.message)
-```
+- Requires setup at bootstrap
+- Codegen step mandatory
+- EasyLocalization still required under the hood (unless fallback-only mode)
 
 ---
 
-## 9. References
+## 6. 🔗 Related info
+
+## 🧭 Related ADRs
+
+- ADR-001: State-Symmetric Architecture
+- ADR-002: Dependency Injection (Bloc + GetIt / Riverpod)
+- ADR-003: Navigation Strategy (GoRouter)
+
+## 📚 References
 
 - [EasyLocalization](https://pub.dev/packages/easy_localization)
 - [Flutter Internationalization Docs](https://docs.flutter.dev/accessibility-and-localization/internationalization)
-- Project codebase, `/core/base_modules/localization/`
 
 ---
 
-**TL;DR:**
-This localization strategy ensures best-in-class DX, testability, and resilience, while being ready for any scale, future refactoring, or business requirement.
+## 7. 📌 Summary
+
+> This localization strategy brings modularity, safety, nice DX, and state-symmetry to Flutter apps.
+
+- ✅ Testable
+- ✅ Runtime-switchable
+- ✅ Clean architecture ready
+- ✅ State manager independent
+- ✅ Production-grade
+
+Supports apps of any scale or architecture style, ready for any scale, future refactoring, or business requirement.
+
+---

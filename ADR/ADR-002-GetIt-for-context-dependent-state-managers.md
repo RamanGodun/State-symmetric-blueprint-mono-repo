@@ -1,14 +1,14 @@
 # ADR-002: Dependency Injection Pattern (via GetIt or native ProviderScope in Riverpod) in Symmetric State Management
 
+## 1. Review and Lifecycle
+
+_Status_: _Accepted_ (2025-09-26)
+_Revision history:_ First version
+_Author:_ Roman Godun
+
 ---
 
-## Status
-
-Accepted
-
----
-
-## Context
+## 2. 🎯 Context
 
 Our Flutter monorepo architecture aims for:
 
@@ -24,7 +24,7 @@ This ADR formalizes **PlatIt (Platform Logic Injection Toolkit)** — a modular,
 
 ---
 
-## Problem
+### Main Problem
 
 - Bloc and Cubit do not support global DI out of the box.
 - DI by `BuildContext` is problematic for:
@@ -35,101 +35,18 @@ This ADR formalizes **PlatIt (Platform Logic Injection Toolkit)** — a modular,
 
 ---
 
-## Decision
+## 3. ✅ Decisions, Key Principles
 
-We adopt a **dual-platform DI strategy**:
+For full platform symmetry and maximum portability across apps we adopt a **dual-platform DI strategy**:
 
 1. **For Bloc-based apps** → use **PlatIt**, a custom DI pattern built on top of `GetIt`
+
+   > **PlatIt** = **Platform Logic Injection Toolkit** — a convention for structured, testable, and context-free service injection in Bloc-based apps.
+   > (- [PlatIt-pattern](../packages/bloc_adapter/lib/src/app_bootstrap/di/docs/plat_it_di_pattern.md))
+
 2. **For Riverpod-based apps** → use **native Riverpod ProviderContainer** and `.ref.read()` pattern
 
-This ensures full platform symmetry and maximum portability across apps.
-
----
-
-## PlatIt (Bloc-based DI via GetIt)
-
-### 🧱 PlatIt Design Principles
-
-1. _Global Service Locator_ → `GetIt.instance` (aliased as `di`)
-2. _Modular DI_ → Each domain (e.g., `AuthModule`, `ThemeModule`) implements `DIModule`
-3. _Dependency-Aware Bootstrapping_ → `ModuleManager.registerModules([...])` resolves and registers in order
-4. _Safe Registration_ → via `SafeRegistration` extensions (`registerLazySingletonIfAbsent`, etc.)
-5. _No Bridges_ → Avoid abstract interfaces unless necessary for migration
-6. _Scoped DI Support_ → Use `BlocProvider(create: ...)` for screen-specific logic
-7. _Disposability_ → Optional `.safeDispose()` supported for Cubits and Blocs
-
-### 🧩 Example Usage (Bloc + PlatIt)
-
-#### 📦 Global Initialization
-
-```dart
-await ModuleManager.registerModules([
-  ThemeModule(),
-  AuthModule(),
-  FirebaseModule(),
-  NavigationModule(),
-]);
-```
-
-#### 🧭 Inject into Root Widget
-
-```dart
-return MultiBlocProvider(
-  providers: [
-    BlocProvider.value(value: di<AuthCubit>()),
-    BlocProvider.value(value: di<AppThemeCubit>()),
-  ],
-  child: AppLocalizationShell(),
-);
-```
-
-#### 🧑‍💻 Scoped Injection in Screens
-
-```dart
-MultiBlocProvider(
-  providers: [
-    BlocProvider(create: (_) => SignInCubit(di<SignInUseCase>())),
-    BlocProvider(create: (_) => SignInFormCubit()),
-  ],
-  child: SubmissionStateSideEffects<SignInCubit>(
-    onSuccess: (ctx, _) => ctx.showSnackbar(...),
-    onRetry: (ctx) => ctx.submitSignIn(),
-    child: const _SignInScreen(),
-  ),
-);
-```
-
----
-
-## Riverpod DI Strategy
-
-Riverpod provides **native context-independent DI** via `ProviderContainer` or `.ref.read()`.
-
-### 💡 Global DI Container
-
-```dart
-final container = ProviderContainer(overrides: [...]);
-GlobalDIContainer.initialize(container);
-```
-
-Used as parent:
-
-```dart
-ProviderScope(parent: GlobalDIContainer.instance, child: MyApp())
-```
-
-### 💬 Reading Dependencies (examples)
-
-- Inside widget: `ref.read(routerProvider)`
-- Outside widget tree: `GlobalDIContainer.instance.read(routerProvider)`
-
-### 🌍 App-wide injection
-
-- Works in overlays, background isolates, and pre-runApp bootstrapping.
-
----
-
-## Rationale
+### Rationale
 
 - **Platform Symmetry**: Riverpod and Bloc achieve same benefits — global, context-free access to shared dependencies
 - **Scalability**: Add/remove feature modules independently
@@ -140,7 +57,16 @@ ProviderScope(parent: GlobalDIContainer.instance, child: MyApp())
 
 ---
 
-## Consequences
+## 4. 💡 Success Criteria and Alternatives Considered
+
+### 🧪 Success Criteria
+
+- [ ] Easy dependency injection
+- [ ] Graet documentation to used packages
+
+---
+
+## 5. 🧨 Consequences
 
 - Requires discipline around `DIModule` dependencies and registration order
 - `GetIt` container must be initialized before use (during bootstrap)
@@ -149,13 +75,9 @@ ProviderScope(parent: GlobalDIContainer.instance, child: MyApp())
 
 ---
 
-## Terminology
+## 6. 🔗 Related info
 
-> **PlatIt** = **Platform Logic Injection Toolkit** — a convention for structured, testable, and context-free service injection in Bloc-based apps.
-
----
-
-## See Also
+### Related ADRs
 
 - ADR-001: State-Symmetric Architecture
 - ADR-003: Navigation & Routing Strategy
@@ -163,11 +85,16 @@ ProviderScope(parent: GlobalDIContainer.instance, child: MyApp())
 
 ---
 
-## References
+### References
 
 - [get_it](https://pub.dev/packages/get_it)
 - [flutter_bloc](https://pub.dev/packages/flutter_bloc)
 - [flutter_riverpod](https://pub.dev/packages/flutter_riverpod)
 - [State-Symmetric Architecture](./ADR-001-State-symmetric-architecture.md)
+- [PlatIt-pattern](../packages/bloc_adapter/lib/src/app_bootstrap/di/docs/plat_it_di_pattern.md)
 
 ---
+
+## 7. 📌 Summary
+
+Chose approach is non-alternative due to the accepted criteria

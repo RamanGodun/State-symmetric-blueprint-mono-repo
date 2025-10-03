@@ -1,16 +1,14 @@
 # ADR-003: Navigation & Routing Strategy — Declarative, State-Agnostic, and Reactive
 
-## Status
+## 1. Review and Lifecycle
 
-Accepted
-
-**Date:** 2025-09-28
-**Author:** Roman Godun
-**Reviewers:** —
+_Status_: _Accepted_ (2025-09-26)
+_Revision history:_ First version
+_Author:_ Roman Godun
 
 ---
 
-## 🧭 Context
+## 2. 🎯 Context
 
 This architecture targets production-ready, scalable, and maintainable Flutter applications where **navigation is declarative, testable, and orchestration is reactive to app state** (e.g., auth status).
 
@@ -24,7 +22,9 @@ The codebase follows the **State-Symmetric Architecture** (see ADR-001), where b
 
 ---
 
-## 🧩 Decision Summary: Use GoRouter with Modular, Declarative Routing Pattern
+## 3. ✅ Decisions, Key Principles
+
+### 🧩 Decision Summary: Use GoRouter with Modular, Declarative Routing Pattern
 
 We adopt [`go_router`](https://pub.dev/packages/go_router) as the routing framework for both Bloc and Riverpod apps, with a **modular, declarative**, and **Auth-aware** orchestration
 
@@ -45,7 +45,7 @@ The router instance is injected via DI (`ProviderScope` in Riverpod, `GetIt` in 
 
 ---
 
-## 🔧 Key Implementation Decisions
+### 🔧 Key Implementation Decisions
 
 ### 1. **GoRouter as the Navigation Engine**
 
@@ -53,7 +53,7 @@ The router instance is injected via DI (`ProviderScope` in Riverpod, `GetIt` in 
 - Central config via `AppRoutes`, `RoutesNames`, `RoutesPaths`.
 - Error fallback and transitions are handled via `AppTransitions.fade()` (or custom).
 
-### 2. **Reactive Redirects (Auth-aware Routing)**
+#### 2. **Reactive Redirects (Auth-aware Routing)**
 
 - Redirects are computed based on current **AuthSnapshot**.
 - Shared pure function `computeRedirect(...)` accepts snapshot + currentPath + flags.
@@ -69,7 +69,7 @@ final target = computeRedirect(
 
 - This logic works in both Riverpod and Bloc, with snapshot provided via `Provider` or `di.get()`.
 
-### 3. **DI Symmetry for Router**
+#### 3. **DI Symmetry for Router**
 
 - **Riverpod**: `routerProvider` exposes stable router via `buildGoRouter()`.
 - **Bloc**: `GoRouter` is built via `buildGoRouter()` and injected into `GetIt`.
@@ -78,7 +78,7 @@ final target = computeRedirect(
 
 ---
 
-## 🧪 Testability
+### 🧪 Testability
 
 - All redirect logic is **pure Dart**, e.g., `computeRedirect(...)` returns a nullable string.
 - `RoutesRedirectionService` can be tested without UI.
@@ -144,7 +144,7 @@ This happens **without imperative push** logic in the UI. User lands on `/signin
 
 ---
 
-## 🛑 Rejected Alternatives
+## 4. 💡 Success Criteria and Alternatives Considered
 
 ### Imperative Navigation (Navigator 1.0)
 
@@ -156,9 +156,19 @@ This happens **without imperative push** logic in the UI. User lands on `/signin
 - ❌ Over-engineering. Not needed for symmetrical routing via shared GoRouter.
 - ✅ Can be revisited if full migration layer needed.
 
+### Use AutoRoute
+
+- ❌
+- ✅
+
+### 🧪 Success Criteria
+
+- [ ] Simple DX
+- [ ] Declarative navigation
+
 ---
 
-## ✅ Consequences & Benefits
+## 5. 🧨 Consequences
 
 - 🧩 Declarative, centralized, and symmetrical navigation.
 - ♻️ Reused between Bloc and Riverpod apps.
@@ -167,16 +177,20 @@ This happens **without imperative push** logic in the UI. User lands on `/signin
 
 ---
 
-## 🔍 See Also
+## 6. 🔗 Related info
+
+### Related ADRs
 
 - ADR-001: State-Symmetric Architecture
 - ADR-002: Dependency Injection Pattern (via GetIt / ProviderScope)
 - ADR-004: Localization & Overlay Strategy
-
----
 
 ## References
 
 - [GoRouter documentation](https://pub.dev/packages/go_router)
 - [Flutter Navigation 2.0](https://flutter.dev/docs/development/ui/navigation)
 - [State-Symmetric Architecture](./adr_001_state_symmetric.md)
+
+## 7. 📌 Summary
+
+According to personal criterai GoRouter was chosen
