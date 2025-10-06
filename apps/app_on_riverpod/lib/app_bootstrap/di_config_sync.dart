@@ -1,5 +1,5 @@
-import 'package:app_on_riverpod/core/base_modules/navigation/module_core/go_router_factory.dart';
-import 'package:app_on_riverpod/core/base_modules/navigation/module_core/router_provider.dart';
+import 'package:app_on_riverpod/core/base_modules/navigation/go_router_factory.dart';
+import 'package:app_on_riverpod/core/base_modules/navigation/router_provider.dart';
 import 'package:core/public_api/core.dart';
 import 'package:firebase_adapter/firebase_adapter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

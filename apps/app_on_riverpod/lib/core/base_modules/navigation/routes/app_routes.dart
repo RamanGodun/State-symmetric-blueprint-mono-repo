@@ -1,4 +1,4 @@
-import 'package:app_on_riverpod/core/base_modules/navigation/module_core/go_router_factory.dart';
+import 'package:app_on_riverpod/core/base_modules/navigation/go_router_factory.dart';
 import 'package:app_on_riverpod/core/shared_presentation/pages/home_page.dart';
 import 'package:app_on_riverpod/core/shared_presentation/pages/page_not_found.dart';
 import 'package:app_on_riverpod/features_presentation/auth/sign_in/sign_in__page.dart';

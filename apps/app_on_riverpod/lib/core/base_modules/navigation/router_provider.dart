@@ -1,4 +1,4 @@
-import 'package:app_on_riverpod/core/base_modules/navigation/module_core/go_router_factory.dart';
+import 'package:app_on_riverpod/core/base_modules/navigation/go_router_factory.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 

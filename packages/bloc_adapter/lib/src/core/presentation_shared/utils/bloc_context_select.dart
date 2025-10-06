@@ -5,26 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// ✅ Gives BLoC the same expressive, minimal API (perfect symmetry).
 //
 extension BlocWatchSelectX on BuildContext {
+  //
   /// 🎯 Watch + select a slice of [B]’s state (clean & efficient rebuilds).
   R watchAndSelect<B extends StateStreamable<S>, S, R>(R Function(S) selector) {
-    return select<B, R>((bloc) {
-      final s = (bloc as StateStreamable<S>).state;
-      return selector(s);
-    });
+    return select<B, R>((b) => selector(b.state));
   }
 
   /// 📖 Read a BLoC instance without listening (parity to `ref.read`).
   B readBloc<B extends StateStreamable<Object?>>() => read<B>();
   //
 }
-
-/*
-extension BlocWatchSelectX on BuildContext {
-  ///------------------------------------
-  //
-  R watchAndSelect<B extends StateStreamable<S>, S, R>(R Function(S) selector) {
-    return select<B, R>((b) => selector((b as dynamic).state as S));
-  }
-  B readBloc<B extends StateStreamable<Object?>>() => read<B>();
-}
- */

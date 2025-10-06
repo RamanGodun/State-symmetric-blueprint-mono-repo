@@ -1,4 +1,4 @@
-import 'package:app_on_bloc/core/base_modules/navigation/module_core/go_router_factory.dart';
+import 'package:app_on_bloc/core/base_modules/navigation/go_router_factory.dart';
 import 'package:app_on_bloc/features_presentation/auth/sign_in/sign_in__page.dart'
     show SignInPage;
 import 'package:app_on_bloc/features_presentation/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';

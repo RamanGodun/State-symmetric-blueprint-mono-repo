@@ -1,4 +1,4 @@
-import 'package:app_on_riverpod/core/base_modules/navigation/module_core/go_router_factory.dart';
+import 'package:app_on_riverpod/core/base_modules/navigation/go_router_factory.dart';
 import 'package:app_on_riverpod/features_presentation/auth/sign_in/sign_in__page.dart'
     show SignInPage;
 import 'package:app_on_riverpod/features_presentation/auth/sign_out/sign_out_provider.dart';
@@ -11,7 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 ///        and perform redirection to [SignInPage]
 //
 final class SignOutIconButton extends ConsumerWidget {
-  ///----------------------------------
+  ///----------------------------------------------
   const SignOutIconButton({super.key});
 
   @override
