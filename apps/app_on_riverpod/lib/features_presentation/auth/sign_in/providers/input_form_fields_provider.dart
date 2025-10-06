@@ -17,9 +17,12 @@ final class SignInForm extends _$SignInForm {
 
   ////
 
-  /// Initializes the form state with default (pure) values.
   @override
-  SignInFormState build() => const SignInFormState();
+  SignInFormState build() {
+    ref.onDispose(_debouncer.cancel); // 🧼 Cleanup memory leaks on dispose
+    /// Initializes the form state with default (pure) values.
+    return const SignInFormState();
+  }
 
   /// 📧  Handles email input with validation, trimming and debounce
   void onEmailChanged(String value) {

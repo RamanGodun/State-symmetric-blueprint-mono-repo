@@ -14,9 +14,12 @@ final class ChangePasswordForm extends _$ChangePasswordForm {
   // For anti double-tap protection on input updates.
   final _debouncer = Debouncer(AppDurations.ms100);
 
-  /// 🧱 Initializes the form with pure input values
   @override
-  ChangePasswordFormState build() => const ChangePasswordFormState();
+  ChangePasswordFormState build() {
+    ref.onDispose(_debouncer.cancel); // 🧼 Cleanup memory leaks on dispose
+    /// 🧱 Initializes the form with pure input values
+    return const ChangePasswordFormState();
+  }
 
   ////
 

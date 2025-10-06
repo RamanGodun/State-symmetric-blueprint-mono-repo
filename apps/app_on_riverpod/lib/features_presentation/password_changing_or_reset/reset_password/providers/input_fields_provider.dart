@@ -14,9 +14,12 @@ final class ResetPasswordForm extends _$ResetPasswordForm {
   /// For anti double-tap protection on input updates.
   final _debouncer = Debouncer(AppDurations.ms100);
 
-  /// Initializes the form state with default (pure) values.
   @override
-  ResetPasswordFormState build() => const ResetPasswordFormState();
+  ResetPasswordFormState build() {
+    ref.onDispose(_debouncer.cancel); // 🧼 Cleanup memory leaks on dispose
+    /// Initializes the form state with default (pure) values.
+    return const ResetPasswordFormState();
+  }
 
   ////
 

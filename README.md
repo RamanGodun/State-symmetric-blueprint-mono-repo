@@ -12,7 +12,7 @@ This modular showcase monorepo demonstrates an example of **State-symmetric arch
 
 ### Accepted architecture decisions records
 
-Accepted architecture decisions records are in [`ADR.md`](ADR/ADR-001-State-symmetric-architecture.md) for full decision records.
+Accepted architecture decisions records are in [`ADR.md`](ADR/ADR-001-State-symmetric-architecture.md).
 
 ---
 

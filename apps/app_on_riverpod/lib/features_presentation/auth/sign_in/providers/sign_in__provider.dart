@@ -19,9 +19,14 @@ final class SignIn extends _$SignIn {
 
   ////
 
-  /// 🧱 Initial state (idle)
   @override
-  ButtonSubmissionState build() => const ButtonSubmissionInitialState();
+  ButtonSubmissionState build() {
+    ref.onDispose(
+      _submitDebouncer.cancel,
+    ); // 🧼 Cleanup memory leaks on dispose
+    /// 🧱 Initial state (idle)
+    return const ButtonSubmissionInitialState();
+  }
 
   /// 🚀 Triggers sign-in with the provided credentials.
   ///    Delegates domain logic to [SignInUseCase] and updates ButtonSubmission state.

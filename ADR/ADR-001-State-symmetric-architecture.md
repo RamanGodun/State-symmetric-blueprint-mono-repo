@@ -29,7 +29,7 @@ that achieves via additional abstractions, wrappers, and files.
   that makes the codebase easier to maintain and extend.
 
 - ⚠️ **Increased Complexity** => Heavy abstractions (additional abstractions, wrappers, and files)
-  increase size and onboarding cost; maintenance becomes harder without strict discipline.
+  increase size and onboarding cost; parity tax, maintenance becomes harder without strict discipline.
 
 ## 3. ✅ Decisions, Key Principles
 
@@ -45,7 +45,7 @@ The **following requirements are adopted** for the monorepo’s codebase:
 - Flexibility: Code and people can move freely between apps/projects
 
 👉 This monorepo was created to demonstrate how to implement a State-Symmetric architecture style — one that maintains the benefits of state-agnosticism (scalability, team flexibility, reusable business logic) but avoids its pitfalls (over-engineering and complexity).
-**State-Symmetric** approach was implemented by reducing of _State-agnostic approach's over-engineering_ (that rarely delivers true value) and instead applying a thin, symmetric facade layer over native state managers (BLoC/Cubit and Riverpod) with preserving of others principle of state-agnostic architecture codestyle
+**State-Symmetric** approach was implemented by reducing of _State-agnostic approach's over-engineering_ (that rarely delivers true value) and instead applying code splitting between dedicated own flutter packages and a thin, symmetric facade layer over native state managers (BLoC/Cubit and Riverpod) with preserving of others principle of state-agnostic architecture codestyle (adapters for specific statemanagement, strict sticking to clean architecture)
 
 🟢 The result: 90%+ code reuse with minimal overhead, fast onboarding, and nice DX — a golden mean
 between state-agnostic benefits (business effectiveness) and engineering pragmatism (developer experience).
@@ -89,9 +89,9 @@ Alternatives Considered:
    • ✅ Pros: maximal independence from state manager.
    • ❌ Cons: complex, verbose, hard to maintain, slow onboarding.
 
-2. Riverpod-only
-   • ✅ Pros: clean, small, minimal setup.
-   • ❌ Cons: less flexibility, harder to share or migrate codebases with Bloc/Provider-based apps, in some apps need to create an analog of BLoC's event-streams feature
+2. Choose state-manager up to your goals/requirements (BLoC/Cubit for Enterprise/Banking, Riverpod - Modern up-to-midsize apps, startups)
+   • ✅ Pros: clean, small, minimal setup, familiar DX
+   • ❌ Cons: less flexibility, harder to share or migrate codebases with Bloc/Provider-based apps, in apps on Riverpod/Provider need to create an analog of BLoC's event-streams feature
 
 ### 🧪 Success Criteria
 

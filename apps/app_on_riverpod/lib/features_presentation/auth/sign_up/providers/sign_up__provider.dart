@@ -18,9 +18,14 @@ final class SignUp extends _$SignUp {
   // For anti double-tap protection for the submit action.
   final _submitDebouncer = Debouncer(AppDurations.ms600);
 
-  /// 🧱 Initial state (idle)
   @override
-  ButtonSubmissionState build() => const ButtonSubmissionInitialState();
+  ButtonSubmissionState build() {
+    ref.onDispose(
+      _submitDebouncer.cancel,
+    ); // 🧼 Cleanup memory leaks on dispose
+    /// 🧱 Initial state (idle)
+    return const ButtonSubmissionInitialState();
+  }
 
   ////
 

@@ -14,9 +14,12 @@ final class SignUpForm extends _$SignUpForm {
   /// For anti input-spam / micro debouncing of validation (smooth UX, fewer rebuilds).
   final _debouncer = Debouncer(AppDurations.ms100);
 
-  /// Initializes the form state with default (pure) values.
   @override
-  SignUpFormState build() => const SignUpFormState();
+  SignUpFormState build() {
+    ref.onDispose(_debouncer.cancel); // 🧼 Cleanup memory leaks on dispose
+    /// Initializes the form state with default (pure) values.
+    return const SignUpFormState();
+  }
 
   ////
 
