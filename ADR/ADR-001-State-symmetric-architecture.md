@@ -81,6 +81,12 @@ between state-agnostic benefits (business effectiveness) and engineering pragmat
   The architecture allows for combining patterns pragmatically. For example, the Profile feature uses a UI compatibility wrapper (or API-mirroring approach) — enabling shared rendering logic across state managers while not introducing unnecessary indirection.
   This illustrates how wrapper, facade, and adapter patterns may coexist when appropriate.
 
+Опис
+• стейт-менеджер — лише оркестратор;
+• стейт-моделі (form/submission) — спільні;
+• UI максимально stateless, прив’язується тонкими фасадами;
+• обробка помилок, локалізація, оверлеї, навігаційні утиліти — у Core/Features.
+
 ## 4. 💡 Success Criteria and Alternatives Considered
 
 Alternatives Considered:

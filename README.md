@@ -10,6 +10,8 @@
 This modular showcase monorepo demonstrates an example of **State-symmetric architecture codestyle**.
 (More than 90% of the code remains unchanged, regardless of whether the app uses **Riverpod**, **Cubit/BLoC**, or **Provider**.)
 
+Clean Architecture + optional thin adapters (lazy parity)
+
 ### Accepted architecture decisions records
 
 Accepted architecture decisions records are in [`ADR.md`](ADR/ADR-001-State-symmetric-architecture.md).
