@@ -116,7 +116,7 @@ extension SignInContextX on BuildContext {
   void submitSignIn() {
     unfocusKeyboard();
     final form = read<SignInFormCubit>().state;
-    read<SignInCubit>().submit(
+    read<SignInCubit>().signin(
       email: form.email.value,
       password: form.password.value,
     );

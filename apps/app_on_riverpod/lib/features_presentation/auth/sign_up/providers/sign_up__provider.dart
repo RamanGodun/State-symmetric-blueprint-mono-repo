@@ -31,7 +31,7 @@ final class SignUp extends _$SignUp {
 
   /// 🚀 Triggers sign-up with the provided credentials.
   ///    Delegates domain logic to [SignUpUseCase] and updates ButtonSubmission state.
-  Future<void> submit({
+  Future<void> signUp({
     required String name,
     required String email,
     required String password,

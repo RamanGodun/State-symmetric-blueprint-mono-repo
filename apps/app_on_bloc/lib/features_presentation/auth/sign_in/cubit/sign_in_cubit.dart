@@ -20,7 +20,7 @@ final class SignInCubit extends Cubit<ButtonSubmissionState> {
 
   /// 🚀 Triggers sign-in with the provided credentials.
   ///    Delegates domain logic to [SignInUseCase] and emits ButtonSubmission states.
-  Future<void> submit({required String email, required String password}) async {
+  Future<void> signin({required String email, required String password}) async {
     if (state is ButtonSubmissionLoadingState) return;
     //
     _submitDebouncer.run(() async {

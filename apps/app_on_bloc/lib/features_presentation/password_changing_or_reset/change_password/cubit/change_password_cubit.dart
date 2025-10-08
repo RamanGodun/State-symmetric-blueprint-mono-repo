@@ -23,7 +23,7 @@ final class ChangePasswordCubit extends Cubit<ButtonSubmissionState> {
 
   /// 🚀 Triggers password update with the provided `newPassword`.
   /// ✅ Delegates domain logic to [_useCases] and emits ButtonSubmission states.
-  Future<void> submit(String newPassword) async {
+  Future<void> changePassword(String newPassword) async {
     if (state is ButtonSubmissionLoadingState) return;
     //
     _submitDebouncer.run(() async {

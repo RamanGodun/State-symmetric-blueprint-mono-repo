@@ -20,7 +20,7 @@ final class SignUpCubit extends Cubit<ButtonSubmissionState> {
 
   /// 🚀 Triggers sign-up with the provided credentials.
   ///    Delegates domain logic to [SignUpUseCase] and emits ButtonSubmission states.
-  Future<void> submit({
+  Future<void> signUp({
     required String name,
     required String email,
     required String password,

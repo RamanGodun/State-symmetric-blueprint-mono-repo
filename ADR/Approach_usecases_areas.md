@@ -1,133 +1,117 @@
-# State-symmetric approach usecases areas
+# State-Symmetric Approach Use Case Areas
 
-## 🧮 ROI Формула
-
-Так як стейт-симетричний підхід передбачає, шо адаптери/фасади мають бути тонкими (3–4 “шви” or <10% Feature's code: side‑effects, async state glue, UI events→use‑cases, lifecycle hooks), стейт-залежний код - мінімальний (стейт-менеджер лише оркестратрує стани), а весь інший код спільний, а саме:
-• спільні стейт-моделі (form/submission) у шарі presentation;
-• спільний весь domain/data layer кожної фічі (у пакеті 'features')
-• спільний UI (максимально stateless), прив’язується тонкими фасадами;
-• спільний код з обробки помилок, локалізації, оверлеїв, навігації, анімації, кастомізації тем (у 'core' пакеті).
-Також важливим аспектом цього підходу є **Lazy parity** - пишеш на чистому SM, додаєш відповідний адаптери/фасади, а паритетні лише коли/якщо знадобляться + для них smoke testing
-
-- У випадку коли для будь-якої потенційно resuable фічі UI/flows схожі, при імплементації цього піжходу перевикористання коду - 70-95%, економія 30-85% від вартості перевикористаної фічі, а "Overhead, Maintenance tax + Initial cost (навчання)" залежить від команди та проєкту
-
-```
-Expected ROI ≈ R·I·F − OMI·F,
-де:
-F - об'єм кодової бази фічі (по суті її вартість),
-R - ймовірність перевикористання
-I - impact, економія
-OMI - overhead + maintance + intial costs (education)
-```
-
-## 🎯 Niche’s Target Teams/Projects for “Clean Architecture + Thin Adapters (Lazy Parity)”
+## 🎯 Niche Target Teams/Projects for “Clean Architecture + Thin Adapters (Lazy Parity)”
 
 > This approach is **business‑valuable for a niche** (optimistically ~5–8% of the market) when reuse across apps/stacks is likely and presentation stays largely similar. Below are the profiles where it shines (and where it doesn’t).
 
-### 🎯 Agencies (аутсорсингові компанії)
+### 🎯 Agencies (Outsourcing Companies)
 
-**Коли актуально:**
+**When it applies:**
 
-- Компанія хоче мінімізувати дублювання фіч, щоб швидко доставляти подібні додатки з різними вимогами (≥2 клієнти протягом 6–12 місяців, які вимагають різні state managers, один хоче BLoC, інший — Riverpod)
+- The company wants to minimize feature duplication to deliver similar apps quickly with different requirements (≥2 clients within planning horizon, each requiring different state managers, e.g., one wants BLoC, another — Riverpod).
 
-**Чому вигідно:**
+**Why it’s profitable:**
 
-- ROI позитивний уже з **другого клієнта**, що обирає інший SM. Для іншого клієнта достатньо написати тонкий адаптер (**~5–10% LOC**).
+- ROI becomes positive starting with the **second client** choosing a different SM. Only a thin adapter is needed (**~5–10% LOC**).
 
-**Коли НЕ вигідно:**
+**When it doesn’t pay off:**
 
-- Компанія стандартизує під один SM і “нав’язує” його всім клієнтам (частий патерн).
+- The company standardizes under one SM and enforces it on all clients (common pattern).
 
-### 🎯 Multi‑product companies (багато продуктів під одним дахом)
+### 🎯 Multi‑Product Companies
 
-**Коли актуально:**
+**When it applies:**
 
-- 2+ застосунки для різних сегментів (напр., consumer app + admin app + white‑label app). При цьому продукти працюють на **одній дизайн‑системі** і мають **схожі фічі** (auth, profile, payments).
+- 2+ apps for different segments (e.g., consumer app + admin app + white‑label app). They share **one design system** and **similar features** (auth, profile, payments).
 
-**Чому вигідно:**
+**Why it’s profitable:**
 
-- Можна паралельно підтримувати продукти **на різних SM** чи мігрувати legacy BLoC ↔ new Riverpod).
+- Enables parallel support across **different SMs** or migration between legacy BLoC ↔ new Riverpod.
 
-**Коли НЕ вигідно:**
+**When it doesn’t pay off:**
 
-- Продукти дуже різні за UI/UX (Material vs Cupertino, радикально інші флоу).
+- Products diverge strongly in UI/UX (Material vs Cupertino, radically different flows).
 
-### 🎯 White‑label solutions (брендовані додатки для партнерів)
+### 🎯 White‑Label Solutions
 
-**Коли актуально:**
+**When it applies:**
 
-- Є один “ядро‑продукт”, який кастомізується під різних партнерів/клієнтів. При цьому часто треба підлаштовуватись під **чужу команду** (зі своїм звичним SM).
+- A single “core product” customized for different partners/clients, often needing to adapt to **external teams** with their preferred SM.
 
-**Чому вигідно:**
+**Why it’s profitable:**
 
-- Знижується час узгоджень: не сперечаєшся “який SM краще”, а **підключаєш потрібний**.
+- Reduces alignment costs: no debate over “which SM is better,” just **plug in the required one**.
 
-**Коли НЕ вигідно:**
+**When it doesn’t pay off:**
 
-- Кожен white‑label має сильно різні UX‑сценарії, A/B‑експерименти, кастомні флоу.
+- Each white‑label app has heavily customized UX, experiments, or flows.
 
-### 🎯 Platform teams (внутрішні “feature platform” команди)
+### 🎯 Platform Teams (Internal Feature Platforms)
 
-**Коли актуально:**
+**When it applies:**
 
-- Є окрема команда, яка будує повторювані модулі (auth, profile, payments, notifications) для інших внутрішніх команд. Модулі живуть **довго** і підтримуються **централізовано**.
+- A dedicated team builds reusable modules (auth, profile, payments, notifications) for other internal teams. Modules are **long‑lived** and centrally maintained.
 
-**Чому вигідно:**
+**Why it’s profitable:**
 
-- Забезпечується **consistency across apps**.
+- Ensures **consistency across apps**.
 
-**Коли НЕ вигідно:**
+**When it doesn’t pay off:**
 
-- Немає культури централізованої “платформи фіч” (рідкісна практика).
+- No centralized “feature platform” culture (rare).
 
 ### 🏛️ Legacy → New State Manager Migration
 
 #### ✅ Legacy (with Clean Architecture)
 
-- Старий проєкт вже має чітку **separation** domain/data/presentation; state‑manager шар тонкий.
-  В рамках **Lazy parity**: переносиш фічі поступово — додаєш тонкий адаптер під новий SM, зберігаючи спільні контракти (DTO, use‑cases, навігація, локалізація).
-  При цьому **Ризик низький, reuse високий (80–90%)**, ROI позитивний уже з 1–2 перенесених фіч.
+- Older project already has clear **domain/data/presentation separation**; SM layer is thin.
+- With **Lazy parity**, migrate features gradually — add thin adapters for new SM, keeping shared contracts (DTO, use‑cases, navigation, localization).
+- **Low risk, high reuse (80–90%)**, ROI positive with only 1–2 migrated features.
 
-#### ⚠️ Legacy (спагеті код)
+#### ⚠️ Legacy (Spaghetti Code)
 
-- Стан, бізнес‑логіка і UI намішані; спершу треба **виділити Core/Domain** (рефакторинг до Clean Architecture).
-  Це **upfront‑витрата**, тому ROI від симетрії **відкладений**: виграш з’явиться **після** чистки.
-  Короткостроково простіше “переписати під один SM”, але якщо продукт **довгоживучий** — після впорядкування симетрія окупиться.
+- State, business logic, and UI are mixed; first requires **extracting Core/Domain** (refactoring to Clean Architecture).
+- This is an **upfront cost**, so ROI is **delayed**: benefits appear **after** cleanup.
+- Short‑term, rewriting to a single SM may be easier, but for **long‑lived products** symmetry pays off post‑refactor.
 
-### 🎯 Solution‑provider companies (з готовими шаблонами) or solution houses або агенції, що спеціалізуються на SDK (auth/payments/fintech)
+### 🎯 Solution‑Provider Companies / SDK‑Focused Agencies
 
-**Коли актуально:**
+**When it applies:**
 
-- Компанія має бібліотеку готових рішень/шаблонів (auth, payments, profile), кожне з яких уже реалізоване для кількох state managers.
-- В архітектурі дотримані принципи SOLID (OCP), тому легко підміняти “шари”.
-- Клієнту пропонуються варіанти вибору стейт менеджеру та готовий шаблон UX/UI
+- Company maintains a library of ready solutions/templates (auth, payments, profile), each implemented for multiple SMs.
+- Architecture follows SOLID (OCP), making layers swappable.
+- Clients get SM choice with prebuilt UX/UI templates.
 
-**Чому вигідно:**
+**Why it’s profitable:**
 
-- Можна знизити вартість нової фічі на 85–90%, бо весь core/domain/data/UI вже готовий.
-- Замість дискусій про “який SM краще”, компанія дає готовий вибір.
+- Feature cost drops by 85–90%, since core/domain/data/UI are already built.
+- No SM debates — company offers multiple ready options.
 
-**Коли НЕ вигідно:**
+**When it doesn’t pay off:**
 
-- Якщо бібліотека шаблонів відсутня або SM‑різноманітність не є вимогою клієнтів.
+- No template library or SM diversity is irrelevant to clients.
 
-### 🧮 Decision Matrix: “When to use the State‑Symmetric approach”
+---
 
-| Тип компанії / сценарій         | Характеристика                                                        | Ймовірність reuse | ROI від симетрії   | Вердикт                                          |
-| ------------------------------- | --------------------------------------------------------------------- | ----------------- | ------------------ | ------------------------------------------------ |
-| **Single‑product company**      | Один продукт, один SM, довгий життєвий цикл                           | <5%               | ❌ негативний      | Використовувати 1 SM, не платити 5–10%           |
-| **Startup (MVP stage)**         | Швидкий delivery, постійні рескопи, хаос                              | <10%              | ❌ негативний      | Зайві витрати, краще “копіпаст” фіч              |
-| **Agency (Pattern A)**          | Стандартизували 1 SM і “нав’язують” його клієнтам                     | <10%              | ❌ негативний      | Використати boilerplate, тримати одну експертизу |
-| **Agency (Pattern B)**          | Пишуть під клієнта, але без повторного reuse між проєктами            | ~15%              | ⚠️ слабопозитивний | Симетрія не потрібна, краще швидкий шаблон       |
-| **Agency (Pattern C)**          | ≥2 клієнти з різними SM протягом року                                 | 30–50%            | ✅ позитивний      | Окупається вже з 2‑го клієнта                    |
-| **Multi‑product company**       | Кілька застосунків, один стек, але фічі схожі на 70%+                 | 20–30%            | ⚠️ умовний         | ROI є, якщо SM різні (legacy/new), інакше ні     |
-| **White‑label vendor**          | Ядро‑продукт + кілька брендованих кастомізацій                        | 40–60%            | ✅ сильний         | Ідеально, коли партнери диктують різні SM        |
-| **Platform team**               | Будують фічі/модулі для кількох внутрішніх продуктів                  | 60–80%            | ✅ максимальний    | Найкращий сценарій: окупається завжди            |
-| **Legacy (with CA) migration**  | Старий проєкт уже має чіткі шари та тонкий SM у presentation          | ~30%              | ✅ позитивний      | Lazy parity = низький ризик і високий реюз       |
-| **Legacy (спагеті) migration**  | Спершу треба виділити core/domain + рефакторинг до чистої архітектури | <15%              | ⚠️ відкладений     | ROI з’явиться лише **після** “очищення” коду     |
-| **Solution‑provider companies** | Є готові шаблони для різних SM, пропонуються клієнту як “best option” | 90-100%           | ✅ максимальний    | Ідеальний матчап, але дуже рідкісний сценарій    |
+### 🧮 Decision Matrix: “When to Use the State‑Symmetric Approach”
 
-### 📈 Break-even графік
+| Company/Scenario                 | Characteristics                                | Reuse Probability | ROI from Symmetry | Verdict                                          |
+| -------------------------------- | ---------------------------------------------- | ----------------- | ----------------- | ------------------------------------------------ |
+| **Single‑product company**       | One product, one SM, long lifecycle            | <5%               | ❌ Negative       | Stick to one SM, avoid 5–10% overhead            |
+| **Startup (MVP)**                | Fast delivery, constant pivots, chaos          | <10%              | ❌ Negative       | Symmetry wasteful, better copy‑pasting           |
+| **Agency (Pattern A)**           | Standardized on one SM, enforce on clients     | <10%              | ❌ Negative       | Use boilerplate, single SM expertise             |
+| **Agency (Pattern B)**           | Tailor per client, no reuse across projects    | ~15%              | ⚠️ Weak Positive  | Symmetry not needed, better with quick templates |
+| **Agency (Pattern C)**           | ≥2 clients with different SMs within a year    | 30–50%            | ✅ Positive       | Break‑even from 2nd client                       |
+| **Multi‑product company**        | Multiple apps, one stack, ~70% feature overlap | 20–30%            | ⚠️ Conditional    | ROI if SMs differ (legacy/new), else no          |
+| **White‑label vendor**           | Core + branded skins                           | 40–60%            | ✅ Strong         | Ideal if partners demand different SMs           |
+| **Platform team**                | Builds modules for multiple products           | 60–80%            | ✅ Maximum        | Always profitable                                |
+| **Legacy (with CA) migration**   | Clean layers, thin SM                          | ~30%              | ✅ Positive       | Lazy parity = low risk, high reuse               |
+| **Legacy (spaghetti) migration** | Must extract core/domain first                 | <15%              | ⚠️ Delayed        | ROI only **after** cleanup                       |
+| **Solution‑provider companies**  | Prebuilt templates across SMs                  | 90–100%           | ✅ Maximum        | Perfect fit, but rare                            |
+
+---
+
+### 📈 Break‑Even Graph
 
 ```
 ROI
@@ -143,33 +127,47 @@ ROI
 
 ```
 
-- До 20% reuse's possibility → ❌ негативний ROI (симетрія не виправдана)
-- 20–30% reuse's possibility → ⚠️ умовний (вирішує команда/roadmap)
-- 30%+ reuse's possibility → ✅ позитивний ROI (симетрія вигідна)
+- Reuse ≤ 20% → ❌ Negative ROI
+- Reuse 20–30% → ⚠️ Conditional (depends on roadmap)
+- Reuse ≥ 30% → ✅ Positive ROI
 
-### 📌 Summury
+---
 
-Approach brings bussiness value коли P(reuse) ≥ ~0.3 і UI/flows схожі ≥ ~70%, etc in next cases:
+### 📌 Summary
 
-    •	Agencies → ROI при ≥2 клієнтах з різними SM (реалістично 10–20% ринку).
-    •	Multi-product companies → ROI при схожих продуктах і легасі + новий стек.
-    •	White-label → ROI при кастомізаціях під партнерів, коли треба підлаштуватись під їх SM.
-    •	Platform teams → ROI максимальний, бо вони спеціалізуються на повторному використанні.
+Approach brings business value when **P(reuse ≥ ~0.3)** and **UI/flows overlap ≥ ~70%**.
 
-Іншими словами, сфера потенційного використання - це команди/проєкти, які готові заплатити "страховку у розмірі 5-12% від вартості фічі за можливість її перевикористання на іншому стейт менеджері" і якщо фіча з подібним UX/UI на іншому додатку, то економія буде 30–85%.
+#### Best Fits
 
-У всіх інших випадках (single product, стартапи, компанії що стандартизувалися під один SM) → overhead не виправданий.
+- **Agencies (Pattern C):** ≥2 clients with different SMs → profitable from 2nd client.
+- **Multi‑product companies:** similar UX with SM divergence.
+- **White‑label vendors:** core product + skins, partner SM choice.
+- **Platform teams:** long‑lived shared modules.
+- **Legacy → new SM (Clean Arch):** low‑risk migration, high reuse.
+- **Solution‑providers:** prebuilt multi‑SM templates → 85–90% savings.
 
-## Regarding approach applying for solo development (висококрофесійних інді-команд)
+#### Poor Fits
 
-На відміну від помірноої доцільності цього підходу для звичайних команд (ніша <5–7% компаній/проєктів), для високопрофесійних соло-розробника або інді-команд цей підхід в більшості випадків виграшний, бо:
+- **Single‑product teams** locked to one SM.
+- **Startups/MVPs** with chaotic scope.
+- **Divergent UX apps** (different design systems/flows).
 
-    - **Overhead, Maintenance tax ≈ <3%** () — за потреби фасади/адаптери генеруються ШІ за хвилини, обєм тестів для фічі збільшиться лише на декілька процентів
-    - **Initial cost, Навчання ≈ 0%** — вже знаєш обидва SM, основні принципи підходу неважкі, немає команди для синхронізації.
-    - 👉 Головне, що при кожному повторному використанні фічі отримуємо +30–85% економії (для прикладу, в наведених додатках цього монорепо, у фічах авторизації реюз - 80-94% коду), а платимо буквально “копійки”.
+In other words, this is useful for teams/projects ready to pay a “5–12% feature tax” as **insurance** against future reuse across SMs. If features with similar UX/UI are reused, savings range **30–85%**.
 
-Для часто використовуємих фіч з ідентичним UI/UX оціночна економія не менше 60% від вартості фічі.
+For all others (single product, startups, single‑SM companies) → overhead is unjustified.
 
-При дотриманні **Lazy parity** та при mindset "що це оплачена недорога (~ 1-3%) страховка на випадок майбутнього перевикористання фічі в любому іншому проєкту" – можна прийняти, що цей підхід доцільний для більшості main-stream фіч.
+---
 
-- Для автора цього монорепо при AI автоматизації стейт-симетричний підхід - **default coding style**.
+## Solo Development / High‑Skill Indie Teams
+
+Unlike moderate applicability for general teams (<5–7% niche), for **skilled solo devs or indie teams this approach is usually profitable** because:
+
+- **Overhead/Maintenance tax ≈ <3%** — AI (with given strickt requirements and criteria) can generate facades/adapters in minutes; feature test overhead rises only slightly.
+- **Initial cost ≈ 0%** — developer already knows multiple SMs; principles are simple; no team sync needed.
+- **Each reuse brings clean 40–85% savings** (e.g., in this monorepo, auth features had 80–94% code reuse).
+
+For frequently reused features with identical UX/UI, savings reach **~60% per feature**.
+
+By applying **Lazy parity** and seeing symmetry as **cheap (~1–3%) insurance against future reuse**, this approach is rational for most mainstream features.
+
+For the author of this monorepo, with AI automation, the **state‑symmetric approach is the default coding style** — modest overhead, high reuse.

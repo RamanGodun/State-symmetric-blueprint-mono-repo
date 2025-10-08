@@ -116,7 +116,7 @@ extension SignUpRefX on WidgetRef {
   void submitSignUp() {
     context.unfocusKeyboard();
     final form = read(signUpFormProvider);
-    read(signUpProvider.notifier).submit(
+    read(signUpProvider.notifier).signUp(
       name: form.name.value,
       email: form.email.value,
       password: form.password.value,

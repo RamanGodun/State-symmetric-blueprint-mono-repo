@@ -113,7 +113,7 @@ extension ResetPasswordContextX on BuildContext {
   void submitResetPassword() {
     unfocusKeyboard();
     final currentState = read<ResetPasswordFormFieldsCubit>().state;
-    read<ResetPasswordCubit>().submit(
+    read<ResetPasswordCubit>().resetPassword(
       currentState.email.value,
     );
   }

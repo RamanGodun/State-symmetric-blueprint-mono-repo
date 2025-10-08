@@ -125,7 +125,7 @@ extension SignUpContextX on BuildContext {
   void submitSignUp() {
     unfocusKeyboard();
     final currentForm = read<SignUpFormFieldCubit>().state;
-    read<SignUpCubit>().submit(
+    read<SignUpCubit>().signUp(
       name: currentForm.name.value,
       email: currentForm.email.value,
       password: currentForm.password.value,

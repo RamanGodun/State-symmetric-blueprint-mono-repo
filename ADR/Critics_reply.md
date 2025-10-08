@@ -1,215 +1,282 @@
-In production, **only one adapter (for chosen state manager) is compiled**; others remain **Lazy parity mode**. The observed delta between adapters is **<5%** of specific feature's code.
+# 📈 Business Value Estimates
+
+> A pragmatic summary of the **State‑Symmetric** approach (_Clean Architecture + Thin Adapters + Lazy Parity_) using real measurements from the showcase repo. Goals: keep **state‑dependent code <5% per feature**, reuse **85–95%** across stacks, and pay the cost **only when reuse is likely**.
 
 ---
 
-## 1) Executive Summary
+## 1) Cost Model (realistic, observed)
 
-Our baseline is “single SM + Clean Architecture.” Thin adapters are an optional edge technique, compiled one-at-a-time.
-Regarding the critique that “state‑symmetric architectures are outdated / over‑engineered”: the approach produces **low operational overhead** (≈5–10%) and **very high reuse** of business logic/UI components across apps and clients. It is **not** the heavy, state‑agnostic pattern the critique targets.
+- **Adapter LOC for showcase features** across Cubit/Riverpod apps of monorepo: **<5%**.
+  - **Visible UI parity:** **95–100%** (widgets/screens shared 1:1).
+  - **Presentation parity:** **~85–90%** (differences are thin wrappers).
 
----
+- **Parity ops (tests, CI matrix):** **+5–10%** overhead _only_ if both adapters run full suites.
+  - With **Lazy Parity** (sleeping the inactive adapter + smoke tests), ongoing cost → **~0–3%**.
 
-## 2) What the Critics Claim vs. What We Actually Do
-
-| Topic        | Critique (generic)                          | Our Implementation                                                                                       |
-| ------------ | ------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Purpose      | "Abstraction for its own sake"              | Reuse Core across teams/clients; adapters exist only where switching SM brings ROI.                      |
-| Overhead     | +25–50% maintenance; ~10–15% duplicate code | **Observed:** adapters & app shells are **at 5% LOC**; single‑adapter prod builds; parity CI is minimal. |
-| Team Impact  | High cognitive load; high entry point       | Indeed for new developer, but after reaching of plato of education curve approach brings significant ROI |
-| Runtime Cost | Larger binaries, slower apps                | Tree‑shaking keeps only the selected adapter; no runtime penalty.                                        |
-| Scalability  | "More layers ≠ more scalable"               | Approach foundation - enforced clean clen architecture, adapters are thin and localized, not the case    |
-
-> **Bottom line:** The critique is valid for _heavy, state‑agnostic_ stacks. It **does not** apply to a **thin‑adapter monorepo** with one adapter per prod flavor.
+- **Production reality:** one adapter is compiled; others stay in **sleep mode** (smoke/compile‑check only).
+- **Implication:** claims like _“10–15% duplication → 25–50% overhead”_ **don’t match** this repo’s measurements.
 
 ---
 
-## 3) Cost Model (Realistic)
+## 2) ROI Model
 
-**Assumptions (observed):**
+Adapters are **thin seams** (2–7 horizontals/feature, ≤ **200 LOC** or < **5%**):
 
-- Adapter LOC across repo: **~3–5%**.
-- Parity operations (tests, CI matrix) when both adapters matter: **+5–10%** overhead.
-- Production uses **one** adapter → parity cost approaches **0–3%** (smoke only).
+1. Side‑effects / submission listeners (success/error/retry)
+2. Async glue (Idle/Loading/Success/Error)
+3. UI events → domain commands
+4. Screen lifecycle hooks (init/dispose/cleanup)
+5. _(Optional)_ lightweight overlays/guards/router hooks
 
-**Implication:** The economics the critique relies on (10–15% duplicate code → 25–50% overhead) **don’t hold** for this repo.
+Everything else is **shared**:
 
----
+- State models (form/submission) in presentation
+- Entire **domain/data** layer (use‑cases, repos)
+- **Stateless UI** widgets
+- Cross‑cutting infra (errors, overlays, i18n, navigation, theming)
 
-## 4) Where the Approach Pays Off
+**Formula**
 
-**A. Outsourcing/Agencies**
+```
+Expected ROI ≈ R · I · F − OMI · F
+  F   = feature cost (effort)
+  R   = reuse probability (within 6–12 months)
+  I   = impact (savings on reuse)
+  OMI = overhead + maintenance + initial training
+```
 
-- Different clients pick different SMs. We reuse 95%+ of code, write a **thin facade** once per SM and reuse thereafter.
-- On a second client, net savings are immediate: contracts & use cases drop in unchanged; only the adapter shell is swapped.
+**Typical ranges (observed):**
 
-**B. Migrations & Experiments**
-
-- Want to trial Riverpod on a single feature? Implement the thin facade in `riverpod_adapter` while preserving BLoC prod. Roll back risk‑free.
-
-**C. Education & Hiring**
-
-- Side‑by‑side adapters help onboarding and architectural literacy **without** burdening prod builds.
-
-**D.**
-
-- Two separate boilerplates empirically drift in 3–6 months; our single shared Core prevents divergence and reduces patch fan-out.
-
----
-
-## 5) Where It Doesn’t (and What We Do Instead)
-
-- **Single product, stable team, no client variability:** lock to one SM; keep the other adapter **disabled**. The monorepo still yields value via Core/Features reuse.
-- **If parity pain grows:** freeze the non‑prod adapter (tag as experimental), keep only smoke CI on it.
+- **OMI:** **0.05–0.15·F** on the first symmetric build; **0–0.03·F** ongoing in prod (one active adapter + smoke on the sleeper).
+- **I:** **0.40–0.80·F** per reuse (UI + domain already done; you add ≤ **200 LOC**).
+- **Break‑even:** **R ≳ 0.20–0.30** (the 2nd use pays off).
 
 ---
 
-## 6) Concrete Example: Shipping a Reusable Feature
+## 3) Feature‑Level ROI Snapshots
 
-**Goal:** Add a new Profile feature (domain + UI) and ship it to two apps: one BLoC, one Riverpod.
+Conservative estimates under Clean Arch + Lazy Parity.
 
-1. **Core/Features (shared):**
-   - Define `ProfileRepo` contract, DTOs, use cases in `features/`.
-   - Add localization keys, theming tokens (if needed) to `core/`.
+### A) **Sign‑In** (form + submission)
 
-2. **UI (shared):**
-   - Stateless screen widgets & view components live in `core` (design system) or `features` presentation.
-3. **Adapters (thin):**
-   - `bloc_adapter`: a small Cubit/Bloc + a facade widget that wires the stateless view to Cubit.
-   - `riverpod_adapter`: a small Notifier/Providers + a facade widget wiring the same stateless view.
+- **Shared code:** **~85–92%** (form state, validators, widgets, use‑case, errors, overlays, navigation).
+- **Adapter seam:** `SubmissionSideEffects` + notifier/cubit + helpers → **~8–12%** _for both adapters combined_.
+  - Ship one SM first → initial overhead **~4–6%**; add the 2nd later when needed.
 
-4. **Apps:**
-   - `app_on_bloc` depends on `bloc_adapter` only; `app_on_riverpod` depends on `riverpod_adapter` only.
+- **Visible code reuse on 2nd stack:** **~95–100%**.
+- **Reuse savings (2nd app/stack):** **~40–70%** of feature effort.
 
-**Net add:** Two tiny facades, **0 duplication** of use cases, DTOs, contracts, or Stateless "dumb" UI.
+### B) **Profile** (async data + preserved UI on refresh)
 
----
+- **Shared code:** **~88–95%** (entity/DTO, repo & use‑case, state‑agnostic widgets, error overlays).
+- **Adapter seam:** Riverpod `AsyncValue<T>` ↔ BLoC analogue + `AsyncStateView<T>` facade → **~5–8%**.
+- **Reuse savings (2nd app/stack):** **~50–80%**.
 
-## 7) Metrics to Track (for Business Value)
+**Quick table**
 
-- **Reuse Rate:** % of features ported to a new client with **no domain changes**.
-- **Adapter Delta:** LOC and file count in adapters / total LOC (**target ≤5%**).
-- **Lead Time for New Client:** time from contract signed → feature parity app.
-- **Defect Rate in Adapters:** issues per 1k LOC (should be near‑zero if facades stay thin).
+| Feature type             | Shared code (1st build) | Adapter cost (both SMs) | Reuse saving (2nd stack) |
+| ------------------------ | ----------------------: | ----------------------: | -----------------------: |
+| **Sign‑In (submission)** |                  85–92% |                   8–12% |                   40–70% |
+| **Profile (async data)** |                  88–95% |                    5–8% |                   50–80% |
 
----
-
-## 10) Conclusion for Stakeholders
-
-- The state‑symmetric monorepo **is not** a heavy “state‑agnostic” stack; it’s **clean architecture + thin adapters**.
-- With one adapter compiled per prod build and adapter code **<5%**, the overhead is modest while reuse is high.
-- In agencies and multi‑client contexts, this is **direct business value** (faster delivery, consistent UX, better DX, safer migrations). In single‑product contexts, keep the second adapter disabled and still benefit from Core/Features discipline.
+> Adapter overhead is **app‑level presentation glue + adapter packages** and remains **≤ 200 LOC/feature** (e.g., Sign‑In: ~180–200 LOC per adapter vs ~1.8–2.0k shared LOC). Enforcing a **Symmetry Budget (≤ 200 LOC)** keeps the delta **<5%**.
 
 ---
 
-## Appendix: Why This Isn’t “Over‑Engineering”
+## 4) Decision Flowchart (switch on/off)
 
-- The heavy patterns critics cite add new abstraction layers everywhere. Here, we place **adapters only at the edge**, keeping domain and UI stateless and shared.
-- The Core already centralizes localization, theming, navigation rules, overlays and error handling—**the parts that actually change least** and deliver maximum reuse.
-- The result is a practical, evolvable codebase that aligns with how top product teams treat platforms: **shared kernel + edge adapters**, with production compiling **one** path.
+```
+New Feature
+   ↓
+Will it be reused within your planning horizon?
+   ├─ NO → Single‑SM ✓
+   └─ YES
+        ↓
+R(reuse on a different SM) ≥ 20%?
+   ├─ NO → Single‑SM ✓
+   └─ YES
+        ↓
+Feature type?
+   ├─ Form/Action → ButtonSubmissionState
+   ├─ Async Data/Feed → AsyncValue‑style
+   └─ Both → Hybrid (if justified)
+        ↓
+Adapter ≤ 200 LOC (<5%)?
+   ├─ NO → Simplify or keep Single‑SM
+   └─ YES
+        ↓
+Team trained / roadmap stable?
+   ├─ NO → Train or postpone (Lazy Parity)
+   └─ YES → Build symmetry
+```
 
-Як посилити аргумент
-• Введи жорсткі обмеження симетрії:
-• Симетризуємо тільки 3–4 горизонталі з доведеним reuse-ROI : «side-effects/listeners», «async action/result», «UI events → domain commands», «screen lifecycle hooks».
-• Заборона на «повну» симетрію (жодних універсальних VM/Store).
-• Покажи SLOC-дельту: +N рядків/фіча для адаптерів і доведи, що це <5% від вартості фічі.
-• Формалізуй «Symmetry Contract»: один markdown із 6–8 правил API-паритету + чекліст рев’ю.
+---
 
-не писати відразу паритетні адаптери, лиш коли вони знадобляться
+## 5) Criteria to Maximize ROI
 
-!!!! Stick to "LAZY symmetry, not parity principle"
+**Principle:** keep **state‑dependent code <5%** and pay only when reuse is likely (**Lazy Parity**).
 
-CI-політика: smoke-tests для неактивного адаптера, повний тест-ран лише для активного.
+- **Adapter budget:** ≤ **200 LOC** or **<5%** of feature LOC; otherwise **single‑SM**.
+- **Symmetry scope:** only **2–7 horizontals** (see §2).
+- **No “full” symmetry:** ❌ no universal VM/Store; use **native SM APIs** with thin facades.
+- **Prove the budget:** track **SLOC delta** per feature (adapters only) → target **<5%**.
+- **“Symmetry Contract” doc:** **6–8 API rules** + **review checklist** (states, errors, navigation, teardown parity).
+- **CI policy:** full suite for the **active** adapter; **sleeping** adapter = compile + smoke.
 
-Max adapter size: ≤200 LOC per feature (or <5% feature's code); якщо більше — фіча лишається single-SM.
+### Special case — AsyncValue parity (Profile pattern)
 
-“tree-shaking” — про runtime, а знижений dev-overhead досягається саме політикою Lazy Symmetry + CI-scope.
+If a native primitive like Riverpod’s **`AsyncValue<T>`** brings distinct UX gains (background refresh, preserved content), add a **one‑off BLoC analogue** plus a tiny **`AsyncStateView<T>`** facade (written once per app and reused across features). UI stays **fully state‑agnostic** while orchestration remains **native** to each SM.
 
-Operating model. We don’t run two adapters day-to-day. Production always compiles one adapter; the other exists as an optional edge for migrations/second clients. Our CI enforces this: full tests only for the active adapter; the inactive one runs smoke checks. Adapter overhead is measured as (app-level presentation glue + adapter packages) and stays within 3–5% LOC across features (e.g., Sign-In: ~180–200 LOC per adapter vs ~1.8–2.0k LOC shared). We apply a Symmetry Budget (≤200 LOC per feature, 3–4 horizontal concerns only). If a second client with a different SM appears, we pay a one-time ~5% cost to add the adapter; otherwise the cost is ~0%.
+---
 
-## Чесна математика (просто, щоб вирішувати без емоцій)
+## 6) CI Policy (concrete)
 
-Позначимо вартість фічі як F.
-• Single-SM сьогодні: витрати ≈ 1.00·F.
-Якщо фічу треба вдруге у схожому додатку — реалізація з нуля/порт ≈ 0.3–0.6·F (залежно від схожості).
-• Твій підхід сьогодні (без другого адаптера): 1.05–1.10·F (тонкі фасади + правила).
-Якщо фічу треба вдруге, але на іншому SM — дописуєш адаптер ≈ 0.05–0.10·F.
+- **Active adapter (in prod):** full unit/widget/integration tests + lint + coverage.
+- **Sleeping adapter:**
+  - **Weekly:** compile check + smoke tests (≤ 5 min).
+  - **Monthly:** light integration pass (≈ 10–15 min).
+  - **Quarterly:** parity validation against the active path.
 
-Брейк-івен по другому використанню:
-• Без симетрії: ~0.3–0.6·F
-• Зі симетрією: ~0.05–0.10·F
-→ Виграш на кожному повторному використанні: ~0.25–0.50·F.
-Отже, якщо ймовірність повторного використання фічі (за 6–12 міс) > ~20–30%, ти в математичному плюсі вже на горизонті другої інсталяції.
+- **If parity breaks:** fix within the next sprint **or** mark the adapter deprecated.
 
-Просте правило: якщо ≥1 із 3 нових фіч за рік майже напевно знадобиться вдруге — твій код-стайл окупається.
+---
 
-## Що реально входить у “адаптери 3–4 точки”
+## 7) Symmetry Contract — Example
 
-    •	Side-effects/Submission listeners (успіх/помилка/ретрай)
-    •	Async state glue (Initial/Loading/Success/Error)
-    •	Події UI → use-cases (натискання кнопки → виклик UC)
-    •	Lifecycle-хуки (init/dispose/cleanup)
+**API Parity Rules**
 
-Це й пояснює, чому у тебе виходить 5–10%, а не 30–50%: ти не робиш універсальний StateManager, ти залишаєш нативні API і лише “шов” тонкий.
+1. Shared state models → mirrored types and side‑effects parity (success/error/retry hooks exposed uniformly).
+2. Public method signatures symmetric: e.g., `submit(email, password)` ↔ `signin(email, password)`.
+3. Identical error semantics: `Consumable<Failure>` (same codes/messages).
+4. Lifecycle hooks matched: `init/refresh/reset/dispose`.
+5. Navigation outcomes identical: routes, redirects, back‑stack effects.
+6. Teardown parity: cleanup, cancellation, debouncers.
+7. Docs parity: both adapters share the same API docs.
 
-## Ризики/сліпі зони (щоб не самообманюватись)
+**Review Checklist**
 
-    •	Версіонування Core/Features: без суворих контрактів і семверу адаптери почнуть “пухнути”.
-    •	CI-політика: якщо ганяти повний тестран для неактивного адаптера — з’їси виграш у дев-циклі. Тримай лише smoke на “сплячому” адаптері.
-    •	Drift у навігації/дизайні: якщо додатки поїдуть у різні UX-концепції — симетрія обмежиться доменом/даними; це нормально, просто не силуй симетрію там, де ROI нуль.
-    •	Аналітика/пермішени/платформа: часто саме вони розбивають “ідеальну” повторюваність. Плануй окремі контракти.
+- [ ] Sealed state classes/typedefs match across SMs
+- [ ] Public API signatures aligned
+- [ ] Error flows equivalent
+- [ ] Success/failure handlers symmetric
+- [ ] Init/refresh/reset/dispose aligned
+- [ ] Navigation effects match
+- [ ] Tests cover parity
+- [ ] Docs updated for both adapters
 
-## Де підхід має бізнес-велью (і чому)
+---
 
-    1.	Мульти-продукт / мульти-бренд / white-label
+## 8) Practical Economics — Baselines vs Symmetry (revised)
 
-Фічі повторюються майже 1:1. Ти платиш 5–10% “підготовчого” оверхеда зараз і кожного разу “переносиш” фічу адаптерами за ~5%. Це відбивається вже з 2-го використання. 2. Legacy → новий стек / контрольована міграція
-Фічу робиш у звичному SM; коли з’являється потреба — дописуєш тонкий адаптер під інший SM. Ризик міграції низький, бо домен, DTO, use-case, локалізація, навігаційні контракти — спільні. 3. Feature-platform усередині компанії
-Є команда “платформи фіч”, яка штампує однакові модулі (автентифікація, профіль, платіжні потоки) для кількох застосунків. Є сенс централізовано підтримувати Core/Features і додавати адаптери за потребою. 4. Аутсорс/агенція з реально різними вподобаннями клієнтів
-Не “гіпотетично”, а коли справді 2+ клієнти в горизонті 6–12 міс просять різні SM. Тут “lazy parity” + тонкі фасади дають прямий ROI.
+Let **F** be the total cost of delivering a feature once.
 
-## Де виграш зникає
+### A) Baseline — Single‑SM, Clean Architecture (no symmetry)
 
-    •	Сильна дивергенція презентаційного шару між додатками: інший дизайн-систем, відмінні навігаційні сценарії, авторизаційні потоки, A/B-експерименти, аналітика/телеметрія/пермішени. Тоді симетрія “ламається”, і адаптерів стає більше, ніж 3–4 “клейові” точки.
-    •	Один продукт надовго і команда не планує змінювати SM → бери один SM + чисту архітектуру, не плати 5–10% взагалі.
-    •	Хаотичний рескопінг (стартап-режим): швидше скопіювати фічу у локальному контексті, ніж витримувати контракти/симетрію.$
+- **What ports to a new SM:** re‑implement presentation glue (state types, notifiers, listeners, navigation hooks) and some UI wiring; domain/data reused.
+- **Port cost to a 2nd app/stack:**
+  - **Submission flows (Sign‑In/Up):** **0.25–0.45·F**
+  - **Async data (Profile/Feed):** **0.30–0.50·F**
+  - **Mixed/complex (analytics, guards, A/B):** **0.40–0.65·F**
 
-## Практичні критерії “вмикати/не вмикати симетрію”
+### B) Baseline — Single‑SM, Spaghetti (no symmetry)
 
-Увімкнути (робити фічу “symmetry-ready”) якщо:
-• Є ≥30% шанс, що фіча повториться в іншому додатку/стеці протягом 6–12 міс.
-• Презентаційний шар між додатками схожий ≥70% (той самий дизайн-систем, схожі флоу).
-• Команда погоджується на Symmetry Budget: ≤200 LOC адаптерів/фічу, тільки 3–4 горизонталі.
-Додатково потрібно:
-✓ Team розуміє обидва SM (не surface level)
-✓ Code review process enforces symmetry
-✓ CI/CD підтримує multi-adapter testing
-✓ Documentation культура сильна
-✓ Product roadmap stable (не chaotic pivots)
+- **What ports to a new SM:** mostly a rewrite (state, UI and logic entangled). You may salvage DTOs/entities and a few stateless widgets.
+- **Port cost to a 2nd app/stack:** **0.70–0.90·F** (i.e., **70–90%** rebuilt). Conservative midpoint ≈ **0.80·F**.
 
-Не вмикати (робити чистий single-SM) якщо:
-• Імовірність повторного використання низька/туманна.
-• UI/навігація/аналітика між застосунками сильно різняться.
-• Швидкість важливіша за платформену консистентність.
+### C) Symmetry — Clean Arch + Thin Adapters (Lazy Parity)
 
-## Якщо в бізнес-реальності фічі мають ненульовий шанс повторитися у іншому додатку/стеці, то “чиста архітектура + тонкі адаптери + lazy parity” зазвичай окупається.
+- **First build today:** **1.05–1.10·F** (thin facades, 4–7 horizontals, ≤ 200 LOC budget).
+- **Add a 2nd SM later:**
+  - **Submission flows (Sign‑In/Up):** **0.03–0.06·F**
+  - **Async data (Profile/Feed):** **0.04–0.08·F**
+  - **Generic rule of thumb:** **0.05–0.10·F**
 
-    •	“Оверхед 5–10%” — правдивий за наявності дисципліни (контракти в Core, нативні API SM, один адаптер у проді, smoke на другому).
-    •	Помилка була б уявляти, що це виграш “завжди й всюди”. Він умовний: тримається на схожості фіч і реальній ймовірності повторного використання.
+- **Observed in repo:** visible UI parity **95–100%**; presentation‑layer reuse **~85–95%**.
 
-## Якщо коротко формулою:
+---
 
-Expected ROI ≈ P(reuse) · (0.30…0.50)·F − (0.05…0.10)·F.
-Як тільки P(reuse) > ~0.2–0.3, твій підхід — раціональний вибір. (Бо інакше ти платиш 5–10% “страховки”, яка ніколи не окупиться.)
+### Break‑even math (reuse probability **R**)
 
-Accept that це niche approach (5-10% ринку) але VALUABLE niche.
+Compare expected extra costs to support a 2nd SM within 6–12 months.
 
-Perfect fit:
-✓ Feature platform teams
-✓ Multi-product companies (similar products)
-✓ Agencies Pattern C (10% agencies)
-✓ Migration scenarios (clean legacy)
+- **No symmetry (clean baseline):** `E_clean = R · p_clean · F`
+- **Symmetry (thin adapters):** `E_sym = o · F + R · a · F`
 
-Poor fit:
-✗ Single product companies (90% market)
-✗ Startups (speed > flexibility)
-✗ Teams without dual-SM expertise
+Break‑even when `E_sym ≤ E_clean` ⇒ **`R ≥ o / (p_clean − a)`**.
+
+**Typical thresholds vs clean baseline:**
+
+- Mid‑range numbers: `o = 0.06`, `p_clean = 0.40`, `a = 0.06` ⇒ **`R ≈ 18%`**.
+- Range across realistic bounds:
+  - Best case: `o = 0.05`, `p_clean = 0.60`, `a = 0.05` ⇒ **`R ≈ 9%`**.
+  - Worst case: `o = 0.10`, `p_clean = 0.30`, `a = 0.10` ⇒ **`R ≈ 50%`**.
+
+**Thresholds vs spaghetti baseline:** with `p_spag = 0.70–0.90`, `a = 0.05–0.10`, `o = 0.05–0.10` ⇒ **`R ≈ 6–17%`**.
+
+> Intuition: if there’s even a **~10%** chance you’ll need the feature on a 2nd SM _and_ the current code is spaghetti, symmetry pays for itself.
+
+---
+
+### Per‑feature break‑even vs clean baseline
+
+| Feature type             | Clean‑port cost (p) | Adapter later (a) | First build overhead (o) | Break‑even **R\*** = o/(p−a) |
+| ------------------------ | ------------------: | ----------------: | -----------------------: | ---------------------------: |
+| **Sign‑In / submission** |           0.25–0.45 |         0.03–0.06 |                0.04–0.06 |                   **~9–32%** |
+| **Profile / async data** |           0.30–0.50 |         0.04–0.08 |                0.05–0.08 |                  **~11–36%** |
+| **Mixed/complex**        |           0.40–0.65 |         0.05–0.10 |                0.06–0.10 |                  **~12–33%** |
+
+> Adapter overhead is app‑level presentation glue + adapter packages and remains **≤ 200 LOC/feature** (e.g., Sign‑In: ~180–200 LOC per adapter vs ~1.8–2.0k shared LOC). Enforcing a **Symmetry Budget (≤ 200 LOC)** keeps the delta **<5%**.
+
+---
+
+### Decision rules
+
+**Enable symmetry if**
+
+- Feature reuse (in app with othwe state-manager) probability **≥ 20–30%** (use the per‑feature table if known).
+- UI similarity **≥ 70%**.
+- Team accepts the **Symmetry Budget** (≤ 200 LOC, 4–7 horizontals) and has dual‑SM competence.
+- Roadmap reasonably stable.
+
+**Keep single‑SM if**
+
+- Low reuse probability / divergent UX.
+- Extreme time‑to‑market pressure.
+- Spaghetti today and no time to clean — either stay single‑SM or first refactor to clean boundaries, then add symmetry.
+
+---
+
+## 9) Metrics to Track
+
+- **Reuse Rate:** % of features ported to another stack/app.
+- **Adapter Delta:** adapter LOC / total LOC (target **≤ 5%**).
+- **Lead Time to Parity:** contract → feature‑parity app.
+- **Adapter Defect Rate:** issues per 1k LOC (should be near‑zero with thin seams).
+
+---
+
+## 10) Summary
+
+- **Overhead:** **5–10%** max (often **~5%** with Lazy Parity).
+- **Reuse:** **85–95%** across repeated features (visible UI **95–100%** for Sign‑In).
+- **Net savings:** **30–85%** per reused feature.
+- **Rule of thumb:** if **≥ 1 out of 3** new features is likely to be reused within your planning horizon, symmetry is **worth it**.
+- This is **not** a heavy state‑agnostic framework; it’s **Clean Architecture with pluggable state managers** via **thin adapters**.
+
+---
+
+## Appendix — Critics vs Reality
+
+| Topic        | Critique                            | Reality                                                                 |
+| ------------ | ----------------------------------- | ----------------------------------------------------------------------- |
+| Purpose      | “Abstraction for its own sake”      | Adapters exist **only** when reuse probability justifies them.          |
+| Overhead     | 25–50% overhead, 10–15% duplication | Observed adapters ≈ **≤ 5% LOC**; Lazy Parity → near‑zero prod overhead |
+| Team Impact  | High cognitive load                 | Thin seams; modest training; then trivial to use.                       |
+| Runtime Cost | Bigger binaries, slower apps        | Tree‑shaking compiles **one** adapter; others are dead code.            |
+| Scalability  | “More layers ≠ more scalable”       | Clean Arch enforced; _not_ framework bloat.                             |
+
+**Why this is not over‑engineering**
+
+Heavy patterns add universal abstractions everywhere. Here, adapters live **only at the edges**, while domain/UI remain shared and simple. The result is an evolvable codebase that mirrors how platform teams operate: **shared kernel + edge adapters**.
+
+> **Bottom line:** the common critique fits heavy, state‑agnostic frameworks. It **doesn’t** apply to this thin‑adapter, lazy‑parity state‑symmetric approach.

@@ -120,7 +120,7 @@ extension ChangePasswordContextX on BuildContext {
   void submitChangePassword() {
     unfocusKeyboard();
     final currentState = read<ChangePasswordFormFieldsCubit>().state;
-    read<ChangePasswordCubit>().submit(currentState.password.value);
+    read<ChangePasswordCubit>().changePassword(currentState.password.value);
   }
 
   /// ✅ Confirm the re-authentication requirement (delegated to cubit)

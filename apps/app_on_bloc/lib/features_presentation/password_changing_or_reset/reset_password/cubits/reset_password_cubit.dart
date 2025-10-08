@@ -21,7 +21,7 @@ final class ResetPasswordCubit extends Cubit<ButtonSubmissionState> {
 
   /// 📩 Sends reset link to provided email.
   /// ✅ Delegates domain logic to [PasswordRelatedUseCases] and emits ButtonSubmission states.
-  Future<void> submit(String email) async {
+  Future<void> resetPassword(String email) async {
     if (state is ButtonSubmissionLoadingState) return;
     //
     _submitDebouncer.run(() async {
