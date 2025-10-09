@@ -17,6 +17,7 @@ command:
 scripts:
   #
   bootstrap: melos bootstrap
+  loc:report: bash scripts/loc_report.sh
   #
   # ---------- Maintenance ----------
   #
