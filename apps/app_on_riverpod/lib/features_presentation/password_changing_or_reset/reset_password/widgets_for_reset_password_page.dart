@@ -101,26 +101,24 @@ final class _ResetPasswordSubmitButton extends ConsumerWidget {
 ////
 ////
 
-/// 🛡️ [_ResetPasswordFooterGuard] — Make footer disable during form submission or active overlay
+/// 🛡️ [_ResetPasswordPageFooterGuard] — Make footer disable during form submission or active overlay
 //
-final class _ResetPasswordFooterGuard extends ConsumerWidget {
+final class _ResetPasswordPageFooterGuard extends StatelessWidget {
   ///----------------------------------------------
-  const _ResetPasswordFooterGuard();
+  const _ResetPasswordPageFooterGuard();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     //
-    /// ⏳ Submission loading (primitive bool)
-    final isLoading = ref.watch(
-      resetPasswordProvider.select((state) => state.isLoading),
-    );
-    //
-    /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)
-    final isOverlayActive = ref.isOverlayActive;
-    final isEnabled = !isLoading && !isOverlayActive;
+    /// 🧠 Computes `isEnabled` [_ResetPasswordPageFooter]
+    return FooterGuardScopeRiverpod(
+      isLoadingProvider: resetPasswordProvider.select(
+        (state) => state.isLoading,
+      ),
 
-    /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
-    return _ResetPasswordPageFooter(isEnabled: isEnabled);
+      /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
+      child: const _ResetPasswordPageFooter(),
+    );
   }
 }
 
@@ -132,13 +130,14 @@ final class _ResetPasswordFooterGuard extends ConsumerWidget {
 //
 final class _ResetPasswordPageFooter extends StatelessWidget {
   ///--------------------------------------------------
-  const _ResetPasswordPageFooter({required this.isEnabled});
-  //
-  final bool isEnabled;
+  const _ResetPasswordPageFooter();
 
   @override
   Widget build(BuildContext context) {
     //
+    /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)
+    final isEnabled = context.isFooterEnabled;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

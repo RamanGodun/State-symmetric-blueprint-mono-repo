@@ -5,5 +5,6 @@ export '../../src/shared_presentation_layer/widgets_shared/app_bar.dart';
 export '../../src/shared_presentation_layer/widgets_shared/buttons/filled_button.dart';
 export '../../src/shared_presentation_layer/widgets_shared/buttons/text_button.dart';
 export '../../src/shared_presentation_layer/widgets_shared/divider.dart';
+export '../../src/shared_presentation_layer/widgets_shared/enabled_footer.dart';
 export '../../src/shared_presentation_layer/widgets_shared/key_value_text_widget.dart';
 export '../../src/shared_presentation_layer/widgets_shared/loader.dart';

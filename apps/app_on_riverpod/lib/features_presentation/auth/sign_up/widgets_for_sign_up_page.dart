@@ -62,29 +62,29 @@ final class _SignUpSubmitButton extends ConsumerWidget {
 ////
 ////
 
-/// 🔁 [_SignUpFooterGuard] — sign in redirect link
+/// 🔁 [_SignUpPageFooterGuard] — sign in redirect link
 /// ✅ Disabled during form submission or overlay
 //
-final class _SignUpFooterGuard extends ConsumerWidget {
-  ///----------------------------------------------
-  const _SignUpFooterGuard();
+final class _SignUpPageFooterGuard extends StatelessWidget {
+  ///----------------------------------------------------
+  const _SignUpPageFooterGuard();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     //
-    /// ⏳ Submission loading (primitive bool)
-    final isLoading = ref.watch(
-      signUpProvider.select((state) => state.isLoading),
+    /// 🧠 Computes `isEnabled` [_SignUpPageFooter]
+    return FooterGuardScopeRiverpod(
+      isLoadingProvider: signUpProvider.select((state) => state.isLoading),
+
+      /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
+      child: const _SignUpPageFooter(),
     );
-
-    /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)
-    final isOverlayActive = ref.isOverlayActive;
-    final isEnabled = !isLoading && !isOverlayActive;
-
-    /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
-    return _SignUpPageFooter(isEnabled: isEnabled);
   }
 }
+
+/*
+
+ */
 
 ////
 ////
@@ -94,13 +94,14 @@ final class _SignUpFooterGuard extends ConsumerWidget {
 //
 final class _SignUpPageFooter extends StatelessWidget {
   ///-----------------------------------------------
-  const _SignUpPageFooter({required this.isEnabled});
-  //
-  final bool isEnabled;
+  const _SignUpPageFooter();
 
   @override
   Widget build(BuildContext context) {
     //
+    /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)
+    final isEnabled = context.isFooterEnabled;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

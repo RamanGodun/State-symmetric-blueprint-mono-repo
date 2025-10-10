@@ -89,7 +89,7 @@ final class _SignUpScreen extends HookWidget {
                         const _SignUpSubmitButton(),
 
                         /// 🔁 Links to redirect to sign-in screen
-                        const _SignUpFooterGuard(),
+                        const _SignUpPageFooterGuard(),
                       ],
                     ).centered().withPaddingHorizontal(AppSpacing.xxxm),
                     //

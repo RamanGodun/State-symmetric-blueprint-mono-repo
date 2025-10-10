@@ -152,7 +152,8 @@ final class _SignInSubmitButton extends StatelessWidget {
 ////
 ////
 
-/// 🛡️ [_SignInPageFooterGuard] — Make footer disable during form submission or active overlay
+/// 🔁 [_SignInPageFooterGuard] — sign up & reset password links
+/// ✅ Disabled during form submission or overlay
 //
 final class _SignInPageFooterGuard extends StatelessWidget {
   ///----------------------------------------------------
@@ -161,11 +162,12 @@ final class _SignInPageFooterGuard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return FooterGuard<SignInCubit, ButtonSubmissionState>(
+    /// 🧠 Computes `isEnabled` [_SignInPageFooter]
+    return FooterGuardScopeBloc<SignInCubit, ButtonSubmissionState>(
       isLoadingSelector: (state) => state.isLoading,
-      childBuilder: (_, isEnabled) =>
-          /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
-          _SignInPageFooter(isEnabled: isEnabled),
+
+      /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
+      child: const _SignInPageFooter(),
     );
   }
 }
@@ -178,13 +180,14 @@ final class _SignInPageFooterGuard extends StatelessWidget {
 //
 final class _SignInPageFooter extends StatelessWidget {
   ///-----------------------------------------------
-  const _SignInPageFooter({required this.isEnabled});
-  //
-  final bool isEnabled;
+  const _SignInPageFooter();
 
   @override
   Widget build(BuildContext context) {
     //
+    /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)
+    final isEnabled = context.isFooterEnabled;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

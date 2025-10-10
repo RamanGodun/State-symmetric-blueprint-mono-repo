@@ -143,24 +143,20 @@ final class _SignInSubmitButton extends ConsumerWidget {
 /// 🔁 [_SignInPageFooterGuard] — sign up & reset password links
 /// ✅ Disabled during form submission or overlay
 //
-final class _SignInPageFooterGuard extends ConsumerWidget {
-  ///----------------------------------------------
+final class _SignInPageFooterGuard extends StatelessWidget {
+  ///----------------------------------------------------
   const _SignInPageFooterGuard();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     //
-    /// ⏳ Submission loading (primitive bool)
-    final isLoading = ref.watch(
-      signInProvider.select((state) => state.isLoading),
+    /// 🧠 Computes `isEnabled` [_SignInPageFooter]
+    return FooterGuardScopeRiverpod(
+      isLoadingProvider: signInProvider.select((state) => state.isLoading),
+
+      /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
+      child: const _SignInPageFooter(),
     );
-
-    /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)
-    final isOverlayActive = ref.isOverlayActive;
-    final isEnabled = !isLoading && !isOverlayActive;
-
-    /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
-    return _SignInPageFooter(isEnabled: isEnabled);
   }
 }
 
@@ -172,13 +168,14 @@ final class _SignInPageFooterGuard extends ConsumerWidget {
 //
 final class _SignInPageFooter extends StatelessWidget {
   ///-----------------------------------------------
-  const _SignInPageFooter({required this.isEnabled});
-
-  final bool isEnabled;
+  const _SignInPageFooter();
 
   @override
   Widget build(BuildContext context) {
     //
+    /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)
+    final isEnabled = context.isFooterEnabled;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

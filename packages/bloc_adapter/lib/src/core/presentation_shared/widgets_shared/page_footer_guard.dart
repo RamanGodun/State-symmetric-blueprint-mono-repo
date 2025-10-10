@@ -1,55 +1,46 @@
 import 'package:bloc_adapter/bloc_adapter.dart' show OverlayStatusCubit;
+import 'package:core/public_api/shared_layers/presentation.dart'
+    show FooterEnabled;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 🚧 [FooterGuard] — universal wrapper for footers / submit buttons
-/// ✅ Combines 2 conditions that disable the child:
-///    - `isLoading` (extracted from any Cubit/Bloc via selector)
-///    - `isOverlayActive` (true when dialog/banner/toast is visible)
-///
-
-final class FooterGuard<C extends StateStreamable<S>, S>
+/// 🛡️ [FooterGuardScopeBloc] — disables footer actions while submitting or overlay active
+/// ✅ Combines 2 guards:
+///    1) `isLoading` — extracted from Cubit/Bloc via selector
+///    2) `isOverlayActive` — true while dialog/banner/toast shown
+/// ♻️ State-agnostic — identical logic for parity with Riverpod
+//
+final class FooterGuardScopeBloc<C extends StateStreamable<S>, S>
     extends StatelessWidget {
-  ///--------------------------------------------------------------------------
-  const FooterGuard({
-    required this.isLoadingSelector,
-    required this.childBuilder,
+  ///------------------------------------------------------------
+  const FooterGuardScopeBloc({
+    required bool Function(S) isLoadingSelector,
+    required this.child,
     super.key,
-  });
+  }) : _isLoadingSelector = isLoadingSelector;
 
-  /// 🔎 Selector function — extracts "isLoading" flag from Cubit/Bloc state
-  final bool Function(S state) isLoadingSelector;
+  /// 🔎 Selector that extracts loading flag from Bloc state
+  final bool Function(S) _isLoadingSelector;
 
-  /// 🏗️ Builder callback — builds child with computed `isEnabled` flag
-  // ignore: avoid_positional_boolean_parameters
-  final Widget Function(BuildContext context, bool isEnabled) childBuilder;
+  /// 🧱 Footer child that will receive computed `isEnabled`
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    // 🛡️ Overlay guard — if any overlay is active → disable child
+    //
+    /// 🛡️ Overlay guard — disables when overlay is visible
     final isOverlayActive = context.select<OverlayStatusCubit, bool>(
-      (cubit) => cubit.state,
+      (c) => c.state,
     );
 
     return BlocSelector<C, S, bool>(
-      selector: isLoadingSelector,
+      selector: _isLoadingSelector,
       builder: (context, isLoading) {
-        // ♻️ Combine both conditions → final "isEnabled"
+        /// ♻️ Combine both conditions → final `isEnabled`
         final isEnabled = !isLoading && !isOverlayActive;
-        return childBuilder(context, isEnabled);
+
+        return FooterEnabled(isEnabled: isEnabled, child: child);
       },
     );
   }
 }
-
-/*
-
-/// ? 💡 Usage:
-/// ```dart
-/// FooterGuard<ResetPasswordCubit, ResetPasswordState>(
-///   isLoadingSelector: (s) => s.status.isSubmissionInProgress,
-///   childBuilder: (_, isEnabled) => _ResetPasswordFooter(isEnabled: isEnabled),
-/// )
-/// ```
-
- */

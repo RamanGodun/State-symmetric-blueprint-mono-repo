@@ -77,7 +77,7 @@ final class _ResetPasswordScreen extends HookWidget {
                       const _ResetPasswordSubmitButton(),
 
                       /// 🔁 Links to redirect to sign-in screen
-                      const _ResetPasswordFooterGuard(),
+                      const _ResetPasswordPageFooterGuard(),
                     ],
                   ).withPaddingHorizontal(AppSpacing.l),
                 ),
