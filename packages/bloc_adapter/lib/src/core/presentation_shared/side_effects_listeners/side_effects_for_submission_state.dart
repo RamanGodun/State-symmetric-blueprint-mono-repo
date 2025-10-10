@@ -12,13 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 ///    - If `onError` is not provided → shows `context.showError(...)`
 ///    - If `onRequiresReauth` is not provided → also shows `context.showError(...)`
 //
-/// Usage:
-/// ```dart
-/// SubmissionSideEffects<MyCubit>(
-///   onSuccess: (ctx, _) => ctx.showSnackbar(message: 'Done!'),
-///   child: MyView(),
-/// )
-/// ```
 final class SubmissionStateSideEffects<
   C extends StateStreamable<ButtonSubmissionState>
 >
