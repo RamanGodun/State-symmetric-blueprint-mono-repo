@@ -79,34 +79,3 @@ final firebaseFailureMap = <String, Failure Function(String?)>{
 
   //
 };
-
-////
-
-////
-
-/// 🔒 [FirebaseCodes] — Firebase exception codes (used for map lookup)
-/// ✅ Centralized registry of Firebase error codes
-/// ✅ Prevents string duplication and typos across layers
-//
-sealed class FirebaseCodes {
-  ///--------------------
-  //
-  static const invalidCredential = 'invalid-credential';
-  static const emailAlreadyInUse = 'email-already-in-use';
-  static const operationNotAllowed = 'operation-not-allowed';
-  static const requiresRecentLogin = 'requires-recent-login';
-  static const tooManyRequests = 'too-many-requests';
-  static const userDisabled = 'user-disabled';
-  static const accountExistsWithDifferentCredential =
-      'account-exists-with-different-credential';
-  static const userMissing = 'firebase-user-missing';
-  static const userNotFound = 'user-not-found';
-  static const docMissing = 'firestore-doc-missing';
-
-  // 🆕 Network / timeout  Firebase codes
-  static const networkRequestFailed = 'network-request-failed'; // FirebaseAuth
-  static const deadlineExceeded = 'deadline-exceeded'; // Firestore/Functions
-  static const timeout = 'timeout';
-
-  //
-}

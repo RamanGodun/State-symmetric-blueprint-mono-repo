@@ -45,12 +45,6 @@ extension ExceptionToFailureX on Object {
         message: error.message,
       ),
 
-    /// ⚙️ Platform channel errors
-    final PlatformException error => Failure(
-      type: const FormatFailureType(),
-      message: error.message,
-    ),
-
     /// 🧩 Plugin missing
     final MissingPluginException error => Failure(
       type: const MissingPluginFailureType(),
@@ -75,6 +69,12 @@ extension ExceptionToFailureX on Object {
       message: error.message,
     ),
     //
+
+    /// ⚙️ Platform channel errors
+    final PlatformException e =>
+      platformFailureMap[e.code]?.call(e.message) ??
+          // Fallback: treat as malformed/unsupported platform payload.
+          Failure(type: const FormatFailureType(), message: e.message),
 
     /// ❓ Unknown fallback (use toString() if message absent)
     _ => () {
