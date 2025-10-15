@@ -7,7 +7,7 @@ This **State-symmetric approach** is like a **not expensive (15–35% LOC upfron
 - First features: adapters observed at ~20–35% LOC (Auth-like lower end; Profile-like - higher) per feature.
 - After approach's implementation in 2–3 features (reusing the same seams), amortized overhead drops to ≤5–10%.
 
-* Accepted model and performed asseamants are in [`Business_value_estimates.md`](../ADR/ADR-002-Business_value_estimates.md). To revaluate - run `melos loc:report` in terminal.
+* Accepted model and performed asseamants are in [`info-002-business-value-estimates.md`](./info-002-business-value-estimates.md). To revaluate - run `melos loc:report` in terminal.
 
 ## 🎯 Potential Niche Target for Teams/Projects
 

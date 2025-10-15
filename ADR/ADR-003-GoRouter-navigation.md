@@ -181,9 +181,9 @@ This happens **without imperative push** logic in the UI. User lands on `/signin
 
 ### Related ADRs
 
-- ADR-003: State-Symmetric Architecture
-- ADR-004: Dependency Injection Pattern (via GetIt / ProviderScope)
-- ADR-006: Localization & Overlay Strategy
+- ADR-001: State-Symmetric Architecture
+- ADR-002: Dependency Injection Pattern (via GetIt / ProviderScope)
+- ADR-004: Localization & Overlay Strategy
 
 ## References
 

@@ -79,9 +79,9 @@ For full platform symmetry and maximum portability across apps we adopt a **dual
 
 ### Related ADRs
 
-- ADR-003: State-Symmetric Architecture
-- ADR-005: Navigation & Routing Strategy
-- ADR-006: Localization & Overlay Strategy
+- ADR-001: State-Symmetric Architecture
+- ADR-003: Navigation & Routing Strategy
+- ADR-004: Localization & Overlay Strategy
 
 ---
 

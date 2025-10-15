@@ -1,28 +1,42 @@
 # Blueprint Monorepo
 
-![coverage][coverage_badge]
-[![LICENSE][license_badge]](LICENSE)
-
 ## License
 
-This monorepo is licensed under the [LICENSE](LICENSE).
-
-[coverage_badge]: coverage_badge.svg
-[internationalization_link]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
+This monorepo is licensed under the [![LICENSE][license_badge]](LICENSE).
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
-
----
+[coverage_badge]: coverage_badge.svg
+![coverage][coverage_badge]
 
 ## ✨ Overview
 
-This modular showcase monorepo demonstrates an example of **State-symmetric architecture codestyle**.
-(More than 90% of the code remains unchanged, regardless of whether the app uses **Riverpod**, **Cubit/BLoC**, or **Provider**.)
+This modular showcase monorepo demonstrates a **State-Symmetric architecture code style** — a pragmatic refinement of state-agnostic principles.
+More than **90%** of the codebase (including infrastructure) remains unchanged whether the app uses **Riverpod**, **Cubit/BLoC**, or **Provider**.
 
-Clean Architecture + optional thin adapters (lazy parity)
+The approach combines:
 
-### Accepted architecture decisions records
+- **Clean Architecture** with strong layer separation (feature **domain/data** live in shared packages),
+- **Thin adapters/facades** (2–7 touchpoints per feature) that let the same feature run on different state managers,
+- **Lazy Parity**: only one active state manager (and its thin facades) is implemented and compiled.
+  Other SM code (their adapters + glue) is created **on demand**, not upfront — avoiding parity maintenance cost while still enabling 90+% codebase’s reuse when added later.
 
-Accepted architecture decisions records are in [`ADR.md`](ADR/ADR-001-State-symmetric-architecture.md).
+**Observed model (showcase features):**
+
+- **UI parity:** 95–100% (widgets/screens are visually identical)
+- **Presentation parity:** ~85–90% (remaining differences are thin wrappers)
+- **Adapter overhead:** ~15–35% LOC in first features → amortized to **≤5–10%** after 2–3 features
+- **ROI:** immediate positive for **Auth-like** flows; for **Profile/async** flows — positive from **≥2** async features
+
+**Business perspective:**
+State symmetry acts as a **low-cost “insurance premium”** (≈15–35% LOC upfront, amortized to ≤5–10%) that pays off if the **probability of reuse in another state manager is ≥15–25%**.
+It is **most valuable for a niche (~5–10%)**: multi-product companies, white-label vendors, agencies with diverse client requirements, platform/SDK providers.
+**Solo developers and skilled indie teams** benefit even more: with automation and one-person context, the effective overhead often drops to **<3%**, while reuse opportunities are high across gigs/products — so the approach is usually **net-positive by default**.
+
+Accepted Architecture Decision Record: **[ADR-001 — State-Symmetric Architecture](ADR/ADR-001-State-symmetric-architecture.md)**
+
+See also:
+
+- **Use Case Areas** → `ADR/supporting_info/info-001-use-case-areas.md`
+- **Business Value Estimates** → `ADR/supporting_info/info-002-business-value-estimates.md`
 
 ---
 
