@@ -1,4 +1,4 @@
-import 'package:app_on_bloc/features_presentation/profile/cubit/profile_page_cubit.dart';
+import 'package:app_on_bloc/features/profile/cubit/profile_page_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart'
     show AppThemeCubit, AuthCubit, OverlayStatusCubit, di;
 import 'package:flutter/material.dart';

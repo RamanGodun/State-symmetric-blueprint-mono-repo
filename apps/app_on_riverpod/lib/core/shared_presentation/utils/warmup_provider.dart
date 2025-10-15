@@ -1,4 +1,4 @@
-import 'package:app_on_riverpod/features_presentation/profile/providers/profile_page_provider.dart';
+import 'package:app_on_riverpod/features/profile/providers/profile_page_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/riverpod_adapter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

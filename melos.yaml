@@ -110,31 +110,31 @@ scripts:
   build:ios:rp:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor staging     -t lib/main_staging.dart"
 
   # ---------- Run App on BLoC ----------
-  run:blueprint:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  run:cubit:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
     "flutter run --flavor development -t lib/main_development.dart"
-  run:blueprint:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  run:cubit:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
     "flutter run --flavor staging -t lib/main_staging.dart"
 
   # ---------- Run App on BLoC (explicit entrypoint paths) ----------
-  run:blueprint:main:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  run:cubit:main:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
     "flutter run -t apps/app_on_bloc/lib/main_development.dart"
-  run:blueprint:main:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  run:cubit:main:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
     "flutter run -t apps/app_on_bloc/lib/main_staging.dart"
 
   #
   # ---------- Build App on BLoC (Android) ----------
-  build:blueprint:apk:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  build:cubit:apk:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
     "flutter build apk --flavor development -t lib/main_development.dart"
-  build:blueprint:apk:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  build:cubit:apk:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
     "flutter build apk --flavor staging -t lib/main_staging.dart"
 
-  build:blueprint:aab:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  build:cubit:aab:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
     "flutter build appbundle --flavor staging -t lib/main_staging.dart"
 
   # ---------- Build App on BLoC (iOS) ----------
-  build:ios:blueprint:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  build:ios:cubit:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
     "flutter build ipa --flavor development -t lib/main_development.dart"
-  build:ios:blueprint:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  build:ios:cubit:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
     "flutter build ipa --flavor staging -t lib/main_staging.dart"
 
   #
@@ -144,11 +144,11 @@ scripts:
   # ----------- App icons ------------
 
   # App on BLoC
-  icons:blueprint:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter pub run flutter_launcher_icons -f pubspec_dev.yaml"
-  icons:blueprint:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter pub run flutter_launcher_icons -f pubspec_stg.yaml"
-  icons:blueprint:all: |
-    melos run icons:blueprint:dev
-    melos run icons:blueprint:stg
+  icons:cubit:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter pub run flutter_launcher_icons -f pubspec_dev.yaml"
+  icons:cubit:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter pub run flutter_launcher_icons -f pubspec_stg.yaml"
+  icons:cubit:all: |
+    melos run icons:cubit:dev
+    melos run icons:cubit:stg
 
   # Run App on Riverpod
   icons:riverpod:dev: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter pub run flutter_launcher_icons -f pubspec_dev.yaml"
@@ -159,8 +159,8 @@ scripts:
 
   # --- One-shot for both apps & both flavors ---
   icons:all: |
-    melos run icons:blueprint:dev
-    melos run icons:blueprint:stg
+    melos run icons:cubit:dev
+    melos run icons:cubit:stg
     melos run icons:riverpod:dev
     melos run icons:riverpod:stg
 

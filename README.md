@@ -1,44 +1,104 @@
 # Blueprint Monorepo
 
-## License
-
-This monorepo is licensed under the [![LICENSE][license_badge]](LICENSE).
-[license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[coverage_badge]: coverage_badge.svg
-![coverage][coverage_badge]
-
 ## ✨ Overview
 
-This modular showcase monorepo demonstrates a **State-Symmetric architecture code style** — a pragmatic refinement of state-agnostic principles.
-More than **90%** of the codebase (including infrastructure) remains unchanged whether the app uses **Riverpod**, **Cubit/BLoC**, or **Provider**.
+This monorepo demonstrates a **State-Symmetric architecture code style** — a pragmatic refinement of state-agnostic principles, that keeps 85–90% of the codebase unchanged across different state managers (Riverpod, Cubit/BLoC, Provider).
 
-The approach combines:
+**The approach combines:**
 
-- **Clean Architecture** with strong layer separation (feature **domain/data** live in shared packages),
-- **Thin adapters/facades** (2–7 touchpoints per feature) that let the same feature run on different state managers,
+- **Clean Architecture** with strong layer separation — state managers orchestrate state only; UI remains thin and stateless.
+- **Thin adapters/facades** (2–7 touchpoints per feature) that bridge shared code to specific state managers
 - **Lazy Parity**: only one active state manager (and its thin facades) is implemented and compiled.
-  Other SM code (their adapters + glue) is created **on demand**, not upfront — avoiding parity maintenance cost while still enabling 90+% codebase’s reuse when added later.
-
-**Observed model (showcase features):**
-
-- **UI parity:** 95–100% (widgets/screens are visually identical)
-- **Presentation parity:** ~85–90% (remaining differences are thin wrappers)
-- **Adapter overhead:** ~15–35% LOC in first features → amortized to **≤5–10%** after 2–3 features
-- **ROI:** immediate positive for **Auth-like** flows; for **Profile/async** flows — positive from **≥2** async features
-
-**Business perspective:**
-State symmetry acts as a **low-cost “insurance premium”** (≈15–35% LOC upfront, amortized to ≤5–10%) that pays off if the **probability of reuse in another state manager is ≥15–25%**.
-It is **most valuable for a niche (~5–10%)**: multi-product companies, white-label vendors, agencies with diverse client requirements, platform/SDK providers.
-**Solo developers and skilled indie teams** benefit even more: with automation and one-person context, the effective overhead often drops to **<3%**, while reuse opportunities are high across gigs/products — so the approach is usually **net-positive by default**.
+  Other SM code (their adapters + glue) is created only **on demand**, not upfront — avoiding parity maintenance cost while still enabling 90+% codebase’s reuse.
 
 Accepted Architecture Decision Record: **[ADR-001 — State-Symmetric Architecture](ADR/ADR-001-State-symmetric-architecture.md)**
 
+### Key Metrics (Measured)
+
+## Aspect Target Reality
+
+## UI parity 95–100% ✅ Widgets/screens visually identical
+
+## Presentation parity 85–90% ✅ Thin wrappers only
+
+## Adapter overhead ≤5–10% amortized ✅ 15–35% first feature → ≤5–10% after 3-4+ features
+
+## Migration savings 40–80% ✅ Auth: 58–59%, Profile: 9–11% (first feature)
+
+### **Business Value:**
+
+State symmetry **acts as low-cost insurance (~15–35% LOC upfront, amortized to ≤5–10%) that pays off when**:
+
+- Probability of feature's reuse (in appwith another SM) ≥15–25% within planning horizon
+- UI/UX feature's similarity is ≥70% across target apps
+
+It is **most valuable for a niche (~5–10%)**: multi-product companies, white-label vendors, agencies with diverse client requirements, platform/SDK providers. **Solo developers and skilled indie teams** benefit even more. With automation and one-person context, the effective overhead often drops to **<3%**, while reuse opportunities are high across gigs/products — so, for them the approach is usually **net-positive by default** for most mainstream features.
+
 See also:
 
-- **Use Case Areas** → `ADR/supporting_info/info-001-use-case-areas.md`
-- **Business Value Estimates** → `ADR/supporting_info/info-002-business-value-estimates.md`
+- **Use Case Areas** → [`info-001-use-case-areas.md`](ADR/supporting_info/info-001-use-case-areas.md)
+- **Business Value Estimates** → [`info-002-business-value-estimates.md`](ADR/supporting_info/info-002-business-value-estimates.md)
+- **Critics reply** [`info-003-crytics_reply.md`](ADR/supporting_info/info-003-critics_reply.md)
 
----
+## Getting Started 🚀
+
+```bash
+# Clone the repository
+git clone https://github.com/RamanGodun/State-agnostic-blueprint-mono-repo
+cd blueprint_monorepo
+
+# Install Melos (monorepo manager)
+dart pub global activate melos
+
+# Bootstrap all packages
+melos bootstrap
+```
+
+### Run with VSCode / Android Studio
+
+Use the launch configurations from [`.vscode/launch.json`].
+
+### Run with Melos (one-liners)
+
+The repo includes ready scripts to run each app/flavor:
+
+#### Riverpod app
+
+```sh
+# Dev flavor
+melos run run:rp:dev
+# Staging flavor
+melos run run:rp:stg
+```
+
+#### BLoC/Cubit app
+
+```sh
+# Dev flavor
+melos run run:cubit:dev
+# Staging flavor
+melos run run:cubit:stg
+```
+
+### ⚙️ Firebase Configuration
+
+- Firebase configured via `.env` + `flutter_dotenv`
+- Use the provided `.env` files or create your own. In the latter case:
+
+1. ```bash
+   flutterfire configure --project=<your_project_id>
+   ```
+2. After firebase configuration put into created `.env.dev` and/or `.env.staging` files next info:
+
+```env
+FIREBASE_API_KEY=...
+FIREBASE_APP_ID=...
+FIREBASE_PROJECT_ID=...
+FIREBASE_MESSAGING_SENDER_ID=...
+FIREBASE_STORAGE_BUCKET=...
+FIREBASE_AUTH_DOMAIN=...
+FIREBASE_IOS_BUNDLE_ID=...
+```
 
 ## 🧠 Files structure
 
@@ -47,140 +107,81 @@ The monorepo is structured into **two fully symmetrical apps (Cubit-based and Ri
 ```files tree
 |
 ├── apps/                        # Symmetric demo-apps
-│   ├── cubit_app/
-│   │   ├── app_bootstrap/
-│   │   ├── core/
-│   │   │   ├── base_modules/
-│   │   │   ├── shared_presentation/
-│   │   │   └── utils/
-│   │   └── features_presentation/
-│   │       └── ...
-|   |
-│   └── riverpod_app/
-│       ├── app_bootstrap/
-│       ├── core/
-│       │   ├── base_modules/
-│       │   ├── shared_presentation/
-│       │   └── utils/
-│       └── features_presentation/
-│           ├── ...
+│   ├── app_on_bloc/lib/         # BLoC/Cubit implementation
+│   └── app_on_riverpod/lib/     # Riverpod implementation
 │
-├── packages/                    # Flutter-packages, that plugs-in to apps
-│   ├── app_bootstrap/
-│   ├── core/
-│   ├── features/
-│   ├── firebase_adapter/
-│   ├── bloc_adapter/
-│   └── riverpod_adapter/
+├── packages/                    # Shared Flutter-packages, that plugs-in to apps
+│   ├── app_bootstrap/           # Startup & initialization logic
+│   ├── core/                    # Shared foundation (modules + layers)
+│   ├── features/                # Domain & data layers for features
+│   ├── firebase_adapter/        # Firebase integration layer
+│   ├── bloc_adapter/            # BLoC/Cubit glue code
+│   └── riverpod_adapter/        # Riverpod glue code
 │
 |
 ├── ADR/                         # Architecture Decision Records
+│   ├── ADR-001-State-symmetric-architecture.md
+│   └── supporting_info/
+|
+├── scripts/                     # Build & dev automation scripts
+├── .vscode/                     # IDE launch configurations
 ├── melos.yaml                   # Monorepo manager
 ├── pubspec.yaml
 ├── README.md
 └── LICENSE
 ```
 
-The next overall structure follows a universal organizational principle applied consistently to apps and packages.
-**Each object (an app or a package) is divided into three major areas**:
+### Organizational Principles
 
-- **`app_bootstrap/`** → everything related to application setup and initialization
-  (DI, configs, environment).
-- **`core/`** → shared codebase, split into general `utils` and `base_modules`
-  (navigation, overlays, localization, theming, error handling, etc.), shared layers (`presentation`, `domain`, `data`).
-- **`features/`** → feature-first design containing UI, view, and state-manager logic.
-  The deeper layers (use cases, repositories, gateways) live in dedicated shared Flutter packages like [`features/`] or [`firebase_adapter/`].
+The monorepo's files structure follows an universal organizational principles applied consistently to apps and packages.
 
-  In another words:
+**Apps and packages share a consistent three-tier structure:**
 
-- If something relates to **app startup**, it is always in `app_bootstrap`
-  (with reusable parts extracted into the [app_bootstrap] package).
-- If it’s a **feature**, its **presentation layer** stays inside the app (`features_presentation/`),
-  while its **domain/data layers** live in the shared [features] package.
-- All **Firebase-related code** belongs exclusively to the [firebase_adapter] package,
-  making it easy to swap with another backend (e.g., Supabase, Isar).
+1. **`app_bootstrap/`** → everything related to application setup and initialization
+   (DI, platform validation, environment configuration, all initial app's setup/initialization). Reusable parts extracted into the [app_bootstrap] package.
 
-  Inside **`core/`** (both in apps and packages), files are organized with the following rules:
+2. **`core/`** → Shared foundation organized by concern:
+   - `base_modules/` - Cross-cutting infrastructure (navigation, overlays, theming, localization, forms, etc.)
+   - `shared_{domain|data|presentation}/` - Layer-specific reusable code (eg, sharede widgets/pages in presentation layer; entities/domain_extensions - in domain; DTOs/cache managers/mappers - in data)
+   - `utils/` - Generic cross-cutting helpers, that don't fit elsewhere
 
-1. If code belongs to a **fundamental module** (localization, overlays, UI design, navigation, animations, error handling, forms, loggers, push-notification, etc)
-   → **put it in** `base_modules/`.
+3. **`features/`** → Feature-scoped code with clear separation:
+   - In apps: UI + presentation logic only
+   - In packages: domain + data layers only
+     So, deep layers (feature's use cases, repositories, gateways) live in dedicated packages (features/, firebase_adapter/).
 
-2. If code is reused but scoped to a **single architectural layer** only (e.g., a model used only in domain, or a widget used only in presentation)
-   → **put it in** `shared_domain/`, `shared_data/`, or `shared_presentation/`.
+### Key Design Decisions
 
-3. If the code is **generic and cross-cutting**, and does not fit the above categories
-   → **put it in** `utils/`.
+- **Firebase isolation**: All Firebase code lives in `firebase_adapter/` → easy to swap backends
+- **State manager adapters**: Thin glue layers (`bloc_adapter/`, `riverpod_adapter/`) bridge core/features to specific state management
+- **Predictable placement**:
+  - Startup code → always in `app_bootstrap/`
+  - Cross-cutting modules / infra → always in `base_modules/`
+  - Layer-specific shared code → in `shared_{layer}/`
+  - Feature business logic → in `packages/features/`
+  - Feature UI → in `apps/*/features/`
 
-- This systematic organization approach ensures every piece of code has a natural home, making the monorepo's codebase
-  **predictable, scalable, discoverable and maximum-possibly state-agnostic with clear boundaries**.
+This systematic organization ensures **every piece of code has a natural home with clear boundaries**, making the codebase predictable, scalable, and maximally flexible.
 
 ## 🧩 Two Symmetric Demo Apps and shared custom packages
 
-**Both apps share identical functionality, UI, and UX**.
+**Both fully functional demo apps share identical functionality, UI, and UX**, showcasing the state-symmetric architecture in action.
 
-📱 [Cubit Demo App](apps/cubit_app/README.md)
-A fully functional demo built with **Cubit**, showcasing the state-agnostic architecture in action.
-Demonstrates how Cubit integrates with `core`, `features`, and `adapters` while keeping **90% of the codebase unchanged**.
+📱 [Cubit Demo App](apps/app_on_bloc/README.md)
+Showcases how Cubit integrates with `core`, `features`, and `adapters` while keeping 85–90% of the codebase unchanged.
 
-📱 [Riverpod Demo App](apps/riverpod_app/README.md)
+📱 [Riverpod Demo App](apps/app_on_riverpod/README.md)
 A symmetrical demo app built with **Riverpod**, featuring the exact same functionality and UI/UX as the Cubit app.
-Proves that the architecture is truly **state-agnostic** and reusable across different state managers.
+Proves that the architecture is truly **state-symmetric** and reusable across different state managers.
 
-The choice of Cubit and Riverpod was deliberate — it’s enough to **visualize the approach** and demonstrate interoperability:
+The choice of Cubit and Riverpod was deliberate — it’s enough to **visualize the approach** and demonstrate interoperability the migration path:
 
-- To migrate from **Cubit → Bloc**, simply replace method calls with event dispatching (replace Cubit with BLoC, add Events and adjust the DI bindings).
-- To migrate from **Cubit → Provider**, slightly more changes are required, since Provider depends on `BuildContext` => use `GetIt`.
-  The migration's process includes adjusting the DI bindings and replacing Cubit with equivalent Providers exposing symmetric methods. Also there are need to develop thin adapters
+- **Cubit → BLoC**: replace method calls with event dispatching (swap Cubit for BLoC, add Events, adjust DI bindings).
+- **Cubit → Provider**: slightly more changes. Since Provider depends on `BuildContext`, use **GetIt** (as in BLoC/Cubit apps), adjust DI bindings, replace Cubit with equivalent Providers exposing symmetric methods, and **add thin adapters**.
 
-(!) This shows that one well-structured base is sufficient for all these state managers.
+**Key insight:** One well-structured base is sufficient for Cubit, BLoC, Riverpod, and Provider.
 
-### 🔐 Demo Features
-
-These apps are designed as a **foundation for small-mid size apps with codestyle, almost agnostic to state-managers**, also there is built-in support for:
-
-- 🌐 **Localization** via `easy_localization`
-([docs](<packages/core/lib/src/base_modules/localization/README(localization).md>))
-   <!-- (with built-in widgets auto-localization and fallbacks, as well as for errors managing and overlays flow) -->
-
-- 🎨 **Theming** and unified UI/UX
-([docs](packages/core/lib/src/base_modules/ui_design/Theme_module_README.md))
-  <!-- (with dark/light/amoled themes, persistent states, text theme factories) -->
-
-- 🧭 **Navigation** via GoRouter
-([docs](<packages/core/lib/src/base_modules/navigation/README(navigation).md>))
-  <!-- (with declarative auth-aware redirect) -->
-
-- ✨ **Common animations**
-([docs](<packages/core/lib/src/base_modules/animations/README(animations).md>))
-  <!-- (page transitions, overlay/widget animations) -->
-
-- ⚠️ **Error managing system**
-([docs](<packages/core/lib/src/base_modules/errors_management/README(errors_handling).md>))
-  <!-- (with centralized declarative functional errors handling) -->
-
-- 🪟 **Overlays system**
-([docs](<packages/core/lib/src/base_modules/overlays/README(overlays).md>))
-  <!-- (with queue, overlays engine/dispatcher and policy resolver) -->
-
-- 🛠 **FormFields System**
-([docs](<packages/core/lib/src/base_modules/form_fields/README(form_fields).md>))
-  <!-- (with custom field factory + validation, localization, declarative inputs) -->
-
-- 📄 **Loggers**
-  ([AppBlocObserver](packages/bloc_adapter/lib/src/base_modules/observer/bloc_observer.dart),
-  [ProviderDebugObserver](packages/riverpod_adapter/lib/src/base_modules/observing/providers_debug_observer.dart))
-
-  **To visualize the accepted approach, also the following next features were implemented**:
-
-- 👤 **Auth Flow**: Sign In, Sign Out, Sign Up
-- 📧 **E-mail Verification**
-- 🔑 **Password Management**: Change password, Reset password
-- 🪪 **Profile** feature
-
-* These familiar features make it easier to understand and evaluate the **state-agnostic approach** in real-life use cases
-  (⚠️ also note, that perfect UI/UX app design was not the primary goal of this monorepo)
-
-### Created and used custom Flutter packages
+## Created and used custom Flutter packages
 
 #### 📦 [App Bootstrap].
 
@@ -230,7 +231,7 @@ and BLoC-friendly widgets, making BLoC/Cubit integration seamless/ergonomic and 
 
 #### 📦 [Riverpod Adapter]
 
-([docs](<packages/riverpod_adapter/README(riverod_adapter).md>)).
+([docs](<packages/riverpod_adapter/README(riverpod_adapter).md>)).
 
 <!--
 Supplies ready-made providers for Firebase, features, and UI modules. Adds **error handling, overlays, theming**,
@@ -291,85 +292,21 @@ and global DI container support, making Riverpod integration seamless/ergonomic 
 - 📈 **lcov** (coverage visualization)
 - 🏷 **meta** (annotations)
 
----
-
-## 🚀 Usage & Setup
-
-### Getting Started 🚀
-
-```bash
-# Clone the repository
-git clone https://github.com/RamanGodun/State-agnostic-blueprint-mono-repo
-cd blueprint_monorepo
-flutter run
-
-# Install Melos (monorepo manager)
-dart pub global activate melos
-
-# Bootstrap all packages
-melos bootstrap
-
-# To run the desired flavor either use the launch configuration in VSCode/Android Studio or use the following commands:
-flutter run --flavor development --target lib/main_development.dart # Development flavor
-flutter run --flavor staging --target lib/main_staging.dart # Staging flavor
-# Currently `main_production.dart` was deleted, as there is no intentions to deploy this code
-```
-
-### ⚙️ Firebase Configuration
-
-- Firebase configured via `.env` + `flutter_dotenv`
-- Use granted `.env` files or create your owns, in this case:
-
-1. ```bash
-   flutterfire configure --project=<your_project_id>
-   ```
-2. After firebase configuration put into created `.env.dev` and/or `.env.staging` files next info:
-
-```env
-FIREBASE_API_KEY=...
-FIREBASE_APP_ID=...
-FIREBASE_PROJECT_ID=...
-FIREBASE_MESSAGING_SENDER_ID=...
-FIREBASE_STORAGE_BUCKET=...
-FIREBASE_AUTH_DOMAIN=...
-FIREBASE_IOS_BUNDLE_ID=...
-```
-
-### Check supported Locales
-
-Check the `CFBundleLocalizations` array in the `Info.plist` at `ios/Runner/Info.plist`, where should be included next locales:
-
-```xml
-    ...
-	<!-- Localization -->
-	<key>CFBundleLocalizations</key>
-	<array>
-   	<string>en</string>
-   	<string>uk</string>
-		<string>pl</string>
-	</array>
-	<!-- Localization -->
-    ...
-```
-
----
-
 ## 🧪 Testing Strategy
 
-Designed with the testing pyramid in mind:
+This monorepo is focused on **demonstrating the State-Symmetric architecture** and providing **business value measurements**, rather than exhaustive testing.
+Most of the underlying codebase was previously tested in the production apps it originated from, so additional coverage was not the primary goal here.
 
-- ✅ **Unit tests**: UseCases, Repos, Providers (via injected mocks)
-- 🧩 **Widget tests**: Stateless widgets & UI behavior
-- 🔁 **Integration tests**: Can be added progressively
+👉 The testing infrastructure is already wired (unit, widget, coverage, CI). As time allows, tests will be progressively added for the code that lives in this repo (following the testing pyramid).
 
-  ### Running Tests 🧪
+### Running Tests 🧪
 
 To run all unit and widget tests use the following command:
 
 ```sh
 # Run all tests with coverage
 melos run test
-$ very_good test --coverage --test-randomize-ordering-seed random
+very_good test --coverage --test-randomize-ordering-seed random
 ```
 
 To view the generated coverage report you can use [lcov](https://github.com/linux-test-project/lcov).
@@ -381,29 +318,21 @@ $ genhtml coverage/lcov.info -o coverage/
 $ open coverage/index.html
 ```
 
-\_\*Alternatively, run `flutter run` and code generation will take place automatically.
+## 🤝 Contributing
 
-## Appendix — Critics vs Reality
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-**Purpose**
-Regarding “abstraction for its own sake”: in reality, adapters are introduced only when the probability of reuse justifies them. This is not architectural theater but a pragmatic tool with a clear business case.
+## License
 
-**Team Impact**
-Some argue it creates high cognitive load for teams. In practice, the seams (adapters) are extremely thin, requiring only modest training. Once learned, they are trivial to apply and often improve developer experience.
+This monorepo is licensed under the [![LICENSE][license_badge]](LICENSE).
+[license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 
-**Runtime Cost**
-There is a concern about bigger binaries and slower applications. In reality, tree‑shaking ensures that only one active adapter is compiled, while all others remain dead code and never ship to production.
+## 📚 Additional Resources
 
-**Scalability**
-Regarding “more layers ≠ more scalable”: in this approach, however, the extra layer is not bloat but a mechanism that enforces Clean Architecture while keeping the system lightweight and evolvable.
+- 📖 [Architecture Decision Records](ADR/)
+- 🎯 [Use Case Areas](ADR/supporting_info/info-001-use-case-areas.md)
+- 📈 [Business Value Analysis](ADR/supporting_info/info-002-business-value-estimates.md)
+- 💬 [Addressing Critics](ADR/supporting_info/info-003-critics_reply.md)
+- 🔧 [Melos Configuration](melos.yaml)
 
-**Overhead**
-Measurements from real showcase apps and features show a different picture: adapters initially account for ~20–35% LOC in the first features, but this amortizes to ≤5–10% after 2–3 features. With Lazy Parity in production, the effective runtime overhead becomes near zero. The approach works as low‑cost (≈1–3%) insurance against future reuse across state managers, making it rational for most mainstream features.
-
----
-
-**Why this is not over‑engineering**
-
-This is not about "heavy frameworks impose universal abstractions everywhere", adapters exist only at the edges, while the domain and UI layers remain simple and shared. The result is an evolvable codebase that reflects how platform teams operate: shared kernel + thin edge adapters.
-
-> **Bottom line:** the usual critique applies to heavy state‑agnostic frameworks. It does not apply to this thin‑adapter, lazy‑parity, state‑symmetric approach.
+**Built with 🧠❤️ to demonstrate pragmatic state-symmetric architecture**

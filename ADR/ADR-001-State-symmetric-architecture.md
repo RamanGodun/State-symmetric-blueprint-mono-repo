@@ -45,7 +45,7 @@ The **following requirements are adopted** for the monorepo’s codebase:
 - Flexibility: Code and people can move freely between apps/projects
 
 👉 This monorepo was created to demonstrate how to implement a State-Symmetric architecture style — one that maintains the benefits of state-agnosticism (scalability, team flexibility, reusable business logic) but avoids its pitfalls (over-engineering and complexity).
-**State-Symmetric** approach was implemented by reducing of _State-agnostic approach's over-engineering_ (that rarely delivers true value) and instead applying code splitting between dedicated own flutter packages and a thin, symmetric facade layer over native state managers (BLoC/Cubit and Riverpod) with preserving of others principle of state-agnostic architecture codestyle (adapters for specific statemanagement, strict sticking to clean architecture)
+**State-Symmetric** approach was implemented by reducing of _State-agnostic approach's over-engineering_ (that rarely delivers true value) and instead applying code splitting between dedicated own flutter packages and a thin, symmetric facade layer over native state managers (BLoC/Cubit and Riverpod) with preserving of others principle of state-agnostic architecture codestyle (adapters for specific state management, strict sticking to clean architecture)
 
 🟢 The result: 90%+ code reuse with minimal overhead, fast onboarding, and nice DX — a golden mean
 between state-agnostic benefits (business effectiveness) and engineering pragmatism (developer experience).

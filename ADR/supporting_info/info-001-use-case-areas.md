@@ -4,14 +4,14 @@ This **State-symmetric approach** is like a **not expensive (15–35% LOC upfron
 
 **Evaluated cost of approach implementation**:
 
-- First features: adapters observed at ~20–35% LOC (Auth-like lower end; Profile-like - higher) per feature.
+- First features: adapters observed at ~20–35% LOC per feature (Auth-like fetures - lower end; Profile-like - higher).
 - After approach's implementation in 2–3 features (reusing the same seams), amortized overhead drops to ≤5–10%.
 
 * Accepted model and performed asseamants are in [`info-002-business-value-estimates.md`](./info-002-business-value-estimates.md). To revaluate - run `melos loc:report` in terminal.
 
 ## 🎯 Potential Niche Target for Teams/Projects
 
-> This approach is **business‑valuable for a niche** (<5–10% of market), when reuse across apps/stacks is likely. Below are the profiles where it shines (and where it doesn’t).
+> This approach is **business‑valuable for a niche** (<5–10% of market), when reuse of feature's codebase across the apps/stacks is likely. Below are the profiles where it shines (and where it doesn’t).
 
 ### 🎯 Agencies (Outsourcing Companies)
 
@@ -39,7 +39,7 @@ This **State-symmetric approach** is like a **not expensive (15–35% LOC upfron
 
 **When it doesn’t pay off:**
 
-- Products diverge strongly in UI/UX (Material vs Cupertino, radically different flows).
+- Products diverge strongly in UI/UX (radically different flows).
 
 ### 🎯 White‑Label Solutions
 
@@ -63,7 +63,7 @@ This **State-symmetric approach** is like a **not expensive (15–35% LOC upfron
 
 **Why it’s profitable:**
 
-- Ensures **consistency across apps**.
+- Ensures **consistency across apps**, reduce features' maintaince costs.
 
 **When it doesn’t pay off:**
 
@@ -87,7 +87,7 @@ This **State-symmetric approach** is like a **not expensive (15–35% LOC upfron
 
 **When it applies:**
 
-- Company maintains a library of ready solutions/templates (auth, payments, profile), each implemented for multiple SMs.
+- Company maintains a library of ready solutions/templates (auth, payments, profile, push-notifications, etc), each implemented for multiple SMs.
 - Architecture follows SOLID (OCP), making layers swappable.
 - Clients get SM choice with prebuilt UX/UI templates.
 
@@ -104,7 +104,8 @@ This **State-symmetric approach** is like a **not expensive (15–35% LOC upfron
 
 ## Decision Flow — When to Turn On State‑Symmetry
 
-**Intent:** treat symmetry like inexpensive insurance. Pay a small premium **upfront** only when reuse on another state manager is **likely** (15-25%).
+**Intent:** treat symmetry like inexpensive insurance. Pay a ~15–35% LOC in first features (amortized to **≤5–10%** after 2–3 features) only when reuse on another state manager is **likely** (>=15-25%).
+Also only one active state manager (and its thin facades) is implemented and compiled. Other SM code (their adapters + glue) is created only **on demand**, not upfront — avoiding parity maintenance cost while still enabling 90+% codebase’s reuse
 
 ### Decision Rules
 
@@ -126,14 +127,9 @@ This **State-symmetric approach** is like a **not expensive (15–35% LOC upfron
 ```
 New Feature
    ↓
-Will it likely be reused on another SM within the horizon?
+Will it likely be reused on another SM within the horizon? (reuse possibility >= 15-25%)
    ├─ NO → Build Single‑SM ✓
    └─ YES
-        ↓
-Is R (reuse probability) ≥ 20–25%?
-   ├─ NO → Build Single‑SM ✓
-   └─ YES
-        ↓
 Feature type? (examples)
    ├─ Auth-like        → Enable symmetry (ROI is immediate) ✅
    └─ AsyncValue-like  → Enable symmetry only if adapters will be reused in at least
@@ -180,7 +176,7 @@ Does the adapter budget fit? (target ≤200 LOC, hard cap 300)
 
 ### 📌 Summary
 
-Approach brings business value when **P(reuse ≥ ~0.3)** and **UI/flows overlap ≥ ~70%**.
+Approach brings business value when **R(reuse ≥ ~0.15-0.3)** and **UI/flows overlap ≥ ~70%**.
 
 #### Best Fits
 
@@ -197,9 +193,7 @@ Approach brings business value when **P(reuse ≥ ~0.3)** and **UI/flows overlap
 - **Startups/MVPs** with chaotic scope.
 - **Divergent UX apps** (different design systems/flows).
 
-In other words, this is useful for teams/projects ready to pay a “~20–35% LOC у перших фічах; амортизовано ≤5–10% після 2–3 фіч” as **insurance** against future reuse across SMs. If features with similar UX/UI are reused, savings range **30–85%**.
-
-For all others (single product, startups, single‑SM companies) → overhead is unjustified.
+In other words, this is useful for teams/projects ready to pay a “~20–35% LOC in first features; amortized ≤5–10% after 2–3 features” as **insurance** against future reuse across SMs. If features with similar UX/UI are reused, savings range **30–85%**. For all others (single product, startups, single‑SM companies) → overhead is unjustified.
 
 ---
 
@@ -213,7 +207,7 @@ Unlike moderate applicability for general teams (<5–10% niche), for **skilled 
 
 For frequently reused features with identical UX/UI, savings reach **~60% per feature**.
 
-By applying **Lazy parity** and seeing symmetry as **cheap (~1–3%) insurance against future reuse**, this approach is rational for most mainstream features.
+By applying **Lazy parity** and seeing symmetry as **cheap (~2–3%) insurance against future reuse**, this approach is rational for most mainstream features.
 
 For the author of this monorepo, with AI automation, the **state‑symmetric approach is the default coding style** — modest overhead, high reuse.
 
@@ -233,7 +227,8 @@ For the author of this monorepo, with AI automation, the **state‑symmetric app
 The state-symmetric approach is justified only when reuse probability is **≥15–25%** and UI similarity ≥70%.
 It should be seen as a **low-cost insurance (15–35% LOC upfront, amortized to ≤5–10%)** that pays off once features are reused across multiple SMs.
 
-Additionally, two intangible but critical benefits:
+Additionally, three intangible but critical benefits:
 
-- **Developer Experience:** one consistent coding model across state managers eliminates mental switching, improving speed and reducing errors.
-- **Maintainability:** fixes and improvements are applied once in the shared layer and reused across apps/SMs, preventing divergence and lowering long-term support costs.
+- **Developer Experience** — one consistent coding model across state managers eliminates mental switching, improving speed and reducing errors.
+- **Maintainability** — fixes and improvements are applied once in the shared layer and reused across apps/SMs, preventing divergence and lowering long-term support costs.
+- **Time-to-Market** — code reuse shortens feature delivery cycles. New features ship significantly faster since ~90% of the code is already shared and validated.

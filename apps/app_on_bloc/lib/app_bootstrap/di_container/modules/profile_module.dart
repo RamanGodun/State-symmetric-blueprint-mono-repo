@@ -1,6 +1,6 @@
 import 'package:app_on_bloc/app_bootstrap/di_container/modules/auth_module.dart';
 import 'package:app_on_bloc/app_bootstrap/di_container/modules/firebase_module.dart';
-import 'package:app_on_bloc/features_presentation/profile/cubit/profile_page_cubit.dart';
+import 'package:app_on_bloc/features/profile/cubit/profile_page_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart'
     show DIModule, SafeRegistration, di;
 import 'package:features/features_barrels/profile/profile.dart';

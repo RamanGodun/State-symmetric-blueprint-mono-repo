@@ -1,8 +1,8 @@
 # 📈 Business Value Estimates
 
-> A pragmatic summary of the **State‑Symmetric** approach (_Clean Architecture + Thin Adapters + Lazy Parity_) using real measurements from the showcase repo.
+A pragmatic summary of the **State‑Symmetric** approach using real measurements from the showcase repo.
 
-Goals: keep **state‑dependent code in range 15–35% LOC upfront, amortized to ≤5–10% per feature**, reuse **60–80%** across stacks, and pay the cost **only when reuse is likely**.
+> Goals: keep **state‑dependent code in range 15–35% LOC upfront, amortized to ≤5–10% per feature**, reuse **60–80%** across stacks, and pay the cost **only when reuse is likely**.
 
 ---
 
@@ -32,7 +32,7 @@ Everything else remains **shared**:
 ```
 Expected ROI ≈ R · I · F − OMI · F
   F   = feature cost (effort)
-  R   = reuse probability (within 6–12 months)
+  R   = reuse probability (within horizont of planning)
   I   = impact (savings from reuse)
   OMI = overhead + maintenance + initial training
 ```
@@ -115,7 +115,7 @@ All numbers below come directly from the `loc_report.sh` analysis of the showcas
 - **Port cost**: **0.70–0.90·F** (≈ 70–90% rewrite).
 - **Conclusion**: symmetry cannot help until code is refactored to Clean Architecture.
 
-### C) Symmetry (Clean Arch + Thin Adapters, Lazy Parity)
+### C) State-symmetric approach
 
 - **Observed adapter overhead (Auth, Profile)**: **~20–35% LOC** for the first features.
 - **Amortized overhead**: drops to **≤5–10%** after 2–3 features, since adapters are reused.
@@ -203,11 +203,10 @@ Probabiity of feature reuse in another state-manager:
 
 - **Baselines:** All estimates assume a **Clean Architecture** (single SM) baseline. Under a **spaghetti** baseline (state/logic/UI entangled), symmetry **does not help** until the system is **refactored to clean boundaries**.
 
----
-
-> **Bottom line:**
+### **Bottom line:**
 
 - **Insurance rule of thumb:** Treat symmetry as a **low‑cost premium**—**~20–35% LOC upfront, amortized to ≤5–10%**—that **pays off if the probability of reuse on another SM is ≥15–25%** within your planning horizon.
 - **Operational guardrails:** Keep the **adapter budget ≤200–300 LOC** per feature (2–7 touchpoints), enforce a lightweight **Symmetry Contract**, and run **Lazy Parity** in CI (active adapter = full tests; sleeper = compile + smoke).
 - **Developer Experience:** A hidden but significant benefit is the simplified mental model — developers don’t need to memorize different coding styles and patterns per state manager. There is **one consistent template** that works across SMs, which makes feature development faster, cleaner, and less error‑prone.
 - **Maintainability across apps:** When multiple apps rely on different SMs (e.g., one uses Riverpod, another uses Cubit), keeping features symmetric means changes are applied **once** in the shared core and instantly reused. Without symmetry, teams would face duplicated maintenance effort and divergence over time.
+- **Time-to-Market** — code reuse shortens feature delivery cycles. New features ship significantly faster since ~90% of the code is already shared and validated.
