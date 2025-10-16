@@ -58,36 +58,36 @@ melos run run:cubit:stg
 These apps are designed as a **foundation for small-mid size apps with codestyle, almost agnostic to state-managers**, also there is built-in support for:
 
 - 🌐 **Localization** via `easy_localization`
-([docs](<packages/core/lib/src/base_modules/localization/README(localization).md>))
+([docs](<../../packages/core/lib/src/base_modules/localization/README(localization).md>))
    <!-- (with built-in widgets auto-localization and fallbacks, as well as for errors managing and overlays flow) -->
 
 - 🎨 **Theming** and unified UI/UX
-([docs](packages/core/lib/src/base_modules/ui_design/Theme_module_README.md))
+([docs](../../packages/core/lib/src/base_modules/ui_design/Theme_module_README.md))
   <!-- (with dark/light/amoled themes, persistent states, text theme factories) -->
 
 - 🧭 **Navigation** via GoRouter
-([docs](<packages/core/lib/src/base_modules/navigation/README(navigation).md>))
+([docs](<../../packages/core/lib/src/base_modules/navigation/README(navigation).md>))
   <!-- (with declarative auth-aware redirect) -->
 
 - ✨ **Common animations**
-([docs](<packages/core/lib/src/base_modules/animations/README(animations).md>))
+([docs](<../../packages/core/lib/src/base_modules/animations/README(animations).md>))
   <!-- (page transitions, overlay/widget animations) -->
 
 - ⚠️ **Error managing system**
-([docs](<packages/core/lib/src/base_modules/errors_management/README(errors_handling).md>))
+([docs](<../../packages/core/lib/src/base_modules/errors_management/README(errors_handling).md>))
   <!-- (with centralized declarative functional errors handling) -->
 
 - 🪟 **Overlays system**
-([docs](<packages/core/lib/src/base_modules/overlays/README(overlays).md>))
+([docs](<../../packages/core/lib/src/base_modules/overlays/README(overlays).md>))
   <!-- (with queue, overlays engine/dispatcher and policy resolver) -->
 
 - 🛠 **FormFields System**
-([docs](<packages/core/lib/src/base_modules/form_fields/README(form_fields).md>))
+([docs](<../../packages/core/lib/src/base_modules/form_fields/README(form_fields).md>))
   <!-- (with custom field factory + validation, localization, declarative inputs) -->
 
 - 📄 **Loggers**
-  ([AppBlocObserver](packages/bloc_adapter/lib/src/base_modules/observer/bloc_observer.dart),
-  [ProviderDebugObserver](packages/riverpod_adapter/lib/src/base_modules/observing/providers_debug_observer.dart))
+  ([AppBlocObserver](../../packages/bloc_adapter/lib/src/base_modules/observer/bloc_observer.dart),
+  [ProviderDebugObserver](../../packages/riverpod_adapter/lib/src/base_modules/observing/providers_debug_observer.dart))
 
   **To visualize the accepted approach, also the following next features were implemented**:
 
@@ -149,47 +149,4 @@ To include the new locale - update the `CFBundleLocalizations` array.
 
 ### Adding Translations
 
-1. For each supported locale, add a new ARB file in `lib/l10n/arb`.
-
-```
-├── l10n
-│   ├── arb
-│   │   ├── app_en.arb
-│   │   └── app_es.arb
-```
-
-2. Add the translated strings to each `.json` file:
-
-`app_en.arb`
-
-```arb
-{
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    }
-}
-```
-
-`app_es.arb`
-
-```arb
-{
-    "@@locale": "es",
-    "counterAppBarTitle": "Contador",
-    "@counterAppBarTitle": {
-        "description": "Texto mostrado en la AppBar de la página del contador"
-    }
-}
-```
-
-### Generating Translations
-
-To use the latest translations changes, you will need to generate them:
-
-1. Generate localizations for the current project:
-
-```sh
-flutter gen-l10n --arb-dir="lib/l10n/arb"
-```
+1. Add the translated strings for each supported locale (to each `.json` file, eg, `packages/core/assets/translations/en.json`)),
