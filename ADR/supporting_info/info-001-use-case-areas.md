@@ -4,10 +4,10 @@ This **State-symmetric approach** is like a **not expensive (15–35% LOC upfron
 
 **Evaluated cost of approach implementation**:
 
-- First features: adapters observed at ~20–35% LOC per feature (Auth-like fetures - lower end; Profile-like - higher).
+- First features: adapters observed at ~20–35% LOC per feature ("Shared-Custom-State-Models Track" features - lower end; "Shared-AsyncValue-Models Track" - higher).
 - After approach's implementation in 2–3 features (reusing the same seams), amortized overhead drops to ≤5–10%.
 
-* Accepted model and performed asseamants are in [`info-002-business-value-estimates.md`](./info-002-business-value-estimates.md). To revaluate - run `melos loc:report` in terminal.
+* Accepted model and performed assessments are in [`info-002-business-value-estimates.md`](./info-002-business-value-estimates.md). To revaluate - run `melos loc:report` in terminal.
 
 ## 🎯 Potential Niche Target for Teams/Projects
 
@@ -63,7 +63,7 @@ This **State-symmetric approach** is like a **not expensive (15–35% LOC upfron
 
 **Why it’s profitable:**
 
-- Ensures **consistency across apps**, reduce features' maintaince costs.
+- Ensures **consistency across apps**, reduce features' maintenance costs.
 
 **When it doesn’t pay off:**
 

@@ -14,25 +14,12 @@ A pragmatic summary of the **State‑Symmetric** approach using real measurement
 
 Adapters are implemented as **thin seams** (2–7 touchpoints per feature):
 
-1. Side‑effects / submission listeners (success, error, retry)
-2. Async glue (Idle / Loading / Success / Error)
-3. UI events → domain commands
-4. Screen lifecycle hooks (init, dispose, cleanup)
-5. _(Optional)_ lightweight overlays, guards, router hooks
-
-Everything else remains **shared**:
-
-- State models (form/submission) in presentation
-- Entire **domain/data** layer (use‑cases, repositories)
-- **Stateless UI** widgets
-- Cross‑cutting infrastructure (errors, overlays, localization, navigation, theming, forms, etc)
-
 **ROI Formula**
 
 ```
 Expected ROI ≈ R · I · F − OMI · F
   F   = feature cost (effort)
-  R   = reuse probability (within horizont of planning)
+  R   = reuse probability (within planning horizon)
   I   = impact (savings from reuse)
   OMI = overhead + maintenance + initial training
 ```
@@ -41,25 +28,23 @@ Expected ROI ≈ R · I · F − OMI · F
 
 1. All results below are **CONSERVATIVE**: the baseline _Clean Architecture_ also needs presentation side-effects, but those LOC are **not** counted due to team/style variance. We only count adapters/facades + shared code.
 
-2. **Why two tracks (by seam type, not just by functional module):**
+2. **Two tracks** (by state-model strategy, not just feature type):
 
-- **Auth-like track** — uses **shared submission state model** _and_ **shared form state**.
-  _Examples:_ in **SignIn** we reuse a `SubmissionState` for the request lifecycle and a `SignInFormState` for field validation.
-  The state manager **only orchestrates states**; **logic lives in use-cases**; **StatelessWidgets** stay dumb; thin **adapters** wrap stateless UI.
-  ➜ Minimal abstraction overhead → higher ROI on the first feature.
+- **Shared-Custom-State-Models Track** — relies on a shared state models (e.g. `SubmissionFlowState`, `SignInFormState`, `SignUpFormState`, etc).
+  ➜ Minimal abstraction overhead → ROI positive from the very first feature.
 
-- **Profile-like (Async-like) track (AsyncTrack)** — also relies on a **shared state model**, but here it is an **async facade**: **`AsyncStateView<T>`**, which unifies Riverpod’s `AsyncValue<T>` та BLoC’s `AsyncValueForBLoC<T>`.
-  This adds one more seam (view-facade + error mapping + listeners), → **higher initial overhead**, but it provides **identical state-agnostic UI**, modern declarative syntax with Dart 3+, and amortizes after 2–3 async features (Profile, Email Verification, etc …).
+- **Shared-AsyncValue-Models Track** — relies on an async facade (`AsyncStateView<T>`), which unifies Riverpod’s `AsyncValue<T>` and BLoC’s `AsyncValueForBLoC<T>`. This requires an extra seam, which is overhead compared to pure Clean Architecture.
+  ➜ ROI is weaker for a single feature, but becomes positive once ≥2 async features share the shared seams.
 
-_Consequently, although **Email Verification** is functionally part of Auth, it uses the **async seam** and therefore is grouped with **Profile, not Async-like track**. This makes ROI comparable per seam type and explains the two bundles reported in Section 2._
+* Note: functionally, Email Verification and SignOut sub-features belong to Auth feature, but it uses the Shared-AsyncValue-Model Track's seams, so for ROI we count it with Profile feature.
 
 ---
 
 ## 2) ROI Snapshots for showcase Features
 
-Assessments are based on the [`loc_report.sh`](../../scripts/loc_report.sh) script. Results are in [`loc_report_resukts.md`](info-004-results-of-loc-report.md)
+Assessments are based on the [`loc_report.sh`](../../scripts/loc_report.sh) script. Results are in [`loc_report_results.md`](info-004-results-of-loc-report.md)
 
-### A) Auth-like track (Sign-In/Up, Password actions sub-features)
+### A) **Shared-Custom-State-Models Track** (Sign-In/Up, Password actions sub-features)
 
 - **Core shared:** 400 LOC (~28–29%)
 - **Presentation per SM:** 684–715 LOC (~50%)
@@ -74,7 +59,7 @@ Assessments are based on the [`loc_report.sh`](../../scripts/loc_report.sh) scri
 
 ---
 
-### B) Profile or AsyncValue-like track (+ Email Verification sub-feature)
+### B) **Shared-AsyncValue-Models Track** (Profile feature + Email Verification and SignOut sub-features)
 
 - **Core shared:** 185 LOC (~27%)
 - **Presentation per SM:** 262–266 LOC (~39%)
@@ -92,10 +77,10 @@ Assessments are based on the [`loc_report.sh`](../../scripts/loc_report.sh) scri
 
 ### Quick reference
 
-| Feature type     | Shared code\*   | Adapter cost | Savings (2nd SM migration) |
-| ---------------- | --------------- | ------------ | -------------------------- |
-| **Auth**-like    | ~80% (28 + 52%) | 20%          | 58–59%                     |
-| **Profile**-like | ~65% (27 + 39%) | ~34–35%      | 9–11%                      |
+| Track's type                       | Shared code\*   | Adapter cost | Savings (migration to 2nd SM) |
+| ---------------------------------- | --------------- | ------------ | ----------------------------- |
+| **Shared-Custom-State-Models**     | ~80% (28 + 52%) | 20%          | 58–59%                        |
+| **Shared-AsyncValue-Models Track** | ~65% (27 + 39%) | ~34–35%      | 9–11%                         |
 
 \*Shared code includes the presentation layer (52% for Auth and 39% for Profile), which has **Visible UI 95–100% parity** (see accepted model).
 
@@ -103,11 +88,11 @@ Assessments are based on the [`loc_report.sh`](../../scripts/loc_report.sh) scri
 
 ### ROI Insights
 
-- **Auth features (submission flows):**
+- **Shared-Custom-State-Models Track**:
   - ROI is **immediately positive** ✅
   - **Break-even:** 1st feature → recommended by default.
 
-- **Profile features (async flows):**
+- **Shared-AsyncValue-Models Track**:
   - ROI is **marginally positive** for the 1st feature ⚠️ (~10% savings, but 237 LOC investment).
   - ROI turns **positive with 2+ async features** (≈28% cumulative savings).
   - With **3+ async features**, ROI grows strongly (≥60%).
@@ -122,8 +107,8 @@ All numbers below come directly from the `loc_report.sh` analysis of the showcas
 
 ### A) Baseline — Clean Architecture (single SM)
 
-- **Auth-like flows**: porting cost to a new SM ≈ **0.40·F** (40% of the feature).
-- **Profile / async-like features**: porting cost to a new SM ≈ **0.40·F** as well (domain/data reused, but presentation glue must be rebuilt).
+- **Shared-Custom-State-Models Track**: porting cost to a new SM ≈ **0.40·F** (40% of the feature).
+- **Shared-AsyncValue-Models Track**: porting cost to a new SM ≈ **0.40·F** as well (domain/data reused, but presentation glue must be rebuilt).
 
 ### B) Baseline — Spaghetti Code
 
@@ -136,8 +121,8 @@ All numbers below come directly from the `loc_report.sh` analysis of the showcas
 - **Observed adapter overhead (Auth, Profile)**: **~20–35% LOC** for the first features.
 - **Amortized overhead**: drops to **≤5–10%** after 2–3 features, since adapters are reused.
 - **Cost to add 2nd SM:**
-  - **Auth-like flows:** **0.06·F** (≈ 291 LOC vs 715 LOC baseline).
-  - **Profile / async-like flows:** **0.07·F** (≈ 237 LOC vs 262 LOC baseline).
+  - **Shared-Custom-State-Models Track**: **0.06·F** (≈ 291 LOC vs 715 LOC baseline).
+  - **Shared-AsyncValue-Models Track**: **0.07·F** (≈ 237 LOC vs 262 LOC baseline).
 
 ---
 
@@ -151,14 +136,14 @@ Formula:
 - **a** — porting cost with adapters in place.
 - **R** — probability that the feature will need to be reused on another SM.
 
-#### Auth (submission flows)
+#### **Shared-Custom-State-Models Track**
 
 - `p_clean = 0.40`, `a = 0.06`, `o = 0.05–0.06`
 - Break‑even: **R ≈ 15–20%**
 - Interpretation: if there **is even a 1‑in‑5 chance the feature will be reused in another state manager, symmetry pays off**.
 - ROI: already positive from the very first feature (58–59% savings).
 
-#### Profile (AsyncValue features)
+#### **Shared-AsyncValue-Models Track**
 
 - `p_clean = 0.40`, `a = 0.07`, `o = 0.07`
 - Break‑even: **R ≈ 20–25%**
@@ -195,7 +180,7 @@ ROI
 
 ```
 
-Probabiity of feature reuse in another state-manager:
+Probability of feature reuse in another state-manager:
 
 - Reuse ≤ 15% → ❌ Negative ROI
 - Reuse 15–25% → ⚠️ Conditional (depends on roadmap)
@@ -206,16 +191,16 @@ Probabiity of feature reuse in another state-manager:
 - Keep **state‑dependent code at target <5% per feature** and pay only when reuse is likely (**Lazy Parity**).
 - **Symmetry scope:** only **2–7 horizontals**. Make **“Symmetry Contract” doc:** **6–8 API rules** + **review checklist**.
 - **No “full” symmetry:** ❌ no universal VM/Store; use **native SM APIs** with thin facades.
-- **Prove the budget:** track **SLOC delta** per feature (adapters only) → target **5-10% per feature** (within ammortization acumulation).
+- **Prove the budget:** track **SLOC delta** per feature (adapters only) → target **5-10% per feature** (within amortization accumulation).
 - **CI policy:** full suite for the **active** adapter; **sleeping** adapter = compile + smoke.
 
 ## 📌 Summary
 
 - **Implementation cost (measured):** For the **first** features, adapters account for **~15–35%** of feature LOC (Auth‑like on the lower end; Profile‑like on the higher end). After the approach is applied across **2–3 features** (reusing the same seams), the **amortized overhead drops to ≤5–10%** per feature.
 
-- **Auth / submission flows:** **Immediate positive ROI** from feature #1. Adding a second state manager yields **~58–60% savings** versus a clean‑baseline port. **Recommendation:** use by default when there is any realistic cross‑SM reuse (≈ **≥15–20%** probability).
+- **Shared-Custom-State-Models Track**: **Immediate positive ROI** from feature #1. Adding a second state manager yields **~58–60% savings** versus a clean‑baseline port. **Recommendation:** use by default when there is any realistic cross‑SM reuse (≈ **≥15–20%** probability).
 
-- **Profile / async flows:** ROI is **weak for a single feature** (only **~9–11%** savings versus **~34–35%** adapter cost). ROI turns **positive once adapters are reused across ≥2 async features** (e.g., Feed, Dashboard), and compounds to **≥60%** with **3+** features.
+- **Shared-AsyncValue-Models Track**: ROI is **weak for a single feature** (only **~9–11%** savings versus **~34–35%** adapter cost). ROI turns **positive once adapters are reused across ≥2 async features** (e.g., Feed, Dashboard), and compounds to **≥60%** with **3+** features.
 
 - **Baselines:** All estimates assume a **Clean Architecture** (single SM) baseline. Under a **spaghetti** baseline (state/logic/UI entangled), symmetry **does not help** until the system is **refactored to clean boundaries**.
   Note: all estimates are conservative. because a baseline Clean Architecture also requires presentation-layer side effects, but we’ve excluded them from the baseline due to team/style variability.

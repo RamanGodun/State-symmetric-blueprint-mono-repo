@@ -1,39 +1,65 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ===== Dependencies =====
-command -v rg     >/dev/null 2>&1 || { echo "Please: brew install ripgrep"; exit 1; }
-command -v tokei  >/dev/null 2>&1 || { echo "Please: brew install tokei";  exit 1; }
+# =============================================================================
+# State-Symmetric LOC Cost Report (Average per migration = RoundTrip/2)
+# - Skips generated (*.g.dart, *.freezed.dart, *.mocks.dart, *.gr.dart)
+# - Skips comments
+# - Aggregates by track: CSM (Custom State Models) and AVSM (AsyncValue)
+# =============================================================================
 
-# ===== Excludes (no generated) =====
+# ---- Dependencies ------------------------------------------------------------
+command -v rg  >/dev/null 2>&1 || { echo "Please: brew install ripgrep"; exit 1; }
+command -v awk >/dev/null 2>&1 || { echo "awk required"; exit 1; }
+
+# ---- Excludes ---------------------------------------------------------------
 EXCLUDES=('!**/*.g.dart' '!**/*.freezed.dart' '!**/*.mocks.dart' '!**/*.gr.dart')
 RG_EXCLUDES=(); for e in "${EXCLUDES[@]}"; do RG_EXCLUDES+=(--glob "$e"); done
 
-hr()  { printf '%*s\n' "$(tput cols 2>/dev/null || echo 100)" '' | tr ' ' '='; }
-sec() { echo; hr; echo "# $*"; hr; echo; }
-row2(){ printf "| %-36s | %10s |\n" "$1" "$2"; }
-hdr2(){ printf "| %-36s | %10s |\n" "Bucket" "LOC"; printf "|-%-36s-|-%10s-|\n" "------------------------------------" "----------"; }
-trio(){ printf "| %-26s | %10s | %10s | %10s |\n" "$1" "$2" "$3" "$4"; }
-hdr3(){ printf "| %-26s | %10s | %10s | %10s |\n" "Bucket" "BLoC" "Riverpod" "Total"; printf "|-%-26s-|-%10s-|-%10s-|-%10s-|\n" "--------------------------" "----------" "----------" "----------"; }
+# ---- Helpers -----------------------------------------------------------------
+hr()   { printf '%*s\n' "$(tput cols 2>/dev/null || echo 100)" '' | tr ' ' '='; }
+sec()  { echo; hr; echo "# $*"; hr; echo; }
+row2(){ printf "| %-34s | %10s |\n" "$1" "$2"; }
+hdr2(){ printf "| %-34s | %10s |\n" "Bucket" "LOC"; printf "|-%-34s-|-%10s-|\n" "----------------------------------" "----------"; }
+
+# 5-column table: RP→CB | CB→RP | RoundTrip/2 | %Track
+row5(){ printf "| %-22s | %10s | %10s | %12s | %8s |\n" "$1" "$2" "$3" "$4" "$5"; }
+hdr5(){
+  printf "| %-22s | %10s | %10s | %12s | %8s |\n" "Bucket" "RP→CB" "CB→RP" "RoundTrip/2" "%Track";
+  printf "|-%-22s-|-%10s-|-%10s-|-%12s-|-%8s-|\n" "----------------------" "----------" "----------" "------------" "--------";
+}
+
+# Savings mini-table (LOC + % of track)
+row_sav(){ printf "| %-34s | %10s | %8s |\n" "$1" "$2" "$3"; }
+hdr_sav(){
+  printf "| %-34s | %10s | %8s |\n" "Bucket" "LOC" "%Track";
+  printf "|-%-34s-|-%10s-|-%8s-|\n" "----------------------------------" "----------" "--------";
+}
+
+# Overhead table (nice, explicit labels)
+row_over(){ printf "| %-54s | %10s | %12s |\n" "$1" "$2" "$3"; }
+hdr_over(){
+  printf "| %-54s | %10s | %12s |\n" "Track (LOC & % of track codebase)" "LOC" "% of track";
+  printf "|-%-54s-|-%10s-|-%12s-|\n" "------------------------------------------------------" "----------" "------------";
+}
+
 pct() {
   local num=${1:-0} den=${2:-0}
   if [ "$den" -eq 0 ]; then echo "0.0%"; return; fi
   printf "%.1f%%" "$(awk "BEGIN {print ($num*100.0)/$den}")"
 }
 
-# ===== Code counters (skip comments) =====
-#  - drops // lines
-#  - drops /**/, *, */ lines (approx; good enough for docs-style blocks)
+# Count non-empty, non-comment LOC in a dir
 count_dir_code() {
   local dir="$1"
   [[ -d "$dir" ]] || { echo 0; return; }
   rg "${RG_EXCLUDES[@]}" -t dart -n '^\s*\S' "$dir" \
-    | cut -d: -f1-3 \
-    | awk -F: '{print $3}' \
+    | cut -d: -f3 \
     | grep -Ev '^\s*//|^\s*/\*|^\s*\*|^\s*\*/' \
     | wc -l | tr -d ' '
 }
 
+# Count LOC in a single file
 count_file_code() {
   local f="$1"
   [[ -f "$f" ]] || { echo 0; return; }
@@ -43,198 +69,266 @@ count_file_code() {
     | wc -l | tr -d ' '
 }
 
-sum_dirs() {
-  local total=0
-  for p in "$@"; do [[ -n "${p:-}" ]] && total=$(( total + $(count_dir_code "$p") )); done
-  echo "$total"
+sum_dirs()  { local t=0; for p in "$@"; do [[ -n "${p:-}" ]] && t=$(( t + $(count_dir_code "$p") )); done; echo "$t"; }
+sum_files() { local t=0; for f in "$@"; do [[ -n "${f:-}" ]] && t=$(( t + $(count_file_code "$f") )); done; echo "$t"; }
+
+half_sum_files() { local s=$(sum_files "$@"); awk "BEGIN { printf \"%d\", ($s/2)+0.5 }"; }
+
+avg_files() {
+  # Average LOC across existing files (ceil). If none exist => 0.
+  local total=0 count=0 loc
+  for f in "$@"; do
+    loc=$(count_file_code "$f")
+    if [[ "$loc" -gt 0 ]]; then total=$((total+loc)); count=$((count+1)); fi
+  done
+  if [[ "$count" -eq 0 ]]; then echo 0; else awk "BEGIN { printf \"%d\", ($total/$count)+0.999 }"; fi
 }
 
-sum_files() {
-  local total=0
-  for f in "$@"; do [[ -n "${f:-}" ]] && total=$(( total + $(count_file_code "$f") )); done
-  echo "$total"
+# Integer half (rounded)
+half_num() { awk "BEGIN { printf \"%d\", ($1/2)+0.5 }"; }
+
+# ---- Fast SM-lines counter (no file listing, uses ripgrep with globs) -------
+# Counts non-comment code lines across files whose PATH matches provided scopes
+# and NAME matches *cubit*|*bloc*|*notifier*|*provider*.
+count_sm_code_scoped() {
+  local dir="$1"; shift
+  local scopes=("$@")
+  [[ -d "$dir" ]] || { echo 0; return; }
+
+  local args=( "${RG_EXCLUDES[@]}" -t dart -n '^\s*\S' "$dir" )
+  # include only scoped subpaths
+  for s in "${scopes[@]}"; do args+=( --glob "$s" ); done
+  # include only SM file names
+  args+=( --glob '**/*cubit*.dart' --glob '**/*bloc*.dart' --glob '**/*notifier*.dart' --glob '**/*provider*.dart' )
+  # exclude comment lines
+  rg "${args[@]}" \
+    | cut -d: -f3 \
+    | grep -Ev '^\s*//|^\s*/\*|^\s*\*|^\s*\*/' \
+    | wc -l | tr -d ' ' || echo 0
 }
 
-# ===== Feature roots (core: domain+data) =====
+# =============================================================================
+# CONFIG
+# =============================================================================
+
+# --- Feature roots (domain+data) ---------------------------------------------
 AUTH_ROOT="packages/features/lib/src/auth"
 PROFILE_ROOT="packages/features/lib/src/profile"
-EMAILV_ROOT="packages/features/lib/src/email_verification"   # counts into Profile-group
+EMAILV_ROOT="packages/features/lib/src/email_verification"  # goes into AVSM track
 
-# >>> NEW: feature-owned shared bits that must count into features (NOT adapters)
-AUTH_SHARED_FORM_STATES_DIR="packages/core/lib/src/base_modules/form_fields/shared_form_fields_states"
-SHARED_SUBMISSION_STATE_FILE="packages/core/lib/src/shared_presentation_layer/shared_states/submission_state.dart"
+# --- CSM track state models (must be counted in Baseline) --------------------
+CSM_MODELS_DIR="packages/core/lib/src/base_modules/form_fields/shared_form_fields_states"
+CSM_SUBMISSION_STATE_FILE="packages/core/lib/src/shared_presentation_layer/shared_states/submission_state.dart"
 
-# ===== App-level presentation (feature UIs, wrappers) =====
-AUTH_APP_BLOC_DIRS=( "apps/app_on_bloc/lib/features_presentation/auth" )
-AUTH_APP_RP_DIRS=(   "apps/app_on_riverpod/lib/features_presentation/auth" )
-
-PROFILE_APP_BLOC_DIRS=( "apps/app_on_bloc/lib/features_presentation/profile" )
-PROFILE_APP_RP_DIRS=(   "apps/app_on_riverpod/lib/features_presentation/profile" )
-
-# ===== Overhead definition (facade-adapters only!) =====
-# — BLoC Auth overhead (3 files): side-effects, footer-guard, submit-button
-AUTH_BLOC_OVERHEAD_FILES=(
-  "packages/bloc_adapter/lib/src/core/presentation_shared/side_effects_listeners/side_effects_for_submission_state.dart"
-  "packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/page_footer_guard.dart"
-  "packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/form_submit_button.dart"
-)
-# — Riverpod Auth overhead (3 files): side-effects, footer-guard, submit-button
-AUTH_RP_OVERHEAD_FILES=(
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/side_effects_listeners/side_effect_listener_for_submission_state__x_on_ref.dart"
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/page_footer_guard.dart"
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/form_submit_button.dart"
-)
-
-# — Providers needed to wire Auth on Riverpod (cost to add 2nd SM)
-AUTH_RP_PROVIDERS_FILES=(
-  "packages/riverpod_adapter/lib/src/features/features_providers/auth/domain_layer_providers/use_cases_providers.dart"
-  "packages/riverpod_adapter/lib/src/features/features_providers/auth/data_layer_providers/data_layer_providers.dart"
-)
-
-# ===== Async/Profile overhead (shared facades for async parity) =====
-PROFILE_BLOC_OVERHEAD_FILES=(
-  "packages/bloc_adapter/lib/src/core/presentation_shared/side_effects_listeners/async_multi_errors_listener.dart"
+# --- AVSM track "baseline model" candidates (take avg LOC for baseline) ------
+AVSM_BASELINE_MODEL_CANDIDATES=(
+  "packages/core/lib/src/shared_presentation_layer/async_state/async_state_view.dart"
+  "packages/riverpod_adapter/lib/src/core/shared_presentation/async_state/async_state_view_for_riverpod.dart"
   "packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_state_view_for_bloc.dart"
   "packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_value_for_bloc.dart"
 )
-PROFILE_RP_OVERHEAD_FILES=(
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/side_effects_listeners/async_multi_errors_listener.dart"
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/async_state/async_state_view_for_riverpod.dart"
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/async_state/async_value_match_x.dart"
+
+# --- App presentation roots (entire lib/features/* per app) -----------------
+APP_BLOC_FEATURES_DIR="apps/app_on_bloc/lib/features"
+APP_RP_FEATURES_DIR="apps/app_on_riverpod/lib/features"
+
+# --- Scopes for SM_files_target ---------------------------------------------
+CSM_SCOPES=('**/auth/**' '**/password**/**')
+AVSM_SCOPES=('**/profile/**' '**/email_verification/**' '**/sign_out/**')
+
+# --- Shared widgets (only to FEATURE TOTALS) ---------------------------------
+SHARED_WIDGET_FILES=(
+  "packages/core/lib/src/base_modules/localization/module_widgets/text_widget.dart"
+  "packages/core/lib/src/base_modules/form_fields/form_field_factory.dart"
+  "packages/core/lib/src/base_modules/form_fields/widgets/app_form_field.dart"
+  "packages/core/lib/src/base_modules/form_fields/widgets/password_visibility_icon.dart"
+  "packages/core/lib/src/shared_presentation_layer/widgets_shared/buttons/filled_button.dart"
+  "packages/core/lib/src/shared_presentation_layer/widgets_shared/buttons/text_button.dart"
+  "packages/core/lib/src/shared_presentation_layer/widgets_shared/app_bar.dart"
+  "packages/core/lib/src/shared_presentation_layer/widgets_shared/loader.dart"
 )
 
-# — Providers needed to wire Profile (+ EmailV) on Riverpod
-PROFILE_RP_PROVIDERS_FILES=(
+# --- INIT (per-track; CB = exact files you provided) -------------------------
+INIT_CB_CSM_FILES=(
+  "apps/app_on_bloc/lib/app_bootstrap/di_container/modules/auth_module.dart"
+  "apps/app_on_bloc/lib/app_bootstrap/di_container/modules/password_module.dart"
+)
+INIT_CB_AVSM_FILES=(
+  "apps/app_on_bloc/lib/app_bootstrap/di_container/modules/email_verification.dart"
+  "apps/app_on_bloc/lib/app_bootstrap/di_container/modules/profile_module.dart"
+)
+
+# Riverpod providers per-feature (RP legs)
+RP_PROVIDERS_AUTH=(
+  "packages/riverpod_adapter/lib/src/features/features_providers/auth/domain_layer_providers/use_cases_providers.dart"
+  "packages/riverpod_adapter/lib/src/features/features_providers/auth/data_layer_providers/data_layer_providers.dart"
+)
+RP_PROVIDERS_PROFILE_EMAILV=(
   "packages/riverpod_adapter/lib/src/features/features_providers/profile/domain_layer_providers/use_case_provider.dart"
   "packages/riverpod_adapter/lib/src/features/features_providers/profile/data_layers_providers/data_layer_providers.dart"
   "packages/riverpod_adapter/lib/src/features/features_providers/email_verification/domain_layer_providers/use_case_provider.dart"
   "packages/riverpod_adapter/lib/src/features/features_providers/email_verification/data_layer_providers/data_layer_providers.dart"
 )
 
-# ===== CORE LOC (domain+data) =====
+# --- AVSM track OVERHEAD (one-time, round-trip) ------------------------------
+AVSM_OH_FILES=(
+  "packages/core/lib/src/shared_presentation_layer/async_state/async_state_view.dart"
+  "packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_value_for_bloc.dart"
+  "packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_state_view_for_bloc.dart"
+  "packages/bloc_adapter/lib/src/core/presentation_shared/side_effects_listeners/async_multi_errors_listener.dart"
+  "packages/riverpod_adapter/lib/src/core/shared_presentation/side_effects_listeners/async_multi_errors_listener.dart"
+  "packages/bloc_adapter/lib/src/core/presentation_shared/cubits/auth_cubit.dart"
+)
+
+# Shared button/footer → ½ в AVSM і ½ в CSM
+HALF_SHARED_BLOC=(
+  "packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/form_submit_button.dart"
+  "packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/page_footer_guard.dart"
+)
+HALF_SHARED_RP=(
+  "packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/form_submit_button.dart"
+  "packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/page_footer_guard.dart"
+)
+
+# --- CSM track OVERHEAD (per SM, Lazy Parity) --------------------------------
+CSM_OH_CB_FILES=( # seam for CB (RP→CB leg)
+  "packages/bloc_adapter/lib/src/core/presentation_shared/side_effects_listeners/side_effects_for_submission_state.dart"
+)
+CSM_OH_RP_FILES=( # seam for RP (CB→RP leg)
+  "packages/riverpod_adapter/lib/src/core/shared_presentation/side_effects_listeners/side_effect_listener_for_submission_state__x_on_ref.dart"
+)
+
+# =============================================================================
+# CORE LOC (domain+data)
+# =============================================================================
 auth_domain=$(count_dir_code "$AUTH_ROOT/domain")
 auth_data=$(count_dir_code "$AUTH_ROOT/data")
-F_AUTH_CORE=$((auth_domain + auth_data))
-
-# >>> NEW: count shared form-field states as part of AUTH core
-auth_shared_form_states=$(count_dir_code "$AUTH_SHARED_FORM_STATES_DIR")
-F_AUTH_CORE=$((F_AUTH_CORE + auth_shared_form_states))
-
 emailv_domain=$(count_dir_code "$EMAILV_ROOT/domain")
 emailv_data=$(count_dir_code "$EMAILV_ROOT/data")
-F_EMAILV_CORE=$((emailv_domain + emailv_data))
-
 profile_domain=$(count_dir_code "$PROFILE_ROOT/domain")
 profile_data=$(count_dir_code "$PROFILE_ROOT/data")
-F_PROFILE_CORE=$((profile_domain + profile_data))
 
-F_PROFILE_PLUS_EMAILV_CORE=$((F_PROFILE_CORE + F_EMAILV_CORE))
+F_CSM_CORE=$((auth_domain + auth_data))                                # Custom track core
+F_AVSM_CORE=$((profile_domain + profile_data + emailv_domain + emailv_data)) # AVSM track core
 
-# ===== APP PRESENTATION LOC =====
-auth_bloc_presentation=$(sum_dirs "${AUTH_APP_BLOC_DIRS[@]}")
-auth_rp_presentation=$(sum_dirs "${AUTH_APP_RP_DIRS[@]}")
-profile_bloc_presentation=$(sum_dirs "${PROFILE_APP_BLOC_DIRS[@]}")
-profile_rp_presentation=$(sum_dirs "${PROFILE_APP_RP_DIRS[@]}")
+# =============================================================================
+# APP PRESENTATION totals (entire lib/features per app) — чистий presentation
+# =============================================================================
+CSM_PRESENTATION_CB=$(count_dir_code "$APP_BLOC_FEATURES_DIR")
+CSM_PRESENTATION_RP=$(count_dir_code "$APP_RP_FEATURES_DIR")
+AVSM_PRESENTATION_CB=$CSM_PRESENTATION_CB
+AVSM_PRESENTATION_RP=$CSM_PRESENTATION_RP
 
-# >>> NEW: submission_state.dart is a feature-owned shared presentation state.
-submission_state_loc=$(count_file_code "$SHARED_SUBMISSION_STATE_FILE")
-# include it into both AUTH and PROFILE app-level presentation (for parity per app)
-auth_bloc_presentation=$((auth_bloc_presentation + submission_state_loc))
-auth_rp_presentation=$((auth_rp_presentation + submission_state_loc))
-profile_bloc_presentation=$((profile_bloc_presentation + submission_state_loc))
-profile_rp_presentation=$((profile_rp_presentation + submission_state_loc))
+# =============================================================================
+# INIT costs
+# =============================================================================
+INIT_CB_CSM=$(sum_files "${INIT_CB_CSM_FILES[@]}")
+INIT_CB_AVSM=$(sum_files "${INIT_CB_AVSM_FILES[@]}")
+INIT_RP_CSM=$(sum_files "${RP_PROVIDERS_AUTH[@]}")
+INIT_RP_AVSM=$(sum_files "${RP_PROVIDERS_PROFILE_EMAILV[@]}")
 
-# ===== OVERHEAD (facade-adapters only) =====
-auth_bloc_overhead=$(sum_files "${AUTH_BLOC_OVERHEAD_FILES[@]}")
-auth_rp_overhead=$(sum_files "${AUTH_RP_OVERHEAD_FILES[@]}")
+# =============================================================================
+# SM_files_target (per track & per app)
+# =============================================================================
+CSM_SM_CB=$(count_sm_code_scoped "$APP_BLOC_FEATURES_DIR" "${CSM_SCOPES[@]}")
+CSM_SM_RP=$(count_sm_code_scoped "$APP_RP_FEATURES_DIR"   "${CSM_SCOPES[@]}")
+AVSM_SM_CB=$(count_sm_code_scoped "$APP_BLOC_FEATURES_DIR" "${AVSM_SCOPES[@]}")
+AVSM_SM_RP=$(count_sm_code_scoped "$APP_RP_FEATURES_DIR"   "${AVSM_SCOPES[@]}")
 
-profile_bloc_overhead=$(sum_files "${PROFILE_BLOC_OVERHEAD_FILES[@]}")
-profile_rp_overhead=$(sum_files "${PROFILE_RP_OVERHEAD_FILES[@]}")
+# =============================================================================
+# BASELINE ROUND-TRIP (Clean, no symmetry)
+# BASE_MIGRATION = P_full_under_target_SM + INIT_target + (state models for track)
+# - AVSM: середній LOC моделі (avg з кандидатів) до КОЖНОГО плеча.
+# - CSM: всі state-моделі (forms + submission_state) до КОЖНОГО плеча.
+# =============================================================================
+CSM_MODELS_BASELINE_LOC=$(( $(count_dir_code "$CSM_MODELS_DIR") + $(count_file_code "$CSM_SUBMISSION_STATE_FILE") ))
+AVSM_MODEL_AVG_LOC=$(avg_files "${AVSM_BASELINE_MODEL_CANDIDATES[@]}")
 
-# ===== PROVIDERS cost (Riverpod only) =====
-auth_rp_providers=$(sum_files "${AUTH_RP_PROVIDERS_FILES[@]}")
-profile_rp_providers=$(sum_files "${PROFILE_RP_PROVIDERS_FILES[@]}")
+BASE_CSM_RP_TO_CB=$(( CSM_PRESENTATION_CB + INIT_CB_CSM + CSM_MODELS_BASELINE_LOC ))
+BASE_CSM_CB_TO_RP=$(( CSM_PRESENTATION_RP + INIT_RP_CSM + CSM_MODELS_BASELINE_LOC ))
+ROUND_TRIP_BASE_CSM=$(( BASE_CSM_RP_TO_CB + BASE_CSM_CB_TO_RP ))
 
-# ===== AGGREGATES =====
-# Auth totals per app (one SM)
-F_AUTH_BLOC_APP=$((F_AUTH_CORE + auth_bloc_presentation))
-F_AUTH_RP_APP=$((F_AUTH_CORE + auth_rp_presentation))
+BASE_AVSM_RP_TO_CB=$(( AVSM_PRESENTATION_CB + INIT_CB_AVSM + AVSM_MODEL_AVG_LOC ))
+BASE_AVSM_CB_TO_RP=$(( AVSM_PRESENTATION_RP + INIT_RP_AVSM + AVSM_MODEL_AVG_LOC ))
+ROUND_TRIP_BASE_AVSM=$(( BASE_AVSM_RP_TO_CB + BASE_AVSM_CB_TO_RP ))
 
-# Profile(+EmailV) totals per app (one SM)
-F_PROFILE_BLOC_APP=$((F_PROFILE_PLUS_EMAILV_CORE + profile_bloc_presentation))
-F_PROFILE_RP_APP=$((F_PROFILE_PLUS_EMAILV_CORE + profile_rp_presentation))
+# =============================================================================
+# SYMMETRIC ROUND-TRIP — AVSM (one-time OH; each leg: SM+INIT)
+# =============================================================================
+AVSM_OH_CORE=$(sum_files "${AVSM_OH_FILES[@]}")
+AVSM_HALF_BLOC=$(half_sum_files "${HALF_SHARED_BLOC[@]}")
+AVSM_HALF_RP=$(half_sum_files   "${HALF_SHARED_RP[@]}")
+AVSM_OH_ROUNDTRIP=$(( AVSM_OH_CORE + AVSM_HALF_BLOC + AVSM_HALF_RP ))
 
-# ===== Reports =====
+AVSM_SM_RP_TO_CB=$(( AVSM_SM_CB + INIT_CB_AVSM ))
+AVSM_SM_CB_TO_RP=$(( AVSM_SM_RP + INIT_RP_AVSM ))
+ROUND_TRIP_AVSM=$(( AVSM_OH_ROUNDTRIP + AVSM_SM_RP_TO_CB + AVSM_SM_CB_TO_RP ))
 
-sec "FEATURE: AUTH (Sign-In/Up) — core (domain+data) + app-level presentation (NO adapters)"
-hdr3
-trio "Core (domain+data)"         "$F_AUTH_CORE" "$F_AUTH_CORE" "$F_AUTH_CORE"
-trio "App presentation (per app)" "$auth_bloc_presentation" "$auth_rp_presentation" $((auth_bloc_presentation+auth_rp_presentation))
-trio "TOTAL per app (no adapters)" "$F_AUTH_BLOC_APP" "$F_AUTH_RP_APP" "-"
+# =============================================================================
+# SYMMETRIC ROUND-TRIP — CSM (per-SM OH with Lazy Parity; each leg: SM+INIT+OH_target)
+# =============================================================================
+CSM_OH_CB_CORE=$(sum_files "${CSM_OH_CB_FILES[@]}")
+CSM_OH_RP_CORE=$(sum_files "${CSM_OH_RP_FILES[@]}")
+CSM_HALF_BLOC=$(half_sum_files "${HALF_SHARED_BLOC[@]}")
+CSM_HALF_RP=$(half_sum_files   "${HALF_SHARED_RP[@]}")
+CSM_OH_CB=$(( CSM_OH_CB_CORE + CSM_HALF_BLOC )) # RP→CB
+CSM_OH_RP=$(( CSM_OH_RP_CORE + CSM_HALF_RP ))   # CB→RP
+
+CSM_SM_RP_TO_CB=$(( CSM_SM_CB + INIT_CB_CSM + CSM_OH_CB ))
+CSM_SM_CB_TO_RP=$(( CSM_SM_RP + INIT_RP_CSM + CSM_OH_RP ))
+ROUND_TRIP_CSM=$(( CSM_SM_RP_TO_CB + CSM_SM_CB_TO_RP ))
+
+# =============================================================================
+# FEATURE TOTALS (для %Track): ядро + презентації + віджети + моделі
+# =============================================================================
+shared_widgets_loc=$(sum_files "${SHARED_WIDGET_FILES[@]}")
+
+CSM_FEATURE_TOTAL=$(( F_CSM_CORE + CSM_PRESENTATION_CB + CSM_PRESENTATION_RP + shared_widgets_loc + CSM_MODELS_BASELINE_LOC ))
+AVSM_FEATURE_TOTAL=$(( F_AVSM_CORE + AVSM_PRESENTATION_CB + AVSM_PRESENTATION_RP + shared_widgets_loc + AVSM_MODEL_AVG_LOC ))
+
+# =============================================================================
+# AVERAGED METRICS (per migration leg = RoundTrip/2) + ratios
+# =============================================================================
+AVG_BASE_CSM=$(half_num "$ROUND_TRIP_BASE_CSM")
+AVG_SYM_CSM=$(half_num "$ROUND_TRIP_CSM")
+AVG_SAV_CSM=$(( (ROUND_TRIP_BASE_CSM - ROUND_TRIP_CSM) / 2 ))
+
+AVG_BASE_AVSM=$(half_num "$ROUND_TRIP_BASE_AVSM")
+AVG_SYM_AVSM=$(half_num "$ROUND_TRIP_AVSM")
+AVG_SAV_AVSM=$(( (ROUND_TRIP_BASE_AVSM - ROUND_TRIP_AVSM) / 2 ))
+
+CSM_RATIO_BASE=$(pct "$AVG_BASE_CSM" "$CSM_FEATURE_TOTAL")
+CSM_RATIO_SYM=$(pct "$AVG_SYM_CSM"   "$CSM_FEATURE_TOTAL")
+
+AVSM_RATIO_BASE=$(pct "$AVG_BASE_AVSM" "$AVSM_FEATURE_TOTAL")
+AVSM_RATIO_SYM=$(pct "$AVG_SYM_AVSM"   "$AVSM_FEATURE_TOTAL")
+
+# =============================================================================
+# REPORTS
+# =============================================================================
+
+sec "CSM Track (Custom State Models) — Average Migration (RoundTrip/2)"
+hdr5
+row5 "Baseline (Clean)" "$BASE_CSM_RP_TO_CB" "$BASE_CSM_CB_TO_RP" "$AVG_BASE_CSM" "$CSM_RATIO_BASE"
+row5 "Symmetric"        "$CSM_SM_RP_TO_CB"   "$CSM_SM_CB_TO_RP"   "$AVG_SYM_CSM"  "$CSM_RATIO_SYM"
 echo
+hdr_sav
+row_sav "SAVINGS (averaged)" "$AVG_SAV_CSM" "$(pct "$AVG_SAV_CSM" "$CSM_FEATURE_TOTAL")"
 
-sec "AUTH Overhead (thin facade-adapters ONLY)"
-hdr3
-trio "Side-effects/submit/footer" "$auth_bloc_overhead" "$auth_rp_overhead" $((auth_bloc_overhead+auth_rp_overhead))
+sec "AVSM Track (AsyncValue + EmailV + SignOut) — Average Migration (RoundTrip/2)"
+hdr5
+row5 "Baseline (Clean)" "$BASE_AVSM_RP_TO_CB" "$BASE_AVSM_CB_TO_RP" "$AVG_BASE_AVSM" "$AVSM_RATIO_BASE"
+row5 "Symmetric"        "$AVSM_SM_RP_TO_CB"   "$AVSM_SM_CB_TO_RP"   "$AVG_SYM_AVSM"  "$AVSM_RATIO_SYM"
+echo
+hdr_sav
+row_sav "SAVINGS (averaged)" "$AVG_SAV_AVSM" "$(pct "$AVG_SAV_AVSM" "$AVSM_FEATURE_TOTAL")"
 
-echo
-sec "COST to add the SECOND SM for AUTH (State-Symmetric vs Baseline)"
-# If we ship BLoC first:
-auth_add_rp_cost=$((auth_rp_overhead + auth_rp_providers))   # adapters + providers
-auth_baseline_rp_cost=$((F_AUTH_RP_APP - F_AUTH_CORE))        # rewrite whole RP presentation without adapters
-echo "Assume BLoC-first:"
-hdr2
-row2 "Add Riverpod (Adapters + Providers)" "$auth_add_rp_cost"
-row2 "Baseline: rewrite RP presentation"   "$auth_baseline_rp_cost"
-row2 "Savings vs baseline"                 $((auth_baseline_rp_cost - auth_add_rp_cost))
-echo
-# If we ship Riverpod first:
-auth_add_bloc_cost=$((auth_bloc_overhead))                   # adapters only (no providers on BLoC)
-auth_baseline_bloc_cost=$((F_AUTH_BLOC_APP - F_AUTH_CORE))   # rewrite whole BLoC presentation without adapters
-echo "Assume Riverpod-first:"
-hdr2
-row2 "Add BLoC (Adapters only)"            "$auth_add_bloc_cost"
-row2 "Baseline: rewrite BLoC presentation" "$auth_baseline_bloc_cost"
-row2 "Savings vs baseline"                 $((auth_baseline_bloc_cost - auth_add_bloc_cost))
-
-# ===== PROFILE (+ EmailVerification) =====
-echo
-sec "FEATURE: PROFILE (+ Email Verification) — core (domain+data) + app-level presentation (NO adapters)"
-hdr3
-trio "Core (domain+data)"         "$F_PROFILE_PLUS_EMAILV_CORE" "$F_PROFILE_PLUS_EMAILV_CORE" "$F_PROFILE_PLUS_EMAILV_CORE"
-trio "App presentation (per app)" "$profile_bloc_presentation" "$profile_rp_presentation" $((profile_bloc_presentation+profile_rp_presentation))
-trio "TOTAL per app (no adapters)" "$F_PROFILE_BLOC_APP" "$F_PROFILE_RP_APP" "-"
-echo
-
-sec "PROFILE Overhead (thin facade-adapters ONLY)"
-hdr3
-trio "Async facades + errors listener" "$profile_bloc_overhead" "$profile_rp_overhead" $((profile_bloc_overhead+profile_rp_overhead))
-echo
-
-sec "COST to add the SECOND SM for PROFILE (+ EmailV)"
-# BLoC-first:
-profile_add_rp_cost=$((profile_rp_overhead + profile_rp_providers))
-profile_baseline_rp_cost=$((F_PROFILE_RP_APP - F_PROFILE_PLUS_EMAILV_CORE))
-echo "Assume BLoC-first:"
-hdr2
-row2 "Add Riverpod (Adapters + Providers)" "$profile_add_rp_cost"
-row2 "Baseline: rewrite RP presentation"   "$profile_baseline_rp_cost"
-row2 "Savings vs baseline"                 $((profile_baseline_rp_cost - profile_add_rp_cost))
-echo
-# Riverpod-first:
-profile_add_bloc_cost=$((profile_bloc_overhead))
-profile_baseline_bloc_cost=$((F_PROFILE_BLOC_APP - F_PROFILE_PLUS_EMAILV_CORE))
-echo "Assume Riverpod-first:"
-hdr2
-row2 "Add BLoC (Adapters only)"            "$profile_add_bloc_cost"
-row2 "Baseline: rewrite BLoC presentation" "$profile_baseline_bloc_cost"
-row2 "Savings vs baseline"                 $((profile_baseline_bloc_cost - profile_add_bloc_cost))
-
-# ===== Sanity (optional: entire adapter packages, for context only) =====
-echo
-sec "SANITY CHECK: whole adapter packages (non-generated)"
-tokei "packages/bloc_adapter/lib"     -e "**/*.g.dart" -e "**/*.freezed.dart" -e "**/*.mocks.dart" -e "**/*.gr.dart" || true
-echo
-tokei "packages/riverpod_adapter/lib" -e "**/*.g.dart" -e "**/*.freezed.dart" -e "**/*.mocks.dart" -e "**/*.gr.dart" || true
+# Overhead per track (first adoption, context) — pretty & explicit
+sec "Overhead per track (first adoption, context)"
+CSM_OH_PAID=$(( CSM_OH_CB + CSM_OH_RP ))
+AVSM_OH_PAID=$(( AVSM_OH_ROUNDTRIP ))
+hdr_over
+row_over "CSM Track (LOC & % of track codebase)"  "$CSM_OH_PAID" "$(pct "$CSM_OH_PAID" "$CSM_FEATURE_TOTAL")"
+row_over "AVSM Track (LOC & % of track codebase)" "$AVSM_OH_PAID" "$(pct "$AVSM_OH_PAID" "$AVSM_FEATURE_TOTAL")"
 
 echo; hr; echo "Done."; hr
