@@ -6,20 +6,22 @@
 
 ## Overview
 
-A fully functional demo built with **Cubit**, showcasing the **State‑Symmetric** architecture in action. It demonstrates how Cubit integrates with `core`, `features`, and `adapters` flutter packages, while keeping **90%+ of the codebase unchanged** compared to the Riverpod app — differences live in **thin seams/adapters (2–4 touchpoints per feature)**.
+This is **one of two fully functional symmetric demo apps** (Cubit/BLoC and Riverpod).
+This demo app is built with **Cubit**, showcasing the **State-Symmetric** architecture in action.
 
-- **Why Cubit?** To show that Cubit can plug into the shared foundation with minimal glue while preserving **UI/UX parity (95–100%)** and **presentation parity (~85–90%)**.
-- **Symmetry contract:** state managers **orchestrate state only**; logic stays in **use‑cases**; UI is **stateless**; adapters-facades provide the minimal glue around StatelessWidgets and side‑effects.
+It demonstrates how the Cubit state manager plugs into the shared foundation — integrating with **`core`**, **`features`**, **`app_bootstrap`**, and **`adapters`** packages — while keeping **90%+ of the entire codebase (infrastructure + features) unchanged** vs the Riverpod app.
+The only differences live in **thin seams/adapters (2–4 touchpoints per feature, located in `packages/bloc_adapter`)**, providing minimal glue while preserving **UI/UX parity (95–100%)** and **presentation parity (~85–90%)**.
 
-### 🧩 How This App Fits the Monorepo
+**Symmetry contract:** state managers **orchestrate state only**; business logic stays in **use-cases**; UI remains **stateless**; **adapter-facades** provide the minimal glue for StatelessWidgets and side-effects.
 
-This is **one of two symmetric demo apps** (Cubit/BLoC and Riverpod). Both:
+**Result:** state managers are **swappable**, while **90%+ of the shared infrastructure and feature codebase remains identical**.
 
-- share the **same core**, **features**, and **firebase_adapter** packages,
-- connect through **thin adapters** (`packages/bloc_adapter` vs `packages/riverpod_adapter`),
-- deliver **UI/UX parity (95–100%)** and **presentation parity (~85–90%)** with minimal glue.
+> Note: The goal is to **demonstrate the state‑symmetric style**, not a perfect pixel‑polished design.
 
-The result: state managers are **swappable** while ~90% of code stays the same.
+### **Showcase features (built on top of the infra):**
+
+- 👤 **Auth Flow** (with Auth-track seams): Sign In, Sign Out, Sign Up, Password Management (Change/Reset)
+- 🪪 **Profile** (+ **Email Verification**) with async‑track seams.
 
 ## Getting Started 🚀
 
@@ -144,105 +146,97 @@ To switch language at runtime:
 await context.setLocale(const Locale('es'));
 ```
 
-## 🧠 File Structure (app scope)
+## 🧠 Files Structure (app scope)
 
 Focus on **`apps/app_on_bloc/lib/`** — the Cubit app wiring and presentation layer. Deep layers (domain/data) live in shared packages.
 
 ```files tree
 apps/app_on_bloc/lib/
-├─ app_bootstrap/                                     # Startup pipeline, env, platform checks, DI (GetIt)
-│  ├─ app_bootstrap.dart
+├─ app_bootstrap/                                     # Startup pipeline: platform checks → Firebase/env → DI → localization → storage
+│  ├─ app_bootstrap.dart                              # Orchestrates boot sequence (DefaultAppBootstrap) and calls each init step in order
 │  └─ di_container/
-│     ├─ di_container_init.dart
-│     ├─ global_di_container.dart
-│     └─ modules/                                     # Modular registrations
-│        ├─ auth_module.dart
-│        ├─ email_verification.dart
-│        ├─ firebase_module.dart
-│        ├─ form_fields_module.dart
-│        ├─ navigation_module.dart
-│        ├─ overlays_module.dart
-│        ├─ password_module.dart
-│        ├─ profile_module.dart
-│        ├─ theme_module.dart
-│        └─ warmup_module.dart
+│     ├─ di_container_init.dart                       # Aggregates DI modules and registers them (full/minimal stacks)
+│     ├─ global_di_container.dart                     # Global DI accessor/re-exports (entry to GetIt via bloc_adapter’s helpers)
+│     └─ modules/                                     # Modular registrations (ADR-style, small and composable)
+│        ├─ auth_module.dart                          # Auth: data sources → repos → use-cases → AuthCubit/SignOutCubit bindings
+│        ├─ email_verification.dart                   # Email verification: DS/Repo/UseCase + EmailVerificationCubit wiring
+│        ├─ firebase_module.dart                      # Low-level Firebase instances & profile remote DB bindings (switch point)
+│        ├─ form_fields_module.dart                   # Reserved for form validation services (kept minimal for symmetry)
+│        ├─ navigation_module.dart                    # Creates singleton GoRouter (driven by AuthGateway) and exposes via DI
+│        ├─ overlays_module.dart                      # Wires overlay status cubit + global/context resolvers into DI
+│        ├─ password_module.dart                      # Password flows: DS/Repo + PasswordRelatedUseCases registration
+│        ├─ profile_module.dart                       # Profile: Repo/UseCase + app-scope ProfileCubit registration
+│        ├─ theme_module.dart                         # AppThemeCubit registration (used even during splash)
+│        └─ warmup_module.dart                        # WarmupController: binds Auth ↔ Profile to preheat data after sign-in
 │
 ├─ core/
 │  ├─ base_modules/navigation/
-│  │  ├─ go_router_factory.dart
+│  │  ├─ go_router_factory.dart                       # GoRouter factory (Bloc edition): observers, routes, refresh, redirect
 │  │  ├─ routes/
-│  │  │  ├─ app_routes.dart
-│  │  │  ├─ route_paths.dart
-│  │  │  └─ routes_names.dart
-│  │  └─ routes_redirection_service.dart
+│  │  │  ├─ app_routes.dart                           # Central route table (GoRoute tree) + pages -> transitions
+│  │  │  ├─ route_paths.dart                          # Canonical absolute paths ("/home", "/signin", ...)
+│  │  │  └─ routes_names.dart                         # Stable route names ("home", "signin", ...) used across the app
+│  │  └─ routes_redirection_service.dart              # Pure redirect logic (deterministic; shared idea across SMs)
 │  └─ shared_presentation/
 │     ├─ pages/
-│     │  ├─ home_page.dart
-│     │  └─ page_not_found.dart
+│     │  ├─ home_page.dart                            # Home screen: minimal shell, theme toggle, entry to profile/settings
+│     │  └─ page_not_found.dart                       # Generic 404 page with "Go to Home" action
 │     └─ utils/
 │        ├─ images_paths/
-│        │  ├─ app_icons_paths.dart
-│        │  ├─ flavor_x.dart
-│        │  └─ spider.yaml
-│        └─ warmup_controller.dart
+│        │  ├─ app_icons_paths.dart                   # Generated asset paths class for icons (Spider output target)
+│        │  ├─ flavor_x.dart                          # Flavor-based icon resolver (development/staging)
+│        │  └─ spider.yaml                            # Spider config to generate strongly-typed asset paths
+│        └─ warmup_controller.dart                    # App-scope preheater: keeps ProfileCubit in sync with Auth state
 │
-├─ features/                                          # Feature UI + Cubit logic (presentation only)
+├─ features/                                          # Presentation layer only (UI + Cubit). Domain/data live in packages/*
 │  ├─ auth/
 │  │  ├─ sign_in/
 │  │  │  ├─ cubit/
-│  │  │  │  ├─ form_fields_cubit.dart
-│  │  │  │  └─ sign_in_cubit.dart
-│  │  │  ├─ sign_in__page.dart
-│  │  │  └─ widgets_for_sign_in_page.dart
+│  │  │  │  ├─ form_fields_cubit.dart                 # Local form fields/validation; debounced updates; resets via epoch
+│  │  │  │  └─ sign_in_cubit.dart                     # Submit flow: ButtonSubmissionState (initial/loading/success/error)
+│  │  │  ├─ sign_in__page.dart                        # Screen composition: providers, side-effects, layout
+│  │  │  └─ widgets_for_sign_in_page.dart             # Stateless building blocks: header, inputs, submit, footer guard
 │  │  ├─ sign_out/
 │  │  │  ├─ sign_out_cubit/
-│  │  │  │  └─ sign_out_cubit.dart
-│  │  │  └─ sign_out_widgets.dart
+│  │  │  │  └─ sign_out_cubit.dart                    # Sign-out as AsyncValueForBLoC<void>; GoRouter handles redirect
+│  │  │  └─ sign_out_widgets.dart                     # Buttons: icon sign-out, cancel (verify-email)
 │  │  └─ sign_up/
 │  │     ├─ cubit/
-│  │     │  ├─ form_fields_cubit.dart
-│  │     │  └─ sign_up_cubit.dart
-│  │     ├─ sign_up__page.dart
-│  │     ├─ sign_up_input_fields.dart
-│  │     └─ widgets_for_sign_up_page.dart
+│  │     │  ├─ form_fields_cubit.dart                 # Name/Email/Password(+confirm) fields; visibility toggles
+│  │     │  └─ sign_up_cubit.dart                     # Submit flow to SignUpUseCase; ButtonSubmissionState
+│  │     ├─ sign_up__page.dart                        # Screen composition: providers, side-effects wrapper
+│  │     ├─ sign_up_input_fields.dart                 # Inputs split by field; focus traversal; validators
+│  │     └─ widgets_for_sign_up_page.dart             # Header, footer guard, submit button
 │  ├─ email_verification/
 │  │  ├─ email_verification_cubit/
-│  │  │  └─ email_verification_cubit.dart
-│  │  ├─ email_verification_page.dart
-│  │  └─ widgets_for_email_verification_page.dart
+│  │  │  └─ email_verification_cubit.dart             # Bootstraps send-email + polling; exposes AsyncValueForBLoC<void>
+│  │  ├─ email_verification_page.dart                 # Providers + errors listener + state → AsyncStateView facade
+│  │  └─ widgets_for_email_verification_page.dart     # Info block (instructions, email, tips)
 │  ├─ password_changing_or_reset/
 │  │  ├─ change_password/
-│  │  │  ├─ change_password_page.dart
+│  │  │  ├─ change_password_page.dart                 # Providers + side-effects wrapper; navigation on success/reauth
 │  │  │  ├─ cubit/
-│  │  │  │  ├─ change_password_cubit.dart
-│  │  │  │  └─ form_fields_cubit.dart
-│  │  │  └─ widgets_for_change_password.dart
+│  │  │  │  ├─ change_password_cubit.dart             # Submit to PasswordRelatedUseCases; requires-reauth handling
+│  │  │  │  └─ form_fields_cubit.dart                 # Local password/confirm fields; toggles; epoch-based rebuilds
+│  │  │  └─ widgets_for_change_password.dart          # Info block + inputs + submit button
 │  │  └─ reset_password/
 │  │     ├─ cubits/
-│  │     │  ├─ form_fields_cubit.dart
-│  │     │  └─ reset_password_cubit.dart
-│  │     ├─ reset_password__page.dart
-│  │     └─ widgets_for_reset_password_page.dart
+│  │     │  ├─ form_fields_cubit.dart                 # Email field for reset; validation/epoch pattern
+│  │     │  └─ reset_password_cubit.dart              # Reset flow (email submit → success/error)
+│  │     ├─ reset_password__page.dart                 # Screen composition; effects
+│  │     └─ widgets_for_reset_password_page.dart      # Stateless UI parts for Reset Password
 │  └─ profile/
 │     ├─ cubit/
-│     │  └─ profile_page_cubit.dart
-│     ├─ profile_page.dart
-│     └─ widgets_for_profile_page.dart
+│     │  └─ profile_page_cubit.dart                   # AsyncValueForBLoC<UserEntity> (prime/refresh/reset, keep-UI mode)
+│     ├─ profile_page.dart                            # Providers + AsyncStateView rendering + centralized error handling
+│     └─ widgets_for_profile_page.dart                # AppBar, profile card, theme section, change-password CTA
 │
-├─ main_development.dart
-├─ main_staging.dart
-└─ root_shell.dart
+├─ main_development.dart                              # Entrypoint for dev flavor: sets flavor, runs AppLauncher with DI + localization shell
+├─ main_staging.dart                                  # Entrypoint for staging flavor: same pipeline with different flavor
+└─ root_shell.dart                                     # Top-level providers + app shells: GlobalProviders, AppLocalizationShell, MaterialApp.router
 ```
 
-**Roles:**
-
-- **`app_bootstrap/`** — deterministic startup: env → platform checks → Firebase → local storage → **GetIt** DI → `runApp`
-- **`core/`** — app-level codebase over shared code in [core] flatter package (`packages/core`)
-- **`features/`** — feature **presentation** (UI + Cubit). Deep layers come from shared packages (`packages/features`, `packages/firebase_adapter`).
-
-> Navigation entrypoints: [`go_router_factory.dart`](lib/core/base_modules/navigation/go_router_factory.dart), routes: [`app_routes.dart`](lib/core/base_modules/navigation/routes/app_routes.dart), [`route_paths.dart`](lib/core/base_modules/navigation/routes/route_paths.dart), [`routes_names.dart`](lib/core/base_modules/navigation/routes/routes_names.dart).
-
----
+> **Tip:** All feature business logic (use-cases, repositories, gateways) lives in shared packages (`packages/features`, `packages/firebase_adapter`), while this app layer stays **presentation-only** with thin Cubit glue.
 
 ## 🔧 Built‑in Infrastructure (Demo Features)
 
@@ -272,15 +266,6 @@ These apps are a **foundation for small–mid size products** with a code style 
 - 📄 **Loggers**:
   [`AppBlocObserver`](../../packages/bloc_adapter/lib/src/base_modules/observer/bloc_observer.dart),
   [`ProviderDebugObserver`](../../packages/riverpod_adapter/lib/src/base_modules/observing/providers_debug_observer.dart)
-
-**Showcase features (built on top of the infra):**
-
-- 👤 **Auth Flow** (with Auth-track seams): Sign In, Sign Out, Sign Up, Password Management (Change/Reset)
-- 🪪 **Profile** (+ **Email Verification**) with async‑track seams.
-
-> Note: The goal is to **demonstrate the state‑symmetric style**, not a perfect pixel‑polished design.
-
----
 
 ## 🧷 DI with GetIt (short ADR‑style)
 
