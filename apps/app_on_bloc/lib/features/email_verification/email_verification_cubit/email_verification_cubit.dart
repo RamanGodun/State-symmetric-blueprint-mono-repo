@@ -35,15 +35,18 @@ final class EmailVerificationCubit extends CubitWithAsyncValue<void> {
 
   /// 🏁 One-time bootstrap
   Future<void> _bootstrap() async {
-    if (_started) return;
+    if (_started || isClosed) return;
     _started = true;
-    emit(const AsyncLoadingForBLoC());
+    //
+    emitLoading(); // ⏳
     //
     /// ✅ Sends verification email
     final sent = await _useCase.sendVerificationEmail();
-    // ❌ Emits failure state if email send fails
+    if (isClosed) return;
+    //
+    /// ❌ Emits failure state if email send fails
     sent.fold(
-      (failure) => emit(AsyncErrorForBLoC(failure)),
+      emitFailure, // ❌
       // ✅ Starts polling loop on success
       (_) => _startPolling(),
     );
@@ -60,17 +63,17 @@ final class EmailVerificationCubit extends CubitWithAsyncValue<void> {
       },
       //
       /// ✅ Emits `loading` on every tick
-      onLoadingTick: () => emit(const AsyncLoadingForBLoC()),
+      onLoadingTick: emitLoading,
       //
       /// ✅ Emits `error` on timeout
-      onTimeout: () => emit(
-        const AsyncErrorForBLoC(
-          Failure(type: EmailVerificationTimeoutFailureType()),
-        ),
+      onTimeout: () => emitFailure(
+        const Failure(type: EmailVerificationTimeoutFailureType()),
       ),
       //
       /// ✅ Emits `data(null)` once email is verified
       onVerified: () async {
+        if (isClosed) return;
+        emitData(null); // 🎉 flow complete
         await _useCase.reloadUser();
         // 🔔 Triggers router refresh (auth state sync)
         await gateway.refresh();
@@ -78,8 +81,6 @@ final class EmailVerificationCubit extends CubitWithAsyncValue<void> {
           '🔁 After reload + refresh: emailVerified=${FirebaseRefs.auth.currentUser?.emailVerified}',
         );
         //
-        /// 🎉 Final success state — `AsyncData(null)` signals flow completion
-        emit(const AsyncDataForBLoC(null));
       },
     );
   }

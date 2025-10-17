@@ -1,5 +1,4 @@
-import 'package:bloc_adapter/bloc_adapter.dart'
-    show AsyncValueForBLoC, CubitWithAsyncValue;
+import 'package:bloc_adapter/bloc_adapter.dart' show CubitWithAsyncValue;
 import 'package:core/public_api/core.dart';
 import 'package:features/features.dart' show FetchProfileUseCase;
 
@@ -25,11 +24,7 @@ final class ProfileCubit extends CubitWithAsyncValue<UserEntity> {
   /// 🚀 Internal loader with optional UI preservation.
   Future<void> _load(String uid, {required bool preserveUi}) async {
     // ⏳ Emit loading, but keep current UI if we already have data
-    // emitLoading(preserveUi: preserveUi);
-    final next = const AsyncValueForBLoC<UserEntity>.loading().copyWithPrevious(
-      state,
-    );
-    emit(next);
+    emitLoading(preserveUi: preserveUi);
     //
     final result = await _fetchProfileUsecase(uid);
     // ♻️ Either<Failure, UserEntity> → emit data/error

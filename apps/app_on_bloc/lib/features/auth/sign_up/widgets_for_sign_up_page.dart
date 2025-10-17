@@ -76,7 +76,7 @@ final class _SignUpPageFooterGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// 🧠 Computes `isEnabled` [_SignUpPageFooter]
-    return FooterGuardScopeBloc<SignUpCubit, ButtonSubmissionState>(
+    return FooterGuardScopeBloc<SignUpCubit, SubmissionFlowState>(
       isLoadingSelector: (state) => state.isLoading,
 
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)

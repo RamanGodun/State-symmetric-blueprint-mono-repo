@@ -114,7 +114,7 @@ final class _ResetPasswordPageFooterGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// 🧠 Computes `isEnabled` [_ResetPasswordPageFooter]
-    return FooterGuardScopeBloc<ResetPasswordCubit, ButtonSubmissionState>(
+    return FooterGuardScopeBloc<ResetPasswordCubit, SubmissionFlowState>(
       isLoadingSelector: (state) => state.isLoading,
 
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)

@@ -3,18 +3,20 @@ import 'package:features/features_barrels/auth/auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// 🔐 [SignUpCubit] — Handles sign-up submission & side-effects.
-/// 🧰 Uses shared [ButtonSubmissionState].
+/// 🧰 Uses shared [SubmissionFlowState].
 /// 🔁 Symmetric to Riverpod 'signUpProvider' (Initial → Loading → Success/Error).
 //
-final class SignUpCubit extends Cubit<ButtonSubmissionState> {
+final class SignUpCubit extends Cubit<SubmissionFlowState> {
   ///-----------------------------------------------------
   /// Creates a cubit bound to the domain [SignUpCubit].
-  SignUpCubit(this._signUpUseCase)
-    : super(const ButtonSubmissionInitialState());
+  SignUpCubit(this._signUpUseCase) : super(const SubmissionFlowInitialState());
   //
   final SignUpUseCase _signUpUseCase;
   // For anti double-tap protection for the submit action.
   final _submitDebouncer = Debouncer(AppDurations.ms600);
+
+  /// Checks if cubit is still alive
+  bool get _cubitAlive => !isClosed;
 
   ////
 
@@ -25,7 +27,7 @@ final class SignUpCubit extends Cubit<ButtonSubmissionState> {
     required String email,
     required String password,
   }) async {
-    if (state is ButtonSubmissionLoadingState) return;
+    if (state is ButtonSubmissionLoadingState || !_cubitAlive) return;
     //
     _submitDebouncer.run(() async {
       emit(const ButtonSubmissionLoadingState());
@@ -35,6 +37,8 @@ final class SignUpCubit extends Cubit<ButtonSubmissionState> {
         email: email,
         password: password,
       );
+      if (!_cubitAlive) return;
+
       result.fold(
         // ❌ Failure branch → emit error with Consumable<Failure>
         (failure) {
@@ -50,7 +54,10 @@ final class SignUpCubit extends Cubit<ButtonSubmissionState> {
   ////
 
   /// ♻️ Reset to initial (e.g., after dialogs/navigation)
-  void resetState() => emit(const ButtonSubmissionInitialState());
+  void resetState() {
+    if (!_cubitAlive) return;
+    emit(const SubmissionFlowInitialState());
+  }
 
   /// 🧼 Cleanup
   @override

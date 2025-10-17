@@ -4,14 +4,14 @@ import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// 🔐 [ChangePasswordCubit] — Handles password-change submission & side-effects.
-/// 🧰 Uses shared [ButtonSubmissionState].
+/// 🧰 Uses shared [SubmissionFlowState].
 /// 🔁 Symmetric to Riverpod 'changePasswordProvider' (Initial → Loading → Success/Error/RequiresReauth).
 //
-final class ChangePasswordCubit extends Cubit<ButtonSubmissionState> {
+final class ChangePasswordCubit extends Cubit<SubmissionFlowState> {
   ///-------------------------------------------------------------
   /// Creates a cubit bound to domain [PasswordRelatedUseCases] & [SignOutUseCase].
   ChangePasswordCubit(this._useCases, this._signOutUseCase)
-    : super(const ButtonSubmissionInitialState());
+    : super(const SubmissionFlowInitialState());
   //
   final PasswordRelatedUseCases _useCases;
   final SignOutUseCase _signOutUseCase;
@@ -57,7 +57,7 @@ final class ChangePasswordCubit extends Cubit<ButtonSubmissionState> {
   ////
 
   /// ♻️ Reset to initial (e.g., after dialogs/navigation)
-  void resetState() => emit(const ButtonSubmissionInitialState());
+  void resetState() => emit(const SubmissionFlowInitialState());
 
   /// 🧼 Cleans up resources on close
   @override
