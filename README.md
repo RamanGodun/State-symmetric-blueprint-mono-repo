@@ -29,7 +29,7 @@ Accepted Architecture Decision Record: **[ADR-001 — State-Symmetric Architectu
 
 State symmetry **acts as low-cost insurance (~15–35% LOC upfront, amortized to ≤5–10%) that pays off when**:
 
-- Probability of feature's reuse (in appwith another SM) ≥15–25% within planning horizon
+- Probability of feature's reuse (in app with another SM) ≥15–25% within planning horizon
 - UI/UX feature's similarity is ≥70% across target apps
 
 It is **most valuable for a niche (~5–10%)**: multi-product companies, white-label vendors, agencies with diverse client requirements, platform/SDK providers. **Solo developers and skilled indie teams** benefit even more. With automation and one-person context, the effective overhead often drops to **<3%**, while reuse opportunities are high across gigs/products — so, for them the approach is usually **net-positive by default** for most mainstream features.
@@ -38,29 +38,11 @@ See also:
 
 - **Use Case Areas** → [`info-001-use-case-areas.md`](ADR/supporting_info/info-001-use-case-areas.md)
 - **Business Value Estimates** → [`info-002-business-value-estimates.md`](ADR/supporting_info/info-002-business-value-estimates.md)
-- **Critics reply** [`info-003-crytics_reply.md`](ADR/supporting_info/info-003-critics_reply.md)
+- **Critics reply** [`info-003-critics_reply.md`](ADR/supporting_info/info-003-critics_reply.md)
 
 ## Getting Started 🚀
 
-```bash
-# Clone the repository
-git clone https://github.com/RamanGodun/State-agnostic-blueprint-mono-repo
-cd blueprint_monorepo
-
-# Install Melos (monorepo manager)
-dart pub global activate melos
-
-# Bootstrap all packages
-melos bootstrap
-```
-
-### Run with VSCode / Android Studio
-
-Use the launch configurations from [`.vscode/launch.json`].
-
-### Run with Melos (one-liners)
-
-The repo includes ready scripts to run each app/flavor:
+Щоб запустити додатки дивись відповідні секціх Readme файлів відповідних додатків. (тут мають бути посилання на ці документи)
 
 #### Riverpod app
 
@@ -71,38 +53,9 @@ melos run run:rp:dev
 melos run run:rp:stg
 ```
 
-#### BLoC/Cubit app
-
-```sh
-# Dev flavor
-melos run run:cubit:dev
-# Staging flavor
-melos run run:cubit:stg
-```
-
-### ⚙️ Firebase Configuration
-
-- Firebase configured via `.env` + `flutter_dotenv`
-- Use the provided `.env` files or create your own. In the latter case:
-
-1. ```bash
-   flutterfire configure --project=<your_project_id>
-   ```
-2. After firebase configuration put into created `.env.dev` and/or `.env.staging` files next info:
-
-```env
-FIREBASE_API_KEY=...
-FIREBASE_APP_ID=...
-FIREBASE_PROJECT_ID=...
-FIREBASE_MESSAGING_SENDER_ID=...
-FIREBASE_STORAGE_BUCKET=...
-FIREBASE_AUTH_DOMAIN=...
-FIREBASE_IOS_BUNDLE_ID=...
-```
-
 ## 🧠 Files structure
 
-The monorepo is structured into **two fully symmetrical apps (Cubit-based and Riverpod-based) and **packages/\*\*
+The monorepo is structured into **two fully symmetrical apps (BLoC/Cubit and Riverpod)** and **packages/**
 
 ```files tree
 |
@@ -142,7 +95,7 @@ The monorepo's files structure follows an universal organizational principles ap
 
 2. **`core/`** → Shared foundation organized by concern:
    - `base_modules/` - Cross-cutting infrastructure (navigation, overlays, theming, localization, forms, etc.)
-   - `shared_{domain|data|presentation}/` - Layer-specific reusable code (eg, sharede widgets/pages in presentation layer; entities/domain_extensions - in domain; DTOs/cache managers/mappers - in data)
+   - `shared_{domain|data|presentation}/` - Layer-specific reusable code (eg, shared widgets/pages in presentation layer; entities/domain_extensions - in domain; DTOs/cache managers/mappers - in data)
    - `utils/` - Generic cross-cutting helpers, that don't fit elsewhere
 
 3. **`features/`** → Feature-scoped code with clear separation:
@@ -174,7 +127,7 @@ Showcases how Cubit integrates with `core`, `features`, and `adapters` while kee
 A symmetrical demo app built with **Riverpod**, featuring the exact same functionality and UI/UX as the Cubit app.
 Proves that the architecture is truly **state-symmetric** and reusable across different state managers.
 
-The choice of Cubit and Riverpod was deliberate — it’s enough to **visualize the approach** and demonstrate interoperability the migration path:
+The choice of Cubit and Riverpod was deliberate — it’s enough to **visualize the approach**, demonstrate interoperability and the migration path:
 
 - **Cubit → BLoC**: replace method calls with event dispatching (swap Cubit for BLoC, add Events, adjust DI bindings).
 - **Cubit → Provider**: slightly more changes. Since Provider depends on `BuildContext`, use **GetIt** (as in BLoC/Cubit apps), adjust DI bindings, replace Cubit with equivalent Providers exposing symmetric methods, and **add thin adapters**.
@@ -306,7 +259,7 @@ To run all unit and widget tests use the following command:
 ```sh
 # Run all tests with coverage
 melos run test
-very_good test --coverage --test-randomize-ordering-seed random
+melos run vg:test
 ```
 
 To view the generated coverage report you can use [lcov](https://github.com/linux-test-project/lcov).

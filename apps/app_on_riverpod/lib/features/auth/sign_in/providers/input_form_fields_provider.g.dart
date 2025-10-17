@@ -6,7 +6,7 @@ part of 'input_form_fields_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signInFormHash() => r'6bd3ae066c33682e6603bee98d9b5e0685251728';
+String _$signInFormHash() => r'36a10aed1ea151785a95d6058e60d201798b919c';
 
 /// 📝 [signInFormProvider] — Handles sign-in form fields & validation.
 /// 🧰 Uses shared [SignInFormState].

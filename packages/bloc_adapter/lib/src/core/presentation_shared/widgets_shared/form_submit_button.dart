@@ -4,9 +4,9 @@ import 'package:core/public_api/shared_layers/presentation.dart'
     show
         ButtonSubmissionErrorState,
         ButtonSubmissionLoadingState,
-        ButtonSubmissionState,
         ButtonSubmissionSuccessState,
-        CustomFilledButton;
+        CustomFilledButton,
+        SubmissionFlowState;
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +27,7 @@ typedef SubmitCallback = void Function();
 final class FormSubmitButtonForBLoCApps<
   FormsCubit extends StateStreamable<FormsState>,
   FormsState,
-  SubmitCubit extends StateStreamable<ButtonSubmissionState>
+  SubmitCubit extends StateStreamable<SubmissionFlowState>
 >
     extends StatefulWidget {
   ///-------------------------------
@@ -68,7 +68,7 @@ final class FormSubmitButtonForBLoCApps<
 final class _FormSubmitButtonForBLoCAppsState<
   FormsCubit extends StateStreamable<FormsState>,
   FormsState,
-  SubmitCubit extends StateStreamable<ButtonSubmissionState>
+  SubmitCubit extends StateStreamable<SubmissionFlowState>
 >
     extends
         State<
@@ -97,7 +97,7 @@ final class _FormSubmitButtonForBLoCAppsState<
       (c) => c.state,
     );
 
-    return BlocListener<SubmitCubit, ButtonSubmissionState>(
+    return BlocListener<SubmitCubit, SubmissionFlowState>(
       listenWhen: (p, c) => p.runtimeType != c.runtimeType,
       listener: (context, state) {
         // When submission ends (Success/Error) → short lock to avoid flicker
@@ -109,7 +109,7 @@ final class _FormSubmitButtonForBLoCAppsState<
             break;
         }
       },
-      child: BlocBuilder<SubmitCubit, ButtonSubmissionState>(
+      child: BlocBuilder<SubmitCubit, SubmissionFlowState>(
         buildWhen: (p, c) => p.runtimeType != c.runtimeType,
         builder: (context, submitState) {
           final isLoading = submitState is ButtonSubmissionLoadingState;

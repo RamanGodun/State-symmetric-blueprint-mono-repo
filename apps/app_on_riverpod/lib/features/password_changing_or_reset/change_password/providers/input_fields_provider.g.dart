@@ -7,7 +7,7 @@ part of 'input_fields_provider.dart';
 // **************************************************************************
 
 String _$changePasswordFormHash() =>
-    r'58ae2a411175ab3df52bf79cfeb64175f8f804a9';
+    r'12dac7c1ba2d0694a72ce46bc2bc4fd7fa676cb6';
 
 /// 📝 [ChangePasswordForm] — Handles change-password form fields & validation.
 /// 🧰 Uses shared [ChangePasswordFormState].

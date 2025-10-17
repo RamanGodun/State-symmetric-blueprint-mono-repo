@@ -18,6 +18,20 @@ abstract interface class AsyncStateView<T> {
     required R Function(Failure failure) error,
   });
 
+  /// 🔁 Non-exhaustive match with fallback
+  R maybeWhen<R>({
+    required R Function() orElse,
+    R Function()? loading,
+    R Function(T data)? data,
+    R Function(Failure failure)? error,
+  }) {
+    return when(
+      loading: loading ?? orElse,
+      data: data ?? (_) => orElse(),
+      error: error ?? (_) => orElse(),
+    );
+  }
+
   /// 🧭 True when underlying state is in loading phase.
   bool get isLoading;
 

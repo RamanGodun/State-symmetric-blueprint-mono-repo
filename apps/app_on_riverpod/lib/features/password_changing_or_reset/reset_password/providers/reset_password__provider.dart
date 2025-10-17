@@ -7,7 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'reset_password__provider.g.dart';
 
 /// 🔐 [resetPasswordProvider] — Handles reset-password submission & side-effects.
-/// 🧰 Uses shared [ButtonSubmissionState].
+/// 🧰 Uses shared [SubmissionFlowState].
 /// 🔁 Symmetric to BLoC 'ResetPasswordCubit' (Initial → Loading → Success/Error).
 //
 @riverpod
@@ -18,12 +18,12 @@ final class ResetPassword extends _$ResetPassword {
   final _submitDebouncer = Debouncer(AppDurations.ms600);
 
   @override
-  ButtonSubmissionState build() {
+  SubmissionFlowState build() {
     ref.onDispose(
       _submitDebouncer.cancel,
     ); // 🧼 Cleanup memory leaks on dispose
     /// 🧱 Initial state (idle)
-    return const ButtonSubmissionInitialState();
+    return const SubmissionFlowInitialState();
   }
 
   ////
@@ -54,7 +54,7 @@ final class ResetPassword extends _$ResetPassword {
   ////
 
   /// ♻️ Returns to initial state (eg, after dialog/redirect)
-  void reset() => state = const ButtonSubmissionInitialState();
+  void reset() => state = const SubmissionFlowInitialState();
 
   //
 }

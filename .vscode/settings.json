@@ -96,13 +96,5 @@
   // -------- Spell checker dictionary --------
 
   "cSpell.language": "en,uk,pl",
-  "cSpell.words": [
-    "amoled",
-    "flutterfire",
-    "formz",
-    "rxdart",
-    "Streamable",
-    "Supabase",
-    "xxxm"
-  ]
+  "cSpell.words": ["flutterfire", "formz", "rxdart", "Streamable", "Supabase"]
 }

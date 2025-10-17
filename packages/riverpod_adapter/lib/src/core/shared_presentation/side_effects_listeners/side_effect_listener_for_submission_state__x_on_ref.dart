@@ -11,11 +11,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 extension SubmissionEffectsRefX on WidgetRef {
   /// 🎧 Universal side-effects listener for submit flows with optional retry
   void listenSubmissionSideEffects(
-    ProviderListenable<ButtonSubmissionState> provider,
+    ProviderListenable<SubmissionFlowState> provider,
     BuildContext context, {
 
     /// Custom predicate (default: fires on runtimeType changes)
-    bool Function(ButtonSubmissionState prev, ButtonSubmissionState next)?
+    bool Function(SubmissionFlowState prev, SubmissionFlowState next)?
     listenWhen,
 
     /// ✅ Success handler
@@ -59,7 +59,7 @@ extension SubmissionEffectsRefX on WidgetRef {
     )?
     onErrorWithRetry,
   }) {
-    listen<ButtonSubmissionState>(
+    listen<SubmissionFlowState>(
       provider,
       (prev, curr) {
         // Default behavior: react when runtimeType changes (like BLoC listener)

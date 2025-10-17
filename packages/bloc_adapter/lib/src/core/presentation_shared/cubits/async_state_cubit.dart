@@ -2,36 +2,66 @@ import 'package:bloc_adapter/src/core/presentation_shared/async_state/async_valu
 import 'package:core/public_api/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 🧩 [CubitWithAsyncValue] — base Cubit for [AsyncValueForBLoC] state
-/// ✅ Unified loader + Either helper
-/// ✅ Ready for distinct-emits (pair with Equatable AsyncState)
-///
+/// 🧩 [CubitWithAsyncValue] — base Cubit for [AsyncValueForBLoC]
+/// ✅ One-liners for loading/data/error/Either
+//
 abstract class CubitWithAsyncValue<T> extends Cubit<AsyncValueForBLoC<T>> {
-  ///--------------------------------------------------------
-  CubitWithAsyncValue() : super(const AsyncValueForBLoC.loading());
+  ///-------------------------------------------------------------------
+  CubitWithAsyncValue() : super(AsyncValueForBLoC.loading());
 
-  /// 🗺️ Centralized mapping (errors_management): Exception/Error → Failure
+  /// Centralized mapping (Exception/Error → Failure)
   Failure mapError(Object e, StackTrace st) => e.mapToFailure(st);
 
-  /// 🔁 Universal loader: loading → task → data/error
-  /// 💡 Override if you need side-effects around load boundaries
-  Future<void> loadTask(Future<T> Function() task) async {
-    emit(const AsyncValueForBLoC.loading());
+  bool get _alive => !isClosed;
+
+  /// ⏳ Emit loading; preserves previous UI when [preserveUi]=true
+  void emitLoading({bool preserveUi = false}) {
+    if (!_alive) return;
+    emit(
+      preserveUi
+          ? AsyncValueForBLoC<T>.loading().copyWithPrevious(state)
+          : AsyncValueForBLoC<T>.loading(),
+    );
+  }
+
+  /// ✅ Emit data
+  void emitData(T value) {
+    if (!_alive) return;
+    emit(AsyncValueForBLoC<T>.data(value));
+  }
+
+  /// ❌ Emit error
+  void emitFailure(Failure f) {
+    if (!_alive) return;
+    emit(AsyncValueForBLoC<T>.error(f));
+  }
+
+  /// ♻️ `Either<Failure, T>` → state
+  void emitFromEither(Either<Failure, T> result) {
+    if (!_alive) return;
+    result.fold(emitFailure, emitData);
+  }
+
+  /// 🔁 loading → task → data/error (task throws on failure)
+  Future<void> loadTask(
+    Future<T> Function() task, {
+    bool preserveUi = false,
+  }) async {
+    emitLoading(preserveUi: preserveUi);
     try {
       final v = await task();
-      emit(AsyncValueForBLoC<T>.data(v));
+      if (!_alive) return;
+      emitData(v);
     } on Object catch (e, st) {
-      // 🛡️ IMPORTANT: 'on Object catch (...)' to capture everything
-      emit(AsyncValueForBLoC<T>.error(mapError(e, st)));
+      if (!_alive) return;
+      emitFailure(mapError(e, st));
     }
   }
 
-  /// ♻️ Helper for [Either<Failure, T>] sources
-  void emitFromEither(Either<Failure, T> result) {
-    result.fold(
-      (f) => emit(AsyncValueForBLoC<T>.error(f)),
-      (v) => emit(AsyncValueForBLoC<T>.data(v)),
-    );
+  /// ♻️ Hard reset to pure `loading` (e.g. on logout).
+  void resetToLoading() {
+    if (!_alive) return;
+    emit(AsyncValueForBLoC<T>.loading());
   }
 
   //

@@ -4,11 +4,11 @@
 import 'package:core/public_api/base_modules/errors_management.dart';
 import 'package:equatable/equatable.dart';
 
-/// 🧾 [ButtonSubmissionState] — general state for simple forms with submission.
+/// 🧾 [SubmissionFlowState] — general state for simple forms with submission.
 //
-sealed class ButtonSubmissionState extends Equatable {
+sealed class SubmissionFlowState extends Equatable {
   ///----------------------------------------------
-  const ButtonSubmissionState();
+  const SubmissionFlowState();
   //
   @override
   List<Object?> get props => const [];
@@ -19,16 +19,16 @@ sealed class ButtonSubmissionState extends Equatable {
 
 /// ⏳ Idle
 //
-final class ButtonSubmissionInitialState extends ButtonSubmissionState {
+final class SubmissionFlowInitialState extends SubmissionFlowState {
   ///-----------------------------------------------------------
-  const ButtonSubmissionInitialState();
+  const SubmissionFlowInitialState();
 }
 
 ////
 
 /// 🕓 In progress
 //
-final class ButtonSubmissionLoadingState extends ButtonSubmissionState {
+final class ButtonSubmissionLoadingState extends SubmissionFlowState {
   ///------------------------------------------------------------
   const ButtonSubmissionLoadingState();
 }
@@ -37,7 +37,7 @@ final class ButtonSubmissionLoadingState extends ButtonSubmissionState {
 
 /// ✅ Done
 //
-final class ButtonSubmissionSuccessState extends ButtonSubmissionState {
+final class ButtonSubmissionSuccessState extends SubmissionFlowState {
   ///------------------------------------------------------------
   const ButtonSubmissionSuccessState();
 }
@@ -46,7 +46,7 @@ final class ButtonSubmissionSuccessState extends ButtonSubmissionState {
 
 /// ❌ Failed
 //
-final class ButtonSubmissionErrorState extends ButtonSubmissionState {
+final class ButtonSubmissionErrorState extends SubmissionFlowState {
   ///----------------------------------------------------------
   const ButtonSubmissionErrorState(this.failure);
   final Consumable<Failure>? failure;
@@ -59,7 +59,7 @@ final class ButtonSubmissionErrorState extends ButtonSubmissionState {
 /// 🔐 [ButtonSubmissionRequiresReauthState] - User must reauthenticate before
 ///    (currently this branch emits only in change-password feature)
 //
-final class ButtonSubmissionRequiresReauthState extends ButtonSubmissionState {
+final class ButtonSubmissionRequiresReauthState extends SubmissionFlowState {
   ///------------------------------------------------------------------
   const ButtonSubmissionRequiresReauthState(this.failure);
   final Consumable<Failure>? failure;
@@ -72,7 +72,7 @@ final class ButtonSubmissionRequiresReauthState extends ButtonSubmissionState {
 
 /// 🧰 [ButtonSubmissionStateX] - Convenience flags
 //
-extension ButtonSubmissionStateX on ButtonSubmissionState {
+extension ButtonSubmissionStateX on SubmissionFlowState {
   ///---------------------------------------------------
   bool get isLoading => this is ButtonSubmissionLoadingState;
   bool get isSuccess => this is ButtonSubmissionSuccessState;

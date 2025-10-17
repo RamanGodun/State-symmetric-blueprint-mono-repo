@@ -62,7 +62,11 @@ For full platform symmetry and maximum portability across apps we adopt a **dual
 ### 🧪 Success Criteria
 
 - [ ] Easy dependency injection
-- [ ] Graet documentation to used packages
+- [ ] Great documentation to used packages
+- [ ] DI setup time <5 min per feature
+- [ ] Zero circular deps in CI
+- [ ] 100% DI module test coverage
+- [ ] Hot reload works without manual reset
 
 ---
 
@@ -98,3 +102,9 @@ For full platform symmetry and maximum portability across apps we adopt a **dual
 ## 7. 📌 Summary
 
 Chose approach is non-alternative due to the accepted criteria
+
+6. Add Migration guide
+
+⚠️ Trade-off: GetIt requires manual registration and lacks
+compile-time safety, but is necessary for Bloc apps to achieve
+context-free DI symmetry with Riverpod.

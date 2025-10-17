@@ -37,13 +37,29 @@ Expected ROI ≈ R · I · F − OMI · F
   OMI = overhead + maintenance + initial training
 ```
 
+### "METHODOLOGY NOTES"
+
+1. All results below are **CONSERVATIVE**: the baseline _Clean Architecture_ also needs presentation side-effects, but those LOC are **not** counted due to team/style variance. We only count adapters/facades + shared code.
+
+2. **Why two tracks (by seam type, not just by functional module):**
+
+- **Auth-like track** — uses **shared submission state model** _and_ **shared form state**.
+  _Examples:_ in **SignIn** we reuse a `SubmissionState` for the request lifecycle and a `SignInFormState` for field validation.
+  The state manager **only orchestrates states**; **logic lives in use-cases**; **StatelessWidgets** stay dumb; thin **adapters** wrap stateless UI.
+  ➜ Minimal abstraction overhead → higher ROI on the first feature.
+
+- **Profile-like (Async-like) track (AsyncTrack)** — also relies on a **shared state model**, but here it is an **async facade**: **`AsyncStateView<T>`**, which unifies Riverpod’s `AsyncValue<T>` та BLoC’s `AsyncValueForBLoC<T>`.
+  This adds one more seam (view-facade + error mapping + listeners), → **higher initial overhead**, but it provides **identical state-agnostic UI**, modern declarative syntax with Dart 3+, and amortizes after 2–3 async features (Profile, Email Verification, etc …).
+
+_Consequently, although **Email Verification** is functionally part of Auth, it uses the **async seam** and therefore is grouped with **Profile, not Async-like track**. This makes ROI comparable per seam type and explains the two bundles reported in Section 2._
+
 ---
 
 ## 2) ROI Snapshots for showcase Features
 
-Assessments are based on the [`loc_report.sh`](../scripts/loc_report.sh) script.
+Assessments are based on the [`loc_report.sh`](../../scripts/loc_report.sh) script. Results are in [`loc_report_resukts.md`](info-004-results-of-loc-report.md)
 
-### A) Auth (Sign-In/Up, Password actions sub-features)
+### A) Auth-like track (Sign-In/Up, Password actions sub-features)
 
 - **Core shared:** 400 LOC (~28–29%)
 - **Presentation per SM:** 684–715 LOC (~50%)
@@ -58,7 +74,7 @@ Assessments are based on the [`loc_report.sh`](../scripts/loc_report.sh) script.
 
 ---
 
-### B) Profile (+ Email Verification sub-feature)
+### B) Profile or AsyncValue-like track (+ Email Verification sub-feature)
 
 - **Core shared:** 185 LOC (~27%)
 - **Presentation per SM:** 262–266 LOC (~39%)
@@ -76,10 +92,10 @@ Assessments are based on the [`loc_report.sh`](../scripts/loc_report.sh) script.
 
 ### Quick reference
 
-| Feature type | Shared code\*   | Adapter cost | Savings (2nd SM migration) |
-| ------------ | --------------- | ------------ | -------------------------- |
-| **Auth**     | ~80% (28 + 52%) | 20%          | 58–59%                     |
-| **Profile**  | ~65% (27 + 39%) | ~34–35%      | 9–11%                      |
+| Feature type     | Shared code\*   | Adapter cost | Savings (2nd SM migration) |
+| ---------------- | --------------- | ------------ | -------------------------- |
+| **Auth**-like    | ~80% (28 + 52%) | 20%          | 58–59%                     |
+| **Profile**-like | ~65% (27 + 39%) | ~34–35%      | 9–11%                      |
 
 \*Shared code includes the presentation layer (52% for Auth and 39% for Profile), which has **Visible UI 95–100% parity** (see accepted model).
 
@@ -106,8 +122,8 @@ All numbers below come directly from the `loc_report.sh` analysis of the showcas
 
 ### A) Baseline — Clean Architecture (single SM)
 
-- **Auth / submission flows**: porting cost to a new SM ≈ **0.40·F** (40% of the feature).
-- **Profile / async features**: porting cost to a new SM ≈ **0.40·F** as well (domain/data reused, but presentation glue must be rebuilt).
+- **Auth-like flows**: porting cost to a new SM ≈ **0.40·F** (40% of the feature).
+- **Profile / async-like features**: porting cost to a new SM ≈ **0.40·F** as well (domain/data reused, but presentation glue must be rebuilt).
 
 ### B) Baseline — Spaghetti Code
 
@@ -120,8 +136,8 @@ All numbers below come directly from the `loc_report.sh` analysis of the showcas
 - **Observed adapter overhead (Auth, Profile)**: **~20–35% LOC** for the first features.
 - **Amortized overhead**: drops to **≤5–10%** after 2–3 features, since adapters are reused.
 - **Cost to add 2nd SM:**
-  - **Auth / submission flows:** **0.06·F** (≈ 291 LOC vs 715 LOC baseline).
-  - **Profile / async flows:** **0.07·F** (≈ 237 LOC vs 262 LOC baseline).
+  - **Auth-like flows:** **0.06·F** (≈ 291 LOC vs 715 LOC baseline).
+  - **Profile / async-like flows:** **0.07·F** (≈ 237 LOC vs 262 LOC baseline).
 
 ---
 
@@ -202,6 +218,13 @@ Probabiity of feature reuse in another state-manager:
 - **Profile / async flows:** ROI is **weak for a single feature** (only **~9–11%** savings versus **~34–35%** adapter cost). ROI turns **positive once adapters are reused across ≥2 async features** (e.g., Feed, Dashboard), and compounds to **≥60%** with **3+** features.
 
 - **Baselines:** All estimates assume a **Clean Architecture** (single SM) baseline. Under a **spaghetti** baseline (state/logic/UI entangled), symmetry **does not help** until the system is **refactored to clean boundaries**.
+  Note: all estimates are conservative. because a baseline Clean Architecture also requires presentation-layer side effects, but we’ve excluded them from the baseline due to team/style variability.
+
+### ⚠️ Risks & Limitations
+
+- **Delayed payoff for Profile-like track**: symmetry pays off only after 2–3 async features; for a single feature, ROI can be negative.
+- **No benefit on legacy spaghetti code**: until code is refactored to Clean Architecture boundaries, symmetry cannot be applied.
+- **Discipline required**: minimal OMI (overhead + maintenance + onboarding) is needed; teams must consistently follow the Symmetry Contract to avoid drift.
 
 ### **Bottom line:**
 

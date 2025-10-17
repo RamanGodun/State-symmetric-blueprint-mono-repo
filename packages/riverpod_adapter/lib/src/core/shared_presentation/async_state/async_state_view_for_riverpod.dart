@@ -1,65 +1,80 @@
 import 'package:core/public_api/core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// 🔌 [AsyncStateViewForRiverpod] — AsyncLike facade for Riverpod's AsyncValue
-/// ✅ Unifies UI branch rendering with BLoC's ['AsyncValueForBLoC']
-//
+/// 🔌 [AsyncStateViewForRiverpod] — facade over Riverpod `AsyncValue<T>`
+/// ✅ Single UI API: loading/data/error via [AsyncStateView]
+/// ✅ Configurable option to "preserve data during reload"
+///
 final class AsyncStateViewForRiverpod<T> implements AsyncStateView<T> {
-  ///----------------------------------------------
-  AsyncStateViewForRiverpod(this._value, this._map);
+  ///---------------------------------------------------------------
+  const AsyncStateViewForRiverpod(
+    this._value, {
+    this.preserveDataOnReload = true,
+  });
 
-  /// 🌊 Source value
+  /// 🌊 Source state (native Riverpod AsyncValue)
   final AsyncValue<T> _value;
 
-  /// 🗺️ Error mapper (Exception/Error → Failure)
-  final Failure Function(Object, StackTrace) _map;
+  /// 🔧 If true and reload happens while previous value exists —
+  /// call `data(...)` instead of `loading()`
+  final bool preserveDataOnReload;
 
-  /// 🔁 Pattern-match style rendering: loading/data/error.
+  /// 🔁 Exhaustive render: loading/data/error
   @override
   R when<R>({
     required R Function() loading,
     required R Function(T data) data,
     required R Function(Failure failure) error,
   }) {
-    if (_value.isLoading && _value.hasValue) {
+    // ✅ Preserve previous content during refresh (if enabled)
+    if (preserveDataOnReload && _value.isLoading && _value.hasValue) {
       return data(_value.value as T);
     }
+
+    // 🔁 Native Riverpod expansion with error → Failure mapping
     return _value.when(
       loading: loading,
       data: data,
-      error: (e, st) => error(_map(e, st)),
+      error: (e, st) => error(e is Failure ? e : e.mapToFailure(st)),
     );
   }
 
-  /// 🧭 True when underlying state is in loading phase.
+  /// 🔁 Non-exhaustive match with fallback.
+  /// Partial match: skipped branches → [orElse]
+  @override
+  R maybeWhen<R>({
+    required R Function() orElse,
+    R Function()? loading,
+    R Function(T data)? data,
+    R Function(Failure failure)? error,
+  }) {
+    return when(
+      loading: loading ?? orElse,
+      data: data ?? (_) => orElse(),
+      error: error ?? (_) => orElse(),
+    );
+  }
+
+  /// 🧭 State flags
   @override
   bool get isLoading => _value.isLoading;
-
-  /// 🧭 True when underlying state carries a value.
   @override
   bool get hasValue => _value.hasValue;
-
-  /// 🧭 True when underlying state represents an error.
   @override
   bool get hasError => _value.hasError;
 
-  /// 📦 Returns current value or `null` if none.
+  /// 📦 Current data / failure (if available)
   @override
   T? get valueOrNull => _value.valueOrNull;
 
-  /// 📦 Returns current [Failure] or `null` if none.
+  /// 📦 Domain [Failure] if error, else `null` (safe accessor).
   @override
   Failure? get failureOrNull {
-    // 🧯 Backward-compat path for erased AsyncError (generic/erased)
-    if (_value is AsyncError<T>) {
-      final err = _value;
-      return _map(err.error, err.stackTrace);
-    }
-    if (_value is AsyncError) {
-      final err = _value as AsyncError;
-      return _map(err.error, err.stackTrace);
-    }
-    return null;
+    final v = _value;
+    if (v is! AsyncError) return null;
+    final err = v.error;
+    if (err is Failure) return err;
+    return (err ?? 'Unknown error').mapToFailure(v.stackTrace);
   }
 
   //
@@ -68,17 +83,14 @@ final class AsyncStateViewForRiverpod<T> implements AsyncStateView<T> {
 ////
 ////
 
-/// ✨ Sugar: `asyncValue.asAsyncLike()` in widgets
-//
-extension AsAsyncLike<T> on AsyncValue<T> {
-  ///-----------------------------------
-  //
-  /// 🔁 Convert to AsyncLike facade
+/// ✨ Sugar: ergonomic conversion in widgets
+extension AsyncStateAsViewRiverpodX<T> on AsyncValue<T> {
+  ///
   AsyncStateView<T> asRiverpodAsyncStateView({
-    Failure Function(Object, StackTrace)? map,
-  }) => AsyncStateViewForRiverpod<T>(this, map ?? _defaultMap);
+    bool preserveDataOnReload = true,
+  }) => AsyncStateViewForRiverpod<T>(
+    this,
+    preserveDataOnReload: preserveDataOnReload,
+  );
   //
 }
-
-/// 🛡️ Default mapper: Exception/Error → Failure (centralized).
-Failure _defaultMap(Object e, StackTrace st) => e.mapToFailure(st);

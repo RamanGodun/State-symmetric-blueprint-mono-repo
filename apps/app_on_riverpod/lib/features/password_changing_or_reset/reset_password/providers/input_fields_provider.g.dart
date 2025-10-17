@@ -6,7 +6,7 @@ part of 'input_fields_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$resetPasswordFormHash() => r'fd2e14da80d8e923efb2a75cf4ec39c7a80599a3';
+String _$resetPasswordFormHash() => r'4761a76b57265b3572cd0cffae4c8a8829f0dbcf';
 
 /// 📝 [ResetPasswordForm] — Handles reset-password form field & validation.
 /// 🧰 Uses shared [ResetPasswordFormState].

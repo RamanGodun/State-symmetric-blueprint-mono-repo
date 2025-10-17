@@ -7,9 +7,12 @@ part of 'email_verification_provider.dart';
 // **************************************************************************
 
 String _$emailVerificationNotifierHash() =>
-    r'bc7b7a4abc347e7083719745796e4a01e32bfce3';
+    r'19666d099de5a7337066cf86241ac3ed5e0976c6';
 
-/// See also [EmailVerificationNotifier].
+/// 📧 [EmailVerificationNotifier] - Orchestrates the email-verification flow on Notifier
+/// Exposes `AsyncValue<void>` for a state-agnostic UI API
+///
+/// Copied from [EmailVerificationNotifier].
 @ProviderFor(EmailVerificationNotifier)
 final emailVerificationNotifierProvider =
     AutoDisposeAsyncNotifierProvider<EmailVerificationNotifier, void>.internal(

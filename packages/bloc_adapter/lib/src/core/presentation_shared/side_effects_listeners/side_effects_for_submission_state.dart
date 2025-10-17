@@ -13,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 ///    - If `onRequiresReauth` is not provided → also shows `context.showError(...)`
 //
 final class SubmissionStateSideEffects<
-  C extends StateStreamable<ButtonSubmissionState>
+  C extends StateStreamable<SubmissionFlowState>
 >
     extends StatelessWidget {
   ///----------------------------
@@ -34,7 +34,7 @@ final class SubmissionStateSideEffects<
   final Widget child;
 
   /// Custom predicate (default: fires on runtimeType changes)
-  final bool Function(ButtonSubmissionState prev, ButtonSubmissionState curr)?
+  final bool Function(SubmissionFlowState prev, SubmissionFlowState curr)?
   listenWhen;
 
   /// ✅ Success handler
@@ -81,7 +81,7 @@ final class SubmissionStateSideEffects<
   @override
   Widget build(BuildContext context) {
     //
-    return BlocListener<C, ButtonSubmissionState>(
+    return BlocListener<C, SubmissionFlowState>(
       listenWhen: listenWhen ?? (p, c) => p.runtimeType != c.runtimeType,
       listener: (context, state) {
         //

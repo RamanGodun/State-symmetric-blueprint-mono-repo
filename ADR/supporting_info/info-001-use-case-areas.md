@@ -11,7 +11,7 @@ This **State-symmetric approach** is like a **not expensive (15–35% LOC upfron
 
 ## 🎯 Potential Niche Target for Teams/Projects
 
-> This approach is **business‑valuable for a niche** (<5–10% of market), when reuse of feature's codebase across the apps/stacks is likely. Below are the profiles where it shines (and where it doesn’t).
+> This approach is **business‑valuable for a niche** (<5% of market), when reuse of feature's codebase across the apps/stacks is likely. Below are the profiles where it shines (and where it doesn’t).
 
 ### 🎯 Agencies (Outsourcing Companies)
 

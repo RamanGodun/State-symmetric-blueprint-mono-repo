@@ -115,12 +115,6 @@ scripts:
   run:cubit:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
     "flutter run --flavor staging -t lib/main_staging.dart"
 
-  # ---------- Run App on BLoC (explicit entrypoint paths) ----------
-  run:cubit:main:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
-    "flutter run -t apps/app_on_bloc/lib/main_development.dart"
-  run:cubit:main:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
-    "flutter run -t apps/app_on_bloc/lib/main_staging.dart"
-
   #
   # ---------- Build App on BLoC (Android) ----------
   build:cubit:apk:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \

@@ -13,7 +13,6 @@ export 'src/core/base_modules/theme_module/theme_provider.dart';
 export 'src/core/base_modules/theme_module/theme_toggle_widgets/theme_picker.dart';
 export 'src/core/base_modules/theme_module/theme_toggle_widgets/theme_toggler.dart';
 export 'src/core/shared_presentation/async_state/async_state_view_for_riverpod.dart';
-export 'src/core/shared_presentation/async_state/async_value_match_x.dart';
 export 'src/core/shared_presentation/async_state/deprecated/async_error_listener.dart';
 export 'src/core/shared_presentation/async_state/safe_async_state.dart';
 export 'src/core/shared_presentation/shared_widgets/form_submit_button.dart';
