@@ -1,19 +1,16 @@
 import 'package:bloc_adapter/bloc_adapter.dart'
-    show AsyncDataForBLoC, AsyncValueForBLoC;
+    show AsyncValueForBLoC, CubitWithAsyncValue;
 import 'package:core/public_api/core.dart';
 import 'package:features/features.dart' show FetchProfileUseCase;
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// 👤 [ProfileCubit] — keeps the authenticated user's profile.
 /// ✅ Mirrors the Riverpod profile provider API (prime / refresh / reset).
 /// 🎯 UX: preserves existing UI on background updates (no full-screen loader).
 //
-final class ProfileCubit extends Cubit<AsyncValueForBLoC<UserEntity>> {
+final class ProfileCubit extends CubitWithAsyncValue<UserEntity> {
   ///-------------------------------------------------------
   /// Creates a cubit bound to domain [FetchProfileUseCase]
-  ProfileCubit(this._fetchProfileUsecase)
-    : super(const AsyncValueForBLoC<UserEntity>.loading());
-  //
+  ProfileCubit(this._fetchProfileUsecase) : super();
   final FetchProfileUseCase _fetchProfileUsecase;
 
   ////
@@ -27,18 +24,19 @@ final class ProfileCubit extends Cubit<AsyncValueForBLoC<UserEntity>> {
 
   /// 🚀 Internal loader with optional UI preservation.
   Future<void> _load(String uid, {required bool preserveUi}) async {
-    // 🔑 Preserve UI? → don’t emit loading if data is already present.
-    final keepUi = preserveUi && state is AsyncDataForBLoC<UserEntity>;
-    if (!keepUi) emit(const AsyncValueForBLoC<UserEntity>.loading());
+    // ⏳ Emit loading, but keep current UI if we already have data
+    // emitLoading(preserveUi: preserveUi);
+    final next = const AsyncValueForBLoC<UserEntity>.loading().copyWithPrevious(
+      state,
+    );
+    emit(next);
     //
     final result = await _fetchProfileUsecase(uid);
-    result.fold(
-      (failure) => emit(AsyncValueForBLoC<UserEntity>.error(failure)),
-      (userData) => emit(AsyncValueForBLoC<UserEntity>.data(userData)),
-    );
+    // ♻️ Either<Failure, UserEntity> → emit data/error
+    emitFromEither(result);
   }
 
-  /// ♻️ Reset state (e.g., on logout).
-  void resetState() => emit(const AsyncValueForBLoC<UserEntity>.loading());
+  /// ♻️ Hard reset back to pure `loading` (e.g. on logout).
+  void resetState() => resetToLoading();
   //
 }
