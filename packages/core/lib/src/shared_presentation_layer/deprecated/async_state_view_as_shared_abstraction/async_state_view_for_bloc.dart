@@ -1,3 +1,6 @@
+/*
+
+
 import 'package:bloc_adapter/src/core/presentation_shared/async_state/async_value_for_bloc.dart';
 import 'package:core/public_api/core.dart';
 
@@ -89,3 +92,11 @@ extension AsyncStateAsViewBlocX<T> on AsyncValueForBLoC<T> {
   );
   //
 }
+
+
+/// !! Usage example:
+    /// 🔌 Adapter: `AsyncState<UserEntity>` → `AsyncStateView<UserEntity>` (for state-agnostic UI)
+    // final profileViewState = asyncState.asCubitAsyncStateView();
+
+
+ */

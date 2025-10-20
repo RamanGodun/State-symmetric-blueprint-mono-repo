@@ -2,26 +2,29 @@ import 'package:bloc_adapter/src/core/presentation_shared/async_state/async_valu
 import 'package:core/public_api/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 🧩 [CubitWithAsyncValue] — base Cubit for [AsyncValueForBLoC]
-/// ✅ One-liners for loading/data/error/Either
+/// [CubitWithAsyncValue<T>] — base cubit for features that expose [AsyncValueForBLoC<T>].
+/// - One-liners for loading/data/error/Either
+/// - Error handling is Failure-only (no stack traces here)
+/// - Consistent UX: optional "preserve UI on refresh" semantics via copyWithPrevious()
 //
 abstract class CubitWithAsyncValue<T> extends Cubit<AsyncValueForBLoC<T>> {
   ///-------------------------------------------------------------------
   CubitWithAsyncValue() : super(AsyncValueForBLoC.loading());
 
-  /// Centralized mapping (Exception/Error → Failure)
-  Failure mapError(Object e, StackTrace st) => e.mapToFailure(st);
+  /// Maps any thrown object to a domain Failure.
+  /// Override if a feature needs custom mapping.
+  Failure mapError(Object error, StackTrace stackTrace) =>
+      error.mapToFailure(stackTrace);
 
+  /// Convenience flag to avoid emitting after close.
   bool get _alive => !isClosed;
 
-  /// ⏳ Emit loading; preserves previous UI when [preserveUi]=true
+  /// ⏳ Emit `loading()`. If [preserveUi]=true and previous state has data/error,
+  /// the loading state will carry that previous value for better UX.
   void emitLoading({bool preserveUi = false}) {
     if (!_alive) return;
-    emit(
-      preserveUi
-          ? AsyncValueForBLoC<T>.loading().copyWithPrevious(state)
-          : AsyncValueForBLoC<T>.loading(),
-    );
+    final next = AsyncValueForBLoC<T>.loading();
+    emit(preserveUi ? next.copyWithPrevious(state) : next);
   }
 
   /// ✅ Emit data
@@ -31,9 +34,9 @@ abstract class CubitWithAsyncValue<T> extends Cubit<AsyncValueForBLoC<T>> {
   }
 
   /// ❌ Emit error
-  void emitFailure(Failure f) {
+  void emitFailure(Failure failure) {
     if (!_alive) return;
-    emit(AsyncValueForBLoC<T>.error(f));
+    emit(AsyncValueForBLoC<T>.error(failure));
   }
 
   /// ♻️ `Either<Failure, T>` → state
@@ -42,8 +45,11 @@ abstract class CubitWithAsyncValue<T> extends Cubit<AsyncValueForBLoC<T>> {
     result.fold(emitFailure, emitData);
   }
 
-  /// 🔁 loading → task → data/error (task throws on failure)
-  Future<void> loadTask(
+  /// 🛡️ Run [task] with unified Loading/Data/Error emissions.
+  ///   - Emits `loading()` (optionally preserving previous UI).
+  ///   - On success -> `data(value)`.
+  ///   - On error   -> map to `Failure` and emit `error(failure)`.
+  Future<void> emitGuarded(
     Future<T> Function() task, {
     bool preserveUi = false,
   }) async {
@@ -58,7 +64,7 @@ abstract class CubitWithAsyncValue<T> extends Cubit<AsyncValueForBLoC<T>> {
     }
   }
 
-  /// ♻️ Hard reset to pure `loading` (e.g. on logout).
+  /// ♻️ Hard reset to a pure `loading()` (useful in tests or after sign-out).
   void resetToLoading() {
     if (!_alive) return;
     emit(AsyncValueForBLoC<T>.loading());

@@ -1,3 +1,6 @@
+/*
+
+
 import 'package:core/public_api/core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -94,3 +97,12 @@ extension AsyncStateAsViewRiverpodX<T> on AsyncValue<T> {
   );
   //
 }
+
+
+/// !! Usage example:
+    /// 🔌 Adapter: `AsyncValue<UserEntity>` → `AsyncStateView<UserEntity>` (for state-agnostic UI)
+    // final profileViewState = asyncUser.asRiverpodAsyncStateView();
+
+
+
+ */

@@ -47,15 +47,20 @@ final class ErrorsListenerForAppOnCubit extends StatelessWidget {
                       prev is! AsyncErrorForBLoC && curr is AsyncErrorForBLoC,
                   listener: (ctx, state) {
                     final failure = (state as AsyncErrorForBLoC).failure;
-                    if (onError != null) {
-                      onError!(ctx, failure);
-                    } else {
-                      ctx.showError(failure.toUIEntity());
+                    void show() {
+                      if (onError != null)
+                        onError!(ctx, failure);
+                      else
+                        ctx.showError(failure.toUIEntity());
                     }
+
+                    /// Delay showing to the frame's end (for safety)
+                    WidgetsBinding.instance.addPostFrameCallback((_) => show());
                   },
                 ),
           )
           .toList(),
+
       child: child,
     );
   }

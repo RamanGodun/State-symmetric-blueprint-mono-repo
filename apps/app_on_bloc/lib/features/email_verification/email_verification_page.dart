@@ -38,7 +38,7 @@ final class VerifyEmailPage extends StatelessWidget {
 ////
 
 /// 🧼 [_VerifyEmailView] - Provides reactive auth-driven state for state-agnostic UI
-/// ✅ State-agnostic UI via [_VerifyEmailScreen] + [AsyncStateView]
+/// ✅ State-symmetric UI via [_VerifyEmailScreen] + [AsyncValueForBLoC]
 /// ✅ `AsyncState<T>` adapted to `AsyncStateView<T>`
 /// ✅  Top-level error listeners (SignOut + EmailVerification) are centralized
 /// ✅ Automatically redirects when email gets verified
@@ -54,9 +54,6 @@ final class _VerifyEmailView extends StatelessWidget {
     final asyncState = context.select(
       (EmailVerificationCubit cubit) => cubit.state,
     );
-    //
-    /// 🔌 Adapter: `AsyncState<void>` → `AsyncStateView<void>` (for state-agnostic UI)
-    final emailVerificationState = asyncState.asCubitAsyncStateView();
 
     /// ⛑️ Centralized (SignOut + EmailVerification) one-shot errors handling via overlays
     ///    - OverlayDispatcher resolves conflicts/priority internally
@@ -67,7 +64,7 @@ final class _VerifyEmailView extends StatelessWidget {
       ],
 
       /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-      child: _VerifyEmailScreen(state: emailVerificationState),
+      child: _VerifyEmailScreen(state: asyncState),
     );
   }
 }
@@ -75,16 +72,16 @@ final class _VerifyEmailView extends StatelessWidget {
 ////
 ////
 
-/// 📄 [_VerifyEmailScreen] — renders state-agnostic verification UI
+/// 📄 [_VerifyEmailScreen] — renders state-symmetric verification UI
 /// ✅ Shows instructions, inline loader, and cancel button
-/// ✅ Works with both BLoC & Riverpod via [AsyncStateView]
+/// ✅ Symmetric between BLoC&Riverpod via [AsyncValueForBLoC]
 //
 final class _VerifyEmailScreen extends StatelessWidget {
   ///---------------------------------------------
   const _VerifyEmailScreen({required this.state});
   //
   /// 🔌 Unified async facade
-  final AsyncStateView<void> state;
+  final AsyncValueForBLoC<void> state;
 
   @override
   Widget build(BuildContext context) {

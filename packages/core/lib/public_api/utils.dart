@@ -1,5 +1,5 @@
 export '../src/shared_data_layer/cache_manager/cache_manager.dart';
-export '../src/shared_presentation_layer/async_state/async_state_view.dart';
+export '../src/shared_presentation_layer/deprecated/async_state_view_as_shared_abstraction/async_state_view.dart';
 export '../src/shared_presentation_layer/extensions/context_extensions/_context_extensions.dart';
 export '../src/shared_presentation_layer/extensions/extension_on_widget/_widget_x.dart';
 export '../src/shared_presentation_layer/extensions/general_extensions/datetime_x.dart';

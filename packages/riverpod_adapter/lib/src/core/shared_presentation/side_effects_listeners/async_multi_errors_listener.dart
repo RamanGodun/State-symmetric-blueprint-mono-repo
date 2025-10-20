@@ -8,9 +8,10 @@ import 'package:riverpod_adapter/src/core/base_modules/errors_handling_module/as
 
 /// ⛑️ [ErrorsListenerForAppOnRiverpod] — listen multiple AsyncValue providers at once
 /// ✅ Enter-only: reacts only on transition into AsyncError
-/// ✅ Reusable: accepts heterogeneous providers (payload type-agnostic)
+/// ✅ Reusable: accepts heterogeneous providers (payload type-symmetric)
+//
 final class ErrorsListenerForAppOnRiverpod extends ConsumerWidget {
-  ///--------------------------------------------------------------
+  ///-----------------------------------------------------------
   const ErrorsListenerForAppOnRiverpod({
     required this.providers,
     required this.child,
@@ -29,8 +30,10 @@ final class ErrorsListenerForAppOnRiverpod extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //
     // 🧼 Deduplicate providers (defensive)
     final unique = {...providers};
+
     for (final p in unique) {
       ref.listen<AsyncValue<dynamic>>(p, (prev, next) {
         final prevFailure = prev?.asFailure;
@@ -38,14 +41,20 @@ final class ErrorsListenerForAppOnRiverpod extends ConsumerWidget {
 
         // 🚨 Enter-only: prev !error → next error
         if (prevFailure == null && nextFailure != null) {
-          if (onError != null) {
-            onError!(context, nextFailure);
-          } else {
-            context.showError(nextFailure.toUIEntity());
+          void show() {
+            if (onError != null) {
+              onError!(context, nextFailure);
+            } else {
+              context.showError(nextFailure.toUIEntity());
+            }
           }
+
+          /// Delay showing to the frame's end (for safety)
+          WidgetsBinding.instance.addPostFrameCallback((_) => show());
         }
       });
     }
+
     return child;
   }
 }

@@ -1,3 +1,5 @@
+/*
+
 import 'package:core/src/base_modules/errors_management/core_of_module/failure_entity.dart'
     show Failure;
 
@@ -48,3 +50,6 @@ abstract interface class AsyncStateView<T> {
   Failure? get failureOrNull;
   //
 }
+
+
+ */

@@ -9,12 +9,17 @@ final class SignOutCubit extends CubitWithAsyncValue<void> {
   //
   final SignOutUseCase _signOutUseCase;
 
-  /// ▶️ Launch sign out with unified scheme Loading/Data/Error
-  Future<void> signOut() async {
-    await loadTask(() async {
-      final result = await _signOutUseCase();
-      return result.fold((f) => throw f, (_) => null); // Right<void> → null
-    });
+  /// ▶️ Launch sign out with unified Loading/Data/Error.
+  /// Keeps default UX (no UI preservation during sign-out).
+  Future<void> signOut() {
+    return emitGuarded(
+      () async {
+        final result = await _signOutUseCase();
+        // Either<Failure, void> → value or throw Failure to be mapped by emitGuarded
+        return result.fold((f) => throw f, (_) => null);
+      },
+      preserveUi: false,
+    );
   }
 
   /// ♻️ Hard reset back to pure `loading` (for tests).

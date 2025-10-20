@@ -11,7 +11,7 @@ import 'package:riverpod_adapter/riverpod_adapter.dart';
 part 'widgets_for_email_verification_page.dart';
 
 /// 🧼 [VerifyEmailPage] — Entry point of email-verification feature
-/// ✅ Provides reactive auth-driven state for state-agnostic UI (via [_VerifyEmailScreen] + [AsyncStateView])
+/// ✅ Provides reactive auth-driven state for state-agnostic UI (via [_VerifyEmailScreen] + [AsyncValue])
 /// ✅ `AsyncValue<T>` adapted to `AsyncStateView<T>`
 /// ✅  Top-level error listeners (SignOut + EmailVerification) are centralized
 /// ✅ Automatically redirects when email gets verified
@@ -27,13 +27,7 @@ final class VerifyEmailPage extends ConsumerWidget {
     ref.read(emailVerificationNotifierProvider);
 
     /// 🖼️ Declarative UI bound to [emailVerificationNotifierProvider]
-    final emailVerificationProvider = ref.watch(
-      emailVerificationNotifierProvider,
-    );
-
-    /// 🔌 Adapter: `AsyncValue<void>` → `AsyncStateView<void>` (for state-agnostic UI)
-    final emailVerificationState = emailVerificationProvider
-        .asRiverpodAsyncStateView();
+    final emailVerificationState = ref.watch(emailVerificationNotifierProvider);
 
     /// ⛑️ Centralized (SignOut + EmailVerification) one-shot errors handling via overlays
     ///    - OverlayDispatcher resolves conflicts/priority internally
@@ -52,16 +46,16 @@ final class VerifyEmailPage extends ConsumerWidget {
 ////
 ////
 
-/// 📄 [_VerifyEmailScreen] — renders state-agnostic verification UI
+/// 📄 [_VerifyEmailScreen] — renders state-symmetric verification UI
 /// ✅ Shows instructions, inline loader, and cancel button
-/// ✅ Works with both BLoC & Riverpod via [AsyncStateView]
+/// ✅ Symmetric between BLoC&Riverpod via [AsyncValue]
 //
 final class _VerifyEmailScreen extends StatelessWidget {
   ///---------------------------------------------
   const _VerifyEmailScreen({required this.state});
   //
   /// 🔌 Unified async facade
-  final AsyncStateView<void> state;
+  final AsyncValue<void> state;
 
   @override
   Widget build(BuildContext context) {

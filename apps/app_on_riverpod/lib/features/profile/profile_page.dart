@@ -14,7 +14,7 @@ import 'package:riverpod_adapter/riverpod_adapter.dart';
 part 'widgets_for_profile_page.dart';
 
 /// 👤 [ProfilePage] - Entry point for profile feature
-/// ✅ State-agnostic UI via [_ProfileScreen] + [AsyncStateView]
+/// ✅ State-symmetric UI via [_ProfileScreen] + [AsyncValue]
 /// ✅ `AsyncValue<T>` adapted to `AsyncStateView<T>`
 /// ✅  Top-level error listeners (SignOut + Profile) are centralized
 //
@@ -28,9 +28,6 @@ final class ProfilePage extends ConsumerWidget {
     /// 👀🖼️ Declarative UI bound to [profileProvider(uid)]
     final asyncUser = ref.watch<AsyncValue<UserEntity>>(profileProvider);
 
-    /// 🔌 Adapter: `AsyncValue<UserEntity>` → `AsyncStateView<UserEntity>` (for state-agnostic UI)
-    final profileViewState = asyncUser.asRiverpodAsyncStateView();
-
     /// ⛑️ Centralized (SignOut + Profile) one-shot error handling via overlays
     ///    - OverlayDispatcher resolves conflicts/priority internally
     return ErrorsListenerForAppOnRiverpod(
@@ -40,7 +37,7 @@ final class ProfilePage extends ConsumerWidget {
       ],
       //
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
-      child: _ProfileScreen(state: profileViewState),
+      child: _ProfileScreen(state: asyncUser),
     );
   }
 }
@@ -48,14 +45,14 @@ final class ProfilePage extends ConsumerWidget {
 ////
 ////
 
-/// 📄 [_ProfileScreen] — State-agnostic rendering via [AsyncStateView]
-/// ✅ Same widget used in BLoC app for perfect parity
+/// 📄 [_ProfileScreen] — State-symmetric rendering via [AsyncValue]
+/// ✅ Symmetric widget used in BLoC app for parity
 //
 final class _ProfileScreen extends StatelessWidget {
   ///--------------------------------------------
   const _ProfileScreen({required this.state});
   //
-  final AsyncStateView<UserEntity> state;
+  final AsyncValue<UserEntity> state;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +60,7 @@ final class _ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: const _ProfileAppBar(),
       //
-      body: state.when(
+      body: state.whenUI(
         //
         /// ⏳ Loading
         loading: () => const AppLoader(),

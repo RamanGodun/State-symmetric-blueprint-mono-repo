@@ -12,9 +12,9 @@ export 'src/core/base_modules/theme_module/theme_toggle_widgets/theme_picker.dar
     show ThemePicker;
 export 'src/core/base_modules/theme_module/theme_toggle_widgets/theme_toggler.dart'
     show ThemeTogglerIcon;
-export 'src/core/presentation_shared/async_state/async_state_view_for_bloc.dart';
+export 'src/core/presentation_shared/async_state/async_state_introspection_bloc.dart';
 export 'src/core/presentation_shared/async_state/async_value_for_bloc.dart';
-export 'src/core/presentation_shared/cubits/async_state_cubit.dart';
+export 'src/core/presentation_shared/cubits/async_state_base_cubit.dart';
 export 'src/core/presentation_shared/cubits/auth_cubit.dart'
     show
         AuthCubit,
@@ -22,8 +22,8 @@ export 'src/core/presentation_shared/cubits/auth_cubit.dart'
         AuthViewLoading,
         AuthViewReady,
         AuthViewState;
-export 'src/core/presentation_shared/side_effects_listeners/async_error_listener.dart';
 export 'src/core/presentation_shared/side_effects_listeners/async_multi_errors_listener.dart';
+export 'src/core/presentation_shared/side_effects_listeners/deprecated/async_error_listener.dart';
 export 'src/core/presentation_shared/side_effects_listeners/side_effects_for_submission_state.dart';
 export 'src/core/presentation_shared/utils/bloc_context_select.dart';
 export 'src/core/presentation_shared/widgets_shared/form_submit_button.dart';
