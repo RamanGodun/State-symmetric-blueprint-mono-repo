@@ -1,14 +1,8 @@
 import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 🔍 [AppBlocObserver] — Global observer for BLoC/cubit lifecycle events.
-/// Logs key transitions to help debug and track state changes, includes:
-///           - 🟢 onCreate
-///           - 📨 onEvent (only for BLoC)
-///           - 🔄 onChange
-///           - ➡️ onTransition (only for BLoC)
-///           - ❌ onError
-///           - 🔴 onClose
+/// 🔍 [AppBlocObserver] — global observer for BLoC/Cubit lifecycle.
+/// Logs: onCreate, onEvent (BLoC), onChange, onTransition (BLoC), onError, onClose.
 //
 final class AppBlocObserver extends BlocObserver {
   ///--------------------------------------------

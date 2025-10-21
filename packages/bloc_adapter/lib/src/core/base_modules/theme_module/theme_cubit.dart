@@ -28,28 +28,31 @@ final class AppThemeCubit extends HydratedCubit<ThemePreferences> {
   /// 💾 Serialize state to JSON
   @override
   Map<String, dynamic>? toJson(ThemePreferences state) {
-    return {'theme': state.theme.name, 'font': state.font.name};
+    // HydratedCubit's API requires Map<String, dynamic>
+    return <String, dynamic>{
+      'theme': state.theme.name,
+      'font': state.font.name,
+    };
   }
 
   /// 💾 Deserialize state from JSON (з безпечним дефолтом)
   @override
   ThemePreferences? fromJson(Map<String, dynamic> json) {
-    try {
-      final theme = ThemeVariantsEnum.values.firstWhere(
-        (e) => e.name == json['theme'],
-        orElse: () => ThemeVariantsEnum.light,
-      );
-      final font = parseAppFontFamily(
-        json['font']?.toString(),
-      ); // ⟵ спільний парсер
-      return ThemePreferences(theme: theme, font: font);
-    } on Exception catch (_) {
-      // «soft» recovery
-      return const ThemePreferences(
-        theme: ThemeVariantsEnum.light,
-        font: AppFontFamily.inter,
-      );
+    final Object? themeRaw = json['theme'];
+    final Object? fontRaw = json['font'];
+    //
+    ThemeVariantsEnum parseTheme(Object? v) {
+      final name = v is String ? v : v?.toString();
+      for (final e in ThemeVariantsEnum.values) {
+        if (e.name == name) return e;
+      }
+      return ThemeVariantsEnum.light; // default
     }
+
+    final theme = parseTheme(themeRaw);
+    final font = parseAppFontFamily(fontRaw?.toString());
+    //
+    return ThemePreferences(theme: theme, font: font);
   }
 
   /// 🔁 Toggle light ↔ dark (як було)
@@ -60,7 +63,7 @@ final class AppThemeCubit extends HydratedCubit<ThemePreferences> {
     emit(state.copyWith(theme: next));
   }
 
-  /// 🔁 Опційно: циклічний toggle light → dark → amoled → light
+  /// 🔁 Optional: cycle toggle light → dark → amoled → light
   void toggleThemeCycled() {
     emit(state.copyWith(theme: _cycleThemeVariant(state.theme)));
   }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-/// 🧭 [NavigationX] — Adds concise navigation helpers for [GoRouter] & [Navigator]
-/// ✅ Improves DX with named routes, push/pop, and fallback handling
+/// 🧭 [NavigationX] — concise navigation helpers for [GoRouter] & [Navigator]
+/// ✅ Named routes + push/pop
+/// ✅ Safe fallbacks on failures
 //
 extension NavigationX on BuildContext {
-  ///-------------------------------
+  /// -------------------------------
 
   /// 🚀 Go to a named route (replaces current stack)
   void goTo(
@@ -13,15 +14,15 @@ extension NavigationX on BuildContext {
     Map<String, String> pathParameters = const {},
     Map<String, dynamic> queryParameters = const {},
   }) {
-    debugPrint('🔄 goTo called → $routeName');
+    debugPrint('🔄 goTo → $routeName');
     try {
       GoRouter.of(this).goNamed(
         routeName,
         pathParameters: pathParameters,
-        queryParameters: queryParameters,
+        queryParameters: queryParameters, // go_router expects dynamic
       );
     } on Object catch (e) {
-      debugPrint('❌ goRouter.goNamed failed: $e');
+      debugPrint('❌ goNamed failed: $e');
       GoRouter.of(this).goNamed('pageNotFound');
     }
   }
@@ -32,50 +33,48 @@ extension NavigationX on BuildContext {
     Map<String, String> pathParameters = const {},
     Map<String, dynamic> queryParameters = const {},
   }) {
-    debugPrint('🔄 goPushTo called → $routeName');
+    debugPrint('🔄 goPushTo → $routeName');
     try {
       GoRouter.of(this).pushNamed(
         routeName,
         pathParameters: pathParameters,
-        queryParameters: queryParameters,
+        queryParameters: queryParameters, // go_router expects dynamic
       );
     } on Object catch (e) {
-      debugPrint('❌ goRouter.pushNamed failed: $e');
+      debugPrint('❌ pushNamed failed: $e');
       GoRouter.of(this).goNamed('pageNotFound');
     }
   }
 
-  /// 🔙 Pop the current view
+  /// 🔙 Pop current view
   void popView<T extends Object?>([T? result]) =>
       Navigator.of(this).pop<T>(result);
 
-  /// 🧭 Push a custom widget onto the stack using [MaterialPageRoute]
+  /// 🧭 Push a custom widget via [MaterialPageRoute]
   Future<T?> pushTo<T>(Widget child) {
     return Navigator.of(this).push<T>(MaterialPageRoute(builder: (_) => child));
   }
 
   /// 📌 Replace current view with [child]
   Future<T?> replaceWith<T>(Widget child) {
-    return Navigator.of(
-      this,
-    ).pushReplacement<T, T>(MaterialPageRoute(builder: (_) => child));
+    return Navigator.of(this).pushReplacement<T, T>(
+      MaterialPageRoute(builder: (_) => child),
+    );
   }
 
-  ////
+  // --
 
-  /// 🧭 Navigates to the given [route] only if [BuildContext] is still mounted.
-  /// - Prevents navigation errors after widget disposal (e.g., after async operations).
-  /// - Safe to call in any async callback or state listener.
-  void goIfMounted(String route) {
-    if (mounted) goTo(route);
+  /// 🧭 Navigate to [routeName] only if context is still mounted
+  void goIfMounted(String routeName) {
+    if (mounted) goTo(routeName);
   }
 
-  /// 🎯 Returns actual contextfrm 'GoRouter.navigatorKey'
+  /// 🎯 Global router context from `GoRouter.navigatorKey` (if any)
   BuildContext? get globalRouterContext {
     try {
       return GoRouter.of(this).routerDelegate.navigatorKey.currentContext;
     } on Object catch (e) {
-      debugPrint('❌ Failed to get globalRouterContext: $e');
+      debugPrint('❌ globalRouterContext error: $e');
       return null;
     }
   }

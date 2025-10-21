@@ -78,7 +78,7 @@ buildEnterOnlyErrorListener<T>({
 /*
 
 NOTE:
-   If need to avoid listenWhen and put filtration om ocre, then:
+   If need to avoid listenWhen and put filtration om core, then:
 
 AsyncValueForBLoC<T>? _prev;
 return BlocListener<BlocBase<AsyncValueForBLoC<T>>, AsyncValueForBLoC<T>>(
