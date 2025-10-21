@@ -34,12 +34,16 @@ final class SignUpPage extends StatelessWidget {
       /// 🦻 Bloc side-effect listener (symmetry with Riverpod 'ref.listenSubmissionSideEffects')
       /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
       child: SubmissionStateSideEffects<SignUpCubit>(
-        /// ✅ Success → snackbar + go [VerifyEmailPage]
-        onSuccess: (ctx, _) =>
-            ctx.showSnackbar(message: LocaleKeys.sign_up_success),
-        // 🔁 Retry with current form state
-        onRetry: (ctx) => ctx.submitSignUp(),
-
+        config: SubmissionSideEffectsConfig(
+          /// ✅ Success → snackbar + go [VerifyEmailPage]
+          onSuccess: (ctx, _) =>
+              ctx.showSnackbar(message: LocaleKeys.sign_up_success),
+          // 🔁 Retry with current form state
+          onRetry: (ctx) => ctx.submitSignUp(),
+          // 🧹 (optional) forms' reset after error
+          // onResetForm: (ctx) => ctx.read<SignUpFormFieldsCubit>().reset(),
+        ),
+        //
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
         child: const _SignUpScreen(),
       ),

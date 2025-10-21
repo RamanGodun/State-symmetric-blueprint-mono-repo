@@ -31,12 +31,16 @@ final class SignInPage extends StatelessWidget {
       /// 🦻 Bloc side-effect listener (symmetry with Riverpod 'ref.listenSubmissionSideEffects')
       /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
       child: SubmissionStateSideEffects<SignInCubit>(
-        // ✅ Success → snackbar + go home
-        onSuccess: (ctx, _) =>
-            ctx.showSnackbar(message: LocaleKeys.sign_in_success),
-        // 🔁 Retry with current form state
-        onRetry: (ctx) => ctx.submitSignIn(),
-
+        config: SubmissionSideEffectsConfig(
+          // ✅ Success → snackbar + go home
+          onSuccess: (ctx, _) =>
+              ctx.showSnackbar(message: LocaleKeys.sign_in_success),
+          // 🔁 Retry with current form state
+          onRetry: (ctx) => ctx.submitSignIn(),
+          // 🧹 (optional) forms' reset after error
+          // onResetForm: (ctx) => ctx.read<SignInFormFieldsCubit>().reset(),
+        ),
+        //
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
         child: const _SignInScreen(),
       ),

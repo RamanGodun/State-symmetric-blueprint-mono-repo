@@ -34,12 +34,16 @@ final class ResetPasswordPage extends StatelessWidget {
       /// 🦻 Bloc side-effect listener (symmetry with Riverpod 'ref.listenSubmissionSideEffects')
       /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
       child: SubmissionStateSideEffects<ResetPasswordCubit>(
-        // ✅ Success → snackbar + go [SignInPage]
-        onSuccess: (ctx, _) => ctx
-          ..showSnackbar(message: LocaleKeys.reset_password_success)
-          ..goTo(RoutesNames.signIn),
-        // 🔁 Retry with current form state
-        onRetry: (ctx) => ctx.submitResetPassword(),
+        config: SubmissionSideEffectsConfig(
+          // ✅ Success → snackbar + go [SignInPage]
+          onSuccess: (ctx, _) => ctx
+            ..showSnackbar(message: LocaleKeys.reset_password_success)
+            ..goTo(RoutesNames.signIn),
+          // 🔁 Retry with current form state
+          onRetry: (ctx) => ctx.submitResetPassword(),
+          // 🧹 (optional) forms' reset after error
+          // onResetForm: (ctx) => ctx.read<ResetPasswordFormFieldsCubit>().reset(),
+        ),
         //
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
         child: const _ResetPasswordScreen(),

@@ -24,13 +24,17 @@ final class SignInPage extends ConsumerWidget {
     ref.listenSubmissionSideEffects(
       signInProvider,
       context,
-      // ✅ Success → snackbar + go home
-      onSuccess: (ctx, _) =>
-          ctx.showSnackbar(message: LocaleKeys.sign_in_success),
-      // 🔁 Retry with current form state
-      onRetry: (ref) => ref.submitSignIn(),
+      config: SubmissionSideEffectsConfig(
+        // ✅ Success → snackbar + go home
+        onSuccess: (ctx, _) =>
+            ctx.showSnackbar(message: LocaleKeys.sign_in_success),
+        // 🔁 Retry with current form state
+        onRetry: (ctx) => ref.submitSignIn(),
+        // 🧹 (optional) forms' reset after error
+        // onResetForm: (ctx) => ref.read(signInFormProvider.notifier).reset(),
+      ),
     );
-
+    //
     /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
     return const _SignInScreen();
   }

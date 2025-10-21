@@ -26,13 +26,17 @@ final class SignUpPage extends ConsumerWidget {
     ref.listenSubmissionSideEffects(
       signUpProvider,
       context,
-      // ✅ Success → snackbar + go [VerifyEmailPage]
-      onSuccess: (ctx, _) =>
-          ctx.showSnackbar(message: LocaleKeys.sign_up_success),
-      // 🔁 Retry with current form state
-      onRetry: (ref) => ref.submitSignUp(),
+      config: SubmissionSideEffectsConfig(
+        // ✅ Success → snackbar + go [VerifyEmailPage]
+        onSuccess: (ctx, _) =>
+            ctx.showSnackbar(message: LocaleKeys.sign_up_success),
+        // 🔁 Retry with current form state
+        onRetry: (ctx) => ref.submitSignUp(),
+        // 🧹 (optional) forms' reset after error
+        // onResetForm: (ctx) => ref.read(signUpFormProvider.notifier).reset(),
+      ),
     );
-
+    //
     /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
     return const _SignUpScreen();
   }

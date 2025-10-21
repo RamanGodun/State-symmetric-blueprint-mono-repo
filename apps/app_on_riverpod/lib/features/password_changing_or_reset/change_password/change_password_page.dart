@@ -24,19 +24,23 @@ final class ChangePasswordPage extends ConsumerWidget {
     ref.listenSubmissionSideEffects(
       changePasswordProvider,
       context,
-      // ✅ Success → snackbar + go home
-      onSuccess: (ctx, _) => ctx
-        ..showSnackbar(
-          message: LocaleKeys.change_password_password_updated.tr(),
-        )
-        ..goIfMounted(RoutesNames.home),
-      // 🔄 Requires reauth → dialog with confirm → signOut
-      onRequiresReauth: (ctx, ui, _) =>
-          ctx.showError(ui, onConfirm: ref.onReAuthConfirm),
-      // 🔁 Retry with current form state
-      onRetry: (ref) => ref.submitChangePassword(),
+      config: SubmissionSideEffectsConfig(
+        // ✅  Success → snackbar + go home
+        onSuccess: (ctx, _) => ctx
+          ..showSnackbar(
+            message: LocaleKeys.change_password_password_updated.tr(),
+          )
+          ..goIfMounted(RoutesNames.home),
+        // 🔄 Requires reauth → dialog with confirm → signOut
+        onRequiresReauth: (ctx, ui, _) =>
+            ctx.showError(ui, onConfirm: ref.onReAuthConfirm),
+        // 🔁 Retry with current form state
+        onRetry: (ctx) => ref.submitChangePassword(),
+        // 🧹 (optional) forms' reset after error
+        // onResetForm: (ctx) => ref.read(changePasswordFormProvider.notifier).reset(),
+      ),
     );
-
+    //
     /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
     return const _ChangePasswordScreen();
   }

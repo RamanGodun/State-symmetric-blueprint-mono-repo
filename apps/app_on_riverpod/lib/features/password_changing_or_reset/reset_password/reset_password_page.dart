@@ -24,14 +24,18 @@ final class ResetPasswordPage extends ConsumerWidget {
     ref.listenSubmissionSideEffects(
       resetPasswordProvider,
       context,
-      // ✅ Success → snackbar + go [SignInPage]
-      onSuccess: (ctx, _) => ctx
-        ..showSnackbar(message: LocaleKeys.reset_password_success)
-        ..goTo(RoutesNames.signIn),
-      // 🔁 Retry with current form state
-      onRetry: (ref) => ref.submitResetPassword(),
+      config: SubmissionSideEffectsConfig(
+        // ✅ Success → snackbar + go [SignInPage]
+        onSuccess: (ctx, _) => ctx
+          ..showSnackbar(message: LocaleKeys.reset_password_success)
+          ..goTo(RoutesNames.signIn),
+        // 🔁 Retry with current form state
+        onRetry: (ctx) => ref.submitResetPassword(),
+        // 🧹 (optional) forms' reset after error
+        // onResetForm: (ctx) => ref.read(resetPasswordFormProvider.notifier).reset(),
+      ),
     );
-
+    //
     /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
     return const _ResetPasswordScreen();
   }

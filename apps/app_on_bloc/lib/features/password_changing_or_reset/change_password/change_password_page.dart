@@ -35,18 +35,22 @@ final class ChangePasswordPage extends StatelessWidget {
       /// 🦻 Bloc side-effect listener (symmetry with Riverpod 'ref.listenSubmissionSideEffects')
       /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
       child: SubmissionStateSideEffects<ChangePasswordCubit>(
-        // ✅ Success → snackbar + go home
-        onSuccess: (ctx, _) => ctx
-          ..showSnackbar(
-            message: LocaleKeys.change_password_password_updated.tr(),
-          )
-          ..goIfMounted(RoutesNames.home),
-        // 🔄 Requires reauth → dialog with confirm → signOut
-        onRequiresReauth: (ctx, ui, _) =>
-            ctx.showError(ui, onConfirm: ctx.onReAuthConfirm),
-        // 🔁 Retry with current form state
-        onRetry: (ctx) => ctx.submitChangePassword(),
-
+        config: SubmissionSideEffectsConfig(
+          // ✅ Success → snackbar + go home
+          onSuccess: (ctx, _) => ctx
+            ..showSnackbar(
+              message: LocaleKeys.change_password_password_updated.tr(),
+            )
+            ..goIfMounted(RoutesNames.home),
+          // 🔄 Requires reauth → dialog with confirm → signOut
+          onRequiresReauth: (ctx, ui, _) =>
+              ctx.showError(ui, onConfirm: ctx.onReAuthConfirm),
+          // 🔁 Retry with current form state
+          onRetry: (ctx) => ctx.submitChangePassword(),
+          // 🧹 (optional) forms' reset after error
+          // onResetForm: (ctx) => ctx.read<ChangePasswordFormFieldsCubit>().reset(),
+        ),
+        //
         /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
         child: const _ChangePasswordScreen(),
       ),
