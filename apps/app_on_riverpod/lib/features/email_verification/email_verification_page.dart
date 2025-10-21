@@ -32,9 +32,10 @@ final class VerifyEmailPage extends ConsumerWidget {
     /// ⛑️ Centralized (SignOut + EmailVerification) one-shot errors handling via overlays
     ///    - OverlayDispatcher resolves conflicts/priority internally
     return ErrorsListenerForAppOnRiverpod(
-      providers: [
-        signOutProvider, // ⛑️ catch signOut errors
-        emailVerificationNotifierProvider, // ⛑️ catch verification errors
+      failureSources: [
+        signOutProvider.failureSource, // ⛑️ catch signOut errors
+        emailVerificationNotifierProvider
+            .failureSource, // ⛑️ catch verification errors
       ],
       //
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)

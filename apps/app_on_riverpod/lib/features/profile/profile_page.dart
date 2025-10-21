@@ -31,9 +31,9 @@ final class ProfilePage extends ConsumerWidget {
     /// ⛑️ Centralized (SignOut + Profile) one-shot error handling via overlays
     ///    - OverlayDispatcher resolves conflicts/priority internally
     return ErrorsListenerForAppOnRiverpod(
-      providers: [
-        signOutProvider, // ⛑️ catch signOut errors
-        profileProvider, // ⛑️ catch profile fetch errors
+      failureSources: [
+        signOutProvider.failureSource, // ⛑️ catch signOut errors
+        profileProvider.failureSource, // ⛑️ catch profile fetch errors
       ],
       //
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)

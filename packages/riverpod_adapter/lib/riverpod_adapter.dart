@@ -17,9 +17,9 @@ export 'src/core/shared_presentation/async_state/deprecated/async_error_listener
 export 'src/core/shared_presentation/async_state/safe_async_state.dart';
 export 'src/core/shared_presentation/shared_widgets/form_submit_button.dart';
 export 'src/core/shared_presentation/shared_widgets/page_footer_guard.dart';
-export 'src/core/shared_presentation/side_effects_listeners/async_multi_errors_listener.dart';
 export 'src/core/shared_presentation/side_effects_listeners/deprecated/show_dialog_when_error_x_on_ref.dart';
-export 'src/core/shared_presentation/side_effects_listeners/side_effect_listener_for_submission_state__x_on_ref.dart';
+export 'src/core/shared_presentation/side_effects_listeners/multi_errors_listener_for_async_value.dart';
+export 'src/core/shared_presentation/side_effects_listeners/side_effects_listener_for_submission_flow.dart';
 export 'src/core/utils/auth/auth_stream_adapter.dart';
 export 'src/core/utils/auth/firebase_providers.dart';
 export 'src/core/utils/typedefs.dart';

@@ -22,9 +22,9 @@ export 'src/core/presentation_shared/cubits/auth_cubit.dart'
         AuthViewLoading,
         AuthViewReady,
         AuthViewState;
-export 'src/core/presentation_shared/side_effects_listeners/async_multi_errors_listener.dart';
 export 'src/core/presentation_shared/side_effects_listeners/deprecated/async_error_listener.dart';
-export 'src/core/presentation_shared/side_effects_listeners/side_effects_for_submission_state.dart';
+export 'src/core/presentation_shared/side_effects_listeners/multi_errors_listener_for_async_value.dart';
+export 'src/core/presentation_shared/side_effects_listeners/side_effects_listener_for_submission_flow.dart';
 export 'src/core/presentation_shared/utils/bloc_context_select.dart';
 export 'src/core/presentation_shared/widgets_shared/form_submit_button.dart';
 export 'src/core/presentation_shared/widgets_shared/page_footer_guard.dart';
