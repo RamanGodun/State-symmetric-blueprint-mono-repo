@@ -1,8 +1,6 @@
 import 'package:core/public_api/base_modules/errors_management.dart'
     show Failure, FailureToUIEntityX;
-import 'package:core/public_api/base_modules/overlays.dart'
-    show ContextXForOverlays;
-import 'package:core/public_api/core.dart' show postFrame;
+import 'package:core/public_api/base_modules/overlays.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_adapter/src/core/base_modules/errors_handling_module/async_value_failure_x.dart';
@@ -56,20 +54,20 @@ void attachEnterOnlyErrorListenersRP({
   //
   for (final s in unique) {
     ref.listen<Failure?>(s, (prev, next) {
+      // enter-only: prev null → next non-null
       if (prev == null && next != null) {
-        postFrame(() {
-          // 🚨 Enter-only: prev !error → next error
-          if (onError != null)
-            onError(context, next);
-          else
-            context.showError(next.toUIEntity());
-        });
+        if (onError != null) {
+          onError(context, next);
+        } else {
+          // ✅  OverlayDispatcher handles lifecycle (No local postFrame/mounted guards here)
+          context.showErrorAfterFrame(next.toUIEntity());
+        }
       }
     });
   }
 }
 
-/// Helper: project [AsyncValue<T>] → Failure?
+/// Sugar: project [AsyncValue<T>] → Failure?
 extension FailureSelectorX<T> on ProviderListenable<AsyncValue<T>> {
   ///
   ProviderListenable<Failure?> get failureSource =>

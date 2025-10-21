@@ -1,11 +1,7 @@
 import 'package:bloc_adapter/src/core/presentation_shared/async_state/async_value_for_bloc.dart';
 import 'package:core/public_api/base_modules/errors_management.dart'
     show Failure, FailureToUIEntityX;
-import 'package:core/public_api/base_modules/overlays.dart'
-    show ContextXForOverlays;
-import 'package:core/public_api/core.dart' show postFrame;
-import 'package:core/public_api/shared_layers/presentation.dart'
-    show handleEnterOnlyErrorTransition;
+import 'package:core/public_api/base_modules/overlays.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -60,49 +56,12 @@ buildEnterOnlyErrorListener<T>({
         prev is! AsyncErrorForBLoC<T> && curr is AsyncErrorForBLoC<T>,
     listener: (ctx, state) {
       final failure = (state as AsyncErrorForBLoC<T>).failure;
-      handleEnterOnlyErrorTransition(
-        prevFailure: null, // filtered by listenWhen
-        nextFailure: failure,
-        emit: (f) => postFrame(() {
-          if (onError != null) {
-            onError(ctx, f);
-          } else {
-            ctx.showError(f.toUIEntity());
-          }
-        }),
-      );
+      if (onError != null) {
+        onError(ctx, failure);
+      } else {
+        // ✅  OverlayDispatcher handles lifecycle (No local postFrame/mounted guards here)
+        ctx.showErrorAfterFrame(failure.toUIEntity());
+      }
     },
   );
 }
-
-/*
-
-NOTE:
-   If need to avoid listenWhen and put filtration om core, then:
-
-AsyncValueForBLoC<T>? _prev;
-return BlocListener<BlocBase<AsyncValueForBLoC<T>>, AsyncValueForBLoC<T>>(
-  bloc: bloc,
-  listenWhen: (prev, curr) { _prev = prev; return true; }, // або прибрати зовсім
-  listener: (ctx, state) {
-    final prevFailure = _prev is AsyncErrorForBLoC<T>
-        ? (_prev as AsyncErrorForBLoC<T>).failure
-        : null;
-    final nextFailure = state is AsyncErrorForBLoC<T>
-        ? (state as AsyncErrorForBLoC<T>).failure
-        : null;
-
-    handleEnterOnlyErrorTransition(
-      prevFailure: prevFailure,
-      nextFailure: nextFailure,
-      emit: (f) => postFrame(() {
-        if (onError != null) onError(ctx, f);
-        else ctx.showError(f.toUIEntity());
-      }),
-    );
-  },
-);
-
-listenWhen always true (or at all without it)
-
- */

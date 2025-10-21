@@ -2,12 +2,14 @@ import 'package:core/public_api/core.dart';
 import 'package:flutter/material.dart' show BuildContext;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// 🧯 [SubmissionEffectsRefX] — Riverpod-адаптер поверх ядра сайд-ефектів
-/// ✅ Симетрія з BLoC: дефолтно реагує на зміну runtimeType
-/// ✅ Вся гілкова логіка в `handleSubmissionTransition(...)`
+/// 🧯 [SubmissionEffectsRefX] — Riverpod adapter over the core
+/// ✅ Default: reacts on `runtimeType` change (symmetry with BLoC)
+/// ✅ No local postFrame/mounted guards — dispatcher owns lifecycle
 //
 extension SubmissionEffectsRefX on WidgetRef {
-  /// 🎧 Підписка на submit-флоу з єдиним конфігом
+  ///--------------------------------------
+  ///
+  /// 🎧 Subscribe to a submit-flow provider with a single config entry-point
   void listenSubmissionSideEffects(
     ProviderListenable<SubmissionFlowState> provider,
     BuildContext context, {
@@ -15,46 +17,37 @@ extension SubmissionEffectsRefX on WidgetRef {
     listenWhen,
     SubmissionSideEffectsConfig config = const SubmissionSideEffectsConfig(),
   }) {
-    // SubmissionFlowState? prev;
+    SubmissionFlowState? prevState;
+
     listen<SubmissionFlowState>(
       provider,
-      (prev, curr) {
-        // 🔎 Дефолт: реагуємо тільки коли змінюється runtimeType
-        if (listenWhen != null && prev != null && !listenWhen(prev, curr)) {
-          prev = curr;
+      (previous, current) {
+        // 🔎 Enter-only by runtimeType (symmetry with BLoC)
+        if (listenWhen != null &&
+            previous != null &&
+            !listenWhen(previous, current)) {
+          prevState = current;
           return;
         }
         if (listenWhen == null &&
-            prev != null &&
-            prev.runtimeType == curr.runtimeType) {
-          prev = curr;
+            previous != null &&
+            previous.runtimeType == current.runtimeType) {
+          prevState = current;
           return;
         }
-
-        // 🧩 Якщо onRetry заданий у вигляді (BuildContext) — просто прокидаємо як є
-        final adapted = (config.onRetry == null)
-            ? config
-            : SubmissionSideEffectsConfig(
-                onSuccess: config.onSuccess,
-                onError: config.onError,
-                onRequiresReauth: config.onRequiresReauth,
-                onResetForm: config.onResetForm,
-                onRetry: (ctx) => config.onRetry!.call(ctx),
-                retryLabel: config.retryLabel,
-                retryShowAs: config.retryShowAs,
-                onErrorWithRetry: config.onErrorWithRetry,
-              );
-
+        //
         handleSubmissionTransition(
           context: context,
-          curr: curr,
-          prev: prev,
-          cfg: adapted,
+          curr: current,
+          prev: prevState,
+          cfg: config,
         );
-
-        prev = curr;
+        //
+        prevState = current;
       },
-      onError: (_, _) {}, // уникнути шуму в логах
+      onError: (_, _) {}, // 🔕 keep logs quiet here
     );
   }
+
+  //
 }

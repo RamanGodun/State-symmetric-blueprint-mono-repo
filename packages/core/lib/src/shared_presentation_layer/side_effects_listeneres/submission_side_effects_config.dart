@@ -19,59 +19,55 @@ class SubmissionSideEffectsConfig {
   });
 
   /// ✅ Success branch
-  final void Function(BuildContext context, ButtonSubmissionSuccessState state)?
-  onSuccess;
+  final void Function(BuildContext, ButtonSubmissionSuccessState)? onSuccess;
 
-  /// ❌ Error branch (non-retry)
+  /// ❌ Error branch (no retry)
   final void Function(
-    BuildContext context,
-    FailureUIEntity ui,
-    ButtonSubmissionErrorState state,
+    BuildContext,
+    FailureUIEntity,
+    ButtonSubmissionErrorState,
   )?
   onError;
 
   /// 🔄 Requires re-auth branch (optional)
   final void Function(
-    BuildContext context,
-    FailureUIEntity ui,
-    ButtonSubmissionRequiresReauthState state,
+    BuildContext,
+    FailureUIEntity,
+    ButtonSubmissionRequiresReauthState,
   )?
   onRequiresReauth;
 
-  /// 🧼 Optional form reset hook (e.g., after error)
-  final void Function(BuildContext context)? onResetForm;
+  /// 🧼 Optional form reset hook
+  final void Function(BuildContext)? onResetForm;
 
-  /// ▶️ Retry action.
-  /// For Riverpod it’s convenient to have `(WidgetRef)`, but core is UI-agnostic.
-  /// Wrap it in the adapter: `(ctx) => onRetry(ref)`.
-  final void Function(BuildContext context)? onRetry;
+  /// ▶️ Retry action (wrap `(ref)` at adapter level if needed)
+  final void Function(BuildContext)? onRetry;
 
-  /// 🔁 Confirm button text for retry dialog (fallback → localized default)
+  /// 🔁 Confirm label for retry dialog (fallback → localized)
   final String? retryLabel;
 
-  /// 🎛️ Dialog presentation for retry (default: material dialog)
+  /// 🎛️ Presentation for retry dialog
   final ShowAs retryShowAs;
 
   /// 📲 Custom renderer for “error with retry”
   final void Function(
-    BuildContext context,
-    FailureUIEntity ui,
-    ButtonSubmissionErrorState state,
+    BuildContext,
+    FailureUIEntity,
+    ButtonSubmissionErrorState,
     VoidCallback retry,
   )?
   onErrorWithRetry;
 }
 
 /// 🔁 Single entry point to handle submit-flow transitions (BLoC & Riverpod)
-/// ✅ Enter-only semantics are enforced at adapter level (runtimeType change)
-//
+/// ✅ Adapters enforce enter-only semantics by default (runtimeType change)
 void handleSubmissionTransition({
   required BuildContext context,
   required SubmissionFlowState curr,
   required SubmissionSideEffectsConfig cfg,
   SubmissionFlowState? prev,
 }) {
-  // ⛔️ Guard: react only when runtimeType changes (mirrors existing listeners)
+  // ⛔️ Guard: react only when runtimeType changes (mirrors adapters)
   if (prev != null && prev.runtimeType == curr.runtimeType) return;
 
   switch (curr) {
@@ -97,8 +93,9 @@ void handleSubmissionTransition({
         if (cfg.onErrorWithRetry != null) {
           cfg.onErrorWithRetry!(context, ui, curr, retry);
         } else {
-          context.showError(
-            ui,
+          // ✅ After-frame, global-overlay, queued, debounced, priority-aware
+          context.showErrorAfterFrameCustom(
+            ui: ui,
             showAs: cfg.retryShowAs,
             onConfirm: retry,
             confirmText:
@@ -106,7 +103,6 @@ void handleSubmissionTransition({
                 AppLocalizer.translateSafely(LocaleKeys.buttons_retry),
           );
         }
-
         cfg.onResetForm?.call(context);
         return;
       }
@@ -115,7 +111,7 @@ void handleSubmissionTransition({
       if (cfg.onError != null) {
         cfg.onError!(context, ui, curr);
       } else {
-        context.showError(ui);
+        context.showErrorAfterFrame(ui); // ✅ after-frame safe
       }
       cfg.onResetForm?.call(context);
       return;
@@ -129,7 +125,7 @@ void handleSubmissionTransition({
       if (cfg.onRequiresReauth != null) {
         cfg.onRequiresReauth!(context, ui, curr);
       } else {
-        context.showError(ui);
+        context.showErrorAfterFrame(ui); // ✅ after-frame safe
       }
       return;
 
@@ -137,4 +133,5 @@ void handleSubmissionTransition({
     default:
       return;
   }
+  //
 }

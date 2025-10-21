@@ -2,37 +2,36 @@ import 'package:core/public_api/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 🧯 [SubmissionStateSideEffects] — BLoC-адаптер поверх ядра сайд-ефектів
-/// ✅ Симетрія з Riverpod: реагує на зміни runtimeType (за замовчуванням)
-/// ✅ Делегує всю гілкову логіку в `handleSubmissionTransition(...)`
+/// 🧯 [SubmissionStateSideEffects] — BLoC adapter over the core
+/// ✅ Default: reacts on `runtimeType` change (symmetry with Riverpod)
+/// ✅ No local postFrame/mounted guards — dispatcher owns lifecycle
 //
 final class SubmissionStateSideEffects<
   C extends StateStreamable<SubmissionFlowState>
 >
     extends StatelessWidget {
-  ///------------------------------------------------------------
+  ///--------------------------------------------------------------------------------------------------------
   const SubmissionStateSideEffects({
     required this.child,
-    this.listenWhen, // опційний фільтр переходів
-    this.config =
-        const SubmissionSideEffectsConfig(), // єдине місце конфігурації
+    this.listenWhen, // optional filter
+    this.config = const SubmissionSideEffectsConfig(),
     super.key,
   });
 
-  /// 🖼️ Піддерево
+  /// 🖼️ Child subtree to wrap
   final Widget child;
 
-  /// 🧪 Кастомний предикат (дефолт: реагуємо при зміні runtimeType)
+  /// 🧪 Custom predicate (default: react on runtimeType change)
   final bool Function(SubmissionFlowState prev, SubmissionFlowState curr)?
   listenWhen;
 
-  /// ⚙️ Налаштування гілок (success / error / reauth / retry / reset)
+  /// ⚙️ Branch config (success / error / reauth / retry / reset)
   final SubmissionSideEffectsConfig config;
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<C, SubmissionFlowState>(
-      // 🔎 За замовчуванням: enter-only по типу стану (як у Riverpod-адаптері)
+      // 🔎 Default enter-only by runtimeType (keeps parity with Riverpod)
       listenWhen: listenWhen ?? (p, c) => p.runtimeType != c.runtimeType,
       listener: (ctx, state) => handleSubmissionTransition(
         context: ctx,
@@ -42,4 +41,6 @@ final class SubmissionStateSideEffects<
       child: child,
     );
   }
+
+  //
 }

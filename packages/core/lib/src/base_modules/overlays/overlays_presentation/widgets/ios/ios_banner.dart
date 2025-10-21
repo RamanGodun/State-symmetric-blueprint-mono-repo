@@ -61,8 +61,8 @@ final class IOSBanner extends StatelessWidget {
           overlayType: ShowAs.banner,
           child: Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.p16,
-              vertical: AppSpacing.p10,
+              horizontal: AppSpacing.xxs,
+              vertical: AppSpacing.xxxs,
             ),
             decoration: BoxDecorationFactory.iosCard(isDark: isDark),
             child: Row(
