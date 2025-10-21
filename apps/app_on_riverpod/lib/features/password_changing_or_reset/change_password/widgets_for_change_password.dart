@@ -62,7 +62,7 @@ final class _PasswordFormField extends ConsumerWidget {
     final (:errorText, :isObscure, :isValid, :epoch) = ref.watch(
       changePasswordFormProvider.select(recordsForPasswordFormField()),
     );
-    final notifier = ref.read(changePasswordFormProvider.notifier);
+    final form = ref.read(changePasswordFormProvider.notifier);
     //
     return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('password_$epoch'),
@@ -74,10 +74,10 @@ final class _PasswordFormField extends ConsumerWidget {
       isObscure: isObscure,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
-        onPressed: notifier.togglePasswordVisibility,
+        onPressed: form.togglePasswordVisibility,
       ),
       //
-      onChanged: notifier.onPasswordChanged,
+      onChanged: form.onPasswordChanged,
       onSubmitted: goNext(focusNodes.confirmPassword),
       //
     ).withPaddingBottom(AppSpacing.m);
@@ -104,7 +104,7 @@ final class _ConfirmPasswordFormField extends ConsumerWidget {
         recordsForConfirmPasswordFormField(useFormValidity: true),
       ),
     );
-    final notifier = ref.read(changePasswordFormProvider.notifier);
+    final form = ref.read(changePasswordFormProvider.notifier);
     //
     return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('confirm_$epoch'),
@@ -116,10 +116,10 @@ final class _ConfirmPasswordFormField extends ConsumerWidget {
       isObscure: isObscure,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
-        onPressed: notifier.toggleConfirmPasswordVisibility,
+        onPressed: form.toggleConfirmPasswordVisibility,
       ),
       //
-      onChanged: notifier.onConfirmPasswordChanged,
+      onChanged: form.onConfirmPasswordChanged,
       onSubmitted: isValid ? () => ref.submitChangePassword() : null,
       //
     ).withPaddingBottom(AppSpacing.xxxl);
@@ -139,7 +139,7 @@ final class _ChangePasswordSubmitButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    return FormSubmitButtonForRiverpodApps(
+    return RiverpodAdapterForSubmitButton(
       label: LocaleKeys.change_password_title,
       isValidProvider: changePasswordFormProvider.select(
         (state) => state.isValid,

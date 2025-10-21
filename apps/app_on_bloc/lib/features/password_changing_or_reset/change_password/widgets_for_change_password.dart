@@ -139,7 +139,7 @@ final class _ConfirmPasswordFormField extends StatelessWidget {
 
 /// 🔐 [_ChangePasswordSubmitButton] — dispatches the password change request
 /// 🧠 Rebuilds only on `isValid` or `isLoading` changes
-/// ✅ Delegates behavior to [FormSubmitButtonForBLoCApps]
+/// ✅ Delegates behavior to [BlocAdapterForSubmitButton]
 //
 final class _ChangePasswordSubmitButton extends StatelessWidget {
   ///--------------------------------------------------------
@@ -148,13 +148,15 @@ final class _ChangePasswordSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return FormSubmitButtonForBLoCApps<
+    return BlocAdapterForSubmitButton<
           ChangePasswordFormFieldsCubit,
           ChangePasswordFormState,
           ChangePasswordCubit
         >(
           label: LocaleKeys.change_password_title,
           isFormValid: (state) => state.isValid,
+          isLoadingSelector: (submitState) =>
+              (submitState as SubmissionFlowState).isLoading,
           onPressed: () => context.submitChangePassword(),
         )
         .withPaddingBottom(AppSpacing.l);

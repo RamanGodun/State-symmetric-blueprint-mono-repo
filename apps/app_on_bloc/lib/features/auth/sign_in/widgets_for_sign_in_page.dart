@@ -60,7 +60,7 @@ final class _EmailFormField extends StatelessWidget {
         >(
           recordsForEmailFormField(),
         );
-    final formCubit = context.read<SignInFormCubit>();
+    final form = context.read<SignInFormCubit>();
     //
     return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('email_$epoch'),
@@ -70,7 +70,7 @@ final class _EmailFormField extends StatelessWidget {
       textInputAction: TextInputAction.next,
       autofillHints: const [AutofillHints.username, AutofillHints.email],
       //
-      onChanged: formCubit.onEmailChanged,
+      onChanged: form.onEmailChanged,
       onSubmitted: goNext(focusNodes.password),
       //
     ).withPaddingBottom(AppSpacing.xm);
@@ -100,7 +100,7 @@ final class _PasswordFormField extends StatelessWidget {
         >(
           recordsForPasswordFormField(useFormValidity: true),
         );
-    final formCubit = context.read<SignInFormCubit>();
+    final form = context.read<SignInFormCubit>();
     //
     return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('password_$epoch'),
@@ -112,10 +112,10 @@ final class _PasswordFormField extends StatelessWidget {
       isObscure: isObscure,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
-        onPressed: formCubit.togglePasswordVisibility,
+        onPressed: form.togglePasswordVisibility,
       ),
       //
-      onChanged: formCubit.onPasswordChanged,
+      onChanged: form.onPasswordChanged,
       onSubmitted: isValid ? () => context.submitSignIn() : null,
       //
     ).withPaddingBottom(AppSpacing.xl);
@@ -127,7 +127,7 @@ final class _PasswordFormField extends StatelessWidget {
 
 /// 🚀 [_SignInSubmitButton] — Button for triggering sign-in logic
 /// 🧠 Rebuilds only on `isValid` or `isLoading` changes
-/// ✅ Delegates behavior to [FormSubmitButtonForBLoCApps]
+/// ✅ Delegates behavior to [BlocAdapterForSubmitButton]
 //
 final class _SignInSubmitButton extends StatelessWidget {
   ///-------------------------------------------------
@@ -136,13 +136,15 @@ final class _SignInSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return FormSubmitButtonForBLoCApps<
+    return BlocAdapterForSubmitButton<
           SignInFormCubit,
           SignInFormState,
           SignInCubit
         >(
           label: LocaleKeys.buttons_sign_in,
           isFormValid: (state) => state.isValid,
+          isLoadingSelector: (submitState) =>
+              (submitState as SubmissionFlowState).isLoading,
           onPressed: () => context.submitSignIn(),
         )
         .withPaddingBottom(AppSpacing.l);
@@ -163,7 +165,7 @@ final class _SignInPageFooterGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// 🧠 Computes `isEnabled` [_SignInPageFooter]
-    return FooterGuardScopeBloc<SignInCubit, SubmissionFlowState>(
+    return BlocAdapterForFooterGuard<SignInCubit, SubmissionFlowState>(
       isLoadingSelector: (state) => state.isLoading,
 
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)

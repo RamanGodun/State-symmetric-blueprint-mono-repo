@@ -76,7 +76,7 @@ final class _EmailFormField extends ConsumerWidget {
 
 /// 🔘 [_ResetPasswordSubmitButton] — Confirms reset action button
 /// 🧠 Rebuilds only on `isValid` or `isLoading` changes
-/// ✅ Delegates behavior to [FormSubmitButtonForRiverpodApps]
+/// ✅ Delegates behavior to [RiverpodAdapterForSubmitButton]
 //
 final class _ResetPasswordSubmitButton extends ConsumerWidget {
   ///-------------------------------------------------------
@@ -85,7 +85,7 @@ final class _ResetPasswordSubmitButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    return FormSubmitButtonForRiverpodApps(
+    return RiverpodAdapterForSubmitButton(
       label: LocaleKeys.buttons_reset_password,
       isValidProvider: resetPasswordFormProvider.select(
         (state) => state.isValid,
@@ -111,7 +111,7 @@ final class _ResetPasswordPageFooterGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// 🧠 Computes `isEnabled` [_ResetPasswordPageFooter]
-    return FooterGuardScopeRiverpod(
+    return RiverpodAdapterForFooterGuard(
       isLoadingProvider: resetPasswordProvider.select(
         (state) => state.isLoading,
       ),

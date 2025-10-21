@@ -73,6 +73,7 @@ abstract class LocaleKeys {
   static const buttons_go_to_home = 'buttons.go_to_home';
   static const buttons_reset_password = 'buttons.reset_password';
   static const buttons_resend_email = 'buttons.resend_email';
+  static const buttons_loading = 'buttons.loading';
   static const buttons = 'buttons';
   static const form_name = 'form.name';
   static const form_name_is_empty = 'form.name_is_empty';

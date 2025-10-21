@@ -93,6 +93,7 @@ class CodegenLoader extends AssetLoader {
       "go_to_home": "Na stronę główną",
       "reset_password": "Zresetuj hasło",
       "resend_email": "Wyślij ponownie e-mail weryfikacyjny",
+      "loading": "Ładowanie...",
     },
     "form": {
       "name": "Imię",
@@ -243,6 +244,7 @@ class CodegenLoader extends AssetLoader {
       "go_to_home": "На головну",
       "reset_password": "Скинути пароль",
       "resend_email": "Повторно надіслати лист верефікації",
+      "loading": "Загрузка...",
     },
     "form": {
       "name": "Ім'я",
@@ -388,6 +390,7 @@ class CodegenLoader extends AssetLoader {
       "go_to_home": "To Home Page",
       "reset_password": "Reset Password",
       "resend_email": "Resend verification email",
+      "loading": "Loading...",
     },
     "form": {
       "name": "Name",

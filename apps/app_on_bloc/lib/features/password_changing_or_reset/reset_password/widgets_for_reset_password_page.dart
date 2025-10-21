@@ -79,7 +79,7 @@ final class _EmailFormField extends StatelessWidget {
 
 /// 🔘 [_ResetPasswordSubmitButton] — Confirms reset action button
 /// 🧠 Rebuilds only on `isValid` or `isLoading` changes
-/// ✅ Delegates behavior to [FormSubmitButtonForBLoCApps]
+/// ✅ Delegates behavior to [BlocAdapterForSubmitButton]
 //
 final class _ResetPasswordSubmitButton extends StatelessWidget {
   ///--------------------------------------------------------
@@ -88,13 +88,15 @@ final class _ResetPasswordSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return FormSubmitButtonForBLoCApps<
+    return BlocAdapterForSubmitButton<
           ResetPasswordFormFieldsCubit,
           ResetPasswordFormState,
           ResetPasswordCubit
         >(
           label: LocaleKeys.buttons_reset_password,
           isFormValid: (state) => state.isValid,
+          isLoadingSelector: (submitState) =>
+              (submitState as SubmissionFlowState).isLoading,
           onPressed: () => context.submitResetPassword(),
         )
         .withPaddingBottom(AppSpacing.xl);
@@ -114,7 +116,7 @@ final class _ResetPasswordPageFooterGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// 🧠 Computes `isEnabled` [_ResetPasswordPageFooter]
-    return FooterGuardScopeBloc<ResetPasswordCubit, SubmissionFlowState>(
+    return BlocAdapterForFooterGuard<ResetPasswordCubit, SubmissionFlowState>(
       isLoadingSelector: (state) => state.isLoading,
 
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)

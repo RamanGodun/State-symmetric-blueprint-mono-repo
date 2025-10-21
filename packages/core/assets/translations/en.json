@@ -86,7 +86,8 @@
     "cancel": "Cancel",
     "go_to_home": "To Home Page",
     "reset_password": "Reset Password",
-    "resend_email": "Resend verification email"
+    "resend_email": "Resend verification email",
+    "loading": "Loading..."
   },
 
   "form": {

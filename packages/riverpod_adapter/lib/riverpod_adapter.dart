@@ -6,6 +6,7 @@ export 'src/app_bootstrap/di/read_di_x_on_context.dart';
 export 'src/core/base_modules/errors_handling_module/async_value_failure_x.dart';
 export 'src/core/base_modules/observing/async_value_xx.dart';
 export 'src/core/base_modules/observing/providers_debug_observer.dart';
+export 'src/core/base_modules/overlays_module/locker_while_active_overlay.dart';
 export 'src/core/base_modules/overlays_module/overlay_adapters_providers.dart';
 export 'src/core/base_modules/overlays_module/overlay_resolver_wiring.dart';
 export 'src/core/base_modules/overlays_module/overlay_status_x.dart';
@@ -15,8 +16,8 @@ export 'src/core/base_modules/theme_module/theme_toggle_widgets/theme_toggler.da
 export 'src/core/shared_presentation/async_state/async_state_introspection.dart';
 export 'src/core/shared_presentation/async_state/deprecated/async_error_listener.dart';
 export 'src/core/shared_presentation/async_state/safe_async_state.dart';
-export 'src/core/shared_presentation/shared_widgets/form_submit_button.dart';
-export 'src/core/shared_presentation/shared_widgets/page_footer_guard.dart';
+export 'src/core/shared_presentation/shared_widgets/adapter_for_footer_guard.dart';
+export 'src/core/shared_presentation/shared_widgets/adapter_for_submit_button.dart';
 export 'src/core/shared_presentation/side_effects_listeners/deprecated/show_dialog_when_error_x_on_ref.dart';
 export 'src/core/shared_presentation/side_effects_listeners/multi_errors_listener_for_async_value.dart';
 export 'src/core/shared_presentation/side_effects_listeners/side_effects_listener_for_submission_flow.dart';

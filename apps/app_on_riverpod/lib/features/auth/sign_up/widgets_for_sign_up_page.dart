@@ -41,7 +41,7 @@ final class _SignUpHeader extends StatelessWidget {
 
 /// 🚀 [_SignUpSubmitButton] — Button for triggering sign-up logic
 /// 🧠 Rebuilds only on `isValid` or `isLoading` changes
-/// ✅ Delegates behavior to [FormSubmitButtonForRiverpodApps]
+/// ✅ Delegates behavior to [RiverpodAdapterForSubmitButton]
 //
 final class _SignUpSubmitButton extends ConsumerWidget {
   ///------------------------------------------------
@@ -50,7 +50,7 @@ final class _SignUpSubmitButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    return FormSubmitButtonForRiverpodApps(
+    return RiverpodAdapterForSubmitButton(
       label: LocaleKeys.buttons_sign_up,
       isValidProvider: signUpFormProvider.select((state) => state.isValid),
       isLoadingProvider: signUpProvider.select((state) => state.isLoading),
@@ -73,7 +73,7 @@ final class _SignUpPageFooterGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// 🧠 Computes `isEnabled` [_SignUpPageFooter]
-    return FooterGuardScopeRiverpod(
+    return RiverpodAdapterForFooterGuard(
       isLoadingProvider: signUpProvider.select((state) => state.isLoading),
 
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)

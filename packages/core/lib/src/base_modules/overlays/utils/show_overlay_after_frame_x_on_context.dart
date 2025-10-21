@@ -19,10 +19,10 @@ extension OverlayAfterFrameX on BuildContext {
       final navState = GoRouter.of(
         this,
       ).routerDelegate.navigatorKey.currentState;
-      final overlayCtx = navState?.overlay?.context;
+      final hostCtx = navState?.context;
       //
       // If, for any reason, overlay isn’t ready yet — fall back to the local context.
-      (overlayCtx ?? this).showError(ui);
+      (hostCtx ?? this).showError(ui);
     });
   }
 

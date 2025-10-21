@@ -119,7 +119,7 @@ final class _PasswordFormField extends ConsumerWidget {
 
 /// 🚀 [_SignInSubmitButton] — Button for triggering sign-in logic
 /// 🧠 Rebuilds only on `isValid` or `isLoading` changes
-/// ✅ Delegates behavior to [FormSubmitButtonForRiverpodApps]
+/// ✅ Delegates behavior to [RiverpodAdapterForSubmitButton]
 //
 final class _SignInSubmitButton extends ConsumerWidget {
   ///------------------------------------------------
@@ -128,7 +128,7 @@ final class _SignInSubmitButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //
-    return FormSubmitButtonForRiverpodApps(
+    return RiverpodAdapterForSubmitButton(
       label: LocaleKeys.buttons_sign_in,
       isValidProvider: signInFormProvider.select((state) => state.isValid),
       isLoadingProvider: signInProvider.select((state) => state.isLoading),
@@ -151,7 +151,7 @@ final class _SignInPageFooterGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// 🧠 Computes `isEnabled` [_SignInPageFooter]
-    return FooterGuardScopeRiverpod(
+    return RiverpodAdapterForFooterGuard(
       isLoadingProvider: signInProvider.select((state) => state.isLoading),
 
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)

@@ -41,7 +41,7 @@ final class _SignUpHeader extends StatelessWidget {
 
 /// 🚀 [_SignUpSubmitButton] — Button for triggering sign-up logic
 /// 🧠 Rebuilds only on `isValid` or `isLoading` changes
-/// ✅ Delegates behavior to [FormSubmitButtonForBLoCApps]
+/// ✅ Delegates behavior to [BlocAdapterForSubmitButton]
 //
 final class _SignUpSubmitButton extends StatelessWidget {
   ///-------------------------------------------------
@@ -50,14 +50,15 @@ final class _SignUpSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    return FormSubmitButtonForBLoCApps<
+    return BlocAdapterForSubmitButton<
           SignUpFormFieldCubit,
           SignUpFormState,
           SignUpCubit
         >(
           label: LocaleKeys.buttons_sign_up,
           isFormValid: (state) => state.isValid,
-          //
+          isLoadingSelector: (submitState) =>
+              (submitState as SubmissionFlowState).isLoading,
           onPressed: () => context.submitSignUp(),
         )
         .withPaddingBottom(AppSpacing.l);
@@ -76,7 +77,7 @@ final class _SignUpPageFooterGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// 🧠 Computes `isEnabled` [_SignUpPageFooter]
-    return FooterGuardScopeBloc<SignUpCubit, SubmissionFlowState>(
+    return BlocAdapterForFooterGuard<SignUpCubit, SubmissionFlowState>(
       isLoadingSelector: (state) => state.isLoading,
 
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)

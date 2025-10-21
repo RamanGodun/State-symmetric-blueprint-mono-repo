@@ -5,8 +5,10 @@ export '../../src/shared_presentation_layer/side_effects_listeneres/submission_s
 export '../../src/shared_presentation_layer/spider/app_images_paths.dart';
 export '../../src/shared_presentation_layer/widgets_shared/app_bar.dart';
 export '../../src/shared_presentation_layer/widgets_shared/buttons/filled_button.dart';
+export '../../src/shared_presentation_layer/widgets_shared/buttons/submit_button.dart';
 export '../../src/shared_presentation_layer/widgets_shared/buttons/text_button.dart';
 export '../../src/shared_presentation_layer/widgets_shared/divider.dart';
-export '../../src/shared_presentation_layer/widgets_shared/enabled_footer.dart';
+export '../../src/shared_presentation_layer/widgets_shared/footer/footer_guard_while_loading.dart';
+export '../../src/shared_presentation_layer/widgets_shared/footer/inherited_footer_guard.dart';
 export '../../src/shared_presentation_layer/widgets_shared/key_value_text_widget.dart';
 export '../../src/shared_presentation_layer/widgets_shared/loader.dart';

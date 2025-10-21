@@ -39,3 +39,9 @@ typedef ListenFailureCallback = void Function(Failure failure);
 
 /// 🔧 [RefAction] — Executes an action without returning value, using Riverpod context
 typedef RefAction = void Function();
+
+/// Cancel function signature for overlay subscriptions.
+typedef Cancel = void Function();
+
+/// Syntactic sugar for a getter that returns a `bool`.
+typedef BoolGetter = bool Function();

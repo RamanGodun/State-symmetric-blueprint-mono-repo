@@ -53,7 +53,10 @@ final class OverlayDispatcher {
   ) async {
     if (!context.mounted) return; // ✅ avoid insertion if context is dead
     OverlayLogger.show(request);
-    final overlay = Overlay.of(context, rootOverlay: true);
+    // final overlay = Overlay.of(context, rootOverlay: true);
+    final navigator = Navigator.maybeOf(context, rootNavigator: true);
+    final overlay =
+        navigator?.overlay ?? Overlay.of(context, rootOverlay: true);
     //
     if (_activeRequest != null) {
       OverlayLogger.activeExists(_activeRequest);

@@ -17,10 +17,12 @@ export '../../src/base_modules/overlays/overlays_presentation/overlay_presets/ov
         OverlaySuccessUIPreset,
         OverlayUIPresets,
         OverlayWarningUIPreset;
+export '../../src/base_modules/overlays/utils/lock_controller.dart';
 export '../../src/base_modules/overlays/utils/overlay_utils.dart'
     show OverlayUtils;
 export '../../src/base_modules/overlays/utils/overlays_cleaner_within_navigation.dart'
     show OverlaysCleanerWithinNavigation;
+export '../../src/base_modules/overlays/utils/ports/locker_while_active_overlay.dart';
 export '../../src/base_modules/overlays/utils/ports/overlay_activity_port.dart';
 export '../../src/base_modules/overlays/utils/ports/overlay_dispatcher_locator.dart';
 export '../../src/base_modules/overlays/utils/show_overlay_after_frame_x_on_context.dart';

@@ -15,7 +15,7 @@ final class _UserNameFormField extends ConsumerWidget {
     final (:errorText, :isValid, :epoch) = ref.watch(
       signUpFormProvider.select(recordsForNameFormField()),
     );
-    final formNotifier = ref.read(signUpFormProvider.notifier);
+    final form = ref.read(signUpFormProvider.notifier);
     //
     return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('name_$epoch'),
@@ -25,7 +25,7 @@ final class _UserNameFormField extends ConsumerWidget {
       textInputAction: TextInputAction.next,
       autofillHints: const [AutofillHints.name],
       //
-      onChanged: formNotifier.onNameChanged,
+      onChanged: form.onNameChanged,
       onSubmitted: goNext(focusNodes.email),
       //
     ).withPaddingBottom(AppSpacing.xm);
@@ -86,7 +86,7 @@ final class _PasswordFormField extends ConsumerWidget {
       signUpFormProvider.select(recordsForPasswordFormField()),
     );
     final form = ref.read(signUpFormProvider.notifier);
-
+    //
     return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('password_$epoch'),
       type: InputFieldType.password,
@@ -127,7 +127,7 @@ final class _ConfirmPasswordFormField extends ConsumerWidget {
       ),
     );
     final form = ref.read(signUpFormProvider.notifier);
-
+    //
     return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('confirm_$epoch'),
       type: InputFieldType.confirmPassword,

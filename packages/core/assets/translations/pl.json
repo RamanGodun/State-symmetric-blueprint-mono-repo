@@ -86,7 +86,8 @@
     "cancel": "Anuluj",
     "go_to_home": "Na stronę główną",
     "reset_password": "Zresetuj hasło",
-    "resend_email": "Wyślij ponownie e-mail weryfikacyjny"
+    "resend_email": "Wyślij ponownie e-mail weryfikacyjny",
+    "loading": "Ładowanie..."
   },
 
   "form": {

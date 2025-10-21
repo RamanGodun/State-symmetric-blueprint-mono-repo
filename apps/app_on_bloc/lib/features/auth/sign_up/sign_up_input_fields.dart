@@ -20,7 +20,7 @@ final class _UserNameFormField extends StatelessWidget {
         >(
           recordsForNameFormField(),
         );
-    final formFieldCubit = context.read<SignUpFormFieldCubit>();
+    final form = context.read<SignUpFormFieldCubit>();
     //
     return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('name_$epoch'),
@@ -30,7 +30,7 @@ final class _UserNameFormField extends StatelessWidget {
       textInputAction: TextInputAction.next,
       autofillHints: const [AutofillHints.name],
       //
-      onChanged: formFieldCubit.onNameChanged,
+      onChanged: form.onNameChanged,
       onSubmitted: goNext(focusNodes.email),
       //
     ).withPaddingBottom(AppSpacing.xm);
@@ -60,7 +60,7 @@ final class _EmailFormField extends StatelessWidget {
         >(
           recordsForEmailFormField(),
         );
-    final cubit = context.read<SignUpFormFieldCubit>();
+    final form = context.read<SignUpFormFieldCubit>();
     //
     return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('email_$epoch'),
@@ -70,7 +70,7 @@ final class _EmailFormField extends StatelessWidget {
       textInputAction: TextInputAction.next,
       autofillHints: const [AutofillHints.username, AutofillHints.email],
       //
-      onChanged: cubit.onEmailChanged,
+      onChanged: form.onEmailChanged,
       onSubmitted: goNext(focusNodes.password),
       //
     ).withPaddingBottom(AppSpacing.xm);
@@ -100,7 +100,7 @@ final class _PasswordFormField extends StatelessWidget {
         >(
           recordsForPasswordFormField(),
         );
-    final cubit = context.read<SignUpFormFieldCubit>();
+    final form = context.read<SignUpFormFieldCubit>();
     //
     return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('password_$epoch'),
@@ -111,10 +111,10 @@ final class _PasswordFormField extends StatelessWidget {
       isObscure: isObscure,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
-        onPressed: cubit.togglePasswordVisibility,
+        onPressed: form.togglePasswordVisibility,
       ),
       //
-      onChanged: cubit.onPasswordChanged,
+      onChanged: form.onPasswordChanged,
       onSubmitted: goNext(focusNodes.confirmPassword),
       //
     ).withPaddingBottom(AppSpacing.xm);
@@ -144,7 +144,7 @@ final class _ConfirmPasswordFormField extends StatelessWidget {
         >(
           recordsForConfirmPasswordFormField(useFormValidity: true),
         );
-    final cubit = context.read<SignUpFormFieldCubit>();
+    final form = context.read<SignUpFormFieldCubit>();
     //
     return FormFieldFactory.create(
       fieldKeyOverride: ValueKey('confirm_$epoch'),
@@ -155,10 +155,10 @@ final class _ConfirmPasswordFormField extends StatelessWidget {
       isObscure: isObscure,
       suffixIcon: ObscureToggleIcon(
         isObscure: isObscure,
-        onPressed: cubit.toggleConfirmPasswordVisibility,
+        onPressed: form.toggleConfirmPasswordVisibility,
       ),
       //
-      onChanged: cubit.onConfirmPasswordChanged,
+      onChanged: form.onConfirmPasswordChanged,
       onSubmitted: isValid ? () => context.submitSignUp() : null,
       //
     ).withPaddingBottom(AppSpacing.xl);
