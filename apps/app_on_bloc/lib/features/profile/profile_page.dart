@@ -51,7 +51,7 @@ final class _ProfileView extends StatelessWidget {
 
     /// ⛑️ Centralized (SignOut + Profile) one-shot error handling via overlays
     ///    - OverlayDispatcher resolves conflicts/priority internally
-    return ErrorsListenerForAppOnCubit(
+    return BlocAdapterForErrorsMultiListeners(
       resolveBlocs: (ctx) => [
         ctx.read<SignOutCubit>(), // ⛑️ catch SignOut errors
         ctx.read<ProfileCubit>(), // ⛑️ catch EmailVerification errors

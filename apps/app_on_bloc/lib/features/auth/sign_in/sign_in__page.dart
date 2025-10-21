@@ -30,7 +30,7 @@ final class SignInPage extends StatelessWidget {
 
       /// 🦻 Bloc side-effect listener (symmetry with Riverpod 'ref.listenSubmissionSideEffects')
       /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
-      child: SubmissionStateSideEffects<SignInCubit>(
+      child: BlocAdapterForSubmissionFlowSideEffects<SignInCubit>(
         config: SubmissionSideEffectsConfig(
           // ✅ Success → snackbar + go home
           onSuccess: (ctx, _) =>

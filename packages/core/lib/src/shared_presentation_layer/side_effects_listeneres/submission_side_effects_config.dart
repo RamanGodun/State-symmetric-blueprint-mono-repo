@@ -63,9 +63,9 @@ class SubmissionSideEffectsConfig {
 /// ✅ Adapters enforce enter-only semantics by default (runtimeType change)
 void handleSubmissionTransition({
   required BuildContext context,
-  required SubmissionFlowState curr,
+  required SubmissionFlowStateModel curr,
   required SubmissionSideEffectsConfig cfg,
-  SubmissionFlowState? prev,
+  SubmissionFlowStateModel? prev,
 }) {
   // ⛔️ Guard: react only when runtimeType changes (mirrors adapters)
   if (prev != null && prev.runtimeType == curr.runtimeType) return;

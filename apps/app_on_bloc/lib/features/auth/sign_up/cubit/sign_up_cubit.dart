@@ -3,10 +3,10 @@ import 'package:features/features_barrels/auth/auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// 🔐 [SignUpCubit] — Handles sign-up submission & side-effects.
-/// 🧰 Uses shared [SubmissionFlowState].
+/// 🧰 Uses shared [SubmissionFlowStateModel].
 /// 🔁 Symmetric to Riverpod 'signUpProvider' (Initial → Loading → Success/Error).
 //
-final class SignUpCubit extends Cubit<SubmissionFlowState> {
+final class SignUpCubit extends Cubit<SubmissionFlowStateModel> {
   ///-----------------------------------------------------
   /// Creates a cubit bound to the domain [SignUpCubit].
   SignUpCubit(this._signUpUseCase) : super(const SubmissionFlowInitialState());

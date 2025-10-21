@@ -2,24 +2,24 @@ import 'package:core/public_api/core.dart';
 import 'package:flutter/material.dart' show BuildContext;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// 🧯 [SubmissionEffectsRefX] — Riverpod adapter over the core
+/// 🧯 [RiverpodAdapterForSubmissionFlowSideEffects] — Riverpod adapter over the core
 /// ✅ Default: reacts on `runtimeType` change (symmetry with BLoC)
 /// ✅ No local postFrame/mounted guards — dispatcher owns lifecycle
 //
-extension SubmissionEffectsRefX on WidgetRef {
+extension RiverpodAdapterForSubmissionFlowSideEffects on WidgetRef {
   ///--------------------------------------
   ///
   /// 🎧 Subscribe to a submit-flow provider with a single config entry-point
   void listenSubmissionSideEffects(
-    ProviderListenable<SubmissionFlowState> provider,
+    ProviderListenable<SubmissionFlowStateModel> provider,
     BuildContext context, {
-    bool Function(SubmissionFlowState prev, SubmissionFlowState next)?
+    bool Function(SubmissionFlowStateModel prev, SubmissionFlowStateModel next)?
     listenWhen,
     SubmissionSideEffectsConfig config = const SubmissionSideEffectsConfig(),
   }) {
-    SubmissionFlowState? prevState;
+    SubmissionFlowStateModel? prevState;
 
-    listen<SubmissionFlowState>(
+    listen<SubmissionFlowStateModel>(
       provider,
       (previous, current) {
         // 🔎 Enter-only by runtimeType (symmetry with BLoC)

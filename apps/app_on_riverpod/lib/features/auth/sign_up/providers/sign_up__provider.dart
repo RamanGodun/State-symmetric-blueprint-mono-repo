@@ -8,7 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'sign_up__provider.g.dart';
 
 /// 🔐 [signUpProvider] — Handles sign-up submission & side-effects.
-/// 🧰 Uses shared [SubmissionFlowState].
+/// 🧰 Uses shared [SubmissionFlowStateModel].
 /// 🔁 Symmetric to BLoC 'SignUpCubit' (Initial → Loading → Success/Error).
 //
 @riverpod
@@ -19,7 +19,7 @@ final class SignUp extends _$SignUp {
   final _submitDebouncer = Debouncer(AppDurations.ms600);
 
   @override
-  SubmissionFlowState build() {
+  SubmissionFlowStateModel build() {
     ref.onDispose(
       _submitDebouncer.cancel,
     ); // 🧼 Cleanup memory leaks on dispose

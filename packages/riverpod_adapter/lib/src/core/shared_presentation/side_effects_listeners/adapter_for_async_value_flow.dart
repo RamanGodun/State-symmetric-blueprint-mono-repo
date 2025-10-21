@@ -7,9 +7,9 @@ import 'package:riverpod_adapter/src/core/base_modules/errors_handling_module/as
 
 /// ⛑️ Listen multiple Failure?-selectors (projected from AsyncValue) and show overlay on enter-only error.
 //
-final class ErrorsListenerForAppOnRiverpod extends ConsumerWidget {
+final class RiverpodAdapterForErrorsMultiListeners extends ConsumerWidget {
   ///-----------------------------------------------------------
-  ErrorsListenerForAppOnRiverpod({
+  RiverpodAdapterForErrorsMultiListeners({
     required this.failureSources,
     required this.child,
     super.key,

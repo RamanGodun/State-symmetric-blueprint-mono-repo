@@ -33,7 +33,7 @@ final class SignUpPage extends StatelessWidget {
 
       /// 🦻 Bloc side-effect listener (symmetry with Riverpod 'ref.listenSubmissionSideEffects')
       /// 🧠🛡️ OverlayDispatcher resolves conflicts/priority internally
-      child: SubmissionStateSideEffects<SignUpCubit>(
+      child: BlocAdapterForSubmissionFlowSideEffects<SignUpCubit>(
         config: SubmissionSideEffectsConfig(
           /// ✅ Success → snackbar + go [VerifyEmailPage]
           onSuccess: (ctx, _) =>

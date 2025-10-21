@@ -3,10 +3,10 @@ import 'package:features/features.dart' show PasswordRelatedUseCases;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// 🔐 [ResetPasswordCubit] — Handles reset-password submission & side-effects.
-/// 🧰 Uses shared [SubmissionFlowState].
+/// 🧰 Uses shared [SubmissionFlowStateModel].
 /// 🔁 Symmetric to Riverpod 'resetPasswordProvider' (Initial → Loading → Success/Error).
 //
-final class ResetPasswordCubit extends Cubit<SubmissionFlowState> {
+final class ResetPasswordCubit extends Cubit<SubmissionFlowStateModel> {
   ///------------------------------------------------------------
   /// Creates a cubit bound to the domain [PasswordRelatedUseCases].
   ResetPasswordCubit(this._useCases)

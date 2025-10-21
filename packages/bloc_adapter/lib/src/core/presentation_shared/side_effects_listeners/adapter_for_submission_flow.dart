@@ -2,16 +2,16 @@ import 'package:core/public_api/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// 🧯 [SubmissionStateSideEffects] — BLoC adapter over the core
+/// 🧯 [BlocAdapterForSubmissionFlowSideEffects] — BLoC adapter over the core
 /// ✅ Default: reacts on `runtimeType` change (symmetry with Riverpod)
 /// ✅ No local postFrame/mounted guards — dispatcher owns lifecycle
 //
-final class SubmissionStateSideEffects<
-  C extends StateStreamable<SubmissionFlowState>
+final class BlocAdapterForSubmissionFlowSideEffects<
+  C extends StateStreamable<SubmissionFlowStateModel>
 >
     extends StatelessWidget {
   ///--------------------------------------------------------------------------------------------------------
-  const SubmissionStateSideEffects({
+  const BlocAdapterForSubmissionFlowSideEffects({
     required this.child,
     this.listenWhen, // optional filter
     this.config = const SubmissionSideEffectsConfig(),
@@ -22,7 +22,10 @@ final class SubmissionStateSideEffects<
   final Widget child;
 
   /// 🧪 Custom predicate (default: react on runtimeType change)
-  final bool Function(SubmissionFlowState prev, SubmissionFlowState curr)?
+  final bool Function(
+    SubmissionFlowStateModel prev,
+    SubmissionFlowStateModel curr,
+  )?
   listenWhen;
 
   /// ⚙️ Branch config (success / error / reauth / retry / reset)
@@ -30,7 +33,7 @@ final class SubmissionStateSideEffects<
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<C, SubmissionFlowState>(
+    return BlocListener<C, SubmissionFlowStateModel>(
       // 🔎 Default enter-only by runtimeType (keeps parity with Riverpod)
       listenWhen: listenWhen ?? (p, c) => p.runtimeType != c.runtimeType,
       listener: (ctx, state) => handleSubmissionTransition(

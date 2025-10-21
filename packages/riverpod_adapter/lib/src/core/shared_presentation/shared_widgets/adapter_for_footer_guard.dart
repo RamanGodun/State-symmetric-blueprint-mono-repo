@@ -9,13 +9,13 @@ import 'package:riverpod_adapter/src/core/base_modules/overlays_module/overlay_s
 final class RiverpodAdapterForFooterGuard extends ConsumerWidget {
   ///-----------------------------------------------------
   const RiverpodAdapterForFooterGuard({
-    required this.isLoadingProvider,
+    required this.isLoadingSelector,
     required this.child,
     super.key,
   });
 
   /// 🔎 External loading flag (e.g. `signInProvider.select(...)`)
-  final ProviderListenable<bool> isLoadingProvider;
+  final ProviderListenable<bool> isLoadingSelector;
   //
   /// 🧱 Footer child that will receive computed `isEnabled`
   final Widget child;
@@ -24,7 +24,7 @@ final class RiverpodAdapterForFooterGuard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //
     /// ⏳ Submission loading flag
-    final isLoadingNow = ref.watch(isLoadingProvider);
+    final isLoadingNow = ref.watch(isLoadingSelector);
     //
     /// 🛡️ Overlay guard — disables when overlay is visible
     final isOverlayActiveNow = ref.isOverlayActive;

@@ -13,8 +13,8 @@ final class RiverpodAdapterForSubmitButton extends ConsumerWidget {
   ///------------------------------------------------------------
   const RiverpodAdapterForSubmitButton({
     required this.label,
-    required this.isValidProvider,
-    required this.isLoadingProvider,
+    required this.isFormValid,
+    required this.isLoadingSelector,
     required this.onPressed,
     this.loadingLabel,
     super.key,
@@ -27,10 +27,10 @@ final class RiverpodAdapterForSubmitButton extends ConsumerWidget {
   final String? loadingLabel;
   //
   /// Provider returning form validity.
-  final ProviderListenable<bool> isValidProvider;
+  final ProviderListenable<bool> isFormValid;
   //
   /// Provider returning loading state.
-  final ProviderListenable<bool> isLoadingProvider;
+  final ProviderListenable<bool> isLoadingSelector;
   //
   /// Press callback (enabled only when form is valid and not locked).
   final VoidCallback onPressed;
@@ -43,8 +43,8 @@ final class RiverpodAdapterForSubmitButton extends ConsumerWidget {
     return SubmitButton(
       label: label,
       loadingLabel: loadingLabel,
-      isValid: () => ref.watch(isValidProvider),
-      isLoading: () => ref.watch(isLoadingProvider),
+      isValid: () => ref.watch(isFormValid),
+      isLoading: () => ref.watch(isLoadingSelector),
       isOverlayActive: () => ref.watch(overlayStatusProvider),
       onPressed: onPressed,
       overlayWatcher: watcher,

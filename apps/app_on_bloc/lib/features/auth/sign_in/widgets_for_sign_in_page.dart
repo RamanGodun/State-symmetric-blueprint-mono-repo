@@ -143,8 +143,7 @@ final class _SignInSubmitButton extends StatelessWidget {
         >(
           label: LocaleKeys.buttons_sign_in,
           isFormValid: (state) => state.isValid,
-          isLoadingSelector: (submitState) =>
-              (submitState as SubmissionFlowState).isLoading,
+          isLoadingSelector: (state) => state.isLoading,
           onPressed: () => context.submitSignIn(),
         )
         .withPaddingBottom(AppSpacing.l);
@@ -165,9 +164,9 @@ final class _SignInPageFooterGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// 🧠 Computes `isEnabled` [_SignInPageFooter]
-    return BlocAdapterForFooterGuard<SignInCubit, SubmissionFlowState>(
+    return BlocAdapterForFooterGuard<SignInCubit, SubmissionFlowStateModel>(
       isLoadingSelector: (state) => state.isLoading,
-
+      //
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
       child: const _SignInPageFooter(),
     );
@@ -189,7 +188,7 @@ final class _SignInPageFooter extends StatelessWidget {
     //
     /// 🛡️ Overlay guard (blocks navigation while dialogs/overlays shown)
     final isEnabled = context.isFooterEnabled;
-
+    //
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

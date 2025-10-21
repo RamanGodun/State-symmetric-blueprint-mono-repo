@@ -1,9 +1,16 @@
 import 'package:bloc_adapter/src/core/base_modules/overlays_module/locker_while_active_overlay.dart'
     show BlocOverlayWatcher;
 import 'package:bloc_adapter/src/core/base_modules/overlays_module/overlay_status_cubit.dart';
+import 'package:bloc_adapter/src/core/presentation_shared/utils/bloc_select_x_on_context.dart';
 import 'package:core/public_api/core.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+/// Default: uses `.isLoading` extension on SubmissionFlowState.
+bool _defaultLoading(SubmissionFlowStateModel state) => state.isLoading;
+
+////
+////
 
 /// 🚀 [BlocAdapterForSubmitButton] — BLoC adapter for core submit button.
 /// Wires form validity, loading state and overlay activity into [SubmitButton].
@@ -11,7 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 final class BlocAdapterForSubmitButton<
   FormsCubit extends StateStreamable<FormsState>,
   FormsState,
-  SubmitCubit extends StateStreamable<SubmissionFlowState>
+  SubmitCubit extends StateStreamable<SubmissionFlowStateModel>
 >
     extends StatelessWidget {
   ///---------------------------------
@@ -19,8 +26,8 @@ final class BlocAdapterForSubmitButton<
     required this.label,
     required this.isFormValid,
     required this.onPressed,
-    this.isLoadingSelector,
     this.loadingLabel,
+    this.isLoadingSelector = _defaultLoading,
     super.key,
   });
 
@@ -31,7 +38,7 @@ final class BlocAdapterForSubmitButton<
   final bool Function(FormsState) isFormValid;
   //
   /// Selector to check if submit state is loading.
-  final bool Function(dynamic submitState)? isLoadingSelector;
+  final bool Function(SubmissionFlowStateModel submitState) isLoadingSelector;
   //
   /// Press callback (enabled only when form is valid and not locked).
   final VoidCallback onPressed;
@@ -44,27 +51,30 @@ final class BlocAdapterForSubmitButton<
     //
     final watcher = BlocOverlayWatcher(context);
     //
-    return BlocBuilder<SubmitCubit, SubmissionFlowState>(
-      buildWhen: (p, c) => p.runtimeType != c.runtimeType,
-      builder: (context, submitState) {
-        return BlocSelector<FormsCubit, FormsState, bool>(
-          selector: isFormValid,
-          builder: (context, isValid) {
-            return SubmitButton(
-              label: label,
-              loadingLabel: loadingLabel,
-              isValid: () => isValid,
-              isLoading: () =>
-                  isLoadingSelector?.call(submitState) ??
-                  submitState is ButtonSubmissionLoadingState,
-              isOverlayActive: () =>
-                  context.select<OverlayStatusCubit, bool>((c) => c.state),
-              onPressed: onPressed,
-              overlayWatcher: watcher,
-            );
-          },
+    // Symmetric, concise, and rebuild-safe:
+    final isValid = context.watchAndSelect<FormsCubit, FormsState, bool>(
+      isFormValid,
+    );
+    final submitState = context
+        .watchAndSelect<
+          SubmitCubit,
+          SubmissionFlowStateModel,
+          SubmissionFlowStateModel
+        >(
+          (s) => s,
         );
-      },
+    final isLoading = isLoadingSelector(submitState);
+    final isOverlayActive = context
+        .watchAndSelect<OverlayStatusCubit, bool, bool>((s) => s);
+    //
+    return SubmitButton(
+      label: label,
+      loadingLabel: loadingLabel,
+      isValid: () => isValid,
+      isLoading: () => isLoading,
+      isOverlayActive: () => isOverlayActive,
+      onPressed: onPressed,
+      overlayWatcher: watcher,
     );
   }
 

@@ -95,8 +95,7 @@ final class _ResetPasswordSubmitButton extends StatelessWidget {
         >(
           label: LocaleKeys.buttons_reset_password,
           isFormValid: (state) => state.isValid,
-          isLoadingSelector: (submitState) =>
-              (submitState as SubmissionFlowState).isLoading,
+          isLoadingSelector: (state) => state.isLoading,
           onPressed: () => context.submitResetPassword(),
         )
         .withPaddingBottom(AppSpacing.xl);
@@ -116,7 +115,10 @@ final class _ResetPasswordPageFooterGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// 🧠 Computes `isEnabled` [_ResetPasswordPageFooter]
-    return BlocAdapterForFooterGuard<ResetPasswordCubit, SubmissionFlowState>(
+    return BlocAdapterForFooterGuard<
+      ResetPasswordCubit,
+      SubmissionFlowStateModel
+    >(
       isLoadingSelector: (state) => state.isLoading,
 
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)

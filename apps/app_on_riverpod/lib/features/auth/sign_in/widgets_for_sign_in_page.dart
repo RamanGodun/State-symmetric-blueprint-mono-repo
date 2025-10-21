@@ -130,8 +130,10 @@ final class _SignInSubmitButton extends ConsumerWidget {
     //
     return RiverpodAdapterForSubmitButton(
       label: LocaleKeys.buttons_sign_in,
-      isValidProvider: signInFormProvider.select((state) => state.isValid),
-      isLoadingProvider: signInProvider.select((state) => state.isLoading),
+      isFormValid: signInFormProvider.select((state) => state.isValid),
+      isLoadingSelector: signInProvider.select<bool>(
+        (SubmissionFlowStateModel state) => state.isLoading,
+      ),
       onPressed: () => ref.submitSignIn(),
     ).withPaddingBottom(AppSpacing.l);
   }
@@ -152,7 +154,9 @@ final class _SignInPageFooterGuard extends StatelessWidget {
     //
     /// 🧠 Computes `isEnabled` [_SignInPageFooter]
     return RiverpodAdapterForFooterGuard(
-      isLoadingProvider: signInProvider.select((state) => state.isLoading),
+      isLoadingSelector: signInProvider.select<bool>(
+        (SubmissionFlowStateModel state) => state.isLoading,
+      ),
 
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
       child: const _SignInPageFooter(),

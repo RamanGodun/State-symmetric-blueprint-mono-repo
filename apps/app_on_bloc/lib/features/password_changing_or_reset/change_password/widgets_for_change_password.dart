@@ -155,8 +155,7 @@ final class _ChangePasswordSubmitButton extends StatelessWidget {
         >(
           label: LocaleKeys.change_password_title,
           isFormValid: (state) => state.isValid,
-          isLoadingSelector: (submitState) =>
-              (submitState as SubmissionFlowState).isLoading,
+          isLoadingSelector: (state) => state.isLoading,
           onPressed: () => context.submitChangePassword(),
         )
         .withPaddingBottom(AppSpacing.l);

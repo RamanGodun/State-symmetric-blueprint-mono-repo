@@ -57,7 +57,7 @@ final class _VerifyEmailView extends StatelessWidget {
 
     /// ⛑️ Centralized (SignOut + EmailVerification) one-shot errors handling via overlays
     ///    - OverlayDispatcher resolves conflicts/priority internally
-    return ErrorsListenerForAppOnCubit(
+    return BlocAdapterForErrorsMultiListeners(
       resolveBlocs: (ctx) => [
         ctx.read<SignOutCubit>(), // ⛑️ catch SignOut errors
         ctx.read<EmailVerificationCubit>(), // ⛑️ catch EmailVerification errors

@@ -5,12 +5,12 @@ import 'package:core/public_api/base_modules/overlays.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// ⛑️ [ErrorsListenerForAppOnCubit] — listen multiple BLoC/Cubit sources at once
+/// ⛑️ [BlocAdapterForErrorsMultiListeners] — listen multiple BLoC/Cubit sources at once
 /// ✅ Enter-only: reacts only on transition into [AsyncErrorForBLoC]
 //
-final class ErrorsListenerForAppOnCubit extends StatelessWidget {
+final class BlocAdapterForErrorsMultiListeners extends StatelessWidget {
   ///---------------------------------------------------------
-  const ErrorsListenerForAppOnCubit({
+  const BlocAdapterForErrorsMultiListeners({
     required this.resolveBlocs, // lazy resolver with a valid BuildContext
     required this.child,
     super.key,

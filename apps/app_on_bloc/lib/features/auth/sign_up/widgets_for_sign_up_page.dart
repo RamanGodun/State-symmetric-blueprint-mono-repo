@@ -57,13 +57,13 @@ final class _SignUpSubmitButton extends StatelessWidget {
         >(
           label: LocaleKeys.buttons_sign_up,
           isFormValid: (state) => state.isValid,
-          isLoadingSelector: (submitState) =>
-              (submitState as SubmissionFlowState).isLoading,
+          isLoadingSelector: (state) => state.isLoading,
           onPressed: () => context.submitSignUp(),
         )
         .withPaddingBottom(AppSpacing.l);
   }
 }
+
 ////
 ////
 
@@ -77,7 +77,7 @@ final class _SignUpPageFooterGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     /// 🧠 Computes `isEnabled` [_SignUpPageFooter]
-    return BlocAdapterForFooterGuard<SignUpCubit, SubmissionFlowState>(
+    return BlocAdapterForFooterGuard<SignUpCubit, SubmissionFlowStateModel>(
       isLoadingSelector: (state) => state.isLoading,
 
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)

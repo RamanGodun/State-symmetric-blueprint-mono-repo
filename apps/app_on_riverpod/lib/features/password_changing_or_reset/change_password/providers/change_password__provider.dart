@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'change_password__provider.g.dart';
 
 /// 🔐 [changePasswordProvider] — Handles password-change submission & side-effects.
-/// 🧰 Uses shared [SubmissionFlowState].
+/// 🧰 Uses shared [SubmissionFlowStateModel].
 /// 🔁 Symmetric to BLoC 'ChangePasswordCubit' (Initial → Loading → Success/Error/RequiresReauth).
 //
 @riverpod
@@ -17,7 +17,7 @@ final class ChangePassword extends _$ChangePassword {
   final _submitDebouncer = Debouncer(AppDurations.ms600);
 
   @override
-  SubmissionFlowState build() {
+  SubmissionFlowStateModel build() {
     ref.onDispose(
       _submitDebouncer.cancel,
     ); // 🧼 Cleanup memory leaks on dispose

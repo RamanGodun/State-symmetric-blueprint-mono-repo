@@ -30,7 +30,7 @@ final class ProfilePage extends ConsumerWidget {
 
     /// ⛑️ Centralized (SignOut + Profile) one-shot error handling via overlays
     ///    - OverlayDispatcher resolves conflicts/priority internally
-    return ErrorsListenerForAppOnRiverpod(
+    return RiverpodAdapterForErrorsMultiListeners(
       failureSources: [
         signOutProvider.failureSource, // ⛑️ catch signOut errors
         profileProvider.failureSource, // ⛑️ catch profile fetch errors

@@ -87,11 +87,11 @@ final class _ResetPasswordSubmitButton extends ConsumerWidget {
     //
     return RiverpodAdapterForSubmitButton(
       label: LocaleKeys.buttons_reset_password,
-      isValidProvider: resetPasswordFormProvider.select(
+      isFormValid: resetPasswordFormProvider.select(
         (state) => state.isValid,
       ),
-      isLoadingProvider: resetPasswordProvider.select(
-        (state) => state.isLoading,
+      isLoadingSelector: resetPasswordProvider.select<bool>(
+        (SubmissionFlowStateModel state) => state.isLoading,
       ),
       onPressed: () => ref.submitResetPassword(),
     ).withPaddingBottom(AppSpacing.xl);
@@ -112,10 +112,10 @@ final class _ResetPasswordPageFooterGuard extends StatelessWidget {
     //
     /// 🧠 Computes `isEnabled` [_ResetPasswordPageFooter]
     return RiverpodAdapterForFooterGuard(
-      isLoadingProvider: resetPasswordProvider.select(
-        (state) => state.isLoading,
+      isLoadingSelector: resetPasswordProvider.select<bool>(
+        (SubmissionFlowStateModel state) => state.isLoading,
       ),
-
+      //
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
       child: const _ResetPasswordPageFooter(),
     );

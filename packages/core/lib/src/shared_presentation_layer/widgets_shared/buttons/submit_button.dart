@@ -75,6 +75,17 @@ final class _SubmitButtonState extends State<SubmitButton> {
     );
   }
 
+  /// 🌐 Resolves [raw] as localization key if possible.
+  /// Falls back to [fallback] or [raw] if translation unavailable.
+  String _resolveText(String raw, String? fallback) {
+    final looksLikeKey = raw.contains('.');
+    if (looksLikeKey && AppLocalizer.isInitialized) {
+      return AppLocalizer.translateSafely(raw, fallback: fallback ?? raw);
+    }
+    return raw;
+  }
+  //
+
   @override
   Widget build(BuildContext context) {
     //
@@ -108,16 +119,6 @@ final class _SubmitButtonState extends State<SubmitButton> {
   }
 
   ////
-
-  /// 🌐 Resolves [raw] as localization key if possible.
-  /// Falls back to [fallback] or [raw] if translation unavailable.
-  String _resolveText(String raw, String? fallback) {
-    final looksLikeKey = raw.contains('.');
-    if (looksLikeKey && AppLocalizer.isInitialized) {
-      return AppLocalizer.translateSafely(raw, fallback: fallback ?? raw);
-    }
-    return raw;
-  }
 
   /// 🧼 Cleanup: dispose lock controller and release resources.
   @override
