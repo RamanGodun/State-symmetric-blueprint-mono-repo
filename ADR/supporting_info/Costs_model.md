@@ -145,7 +145,7 @@ _A pragmatic summary of the **State‑Symmetric** approach using the latest meas
 
 ## 1) Fresh results at a glance
 
-### CSM Track (Custom State Models)
+### SCSM (Shared-Custom-State-Models) Track
 
 | Bucket           | RP→CB | CB→RP | RoundTrip/2 |    %Track |
 | ---------------- | ----: | ----: | ----------: | --------: |
@@ -160,7 +160,7 @@ _A pragmatic summary of the **State‑Symmetric** approach using the latest meas
 
 ---
 
-### AVSM Track (AsyncValue + EmailV + SignOut)
+### AVLSM (AsyncValue-Like-State-Models) Track
 
 | Bucket           | RP→CB | CB→RP | RoundTrip/2 |    %Track |
 | ---------------- | ----: | ----: | ----------: | --------: |

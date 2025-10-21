@@ -79,7 +79,7 @@ final class _SignUpPageFooterGuard extends StatelessWidget {
     /// 🧠 Computes `isEnabled` [_SignUpPageFooter]
     return BlocAdapterForFooterGuard<SignUpCubit, SubmissionFlowStateModel>(
       isLoadingSelector: (state) => state.isLoading,
-
+      //
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
       child: const _SignUpPageFooter(),
     );

@@ -4,7 +4,7 @@ This **State-symmetric approach** is like a **not expensive (15–35% LOC upfron
 
 **Evaluated cost of approach implementation**:
 
-- First features: adapters observed at ~20–35% LOC per feature ("Shared-Custom-State-Models Track" features - lower end; "Shared-AsyncValue-Models Track" - higher).
+- First features: adapters observed at ~20–35% LOC per feature ("Shared-Custom-State-Models Track" features - lower end; "AsyncValue-Like-Models Track" - higher).
 - After approach's implementation in 2–3 features (reusing the same seams), amortized overhead drops to ≤5–10%.
 
 * Accepted model and performed assessments are in [`info-002-business-value-estimates.md`](./info-002-business-value-estimates.md). To revaluate - run `melos loc:report` in terminal.
@@ -146,7 +146,7 @@ Does the adapter budget fit? (target ≤200 LOC, hard cap 300)
 >   flows the measured migration saving is **~58–59%**; symmetry pays off even at modest reuse probability.
 > - For **Async/Profile**:
 >   flows the first feature is marginal; adapters amortize fast across **2+** async features. For case of reuse 5+ times - strong positive ROI.
->   Also if a native primitive like Riverpod’s **`AsyncValue<T>`** brings distinct UX gains => anyway add a **one‑off BLoC analogue** plus a tiny **`AsyncStateView<T>`** facade (written once per app and reused across features).
+>   Also if a native primitive like Riverpod’s **`AsyncValue<T>`** brings distinct UX gains => anyway add a **one‑off BLoC analogue** (written once per app and reused across features).
 
 ### Metrics to Track
 

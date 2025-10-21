@@ -2,37 +2,35 @@
 
 ## ✨ Overview
 
-This monorepo demonstrates a **State-Symmetric architecture code style** — a pragmatic refinement of state-agnostic principles, that keeps 85–90% of the codebase unchanged across different state managers (Riverpod, Cubit/BLoC, Provider).
+This monorepo demonstrates a **State-Symmetric architecture code style** — a pragmatic refinement of state-agnostic principles, that **keeps 90%+ of the codebase unchanged across different state managers** (Riverpod, Cubit/BLoC, Provider).
 
 **The approach combines:**
 
 - **Clean Architecture** with strong layer separation — state managers orchestrate state only; UI remains thin and stateless.
 - **Thin adapters/facades** (2–7 touchpoints per feature) that bridge shared code to specific state managers
-- **Lazy Parity**: only one active state manager (and its thin facades) is implemented and compiled.
-  Other SM code (their adapters + glue) is created only **on demand**, not upfront — avoiding parity maintenance cost while still enabling 90+% codebase’s reuse.
+
+* **Lazy Parity:** only one state manager (and its thin facades) is implemented and compiled. Other SM glue is added **on demand**, avoiding parity maintenance cost while still enabling 90%+ reuse.
 
 Accepted Architecture Decision Record: **[ADR-001 — State-Symmetric Architecture](ADR/ADR-001-State-symmetric-architecture.md)**
 
-### Key Metrics (Measured)
+### Key Metrics (measured)
 
-## Aspect Target Reality
-
-## UI parity 95–100% ✅ Widgets/screens visually identical
-
-## Presentation parity 85–90% ✅ Thin wrappers only
-
-## Adapter overhead ≤5–10% amortized ✅ 15–35% first feature → ≤5–10% after 3-4+ features
-
-## Migration savings 40–80% ✅ Auth: 58–59%, Profile: 9–11% (first feature)
+| Aspect              | Target           | 📲 Reality                                      |
+| ------------------- | ---------------- | ----------------------------------------------- | ---------------------------------------------- |
+| UI parity           | 95–100%          | ✅ Widgets/screens visually identical           |
+| Presentation parity | 90%+             | ✅ Thin wrappers only                           |
+| <!--                | Adapter overhead | ≤5–10% (amort.)                                 | ✅ 15–35% on first feature → ≤5–10% after 3–4+ |
+| Migration savings   | 40–80%           | ✅ Auth: 58–59%, Profile: 9–11% (first feature) | -->                                            |
 
 ### **Business Value:**
 
-State symmetry **acts as low-cost insurance (~15–35% LOC upfront, amortized to ≤5–10%) that pays off when**:
+State symmetry acts as **low-cost insurance** (≈15–35% LOC upfront on the first feature, amortized to ≤5–10%) **that pays off when**:
 
-- Probability of feature's reuse (in app with another SM) ≥15–25% within planning horizon
-- UI/UX feature's similarity is ≥70% across target apps
+- Probability of reusing a feature in an app with another SM is **≥15–25%** within the planning horizon.
+- Cross-app UI/UX similarity is **≥70%**.
 
-It is **most valuable for a niche (~5–10%)**: multi-product companies, white-label vendors, agencies with diverse client requirements, platform/SDK providers. **Solo developers and skilled indie teams** benefit even more. With automation and one-person context, the effective overhead often drops to **<3%**, while reuse opportunities are high across gigs/products — so, for them the approach is usually **net-positive by default** for most mainstream features.
+Approach can be valuable for small niche: **multi-product companies, white-label vendors, agencies, platform/SDK providers**.
+**Solo/indie** developers often get better ROI: with automation and single-person context the effective overhead can drop to **<3%**, while reuse opportunities remain high — net-positive by default for mainstream features (that can be reused on another app with different state manager).
 
 See also:
 
@@ -42,28 +40,44 @@ See also:
 
 ## Getting Started 🚀
 
-Щоб запустити додатки дивись відповідні секціх Readme файлів відповідних додатків. (тут мають бути посилання на ці документи)
+Follow app-specific READMEs for environment setup, Firebase config (if any), and run scripts:
 
-#### Riverpod app
+- 📱 **BLoC/Cubit app:** [`apps/app_on_bloc/README.md`](apps/app_on_bloc/README.md)
+- 📱 **Riverpod app:** [`apps/app_on_riverpod/README.md`](apps/app_on_riverpod/README.md)
+
+Common bootstrap:
 
 ```sh
-# Dev flavor
-melos run run:rp:dev
-# Staging flavor
-melos run run:rp:stg
+# Install Melos globally if needed
+dart pub global activate melos
+
+# Bootstrap the workspace (pub get + linking)
+melos bootstrap
+```
+
+Run examples:
+
+```sh
+# Riverpod app
+melos run run:rp:dev   # Dev flavor
+melos run run:rp:stg   # Staging flavor
+
+# Cubit/BLoC app (examples; see app README for exact scripts)
+melos run run:bloc:dev
+melos run run:bloc:stg
 ```
 
 ## 🧠 Files structure
 
-The monorepo is structured into **two fully symmetrical apps (BLoC/Cubit and Riverpod)** and **packages/**
+The monorepo is structured into **two fully symmetrical apps (BLoC/Cubit and Riverpod)** and **packages/**:
 
-```files tree
+```text
 |
-├── apps/                        # Symmetric demo-apps
-│   ├── app_on_bloc/lib/         # BLoC/Cubit implementation
-│   └── app_on_riverpod/lib/     # Riverpod implementation
+├── apps/                        # Symmetric demo apps
+│   ├── app_on_bloc/             # BLoC/Cubit implementation
+│   └── app_on_riverpod/         # Riverpod implementation
 │
-├── packages/                    # Shared Flutter-packages, that plugs-in to apps
+├── packages/                    # Shared Flutter packages, plugged into apps
 │   ├── app_bootstrap/           # Startup & initialization logic
 │   ├── core/                    # Shared foundation (modules + layers)
 │   ├── features/                # Domain & data layers for features
@@ -71,17 +85,22 @@ The monorepo is structured into **two fully symmetrical apps (BLoC/Cubit and Riv
 │   ├── bloc_adapter/            # BLoC/Cubit glue code
 │   └── riverpod_adapter/        # Riverpod glue code
 │
-|
 ├── ADR/                         # Architecture Decision Records
 │   ├── ADR-001-State-symmetric-architecture.md
+│   ├── ADR-002-GetIt-for-context-dependent-state-managers.md
+│   ├── ADR-003-GoRouter-navigation.md
+│   ├── ADR-004-EasyLocalization.md
+|   |-- ...
 │   └── supporting_info/
-|
+│       ├── info-001-use-case-areas.md
+│       ├── info-002-business-value-estimates.md
+│       ├── info-003-critics_reply.md
+│       ├── info-004-results-of-loc-report.md
+│       └── ...
+│
 ├── scripts/                     # Build & dev automation scripts
-├── .vscode/                     # IDE launch configurations
 ├── melos.yaml                   # Monorepo manager
-├── pubspec.yaml
-├── README.md
-└── LICENSE
+└── README.md
 ```
 
 ### Organizational Principles
@@ -121,7 +140,7 @@ This systematic organization ensures **every piece of code has a natural home wi
 **Both fully functional demo apps share identical functionality, UI, and UX**, showcasing the state-symmetric architecture in action.
 
 📱 [Cubit Demo App](apps/app_on_bloc/README.md)
-Showcases how Cubit integrates with `core`, `features`, and `adapters` while keeping 85–90% of the codebase unchanged.
+Showcases how Cubit integrates with `core`, `features`, and `adapters` while keeping 90%+ of the codebase unchanged.
 
 📱 [Riverpod Demo App](apps/app_on_riverpod/README.md)
 A symmetrical demo app built with **Riverpod**, featuring the exact same functionality and UI/UX as the Cubit app.
@@ -132,7 +151,7 @@ The choice of Cubit and Riverpod was deliberate — it’s enough to **visualize
 - **Cubit → BLoC**: replace method calls with event dispatching (swap Cubit for BLoC, add Events, adjust DI bindings).
 - **Cubit → Provider**: slightly more changes. Since Provider depends on `BuildContext`, use **GetIt** (as in BLoC/Cubit apps), adjust DI bindings, replace Cubit with equivalent Providers exposing symmetric methods, and **add thin adapters**.
 
-**Key insight:** One well-structured base is sufficient for Cubit, BLoC, Riverpod, and Provider.
+**Key insight:** one well-structured base supports **Cubit, BLoC, Riverpod, and Provider** with minimal adapter work.
 
 ## Created and used custom Flutter packages
 
@@ -202,11 +221,11 @@ and global DI container support, making Riverpod integration seamless/ergonomic 
 - 🛠 **GetIt** (dependency injection)
 - 🚀 **Productivity**: `equatable`, `rxdart`
 
-  ### 🎯 Framework & Language & Navigation/Routing
+### 🎯 Framework, Routing, Localization
 
-- 🐦 **Flutter SDK** (>=3.22, SDK ^3.8.0)
-- 🌐 **easy_localization** (with codegen & keys generation)
-- 🧭 **go_router** (auth-aware navigation with declarative redirects)
+- **Flutter SDK** (>=3.22, Dart ^3.8.0)
+- **go_router** (auth-aware, declarative redirects)
+- **easy_localization** (codegen & keys generation)
 
   ### 🔥 Firebase & Local Storages
 
@@ -282,7 +301,7 @@ This monorepo is licensed under the [![LICENSE][license_badge]](LICENSE).
 
 ## 📚 Additional Resources
 
-- 📖 [Architecture Decision Records](ADR/)
+- 📖 [Architecture Decision Records] [ADR-001 — State-Symmetric Architecture](ADR/ADR-001-State-symmetric-architecture.md)
 - 🎯 [Use Case Areas](ADR/supporting_info/info-001-use-case-areas.md)
 - 📈 [Business Value Analysis](ADR/supporting_info/info-002-business-value-estimates.md)
 - 💬 [Addressing Critics](ADR/supporting_info/info-003-critics_reply.md)
