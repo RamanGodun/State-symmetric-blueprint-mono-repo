@@ -109,6 +109,7 @@ The **following requirements are adopted** for the monorepo’s codebase:
 ### ⚠️ Negative
 
 - **Niche applicability** → this is not a universal solution. Scenarios where features are reused across apps with different state managers represent <5% of the market, so ROI is only justified in specific niches (agencies, multi-product companies, white-label, platform teams).
+<!-- - **necessary to develop infrastructure codebase** -->
 - **Adapter duplication** → some parallel classes (e.g., Bloc vs Riverpod listeners) still needed.
 - **Discipline required** → teams must consistently enforce symmetry rules and maintain API parity.
 - **Symmetric mindset** → developers must adapt to thinking in terms of shared state models and thin facades.

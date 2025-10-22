@@ -4,49 +4,6 @@ A pragmatic summary of the **State‑Symmetric** approach using real measurement
 
 > Goals: keep **state‑dependent code in range 15–35% LOC upfront, amortized to ≤5–10% per feature**, reuse **60–80%** across stacks, and pay the cost **only when reuse is likely**.
 
----
-
-## Термінологічний словник
-
-- **CSM Track** (Custom State Models) = Auth-подібні features
-- **AVSM Track** (AsyncValue State Models) = Profile-подібні features
-- **Round-Trip** = сума RP→CB + CB→RP migrations
-- **Overhead** = LOC адаптерів відносно total feature size
-
-## 1) Cost and ROI Model (realistic, observed)
-
-- **Visible UI parity:** **95–100%** (widgets/screens are visually identical).
-- **Presentation parity:** **~85–90%** (remaining differences are thin wrappers).
-- **Lazy Parity in production:** only one adapter is compiled; others remain in **sleep mode** (smoke/compile‑check only). Ongoing cost for tests and CI matrix is kept at **≤5%**.
-
-Adapters are implemented as **thin seams** (2–7 touchpoints per feature):
-
-**ROI Formula**
-
-```
-Expected ROI ≈ R · I · F − OMI · F
-  F   = feature cost (effort)
-  R   = reuse probability (within planning horizon)
-  I   = impact (savings from reuse)
-  OMI = overhead + maintenance + initial training
-```
-
-### "METHODOLOGY NOTES"
-
-1. All results below are **CONSERVATIVE**: the baseline _Clean Architecture_ also needs presentation side-effects, but those LOC are **not** counted due to team/style variance. We only count adapters/facades + shared code.
-
-2. **Two tracks** (by state-model strategy, not just feature type):
-
-- **Shared-Custom-State-Models (SCSM) Track** — relies on a shared state models (e.g. `SubmissionFlowStateModel`, `SignInFormState`, `SignUpFormState`, etc).
-  ➜ Minimal abstraction overhead → ROI positive from the very first feature.
-
-- **AsyncValue-Like-State-Models (AVLSM) Track** — relies on **native async primitives** per state manager (Riverpod’s `AsyncValue<T>`; `AsyncValueForBloc<T>`), and keep symmetry via **thin adapters only** — no cross-SM async facade.
-  ➜ ROI is weaker for a single feature, but becomes positive once ≥2 async features share the shared seams.
-
-* Note: functionally, Email Verification and SignOut sub-features belong to Auth feature, but it uses the Shared-AsyncValue-Model Track's seams, so for ROI we count it with Profile feature.
-
----
-
 ## 2) ROI Snapshots for showcase Features
 
 Assessments are based on the [`loc_report.sh`](../../scripts/loc_report.sh) script. Results are in [`loc_report_results.md`](info-004-results-of-loc-report.md)
