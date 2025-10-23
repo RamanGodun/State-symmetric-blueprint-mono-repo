@@ -2,12 +2,14 @@
 
 ## ✨ Overview
 
-This monorepo demonstrates a **State-Symmetric architecture code style** — a pragmatic refinement of state-agnostic principles, that **keeps 90%+ of the codebase unchanged across different state managers** (Riverpod, Cubit/BLoC, Provider).
+This monorepo demonstrates a **State-Symmetric architecture code style** — a pragmatic refinement of state-agnostic principles, that **allows to reuse 90%+ of the feature's codebase across apps with different state managers** (Riverpod, Cubit/BLoC, Provider).
+
+If you a new reader - at first look **[State Symmetric Philosophy](state_symmetric_philosophy.md)**
 
 **The approach combines:**
 
 - **Clean Architecture** with strong layer separation — state managers orchestrate state only; UI remains thin and stateless.
-- **Thin adapters/facades** (2–7 touchpoints per feature) that bridge shared code to specific state managers
+- **Thin adapters/facades** (2–5 touchpoints per feature) that bridge shared code to specific state managers
 
 * **Lazy Parity:** only one state manager (and its thin facades) is implemented and compiled. Other SM glue is added **on demand**, avoiding parity maintenance cost while still enabling 90%+ reuse.
 

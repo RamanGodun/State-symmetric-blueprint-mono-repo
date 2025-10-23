@@ -5,7 +5,7 @@ set -euo pipefail
 # State-Symmetric LOC Cost Report (Average per migration = RoundTrip/2)
 # - Skips generated (*.g.dart, *.freezed.dart, *.mocks.dart, *.gr.dart)
 # - Skips comments
-# - Aggregates by track: CSM (Custom State Models) and AVSM (AsyncValue)
+# - Aggregates by track: SCSM (Shared Custom State Models) and AVLSM (AsyncValue-Like State Models)
 # =============================================================================
 
 # ---- Dependencies ------------------------------------------------------------
@@ -19,13 +19,11 @@ RG_EXCLUDES=(); for e in "${EXCLUDES[@]}"; do RG_EXCLUDES+=(--glob "$e"); done
 # ---- Helpers -----------------------------------------------------------------
 hr()   { printf '%*s\n' "$(tput cols 2>/dev/null || echo 100)" '' | tr ' ' '='; }
 sec()  { echo; hr; echo "# $*"; hr; echo; }
-row2(){ printf "| %-34s | %10s |\n" "$1" "$2"; }
-hdr2(){ printf "| %-34s | %10s |\n" "Bucket" "LOC"; printf "|-%-34s-|-%10s-|\n" "----------------------------------" "----------"; }
 
 # 5-column table: RP→CB | CB→RP | RoundTrip/2 | %Track
 row5(){ printf "| %-22s | %10s | %10s | %12s | %8s |\n" "$1" "$2" "$3" "$4" "$5"; }
 hdr5(){
-  printf "| %-22s | %10s | %10s | %12s | %8s |\n" "Bucket" "RP→CB" "CB→RP" "RoundTrip/2" "%Track";
+  printf "| %-22s | %10s | %10s | %12s | %8s |\n" "Scenario" "RP→CB" "CB→RP" "Avg (RT/2)" "%Track";
   printf "|-%-22s-|-%10s-|-%10s-|-%12s-|-%8s-|\n" "----------------------" "----------" "----------" "------------" "--------";
 }
 
@@ -36,7 +34,7 @@ hdr_sav(){
   printf "|-%-34s-|-%10s-|-%8s-|\n" "----------------------------------" "----------" "--------";
 }
 
-# Overhead table (nice, explicit labels)
+# Overhead table
 row_over(){ printf "| %-54s | %10s | %12s |\n" "$1" "$2" "$3"; }
 hdr_over(){
   printf "| %-54s | %10s | %12s |\n" "Track (LOC & % of track codebase)" "LOC" "% of track";
@@ -69,74 +67,48 @@ count_file_code() {
     | wc -l | tr -d ' '
 }
 
-sum_dirs()  { local t=0; for p in "$@"; do [[ -n "${p:-}" ]] && t=$(( t + $(count_dir_code "$p") )); done; echo "$t"; }
 sum_files() { local t=0; for f in "$@"; do [[ -n "${f:-}" ]] && t=$(( t + $(count_file_code "$f") )); done; echo "$t"; }
-
 half_sum_files() { local s=$(sum_files "$@"); awk "BEGIN { printf \"%d\", ($s/2)+0.5 }"; }
-
-avg_files() {
-  # Average LOC across existing files (ceil). If none exist => 0.
-  local total=0 count=0 loc
-  for f in "$@"; do
-    loc=$(count_file_code "$f")
-    if [[ "$loc" -gt 0 ]]; then total=$((total+loc)); count=$((count+1)); fi
-  done
-  if [[ "$count" -eq 0 ]]; then echo 0; else awk "BEGIN { printf \"%d\", ($total/$count)+0.999 }"; fi
-}
 
 # Integer half (rounded)
 half_num() { awk "BEGIN { printf \"%d\", ($1/2)+0.5 }"; }
 
-# ---- Fast SM-lines counter (no file listing, uses ripgrep with globs) -------
-# Counts non-comment code lines across files whose PATH matches provided scopes
-# and NAME matches *cubit*|*bloc*|*notifier*|*provider*.
-count_sm_code_scoped() {
-  local dir="$1"; shift
-  local scopes=("$@")
-  [[ -d "$dir" ]] || { echo 0; return; }
-
-  local args=( "${RG_EXCLUDES[@]}" -t dart -n '^\s*\S' "$dir" )
-  # include only scoped subpaths
-  for s in "${scopes[@]}"; do args+=( --glob "$s" ); done
-  # include only SM file names
-  args+=( --glob '**/*cubit*.dart' --glob '**/*bloc*.dart' --glob '**/*notifier*.dart' --glob '**/*provider*.dart' )
-  # exclude comment lines
-  rg "${args[@]}" \
-    | cut -d: -f3 \
-    | grep -Ev '^\s*//|^\s*/\*|^\s*\*|^\s*\*/' \
-    | wc -l | tr -d ' ' || echo 0
-}
-
 # =============================================================================
-# CONFIG
+# CONFIG — Explicit file lists per bucket
 # =============================================================================
 
-# --- Feature roots (domain+data) ---------------------------------------------
-AUTH_ROOT="packages/features/lib/src/auth"
-PROFILE_ROOT="packages/features/lib/src/profile"
-EMAILV_ROOT="packages/features/lib/src/email_verification"  # goes into AVSM track
-
-# --- CSM track state models (must be counted in Baseline) --------------------
-CSM_MODELS_DIR="packages/core/lib/src/base_modules/form_fields/shared_form_fields_states"
-CSM_SUBMISSION_STATE_FILE="packages/core/lib/src/shared_presentation_layer/shared_states/submission_state.dart"
-
-# --- AVSM track "baseline model" candidates (take avg LOC for baseline) ------
-AVSM_BASELINE_MODEL_CANDIDATES=(
-  "packages/core/lib/src/shared_presentation_layer/async_state/async_state_view.dart"
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/async_state/async_state_view_for_riverpod.dart"
-  "packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_state_view_for_bloc.dart"
-  "packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_value_for_bloc.dart"
+# --- BUCKET 2: Reused Core (Domain/Data) -------------------------------------
+# SCSM Track
+SCSM_CORE_FILES=(
+  "packages/features/lib/src/auth/data/auth_repo_implementations/sign_in_repo_impl.dart"
+  "packages/features/lib/src/auth/data/auth_repo_implementations/sign_up_repo_impl.dart"
+  "packages/features/lib/src/auth/data/remote_database_contract.dart"
+  "packages/features/lib/src/auth/data/remote_database_impl.dart"
+  "packages/features/lib/src/auth/domain/use_cases/sign_in.dart"
+  "packages/features/lib/src/auth/domain/use_cases/sign_up.dart"
+  "packages/features/lib/src/auth/domain/repo_contracts.dart"
+  "packages/features/lib/src/password_changing_or_reset/data/password_actions_repo_impl.dart"
+  "packages/features/lib/src/password_changing_or_reset/data/remote_database_contract.dart"
+  "packages/features/lib/src/password_changing_or_reset/data/remote_database_impl.dart"
+  "packages/features/lib/src/password_changing_or_reset/domain/password_actions_use_case.dart"
+  "packages/features/lib/src/password_changing_or_reset/domain/repo_contract.dart"
 )
 
-# --- App presentation roots (entire lib/features/* per app) -----------------
-APP_BLOC_FEATURES_DIR="apps/app_on_bloc/lib/features"
-APP_RP_FEATURES_DIR="apps/app_on_riverpod/lib/features"
+# AVLSM Track (without SignOut feature)
+AVLSM_CORE_FILES=(
+  "packages/features/lib/src/email_verification/data/email_verification_repo_impl.dart"
+  "packages/features/lib/src/email_verification/data/remote_database_contract.dart"
+  "packages/features/lib/src/email_verification/data/remote_database_impl.dart"
+  "packages/features/lib/src/email_verification/domain/email_verification_use_case.dart"
+  "packages/features/lib/src/email_verification/domain/repo_contract.dart"
+  "packages/features/lib/src/profile/data/implementation_of_profile_fetch_repo.dart"
+  "packages/features/lib/src/profile/data/remote_database_contract.dart"
+  "packages/features/lib/src/profile/data/remote_database_impl.dart"
+  "packages/features/lib/src/profile/domain/fetch_profile_use_case.dart"
+  "packages/features/lib/src/profile/domain/repo_contract.dart"
+)
 
-# --- Scopes for SM_files_target ---------------------------------------------
-CSM_SCOPES=('**/auth/**' '**/password**/**')
-AVSM_SCOPES=('**/profile/**' '**/email_verification/**' '**/sign_out/**')
-
-# --- Shared widgets (only to FEATURE TOTALS) ---------------------------------
+# Shared stateless widgets (splash_page excluded)
 SHARED_WIDGET_FILES=(
   "packages/core/lib/src/base_modules/localization/module_widgets/text_widget.dart"
   "packages/core/lib/src/base_modules/form_fields/form_field_factory.dart"
@@ -146,189 +118,325 @@ SHARED_WIDGET_FILES=(
   "packages/core/lib/src/shared_presentation_layer/widgets_shared/buttons/text_button.dart"
   "packages/core/lib/src/shared_presentation_layer/widgets_shared/app_bar.dart"
   "packages/core/lib/src/shared_presentation_layer/widgets_shared/loader.dart"
+  "packages/core/lib/src/shared_presentation_layer/widgets_shared/footer/footer_guard_while_loading.dart"
+  "packages/core/lib/src/shared_presentation_layer/widgets_shared/footer/inherited_footer_guard.dart"
+  "packages/core/lib/src/shared_presentation_layer/widgets_shared/key_value_text_widget.dart"
 )
 
-# --- INIT (per-track; CB = exact files you provided) -------------------------
-INIT_CB_CSM_FILES=(
+# --- BUCKET 3: SM+INIT (per track & app) -------------------------------------
+# SCSM Track — BLoC app
+SCSM_SM_CB_FILES=(
+  "apps/app_on_bloc/lib/features/auth/sign_in/cubit/form_fields_cubit.dart"
+  "apps/app_on_bloc/lib/features/auth/sign_in/cubit/sign_in_cubit.dart"
+  "apps/app_on_bloc/lib/features/auth/sign_up/cubit/form_fields_cubit.dart"
+  "apps/app_on_bloc/lib/features/auth/sign_up/cubit/sign_up_cubit.dart"
+  "apps/app_on_bloc/lib/features/password_changing_or_reset/change_password/cubit/change_password_cubit.dart"
+  "apps/app_on_bloc/lib/features/password_changing_or_reset/change_password/cubit/form_fields_cubit.dart"
+  "apps/app_on_bloc/lib/features/password_changing_or_reset/reset_password/cubits/form_fields_cubit.dart"
+  "apps/app_on_bloc/lib/features/password_changing_or_reset/reset_password/cubits/reset_password_cubit.dart"
+)
+SCSM_INIT_CB_FILES=(
   "apps/app_on_bloc/lib/app_bootstrap/di_container/modules/auth_module.dart"
   "apps/app_on_bloc/lib/app_bootstrap/di_container/modules/password_module.dart"
 )
-INIT_CB_AVSM_FILES=(
+
+# SCSM Track — Riverpod app
+SCSM_SM_RP_FILES=(
+  "apps/app_on_riverpod/lib/features/auth/sign_in/providers/input_form_fields_provider.dart"
+  "apps/app_on_riverpod/lib/features/auth/sign_in/providers/sign_in__provider.dart"
+  "apps/app_on_riverpod/lib/features/auth/sign_up/providers/input_form_fields_provider.dart"
+  "apps/app_on_riverpod/lib/features/auth/sign_up/providers/sign_up__provider.dart"
+  "apps/app_on_riverpod/lib/features/password_changing_or_reset/change_password/providers/change_password__provider.dart"
+  "apps/app_on_riverpod/lib/features/password_changing_or_reset/change_password/providers/input_fields_provider.dart"
+  "apps/app_on_riverpod/lib/features/password_changing_or_reset/reset_password/providers/input_fields_provider.dart"
+  "apps/app_on_riverpod/lib/features/password_changing_or_reset/reset_password/providers/reset_password__provider.dart"
+)
+SCSM_INIT_RP_FILES=(
+  "packages/riverpod_adapter/lib/src/features/features_providers/auth/data_layer_providers/data_layer_providers.dart"
+  "packages/riverpod_adapter/lib/src/features/features_providers/auth/domain_layer_providers/use_cases_providers.dart"
+  "packages/riverpod_adapter/lib/src/features/features_providers/password_changing_or_reset/data_layer_providers/data_layer_providers.dart"
+  "packages/riverpod_adapter/lib/src/features/features_providers/password_changing_or_reset/domain_layer_providers/use_cases_provider.dart"
+)
+
+# AVLSM Track — BLoC app (without SignOut)
+AVLSM_SM_CB_FILES=(
+  "apps/app_on_bloc/lib/features/email_verification/email_verification_cubit/email_verification_cubit.dart"
+  "apps/app_on_bloc/lib/features/profile/cubit/profile_page_cubit.dart"
+)
+AVLSM_INIT_CB_FILES=(
   "apps/app_on_bloc/lib/app_bootstrap/di_container/modules/email_verification.dart"
   "apps/app_on_bloc/lib/app_bootstrap/di_container/modules/profile_module.dart"
 )
 
-# Riverpod providers per-feature (RP legs)
-RP_PROVIDERS_AUTH=(
-  "packages/riverpod_adapter/lib/src/features/features_providers/auth/domain_layer_providers/use_cases_providers.dart"
-  "packages/riverpod_adapter/lib/src/features/features_providers/auth/data_layer_providers/data_layer_providers.dart"
+# AVLSM Track — Riverpod app (without SignOut)
+AVLSM_SM_RP_FILES=(
+  "apps/app_on_riverpod/lib/features/email_verification/provider/email_verification_provider.dart"
+  "apps/app_on_riverpod/lib/features/profile/providers/profile_page_provider.dart"
 )
-RP_PROVIDERS_PROFILE_EMAILV=(
+AVLSM_INIT_RP_FILES=(
   "packages/riverpod_adapter/lib/src/features/features_providers/profile/domain_layer_providers/use_case_provider.dart"
   "packages/riverpod_adapter/lib/src/features/features_providers/profile/data_layers_providers/data_layer_providers.dart"
   "packages/riverpod_adapter/lib/src/features/features_providers/email_verification/domain_layer_providers/use_case_provider.dart"
   "packages/riverpod_adapter/lib/src/features/features_providers/email_verification/data_layer_providers/data_layer_providers.dart"
 )
 
-# --- AVSM track OVERHEAD (one-time, round-trip) ------------------------------
-AVSM_OH_FILES=(
-  "packages/core/lib/src/shared_presentation_layer/async_state/async_state_view.dart"
+# --- BUCKET 4: State Models --------------------------------------------------
+# SCSM Track
+SCSM_FORM_STATES=(
+  "packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/sign_in.dart"
+  "packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/sign_up.dart"
+  "packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/reset_password.dart"
+  "packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/change_password.dart"
+)
+SCSM_SUBMISSION_STATE="packages/core/lib/src/shared_presentation_layer/shared_states/submission_state.dart"
+
+# AVLSM Track (для Baseline — 2 фічі: Profile + EmailVerification)
+AVLSM_BASELINE_MODEL_CANDIDATES=(
   "packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_value_for_bloc.dart"
-  "packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_state_view_for_bloc.dart"
-  "packages/bloc_adapter/lib/src/core/presentation_shared/side_effects_listeners/async_multi_errors_listener.dart"
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/side_effects_listeners/async_multi_errors_listener.dart"
-  "packages/bloc_adapter/lib/src/core/presentation_shared/cubits/auth_cubit.dart"
 )
 
-# Shared button/footer → ½ в AVSM і ½ в CSM
-HALF_SHARED_BLOC=(
-  "packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/form_submit_button.dart"
-  "packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/page_footer_guard.dart"
+# AVLSM Track (для Symmetric — shared model)
+AVLSM_SHARED_MODEL="packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_value_for_bloc.dart"
+AVLSM_SHARED_BASE_CUBIT="packages/bloc_adapter/lib/src/core/presentation_shared/cubits/async_state_base_cubit.dart"
+AVLSM_SHARED_INTROSPECTION_BLOC="packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_state_introspection_bloc.dart"
+AVLSM_SHARED_INTROSPECTION_RP="packages/riverpod_adapter/lib/src/core/shared_presentation/async_state/async_state_introspection.dart"
+
+# --- BUCKET 5: Overhead ------------------------------------------------------
+# AVLSM Track (one-time, round-trip) — ПОВНИЙ overhead включає всі адаптери
+AVLSM_OH_FILES=(
+  "$AVLSM_SHARED_MODEL"
+  "$AVLSM_SHARED_BASE_CUBIT"
+  "$AVLSM_SHARED_INTROSPECTION_BLOC"
+  "$AVLSM_SHARED_INTROSPECTION_RP"
+  "packages/bloc_adapter/lib/src/core/presentation_shared/side_effects_listeners/adapter_for_async_value_flow.dart"
+  "packages/riverpod_adapter/lib/src/core/shared_presentation/side_effects_listeners/adapter_for_async_value_flow.dart"
+  "packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/adapter_for_submit_button.dart"
+  "packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/adapter_for_footer_guard.dart"
+  "packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/adapter_for_submit_button.dart"
+  "packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/adapter_for_footer_guard.dart"
 )
-HALF_SHARED_RP=(
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/form_submit_button.dart"
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/page_footer_guard.dart"
+
+# SCSM Track (per-SM, Lazy Parity) — ПОВНИЙ overhead для кожного SM
+SCSM_OH_CB_FILES=(
+  "packages/bloc_adapter/lib/src/core/presentation_shared/side_effects_listeners/adapter_for_submission_flow.dart"
+  "packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/adapter_for_submit_button.dart"
+  "packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/adapter_for_footer_guard.dart"
+)
+SCSM_OH_RP_FILES=(
+  "packages/riverpod_adapter/lib/src/core/shared_presentation/side_effects_listeners/adapter_for_submission_flow.dart"
+  "packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/adapter_for_submit_button.dart"
+  "packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/adapter_for_footer_guard.dart"
 )
 
-# --- CSM track OVERHEAD (per SM, Lazy Parity) --------------------------------
-CSM_OH_CB_FILES=( # seam for CB (RP→CB leg)
-  "packages/bloc_adapter/lib/src/core/presentation_shared/side_effects_listeners/side_effects_for_submission_state.dart"
+# --- BUCKET 6: Presentation --------------------------------------------------
+# SCSM Track — BLoC app
+SCSM_PRESENTATION_CB_FILES=(
+  "apps/app_on_bloc/lib/features/auth/sign_in/sign_in__page.dart"
+  "apps/app_on_bloc/lib/features/auth/sign_in/widgets_for_sign_in_page.dart"
+  "apps/app_on_bloc/lib/features/auth/sign_up/sign_up__page.dart"
+  "apps/app_on_bloc/lib/features/auth/sign_up/sign_up_input_fields.dart"
+  "apps/app_on_bloc/lib/features/auth/sign_up/widgets_for_sign_up_page.dart"
+  "apps/app_on_bloc/lib/features/password_changing_or_reset/change_password/change_password_page.dart"
+  "apps/app_on_bloc/lib/features/password_changing_or_reset/change_password/widgets_for_change_password.dart"
+  "apps/app_on_bloc/lib/features/password_changing_or_reset/reset_password/reset_password__page.dart"
+  "apps/app_on_bloc/lib/features/password_changing_or_reset/reset_password/widgets_for_reset_password_page.dart"
+  "packages/core/lib/src/shared_presentation_layer/side_effects_listeneres/submission_side_effects_config.dart"
 )
-CSM_OH_RP_FILES=( # seam for RP (CB→RP leg)
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/side_effects_listeners/side_effect_listener_for_submission_state__x_on_ref.dart"
+
+# SCSM Track — Riverpod app
+SCSM_PRESENTATION_RP_FILES=(
+  "apps/app_on_riverpod/lib/features/auth/sign_in/sign_in__page.dart"
+  "apps/app_on_riverpod/lib/features/auth/sign_in/widgets_for_sign_in_page.dart"
+  "apps/app_on_riverpod/lib/features/auth/sign_up/sign_up__page.dart"
+  "apps/app_on_riverpod/lib/features/auth/sign_up/sign_up_input_fields.dart"
+  "apps/app_on_riverpod/lib/features/auth/sign_up/widgets_for_sign_up_page.dart"
+  "apps/app_on_riverpod/lib/features/password_changing_or_reset/change_password/change_password_page.dart"
+  "apps/app_on_riverpod/lib/features/password_changing_or_reset/change_password/widgets_for_change_password.dart"
+  "apps/app_on_riverpod/lib/features/password_changing_or_reset/reset_password/reset_password__page.dart"
+  "apps/app_on_riverpod/lib/features/password_changing_or_reset/reset_password/widgets_for_reset_password_page.dart"
+  "packages/core/lib/src/shared_presentation_layer/side_effects_listeneres/submission_side_effects_config.dart"
+)
+
+# AVLSM Track — BLoC app (without SignOut)
+AVLSM_PRESENTATION_CB_FILES=(
+  "apps/app_on_bloc/lib/features/email_verification/email_verification_page.dart"
+  "apps/app_on_bloc/lib/features/email_verification/widgets_for_email_verification_page.dart"
+  "apps/app_on_bloc/lib/features/profile/profile_page.dart"
+  "apps/app_on_bloc/lib/features/profile/widgets_for_profile_page.dart"
+)
+
+# AVLSM Track — Riverpod app (without SignOut)
+AVLSM_PRESENTATION_RP_FILES=(
+  "apps/app_on_riverpod/lib/features/email_verification/email_verification_page.dart"
+  "apps/app_on_riverpod/lib/features/email_verification/widgets_for_email_verification_page.dart"
+  "apps/app_on_riverpod/lib/features/profile/profile_page.dart"
+  "apps/app_on_riverpod/lib/features/profile/widgets_for_profile_page.dart"
 )
 
 # =============================================================================
-# CORE LOC (domain+data)
+# COMPUTE LOCs
 # =============================================================================
-auth_domain=$(count_dir_code "$AUTH_ROOT/domain")
-auth_data=$(count_dir_code "$AUTH_ROOT/data")
-emailv_domain=$(count_dir_code "$EMAILV_ROOT/domain")
-emailv_data=$(count_dir_code "$EMAILV_ROOT/data")
-profile_domain=$(count_dir_code "$PROFILE_ROOT/domain")
-profile_data=$(count_dir_code "$PROFILE_ROOT/data")
 
-F_CSM_CORE=$((auth_domain + auth_data))                                # Custom track core
-F_AVSM_CORE=$((profile_domain + profile_data + emailv_domain + emailv_data)) # AVSM track core
+# --- BUCKET 2: Reused Core ---------------------------------------------------
+SCSM_CORE=$(sum_files "${SCSM_CORE_FILES[@]}")
+AVLSM_CORE=$(sum_files "${AVLSM_CORE_FILES[@]}")
+SHARED_WIDGETS=$(sum_files "${SHARED_WIDGET_FILES[@]}")
 
-# =============================================================================
-# APP PRESENTATION totals (entire lib/features per app) — чистий presentation
-# =============================================================================
-CSM_PRESENTATION_CB=$(count_dir_code "$APP_BLOC_FEATURES_DIR")
-CSM_PRESENTATION_RP=$(count_dir_code "$APP_RP_FEATURES_DIR")
-AVSM_PRESENTATION_CB=$CSM_PRESENTATION_CB
-AVSM_PRESENTATION_RP=$CSM_PRESENTATION_RP
+# --- BUCKET 3: SM+INIT -------------------------------------------------------
+SCSM_SM_CB=$(sum_files "${SCSM_SM_CB_FILES[@]}")
+SCSM_INIT_CB=$(sum_files "${SCSM_INIT_CB_FILES[@]}")
+SCSM_SM_RP=$(sum_files "${SCSM_SM_RP_FILES[@]}")
+SCSM_INIT_RP=$(sum_files "${SCSM_INIT_RP_FILES[@]}")
 
-# =============================================================================
-# INIT costs
-# =============================================================================
-INIT_CB_CSM=$(sum_files "${INIT_CB_CSM_FILES[@]}")
-INIT_CB_AVSM=$(sum_files "${INIT_CB_AVSM_FILES[@]}")
-INIT_RP_CSM=$(sum_files "${RP_PROVIDERS_AUTH[@]}")
-INIT_RP_AVSM=$(sum_files "${RP_PROVIDERS_PROFILE_EMAILV[@]}")
+AVLSM_SM_CB=$(sum_files "${AVLSM_SM_CB_FILES[@]}")
+AVLSM_INIT_CB=$(sum_files "${AVLSM_INIT_CB_FILES[@]}")
+AVLSM_SM_RP=$(sum_files "${AVLSM_SM_RP_FILES[@]}")
+AVLSM_INIT_RP=$(sum_files "${AVLSM_INIT_RP_FILES[@]}")
 
-# =============================================================================
-# SM_files_target (per track & per app)
-# =============================================================================
-CSM_SM_CB=$(count_sm_code_scoped "$APP_BLOC_FEATURES_DIR" "${CSM_SCOPES[@]}")
-CSM_SM_RP=$(count_sm_code_scoped "$APP_RP_FEATURES_DIR"   "${CSM_SCOPES[@]}")
-AVSM_SM_CB=$(count_sm_code_scoped "$APP_BLOC_FEATURES_DIR" "${AVSM_SCOPES[@]}")
-AVSM_SM_RP=$(count_sm_code_scoped "$APP_RP_FEATURES_DIR"   "${AVSM_SCOPES[@]}")
+# --- BUCKET 4: State Models --------------------------------------------------
+SCSM_FORM_STATES_LOC=$(sum_files "${SCSM_FORM_STATES[@]}")
+SCSM_SUBMISSION_STATE_LOC=$(count_file_code "$SCSM_SUBMISSION_STATE")
+# Baseline: submission_state × 1 (множник для можливості змін в майбутньому)
+SCSM_MODELS_BASELINE_LOC=$(( SCSM_FORM_STATES_LOC + SCSM_SUBMISSION_STATE_LOC * 1 ))
+# Shared: без множення
+SCSM_MODELS_SHARED_LOC=$(( SCSM_FORM_STATES_LOC + SCSM_SUBMISSION_STATE_LOC ))
 
-# =============================================================================
-# BASELINE ROUND-TRIP (Clean, no symmetry)
-# BASE_MIGRATION = P_full_under_target_SM + INIT_target + (state models for track)
-# - AVSM: середній LOC моделі (avg з кандидатів) до КОЖНОГО плеча.
-# - CSM: всі state-моделі (forms + submission_state) до КОЖНОГО плеча.
-# =============================================================================
-CSM_MODELS_BASELINE_LOC=$(( $(count_dir_code "$CSM_MODELS_DIR") + $(count_file_code "$CSM_SUBMISSION_STATE_FILE") ))
-AVSM_MODEL_AVG_LOC=$(avg_files "${AVSM_BASELINE_MODEL_CANDIDATES[@]}")
+# AVLSM: model × 1 (множник для можливості змін в майбутньому) для 2 фіч
+AVLSM_MODEL_SINGLE_LOC=$(sum_files "${AVLSM_BASELINE_MODEL_CANDIDATES[@]}")
+AVLSM_MODELS_BASELINE_LOC=$(( AVLSM_MODEL_SINGLE_LOC * 1 ))
+# Shared: base_cubit + introspection (model вже в OH)
+AVLSM_MODELS_SHARED_LOC=$(( $(count_file_code "$AVLSM_SHARED_BASE_CUBIT") + $(count_file_code "$AVLSM_SHARED_INTROSPECTION_BLOC") + $(count_file_code "$AVLSM_SHARED_INTROSPECTION_RP") ))
 
-BASE_CSM_RP_TO_CB=$(( CSM_PRESENTATION_CB + INIT_CB_CSM + CSM_MODELS_BASELINE_LOC ))
-BASE_CSM_CB_TO_RP=$(( CSM_PRESENTATION_RP + INIT_RP_CSM + CSM_MODELS_BASELINE_LOC ))
-ROUND_TRIP_BASE_CSM=$(( BASE_CSM_RP_TO_CB + BASE_CSM_CB_TO_RP ))
+# --- BUCKET 5: Overhead ------------------------------------------------------
+AVLSM_OH_ROUNDTRIP=$(sum_files "${AVLSM_OH_FILES[@]}")
 
-BASE_AVSM_RP_TO_CB=$(( AVSM_PRESENTATION_CB + INIT_CB_AVSM + AVSM_MODEL_AVG_LOC ))
-BASE_AVSM_CB_TO_RP=$(( AVSM_PRESENTATION_RP + INIT_RP_AVSM + AVSM_MODEL_AVG_LOC ))
-ROUND_TRIP_BASE_AVSM=$(( BASE_AVSM_RP_TO_CB + BASE_AVSM_CB_TO_RP ))
+SCSM_OH_CB=$(sum_files "${SCSM_OH_CB_FILES[@]}")
+SCSM_OH_RP=$(sum_files "${SCSM_OH_RP_FILES[@]}")
+
+# --- BUCKET 6: Presentation --------------------------------------------------
+SCSM_PRESENTATION_CB=$(sum_files "${SCSM_PRESENTATION_CB_FILES[@]}")
+SCSM_PRESENTATION_RP=$(sum_files "${SCSM_PRESENTATION_RP_FILES[@]}")
+AVLSM_PRESENTATION_CB=$(sum_files "${AVLSM_PRESENTATION_CB_FILES[@]}")
+AVLSM_PRESENTATION_RP=$(sum_files "${AVLSM_PRESENTATION_RP_FILES[@]}")
 
 # =============================================================================
-# SYMMETRIC ROUND-TRIP — AVSM (one-time OH; each leg: SM+INIT)
+# BASELINE ROUND-TRIP (Clean Architecture, no symmetry)
 # =============================================================================
-AVSM_OH_CORE=$(sum_files "${AVSM_OH_FILES[@]}")
-AVSM_HALF_BLOC=$(half_sum_files "${HALF_SHARED_BLOC[@]}")
-AVSM_HALF_RP=$(half_sum_files   "${HALF_SHARED_RP[@]}")
-AVSM_OH_ROUNDTRIP=$(( AVSM_OH_CORE + AVSM_HALF_BLOC + AVSM_HALF_RP ))
+# SCSM Track: Presentation + SM+INIT + State Models (with multiplier)
+BASE_SCSM_RP_TO_CB=$(( SCSM_PRESENTATION_CB + SCSM_SM_CB + SCSM_INIT_CB + SCSM_MODELS_BASELINE_LOC ))
+BASE_SCSM_CB_TO_RP=$(( SCSM_PRESENTATION_RP + SCSM_SM_RP + SCSM_INIT_RP + SCSM_MODELS_BASELINE_LOC ))
+ROUND_TRIP_BASE_SCSM=$(( BASE_SCSM_RP_TO_CB + BASE_SCSM_CB_TO_RP ))
 
-AVSM_SM_RP_TO_CB=$(( AVSM_SM_CB + INIT_CB_AVSM ))
-AVSM_SM_CB_TO_RP=$(( AVSM_SM_RP + INIT_RP_AVSM ))
-ROUND_TRIP_AVSM=$(( AVSM_OH_ROUNDTRIP + AVSM_SM_RP_TO_CB + AVSM_SM_CB_TO_RP ))
-
-# =============================================================================
-# SYMMETRIC ROUND-TRIP — CSM (per-SM OH with Lazy Parity; each leg: SM+INIT+OH_target)
-# =============================================================================
-CSM_OH_CB_CORE=$(sum_files "${CSM_OH_CB_FILES[@]}")
-CSM_OH_RP_CORE=$(sum_files "${CSM_OH_RP_FILES[@]}")
-CSM_HALF_BLOC=$(half_sum_files "${HALF_SHARED_BLOC[@]}")
-CSM_HALF_RP=$(half_sum_files   "${HALF_SHARED_RP[@]}")
-CSM_OH_CB=$(( CSM_OH_CB_CORE + CSM_HALF_BLOC )) # RP→CB
-CSM_OH_RP=$(( CSM_OH_RP_CORE + CSM_HALF_RP ))   # CB→RP
-
-CSM_SM_RP_TO_CB=$(( CSM_SM_CB + INIT_CB_CSM + CSM_OH_CB ))
-CSM_SM_CB_TO_RP=$(( CSM_SM_RP + INIT_RP_CSM + CSM_OH_RP ))
-ROUND_TRIP_CSM=$(( CSM_SM_RP_TO_CB + CSM_SM_CB_TO_RP ))
+# AVLSM Track: Presentation + SM+INIT + State Models (with multiplier)
+BASE_AVLSM_RP_TO_CB=$(( AVLSM_PRESENTATION_CB + AVLSM_SM_CB + AVLSM_INIT_CB + AVLSM_MODELS_BASELINE_LOC ))
+BASE_AVLSM_CB_TO_RP=$(( AVLSM_PRESENTATION_RP + AVLSM_SM_RP + AVLSM_INIT_RP + AVLSM_MODELS_BASELINE_LOC ))
+ROUND_TRIP_BASE_AVLSM=$(( BASE_AVLSM_RP_TO_CB + BASE_AVLSM_CB_TO_RP ))
 
 # =============================================================================
-# FEATURE TOTALS (для %Track): ядро + презентації + віджети + моделі
+# SYMMETRIC ROUND-TRIP
 # =============================================================================
-shared_widgets_loc=$(sum_files "${SHARED_WIDGET_FILES[@]}")
+# AVLSM: one-time OH, each leg = SM+INIT
+AVLSM_SM_RP_TO_CB=$(( AVLSM_SM_CB + AVLSM_INIT_CB ))
+AVLSM_SM_CB_TO_RP=$(( AVLSM_SM_RP + AVLSM_INIT_RP ))
+ROUND_TRIP_AVLSM=$(( AVLSM_OH_ROUNDTRIP + AVLSM_SM_RP_TO_CB + AVLSM_SM_CB_TO_RP ))
 
-CSM_FEATURE_TOTAL=$(( F_CSM_CORE + CSM_PRESENTATION_CB + CSM_PRESENTATION_RP + shared_widgets_loc + CSM_MODELS_BASELINE_LOC ))
-AVSM_FEATURE_TOTAL=$(( F_AVSM_CORE + AVSM_PRESENTATION_CB + AVSM_PRESENTATION_RP + shared_widgets_loc + AVSM_MODEL_AVG_LOC ))
+# SCSM: per-SM OH (Lazy Parity), each leg = SM+INIT+OH_target
+SCSM_SM_RP_TO_CB=$(( SCSM_SM_CB + SCSM_INIT_CB + SCSM_OH_CB ))
+SCSM_SM_CB_TO_RP=$(( SCSM_SM_RP + SCSM_INIT_RP + SCSM_OH_RP ))
+ROUND_TRIP_SCSM=$(( SCSM_SM_RP_TO_CB + SCSM_SM_CB_TO_RP ))
 
 # =============================================================================
-# AVERAGED METRICS (per migration leg = RoundTrip/2) + ratios
+# FEATURE TOTALS (для %Track): Core + Presentation(avg) + Widgets + Models(shared)
 # =============================================================================
-AVG_BASE_CSM=$(half_num "$ROUND_TRIP_BASE_CSM")
-AVG_SYM_CSM=$(half_num "$ROUND_TRIP_CSM")
-AVG_SAV_CSM=$(( (ROUND_TRIP_BASE_CSM - ROUND_TRIP_CSM) / 2 ))
+SCSM_PRESENTATION_AVG=$(( (SCSM_PRESENTATION_CB + SCSM_PRESENTATION_RP) / 2 ))
+AVLSM_PRESENTATION_AVG=$(( (AVLSM_PRESENTATION_CB + AVLSM_PRESENTATION_RP) / 2 ))
 
-AVG_BASE_AVSM=$(half_num "$ROUND_TRIP_BASE_AVSM")
-AVG_SYM_AVSM=$(half_num "$ROUND_TRIP_AVSM")
-AVG_SAV_AVSM=$(( (ROUND_TRIP_BASE_AVSM - ROUND_TRIP_AVSM) / 2 ))
+SCSM_FEATURE_TOTAL=$(( SCSM_CORE + SCSM_PRESENTATION_AVG + SHARED_WIDGETS + SCSM_MODELS_SHARED_LOC ))
+AVLSM_FEATURE_TOTAL=$(( AVLSM_CORE + AVLSM_PRESENTATION_AVG + SHARED_WIDGETS + AVLSM_MODELS_SHARED_LOC ))
 
-CSM_RATIO_BASE=$(pct "$AVG_BASE_CSM" "$CSM_FEATURE_TOTAL")
-CSM_RATIO_SYM=$(pct "$AVG_SYM_CSM"   "$CSM_FEATURE_TOTAL")
+# =============================================================================
+# AVERAGED METRICS (per migration leg = RoundTrip/2)
+# =============================================================================
+AVG_BASE_SCSM=$(half_num "$ROUND_TRIP_BASE_SCSM")
+AVG_SYM_SCSM=$(half_num "$ROUND_TRIP_SCSM")
+AVG_SAV_SCSM=$(( (ROUND_TRIP_BASE_SCSM - ROUND_TRIP_SCSM) / 2 ))
 
-AVSM_RATIO_BASE=$(pct "$AVG_BASE_AVSM" "$AVSM_FEATURE_TOTAL")
-AVSM_RATIO_SYM=$(pct "$AVG_SYM_AVSM"   "$AVSM_FEATURE_TOTAL")
+AVG_BASE_AVLSM=$(half_num "$ROUND_TRIP_BASE_AVLSM")
+AVG_SYM_AVLSM=$(half_num "$ROUND_TRIP_AVLSM")
+AVG_SAV_AVLSM=$(( (ROUND_TRIP_BASE_AVLSM - ROUND_TRIP_AVLSM) / 2 ))
+
+SCSM_RATIO_BASE=$(pct "$AVG_BASE_SCSM" "$SCSM_FEATURE_TOTAL")
+SCSM_RATIO_SYM=$(pct "$AVG_SYM_SCSM" "$SCSM_FEATURE_TOTAL")
+
+AVLSM_RATIO_BASE=$(pct "$AVG_BASE_AVLSM" "$AVLSM_FEATURE_TOTAL")
+AVLSM_RATIO_SYM=$(pct "$AVG_SYM_AVLSM" "$AVLSM_FEATURE_TOTAL")
+
+# =============================================================================
+# OVERHEAD METRICS (first adoption, averaged)
+# =============================================================================
+AVLSM_OH_AVG=$(half_num "$AVLSM_OH_ROUNDTRIP")
+SCSM_OH_TOTAL=$(( SCSM_OH_CB + SCSM_OH_RP ))
+SCSM_OH_AVG=$(half_num "$SCSM_OH_TOTAL")
 
 # =============================================================================
 # REPORTS
 # =============================================================================
 
-sec "CSM Track (Custom State Models) — Average Migration (RoundTrip/2)"
+sec "SCSM Track (Shared Custom State Models) — Average Migration Cost (RoundTrip/2)"
+echo "Features: Sign-In, Sign-Up, Change Password, Reset Password"
+echo
 hdr5
-row5 "Baseline (Clean)" "$BASE_CSM_RP_TO_CB" "$BASE_CSM_CB_TO_RP" "$AVG_BASE_CSM" "$CSM_RATIO_BASE"
-row5 "Symmetric"        "$CSM_SM_RP_TO_CB"   "$CSM_SM_CB_TO_RP"   "$AVG_SYM_CSM"  "$CSM_RATIO_SYM"
+row5 "Baseline (Clean)" "$BASE_SCSM_RP_TO_CB" "$BASE_SCSM_CB_TO_RP" "$AVG_BASE_SCSM" "$SCSM_RATIO_BASE"
+row5 "Symmetric" "$SCSM_SM_RP_TO_CB" "$SCSM_SM_CB_TO_RP" "$AVG_SYM_SCSM" "$SCSM_RATIO_SYM"
 echo
 hdr_sav
-row_sav "SAVINGS (averaged)" "$AVG_SAV_CSM" "$(pct "$AVG_SAV_CSM" "$CSM_FEATURE_TOTAL")"
+row_sav "SAVINGS (per migration)" "$AVG_SAV_SCSM" "$(pct "$AVG_SAV_SCSM" "$SCSM_FEATURE_TOTAL")"
+echo
+row_sav "Overhead (1st feature)" "$SCSM_OH_AVG" "$(pct "$SCSM_OH_AVG" "$SCSM_FEATURE_TOTAL")"
 
-sec "AVSM Track (AsyncValue + EmailV + SignOut) — Average Migration (RoundTrip/2)"
+sec "AVLSM Track (AsyncValue-Like State Models) — Average Migration Cost (RoundTrip/2)"
+echo "Features: Profile, Email Verification"
+echo
 hdr5
-row5 "Baseline (Clean)" "$BASE_AVSM_RP_TO_CB" "$BASE_AVSM_CB_TO_RP" "$AVG_BASE_AVSM" "$AVSM_RATIO_BASE"
-row5 "Symmetric"        "$AVSM_SM_RP_TO_CB"   "$AVSM_SM_CB_TO_RP"   "$AVG_SYM_AVSM"  "$AVSM_RATIO_SYM"
+row5 "Baseline (Clean)" "$BASE_AVLSM_RP_TO_CB" "$BASE_AVLSM_CB_TO_RP" "$AVG_BASE_AVLSM" "$AVLSM_RATIO_BASE"
+row5 "Symmetric" "$AVLSM_SM_RP_TO_CB" "$AVLSM_SM_CB_TO_RP" "$AVG_SYM_AVLSM" "$AVLSM_RATIO_SYM"
 echo
 hdr_sav
-row_sav "SAVINGS (averaged)" "$AVG_SAV_AVSM" "$(pct "$AVG_SAV_AVSM" "$AVSM_FEATURE_TOTAL")"
+row_sav "SAVINGS (per migration)" "$AVG_SAV_AVLSM" "$(pct "$AVG_SAV_AVLSM" "$AVLSM_FEATURE_TOTAL")"
+echo
+row_sav "Overhead (1st feature)" "$AVLSM_OH_AVG" "$(pct "$AVLSM_OH_AVG" "$AVLSM_FEATURE_TOTAL")"
 
-# Overhead per track (first adoption, context) — pretty & explicit
-sec "Overhead per track (first adoption, context)"
-CSM_OH_PAID=$(( CSM_OH_CB + CSM_OH_RP ))
-AVSM_OH_PAID=$(( AVSM_OH_ROUNDTRIP ))
+sec "Summary: Overhead per track (first adoption, context)"
 hdr_over
-row_over "CSM Track (LOC & % of track codebase)"  "$CSM_OH_PAID" "$(pct "$CSM_OH_PAID" "$CSM_FEATURE_TOTAL")"
-row_over "AVSM Track (LOC & % of track codebase)" "$AVSM_OH_PAID" "$(pct "$AVSM_OH_PAID" "$AVSM_FEATURE_TOTAL")"
+row_over "SCSM Track (Custom State Models)" "$SCSM_OH_AVG" "$(pct "$SCSM_OH_AVG" "$SCSM_FEATURE_TOTAL")"
+row_over "AVLSM Track (AsyncValue-Like Models)" "$AVLSM_OH_AVG" "$(pct "$AVLSM_OH_AVG" "$AVLSM_FEATURE_TOTAL")"
+
+echo
+sec "Bucket Breakdown for Validation"
+echo "=== SCSM Track ==="
+echo "Core (Domain+Data):                 $SCSM_CORE LOC"
+echo "Presentation CB:                    $SCSM_PRESENTATION_CB LOC"
+echo "Presentation RP:                    $SCSM_PRESENTATION_RP LOC"
+echo "SM+INIT CB:                         $(( SCSM_SM_CB + SCSM_INIT_CB )) LOC"
+echo "SM+INIT RP:                         $(( SCSM_SM_RP + SCSM_INIT_RP )) LOC"
+echo "State Models (shared):              $SCSM_MODELS_SHARED_LOC LOC"
+echo "State Models (baseline, ×1):        $SCSM_MODELS_BASELINE_LOC LOC"
+echo "Overhead CB:                        $SCSM_OH_CB LOC"
+echo "Overhead RP:                        $SCSM_OH_RP LOC"
+echo "Shared Widgets:                     $SHARED_WIDGETS LOC"
+echo "FEATURE TOTAL (for %):              $SCSM_FEATURE_TOTAL LOC"
+echo
+echo "=== AVLSM Track ==="
+echo "Core (Domain+Data):                 $AVLSM_CORE LOC"
+echo "Presentation CB:                    $AVLSM_PRESENTATION_CB LOC"
+echo "Presentation RP:                    $AVLSM_PRESENTATION_RP LOC"
+echo "SM+INIT CB:                         $(( AVLSM_SM_CB + AVLSM_INIT_CB )) LOC"
+echo "SM+INIT RP:                         $(( AVLSM_SM_RP + AVLSM_INIT_RP )) LOC"
+echo "State Models (shared):              $AVLSM_MODELS_SHARED_LOC LOC"
+echo "State Models (baseline, ×1):        $AVLSM_MODELS_BASELINE_LOC LOC"
+echo "Overhead (one-time, round-trip):    $AVLSM_OH_ROUNDTRIP LOC"
+echo "Overhead (averaged):                $AVLSM_OH_AVG LOC"
+echo "Shared Widgets:                     $SHARED_WIDGETS LOC"
+echo "FEATURE TOTAL (for %):              $AVLSM_FEATURE_TOTAL LOC"
 
 echo; hr; echo "Done."; hr

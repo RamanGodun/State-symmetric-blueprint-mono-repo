@@ -1,101 +1,143 @@
-# ✅ Алгоритм розрахунків (перший перенос, RT/2)
-
-## 0) Корзини (6)
-
-1. **Infrastructure** — ігноруємо у вартості міграції
-2. **Reused Core** (Domain/Data, статичний UI)
-3. **SM+INIT** (цільовий стейт-менеджер + ініціалізація/DI/route)
-4. **State Models** (спільні моделі стану у шаред-пакетах)
-5. **Overhead (OH)** (адаптери/шви між моделями та SM)
-6. **Presentation** (stateful UI, прив’язаний до SM)
-
-> Розмір фічі для відсотків рахуємо як **2+3+4+6**.
-
+---
 ---
 
-## 1) Базова лінія (Clean Architecture), **перший перенос**
+## ⏱ Lifecycle Cost Model (Hours/Budget)
 
-**Припущення:** під кожен SM пишуть **свої** state models → **переписуємо State Models у всіх місцях використання**.
+**Core metrics**
 
-Для одного плеча:
+- **ΔLOC:** use **RT/2 per bucket**.
+- **CS:** change surface (0–1).
 
-```
-ΔLOC_base_leg
-  = Presentation_full_under_target_SM (знаходиться у відповідний теках додатків)
-  + State_Models_rewrite (з урахуванням усіх використань цієї моделі, рахується окремо, бо знаходяться окремо)
-  + SM+INIT_target (знаходяться у відповідний теках додатків, а також відповідних кастомних флаттер пакетах)
-```
-
-Усереднення (уникаємо подвійного рахунку):
+**Development effort**
 
 ```
-ROUND_TRIP_BASE_AVG = (ΔLOC_base_RP→CB + ΔLOC_base_CB→RP) / 2
+H_dev = Σ(ΔLOC_bucket_i × dev_rate_i)
 ```
 
----
+Reference **dev rates** (h/100 LOC):
 
-## 2) Стейт-симетрія (AVLSM / SCSM), **перший перенос**
+| Bucket Type             | Rate (h/100 LOC) | Rationale                     |
+| ----------------------- | ---------------- | ----------------------------- |
+| SM+INIT                 | 2.0–3.5          | Wiring, minimal logic         |
+| Presentation (stateful) | 3.0–5.0          | UI integration, state binding |
+| Adapters/Seams (OH)     | 3.0–4.0          | Thin facades, careful design  |
 
-Для одного плеча:
-
-```
-ΔLOC_sym_leg = SM+INIT_target (3) + OH_target_if_new (5)
-```
-
-- **AVLSM:** `OH_target_if_new` — **AsyncValueForBloc state model + адаптери під цільовий SM**.
-- **SCSM:** `OH_target_if_new` — **адаптери** під цей SM; якщо шов уже існує — 0.
-
-Усереднення:
+**Test coverage cost**
 
 ```
-ROUND_TRIP_SYM_AVG = (ΔLOC_sym_RP→CB + ΔLOC_sym_CB→RP) / 2
+H_tests = Σ(ΔLOC_bucket_i × test_impact_factor_i)
 ```
 
----
+| Bucket Type    | Test Factor (h/100 LOC) | Coverage | Notes                        |
+| -------------- | ----------------------- | -------- | ---------------------------- |
+| SM+INIT        | +0.8–1.2                | 85–95%   | State transitions, DI wiring |
+| Presentation   | +1.5–2.5                | 70–85%   | Widget/integration, goldens  |
+| Adapters/Seams | +1.0–1.8                | 90–100%  | Symmetry contract across SMs |
 
-## 3) Економія на міграції (лише перенос, без амортизації)
+**Additional components**
 
 ```
-SAVINGS_migration = ROUND_TRIP_BASE_AVG − ROUND_TRIP_SYM_AVG
+H_e2e       = scenarios × platforms × (0.8–1.2 h)
+H_CI_fixed  = 0.5–2.0 h per PR
+H_review_PM = H_dev × (0.15–0.25)
+```
+
+**Totals & budget**
+
+```
+H_total = H_dev + H_tests + H_e2e + H_CI_fixed + H_review_PM
+Cost    = H_total × blended_hourly_rate
 ```
 
 ---
 
-## 4) Усереднений оверхед для **першого переносу** (без амортизації)
-
-> У цей блок входять **лише адаптери** (корзина 5). **SM+INIT (3) — не OH**.
-
-- **AVLSM:**
-  `OH_avg_per_leg = (OH_AsyncValueForBloC_state_model + OH_adapters_RP + OH_adapters_CB) / 2`
-- **SCSM:**
-  `OH_avg_per_leg = (OH_adapters_RP + OH_adapters_CB) / 2`
-
-> Це дає **середньозважений OH за одне плече** для першого переносу. Амортизацію (ділення на N фіч) робитимемо окремо пізніше.
-
----
-
-## 5) Відсоток оверхеду від розміру фічі
+## 🔄 Maintenance Tax Model
 
 ```
-FEATURE_SIZE_TOTAL = (2 + 3 + 4 + 6)   // без інфраструктури і без OH
-OH_RATIO = OH_avg_per_leg / FEATURE_SIZE_TOTAL
+Annual_Maintenance_Baseline  = N_changes × CS_baseline × K_change × hourly_rate
+Annual_Maintenance_Symmetric = N_changes × CS_symmetric × K_change × hourly_rate
+```
+
+Typical ranges: `CS_baseline ≈ 0.4–0.6`, `CS_symmetric ≈ 0.1–0.2`.
+
+**Example**
+
+```
+Baseline:  10 changes/yr × 0.5 × 4h × $100 = $2,000/yr
+Symmetric: 10 changes/yr × 0.15 × 4h × $100 = $600/yr
+Annual Savings: $1,400 per feature
 ```
 
 ---
 
-## 6) Повна “страхова” вигода (опційно додати зараз)
+## 🛡️ Insurance Model (Break‑Even)
 
-До `SAVINGS_migration` можна додати економію на тестах/підтримці:
+All quantities below use **RT/2** units.
+
+**Premium (what we pay)**
 
 ```
-MAINT_BENEFIT ≈ (CS_baseline − CS_symmetric) × N_changes × K_change
-EXPECTED_PAYOUT = SAVINGS_migration + MAINT_BENEFIT
+OH_avg_LOC = (OH_RP + OH_CB) / 2
+OH_hours   = OH_avg_LOC × (rate_OH + test_OH) / 100
+OH_hours_effective (for N features) = OH_hours / N
 ```
 
-(Для першої ітерації можна звітувати обидві метрики окремо: «перенос» і «перенос+підтримка».)
+**Payout (what we gain)**
+
+```
+S_mig   = Σ_b (RT_BASE_b − RT_SYM_b) × (rate_b + test_b) / 100
+S_maint = (CS_baseline − CS_symmetric) × K_change × N_changes_per_year × Y
+S_total = S_mig + S_maint
+```
+
+**Break‑even probability (per feature)**
+
+```
+R* = OH_hours_effective / S_total
+```
+
+Steady‑state (OH already paid): set `OH_hours_effective = 0`.
+
+**Equivalent compact form (% of track):**
+
+```
+R* = o / (p_clean − a)
+```
+
+where `o` is overhead as % of track, `p_clean` is Baseline migration cost % of track, `a` is symmetric cost % of track.
+
+**Planning helpers**
+
+```
+N* = OH_hours / (R_target × S_total)
+
+effective_overhead = overhead_paid / features_using_it
+break_even_R       = effective_overhead / migration_savings
+```
+
+> Maintenance costs for sleeping adapters are already reflected via `CS_symmetric` and the ≤5% CI/test overhead; **do not** add a separate annual premium.
 
 ---
 
-## 7) Перевірка RT/2
+## Practical Guidance
 
-Усі «вартість переносу» й «OH» подаємо як **Round-Trip / 2**, тобто **середня ціна одного плеча**. Це йде в порівняння «базова лінія vs стейт-симетрія» для **першого переносу**. Амортизовані оцінки (поділ OH на N) — наступним кроком.
+- Use RT/2 for all migration and OH numbers (balanced mean per leg).
+- Treat OH as a **one‑time premium** and amortize across features on the same track.
+- When roadmap suggests multiple reuses, symmetry pays off; otherwise a clean single‑SM implementation may be preferable for that track.
+
+**Track heuristics (planning expectations):**
+
+- **SCSM:** Overhead 15–25% (first feature); savings 40–60% per migration; break‑even around 3–5 features or ≥20–35% reuse probability.
+- **AVLSM:** Overhead 25–35% (first feature); savings 20–30% per migration; break‑even around 5–8 features or ≥26–43% reuse probability.
+
+---
+
+## Placeholders for Measurements
+
+> After running the corrected `scripts/loc_report.sh`, fill in the tables below (all **RT/2** and normalized to `% of track`):
+
+- **SCSM Track (Shared Custom State Models)** — Features: Sign‑In, Sign‑Up, Change Password, Reset Password
+  Baseline vs Symmetric; Savings; Overhead (first feature)
+
+- **AVLSM Track (AsyncValue‑Like State Models)** — Features: Profile, Email Verification, Sign Out
+  Baseline vs Symmetric; Savings; Overhead (first feature)
