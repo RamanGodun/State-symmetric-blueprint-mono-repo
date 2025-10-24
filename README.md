@@ -4,14 +4,14 @@
 
 This monorepo demonstrates a **State-Symmetric architecture code style** — a pragmatic refinement of state-agnostic principles, that **allows to reuse 90%+ of the feature's codebase across apps with different state managers** (Riverpod, Cubit/BLoC, Provider).
 
-If you a new reader - at first look **[State Symmetric Philosophy](state_symmetric_philosophy.md)**
+If you’re new to this repository, start with **[State Symmetric Philosophy](state_symmetric_philosophy.md)**
 
 **The approach combines:**
 
 - **Clean Architecture** with strong layer separation — state managers orchestrate state only; UI remains thin and stateless.
 - **Thin adapters/facades** (2–5 touchpoints per feature) that bridge shared code to specific state managers
-
-* **Lazy Parity:** only one state manager (and its thin facades) is implemented and compiled. Other SM glue is added **on demand**, avoiding parity maintenance cost while still enabling 90%+ reuse.
+- **Lazy Parity:** only one state manager (and its thin facades) is implemented and compiled. Other SM glue is added **on demand**, avoiding parity maintenance cost while still enabling 90%+ reuse.
+- **Distributed modular structure**: the codebase is organized into dedicated packages and modules (core, features, bloc_adapter, riverpod_adapter, firebase_adapter, app_bootstrap), ensuring clear architectural boundaries, isolated dependencies, and maximal reusability across apps and state managers.
 
 Accepted Architecture Decision Record: **[ADR-001 — State-Symmetric Architecture](ADR/ADR-001-State-symmetric-architecture.md)**
 
@@ -36,9 +36,9 @@ Approach can be valuable for small niche: **multi-product companies, white-label
 
 See also:
 
-- **Use Case Areas** → [`info-001-use-case-areas.md`](ADR/supporting_info/info-001-use-case-areas.md)
-- **Business Value Estimates** → [`info-002-business-value-estimates.md`](ADR/supporting_info/info-002-business-value-estimates.md)
-- **Critics reply** [`info-003-critics_reply.md`](ADR/supporting_info/info-003-critics_reply.md)
+- **Use Case Areas** → [`info-005-use-case-areas.md`](ADR/supporting_info/info-005-use-case-areas.md)
+- **Business Value Estimates** → [`info-001-business-value-estimates.md`](ADR/supporting_info/info-001-business-value-estimates.md)
+- **Critics reply** [`info-006-critics_reply.md`](ADR/supporting_info/info-006-critics_reply.md)
 
 ## Getting Started 🚀
 
@@ -309,4 +309,4 @@ This monorepo is licensed under the [![LICENSE][license_badge]](LICENSE).
 - 💬 [Addressing Critics](ADR/supporting_info/info-003-critics_reply.md)
 - 🔧 [Melos Configuration](melos.yaml)
 
-**Built with 🧠❤️ to demonstrate pragmatic state-symmetric architecture**
+**Built with 🧠❤️ to demonstrate state-symmetric architecture**

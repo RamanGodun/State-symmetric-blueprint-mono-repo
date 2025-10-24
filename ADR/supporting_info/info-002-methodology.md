@@ -298,7 +298,7 @@ Annual Savings: $1,400 per feature
 The insurance is worth it if expected savings cover the premium:
 
 ```
-R* = OH_hours_effective / S_total
+R* = OH_hours / (S_total × N)
 ```
 
 Where **R\*** is the **minimum reuse probability** at which symmetry is justified. In steady‑state (OH already paid), set `OH_hours_effective = 0`.

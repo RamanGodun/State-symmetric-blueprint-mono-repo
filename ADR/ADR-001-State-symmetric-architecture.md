@@ -65,7 +65,17 @@ The **following requirements are adopted** for the monorepo’s codebase:
 8. **Composable and Layered Patterns**
    Features can share models across sub-flows (e.g., Auth/Profile reuse), allowing pragmatic composition without duplication.
 
----
+9. **Distributed Modular Structure**
+
+The monorepo follows a distributed modular architecture: all code is organized into dedicated Flutter packages, each owning its own dependency scope and responsibility.
+This structure enables true isolation of concerns, clear ownership boundaries, and frictionless code reuse across apps and state managers.
+
+Packages and roles:
+• core → foundational infrastructure: navigation, overlays, localization, theming, error handling, animations, form fields
+• features → reusable domain and data layers for individual features (auth, profile, etc.)
+• bloc_adapter / riverpod_adapter → state-manager's specific codebase, including thin glue packages bridging the shared layers with BLoC/Cubit or Riverpod ecosystems
+• firebase_adapter → backend integration layer; isolates Firebase SDK dependencies
+• app_bootstrap → unified startup pipeline and environment setup shared by all apps
 
 🟢 **Result:** 90%+ code reuse with minimal overhead, fast onboarding, and improved DX — the golden mean between state-agnostic benefits and engineering pragmatism.
 
@@ -103,16 +113,28 @@ The **following requirements are adopted** for the monorepo’s codebase:
 - **Lower abstraction overhead** → fewer layers and wrappers reduce complexity and parity tax.
 - **Fast onboarding** → developers familiar with Clean Architecture and any major SM (Cubit/BLoC/Riverpod) can contribute within a week.
 - **Shared UI/Domain/Data reuse** → >90% of code reused across apps, only thin adapters differ.
-- **Reduced QA & maintenance costs** → no duplicated Presentation layers to test/maintain; only thin adapters require coverage.
+- **Reduced QA & maintenance costs** → no duplicated Presentation layers to test/maintain, preventing divergence and lowering long-term support costs; only thin adapters require coverage;
 - **Business value as “insurance”** → small upfront adapter overhead (≤20–35% LOC in first features, amortized to ≤5–10%) pays off when reuse probability ≥15–25%.
+- **Developer Experience** — one consistent coding model across state managers eliminates mental switching, improving speed and reducing errors.
+- **Time-to-Market** — code reuse shortens feature delivery cycles. New features ship significantly faster since ~90% + of the code is already shared and validated.
+- **Modular separation ensures that**:
+  • Each package has a clear architectural boundary and isolated dependency graph.
+  • State manager–specific code lives only in adapters, while core logic remains agnostic.
+  • Features can be reused, tested, or migrated independently, preserving symmetry and scalability.
 
 ### ⚠️ Negative
 
 - **Niche applicability** → this is not a universal solution. Scenarios where features are reused across apps with different state managers represent <5% of the market, so ROI is only justified in specific niches (agencies, multi-product companies, white-label, platform teams).
-<!-- - **necessary to develop infrastructure codebase** -->
 - **Adapter duplication** → some parallel classes (e.g., Bloc vs Riverpod listeners) still needed.
 - **Discipline required** → teams must consistently enforce symmetry rules and maintain API parity.
 - **Symmetric mindset** → developers must adapt to thinking in terms of shared state models and thin facades.
+
+### 🧩 Regarding infrastructure Foundation (required for adoption)
+
+To make the State-Symmetric Architecture feasible and productive, a dedicated infrastructure codebase is required.
+Within this monorepo, a base foundation has already been implemented as the core package — a shared module that provides essential building blocks used across all apps and state managers.
+The core package includes: errors and overlays management, app navigation, localization, design system and theming, animations, form fields / inputs
+This infrastructure enables true symmetry by isolating app-level responsibilities from state management concerns, ensuring that state-symmetric features can operate identically across Riverpod, Cubit/BLoC, and Provider apps with minimal duplication.
 
 ## 6. 🔗 Related info
 
