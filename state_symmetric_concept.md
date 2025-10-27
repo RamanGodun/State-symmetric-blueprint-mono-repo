@@ -1,18 +1,13 @@
 # 🧭 Principles and Economic Rationale of the State-Symmetric Architecture
 
-Software architecture is not just about patterns — it’s about the economics of change.
-Every boundary or abstraction is an investment: some pay back through reuse and flexibility, others become technical debt.
-**State-Symmetric Architecture (SSA) exists to make this trade-off measurable, predictable, and profitable.**
-
----
-
 ## 1. The Core Problem
 
-In multi-app Flutter ecosystems, teams often face a recurring dilemma:
-
+In multi-app Flutter ecosystems, teams sometimes face a recurring dilemma:
 **How should the code be structured to enable reuse — and when does such an architecture actually pay off instead of becoming over-engineering or empty overhead?**
 
----
+Software architecture is not just about code and patterns — it’s also about the economics of change.
+Every boundary or abstraction is an investment: some pay back through reuse and flexibility, while others turn into technical debt or wasteful over-engineering.
+**State-Symmetric Architecture (SSA) exists to make this trade-off measurable, predictable, and profitable.**
 
 ## 2. The Solution: Pragmatic Symmetry
 
@@ -27,8 +22,6 @@ In multi-app Flutter ecosystems, teams often face a recurring dilemma:
 
 **Key insight:** SSA targets _expected reuse_, not hypothetical reuse. It’s pragmatic, not speculative.
 
----
-
 ## 3. Architecture as Insurance
 
 Think of **SSA as engineering insurance** — you pay a small premium (adapter overhead) upfront, and it pays back when features are migrated or reused across state managers.
@@ -40,8 +33,6 @@ Break‑Even R* = OH / (Savings × N)
 ```
 
 Where `N` = number of features on the same reuse track, OH - extra LOC above the Clean Architecture baseline (adapters that bridge shared state models and UI)
-
----
 
 ### 📊 Measured Results (Showcase Monorepo)
 
@@ -59,35 +50,29 @@ Where `N` = number of features on the same reuse track, OH - extra LOC above the
 
 As tracks grow, overhead amortizes while savings accumulate linearly. For large feature sets, break‑even drops below 5%, effectively zero cost.
 
----
-
-## 4. Amortization Effect
+### Amortization Effect
 
 **SCSM Track** — Overhead falls from **20.8% → 5.2% → 2% → 1%** as the number of features grows from 1 → 4 → 5 → 10. After four features, symmetry is already profitable.
 
-**AVLSM Track** — Starts steep (**128%** for 2 features => unprofitable), but decays rapidly but decays rapidly to **26% (5 features)** and **6% (20 features)**. Platform teams or long‑lived async products reach positive ROI naturally.
+**AVLSM Track** — Starts steep (**128%** for 2 features => unprofitable), but decays rapidly to **26% (5 features)** and **6% (20 features)**. Platform teams or long‑lived async products reach positive ROI naturally.
 
----
-
-## 5. Design Philosophy
+## 4. Design Philosophy
 
 The design values are simple but strict:
 
-- **Clean boundaries first** — UI is stateless; state managers orchestrate only.
+- **Pragmatic profit over aesthetic pleasure** — Clean code is a means to efficiency, not an end in itself
 - **Lazy parity** — Build secondary adapters only when reuse is confirmed.
 - **Empirical metrics** — Measure overhead, savings, and reuse rates instead of guessing.
-- **Symmetry contract** — Shared models and presentation APIs stay consistent across SMs and infrastructure layers.
-- **Distributed modularity** — Core, features, and adapters live in isolated packages with clear boundaries.
+- **Symmetry contract** — Infrastructure layers, Data/Domain layers, shared models and presentation APIs stay consistent across SMs.
+- **Distributed modularity** — Core, features, and adapters live in isolated packages with clear boundaries and seamless reuse.
 - **Cognitive symmetry** — Developers navigate identical project structures across apps, reducing mental load.
-- **Pragmatic profit over aesthetic pleasure** — Clean code is a means to efficiency, not an end in itself
-
----
+- **Clean boundaries** — UI is stateless; state managers orchestrate only.
 
 ## 7. The Essence
 
 State-Symmetric Architecture turns Clean Architecture from ideology into economics.
 **You pay a small, quantifiable premium for reusability and flexibility — instead of speculative abstraction debt.**
 
-t’s not “write once, run everywhere.”
+It’s not “write once, run everywhere.”
 
-**It’s “reuse when it’s profitable, and measure when it pays off.”**
+**It’s about “use adapters when it’s profitable, and measure when it pays off.”**
