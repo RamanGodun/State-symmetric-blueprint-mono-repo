@@ -4,12 +4,12 @@
 
 This monorepo demonstrates a **State-Symmetric architecture code style** — a pragmatic refinement of state-agnostic principles, that **allows to reuse 90%+ of the feature's codebase across apps with different state managers** (Riverpod, Cubit/BLoC, Provider).
 
-If you’re new to this repository, start with **[State Symmetric Philosophy](state_symmetric_philosophy.md)**
+If you’re new to this repository, start with **[State_symmetric_Concept](state_symmetric_concept.md)**
 
 **The approach combines:**
 
 - **Clean Architecture** with strong layer separation — state managers orchestrate state only; UI remains thin and stateless.
-- **Thin adapters/facades** (2–5 touchpoints per feature) that bridge shared code to specific state managers
+- **Thin adapters/facades** (2–5 touchpoints per feature) that bridge shared state models to UI.
 - **Lazy Parity:** only one state manager (and its thin facades) is implemented and compiled. Other SM glue is added **on demand**, avoiding parity maintenance cost while still enabling 90%+ reuse.
 - **Distributed modular structure**: the codebase is organized into dedicated packages and modules (core, features, bloc_adapter, riverpod_adapter, firebase_adapter, app_bootstrap), ensuring clear architectural boundaries, isolated dependencies, and maximal reusability across apps and state managers.
 
@@ -17,22 +17,27 @@ Accepted Architecture Decision Record: **[ADR-001 — State-Symmetric Architectu
 
 ### Key Metrics (measured)
 
-| Aspect              | Target           | 📲 Reality                                      |
-| ------------------- | ---------------- | ----------------------------------------------- | ---------------------------------------------- |
-| UI parity           | 95–100%          | ✅ Widgets/screens visually identical           |
-| Presentation parity | 90%+             | ✅ Thin wrappers only                           |
-| <!--                | Adapter overhead | ≤5–10% (amort.)                                 | ✅ 15–35% on first feature → ≤5–10% after 3–4+ |
-| Migration savings   | 40–80%           | ✅ Auth: 58–59%, Profile: 9–11% (first feature) | -->                                            |
+| Aspect                                                                                            | Target          | 📲 Reality                                       |
+| ------------------------------------------------------------------------------------------------- | --------------- | ------------------------------------------------ |
+| UI parity                                                                                         | 95–100%         | ✅ Widgets/screens visually identical            |
+| Presentation parity                                                                               | 90%+            | ✅ Apps differ only by thin adapters and SM glue |
+| ------------------------------------------------------------------------------------------------- |
+| Adapter overhead                                                                                  | ≤5–10% (amort.) | ✅ ≤5–10% (amort.) after sharing the same seams  |
+| Migration savings                                                                                 | 15–80%          | ✅ SCSM track: 53.3%, AVLSM track: 16.9%         |
+| ------------------------------------------------------------------------------------------------- |
+| Break-even Probability                                                                            | ≤10% (amort.)   | ✅ SCSM reaches ≈10% at very first feature       |
+|                                                                                                   |                 | ⚠️ AVLSM reaches ≈9% at 15 features              |
+| ------------------------------------------------------------------------------------------------- |
 
 ### **Business Value:**
 
-State symmetry acts as **low-cost insurance** (≈15–35% LOC upfront on the first feature, amortized to ≤5–10%) **that pays off when**:
+State symmetry acts as **low-cost insurance** **that pays off when**:
 
-- Probability of reusing a feature in an app with another SM is **≥15–25%** within the planning horizon.
+- Probability of reusing a feature in an app with another SM is **exceeds measured break-even probability** within the planning horizon.
 - Cross-app UI/UX similarity is **≥70%**.
 
 Approach can be valuable for small niche: **multi-product companies, white-label vendors, agencies, platform/SDK providers**.
-**Solo/indie** developers often get better ROI: with automation and single-person context the effective overhead can drop to **<3%**, while reuse opportunities remain high — net-positive by default for mainstream features (that can be reused on another app with different state manager).
+**Solo/indie** developers often get better ROI: with automation and single-person context the effective overhead can drop significantly, while reuse opportunities remain high — net-positive by default for features (that can be reused on another app with different state manager), built with mainstream state-model-patterns (eg, DataState/LoadingState/ErrorState, etc)
 
 See also:
 

@@ -17,7 +17,7 @@ Regarding “abstraction for its own sake”:
 
 Critique: _“It creates high cognitive load for teams.”_
 
-- Reality: seams (adapters) are **extremely thin (2–7 touchpoints per feature)**.
+- Reality: seams (adapters) are **extremely thin (2–5 touchpoints per feature)**.
 - They require only modest training; once learned, they are trivial to apply.
 - In fact, they often **improve developer experience** by unifying patterns across SMs.
 

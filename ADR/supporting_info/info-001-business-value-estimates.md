@@ -177,17 +177,7 @@ Break-Even R* (%): 128 → 64 → 43 → 32 → 26 → 13 → 9 → 6 → 5 → 
 
 **Key Insight:** AVLSM starts unprofitable (**>100%**) but becomes viable around **N=5 (26%)**, realistic by **N=10 (13%)**, and nearly free beyond **N≥25 (5%)**. At **N=100**, break-even is ~**1.3%**, indicating effectively zero cost for large tracks.
 
-## 5. Decision Matrix by Context
-
-| Company Type              | Typical Features | SCSM Verdict  | AVLSM Verdict  |
-| ------------------------- | ---------------- | ------------- | -------------- |
-| **Single-product**        | 2–5              | ✅ Viable     | ❌ Skip        |
-| **Agencies (2+ clients)** | 5–10             | ✅ Strong     | ⚠️ Conditional |
-| **Multi-product**         | 10–20            | ✅ No-brainer | ✅ Viable      |
-| **White-label**           | 15–30            | ✅ Default    | ✅ Strong      |
-| **Platform teams**        | 30–100           | ✅ Free       | ✅ No-brainer  |
-
-## 6. Practical Recommendations
+## 5. Practical Recommendations
 
 ### For SCSM Track:
 

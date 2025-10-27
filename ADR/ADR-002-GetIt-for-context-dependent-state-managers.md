@@ -1,14 +1,6 @@
 # ADR-002: Dependency Injection Pattern (via GetIt or native ProviderScope in Riverpod) in Symmetric State Management
 
-## 1. Review and Lifecycle
-
-_Status_: _Accepted_ (2025-09-26)
-_Revision history:_ First version
-_Author:_ Roman Godun
-
----
-
-## 2. 🎯 Context
+## 1. 🎯 Context
 
 Our Flutter monorepo architecture aims for:
 

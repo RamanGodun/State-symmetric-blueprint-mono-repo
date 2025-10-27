@@ -159,5 +159,4 @@ It delivers a **balanced Clean architecture with**:
 - 📈 **Scalability & flexibility**
 - 🤝 **Much improved developer experience**
 
-🟢 **Result:** 90%+ code reuse with low overhead, fast onboarding, and nice DX — a golden mean
-between state-agnostic approach with its benefits and engineering pragmatism, developer experience.
+🟢 **Result:** 90%+ code reuse with low overhead, fast onboarding, and nice DX — a golden mean between state-agnostic approach with its benefits and engineering pragmatism, developer experience.

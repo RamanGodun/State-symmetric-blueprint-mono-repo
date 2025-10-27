@@ -1,14 +1,6 @@
 # ADR-003: Navigation & Routing Strategy — Declarative, State-Agnostic, and Reactive
 
-## 1. Review and Lifecycle
-
-_Status_: _Accepted_ (2025-09-26)
-_Revision history:_ First version
-_Author:_ Roman Godun
-
----
-
-## 2. 🎯 Context
+## 1. 🎯 Context
 
 This architecture targets production-ready, scalable, and maintainable Flutter applications where **navigation is declarative, testable, and orchestration is reactive to app state** (e.g., auth status).
 
