@@ -16,7 +16,7 @@ Every boundary or abstraction is an investment: some pay back through reuse and 
 ### How it works
 
 - **Clean Architecture discipline** — State managers orchestrate only; UI remains thin and stateless.
-- **Thin adapters/facades** — 2–5 seams (for a specific state manager) per feature, that connect shared state models and stateless UI .
+- **Thin adapters/facades** 2–5 touchpoints (per feature), that bridge state (with shared state models) to UI.
 - **Lazy Parity** — Only the active state manager’s adapters exist; others are generated on demand when reuse becomes necessary.
 - **Distributed modularity** — Code is organized into independent packages (core, features, bloc_adapter, riverpod_adapter, etc.), enforcing clear architectural boundaries and dependency isolation.
 

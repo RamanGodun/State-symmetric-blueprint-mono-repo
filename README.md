@@ -9,7 +9,7 @@ If you’re new to this repository, start with **[State_symmetric_Concept](state
 **The approach combines:**
 
 - **Clean Architecture** with strong layer separation — state managers orchestrate state only; UI remains thin and stateless.
-- **Thin adapters/facades** (2–5 touchpoints per feature) that bridge shared state models to UI.
+- **Thin adapters/facades** 2–5 touchpoints (per feature), that bridge state (with shared state models) to UI.
 - **Lazy Parity:** only one state manager (and its thin facades) is implemented and compiled. Other SM glue is added **on demand**, avoiding parity maintenance cost while still enabling 90%+ reuse.
 - **Distributed modular structure**: the codebase is organized into dedicated packages and modules (core, features, bloc_adapter, riverpod_adapter, firebase_adapter, app_bootstrap), ensuring clear architectural boundaries, isolated dependencies, and maximal reusability across apps and state managers.
 

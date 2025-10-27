@@ -230,7 +230,7 @@ Break-Even R* (%): 128 → 64 → 43 → 32 → 26 → 13 → 9 → 6 → 5 → 
 ### SCSM Track
 
 - **Current state**: 4 features, 5.2% overhead, 53.3% savings
-- **Break-even**: **10% reuse probability**
+- **Break-even**: **10% reuse probability** of very firts feature
 - **Verdict**: ✅ **Adopt by default** for any multi-app scenario
 - **Amortization**: Overhead drops to **<2%** with 10+ features
 
@@ -238,17 +238,10 @@ Break-Even R* (%): 128 → 64 → 43 → 32 → 26 → 13 → 9 → 6 → 5 → 
 
 - **Current state**: 2 features, 21.6% overhead, 16.9% savings
 - **Break-even**: **128% reuse** (unfeasible) → **26% with 5 features**
-- **Verdict**: ⚠️ **Wait until ≥10 async features** unless platform team
-- **Amortization**: Becomes no-brainer at 20+ features (13% break-even)
+- **Verdict**: ⚠️ **Mostly wait until ≥10 async features** unless platform team
+- **Amortization**: Becomes no-brainer at 20+ features (6% break-even)
 
 > All estimates are conservative. Actual savings may be higher due to reduced testing/maintenance burden and faster time-to-market, as well as no need to create infrastructure codebase (that should be done within baseline scenario)
-
-### Bottom Line
-
-**State-Symmetric Architecture is insurance:**
-
-- **Low premium**: <=5% overhead after amortization
-- **Break-even**: Realistic for **SCSM at ≥4 features** (10% reuse), **AVLSM at ≥5 features** (26% reuse)
 
 **Decision rule:**
 

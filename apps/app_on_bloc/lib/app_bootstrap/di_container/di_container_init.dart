@@ -37,13 +37,5 @@ abstract final class DIContainer {
     debugPrint('📦 Full DI initialized with modules');
   }
 
-  /// 🎯 Initializes **minimal DI stack** for splash/loader
-  ///   - Typically includes only theme or very lightweight dependencies
-  ///   - Allows splash to render before heavy services are bootstrapped
-  static Future<void> initNecessaryForAppSplashScreen() async {
-    await ModuleManager.registerModules([ThemeModule()]);
-    debugPrint('📦 Minimal DI initialized (currently: Theme cubit)');
-  }
-
   //
 }

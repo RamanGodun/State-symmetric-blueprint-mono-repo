@@ -21,7 +21,7 @@ Instead of heavy abstraction layers, the approach applies:
 
 👉 This monorepo was created to **demonstrate the State-Symmetric architecture style** and measure its **business value** in practice.
 
-## 3. ✅ Decisions, Key Principles
+## 2. ✅ Decisions
 
 ### Adoption of the Requirements to State-Symmetric Approach
 
@@ -34,9 +34,9 @@ The **following requirements are adopted** for the monorepo’s codebase:
 - **Onboarding:** Lightweight entry for new developers (≤1 week), familiar with Clean Architecture patterns.
 - **Flexibility / Portability:** Features can be migrated between apps/SM with <10% code changes.
 - **Symmetry Budget:**
-  - First feature adapters: ≤20–35% LOC overhead.
+  - First feature adapters: ≤15–50% LOC overhead.
   - After 2–3 features: amortized to ≤5–10% LOC, with final target ≤5%.
-- **Reuse Gate:** Enable symmetry only if reuse probability ≥15–25% and UI/UX similarity ≥70%.
+- **Reuse Gate:** Enable symmetry only if reuse probability ≥15% and UI/UX similarity ≥70%.
 - **Maintenance/Test Cost Delta:** Total QA + support cost with symmetry must be lower than maintaining duplicated Presentation layers across different SMs.
 
 ### Details of Accepted Decisions
@@ -66,46 +66,12 @@ The **following requirements are adopted** for the monorepo’s codebase:
    Features can share models across sub-flows (e.g., Auth/Profile reuse), allowing pragmatic composition without duplication.
 
 9. **Distributed Modular Structure**
-
-The monorepo follows a distributed modular architecture: all code is organized into dedicated Flutter packages, each owning its own dependency scope and responsibility.
-This structure enables true isolation of concerns, clear ownership boundaries, and frictionless code reuse across apps and state managers.
-
-Packages and roles:
-• core → foundational infrastructure: navigation, overlays, localization, theming, error handling, animations, form fields
-• features → reusable domain and data layers for individual features (auth, profile, etc.)
-• bloc_adapter / riverpod_adapter → state-manager's specific codebase, including thin glue packages bridging the shared layers with BLoC/Cubit or Riverpod ecosystems
-• firebase_adapter → backend integration layer; isolates Firebase SDK dependencies
-• app_bootstrap → unified startup pipeline and environment setup shared by all apps
+   The monorepo follows a distributed modular architecture: all code is organized into dedicated Flutter packages, each owning its own dependency scope and responsibility.
+   This structure enables true isolation of concerns, clear ownership boundaries, and frictionless code reuse across apps and state managers.
 
 🟢 **Result:** 90%+ code reuse with minimal overhead, fast onboarding, and improved DX — the golden mean between state-agnostic benefits and engineering pragmatism.
 
-## 4. 💡 Success Criteria and Alternatives Considered
-
-### 🧪 Success Criteria for accepted decisions
-
-- [ ] **Reuse ROI**: Symmetry pays off when feature reuse probability ≥ **15–25%** across apps/stacks.
-- [ ] **Adapter Overhead**: amortized ≤ **5–10% LOC per feature** (target ≤200 LOC, hard cap 300 LOC).
-- [ ] **Migration Savings**: ≥ **40–80%** code saved when features migrate to another app with different SM.
-- [ ] **Testing & Maintenance Cost**: reduced duplication → no need to test/maintain multiple Presentation layers for the same feature; only adapters require thin coverage.
-- [ ] **Onboarding**: new developers productive in < **1 week** (familiar Clean Architecture + thin adapters).
-- [ ] **Delivery Speed**: feature delivery cycle < **2 weeks**, thanks to 90%+ reuse.
-- [ ] **Shared UI**: > **90% of UI widgets reused without modification** across apps.
-
-### **Alternatives Considered**
-
-1. **Pure State-Agnostic (heavy abstractions)**
-   • ✅ **Pros:** maximal state‑manager independence. With an already developed infrastructure (contracts, adapters, seams, test scaffolding), features can be migrated faster between different SMs‑based apps.
-   • ❌ **Cons:** verbose, complex, high parity tax, steep learning curve, slower delivery. Very high upfront cost — the infrastructure codebase must first be developed and later maintained, otherwise the benefits never materialize.
-
-2. **Choose one state‑manager per project (BLoC/Cubit for Enterprise/Banking, Riverpod for mid‑sized/modern apps, Provider for legacy/simple cases)**
-   • ✅ **Pros:** clean, minimal setup, small app size, familiar DX, straightforward onboarding.
-   • ❌ **Cons:** reduced flexibility — each feature is effectively locked into its chosen SM. Reuse across SMs is limited (→ at least duplicated Presentation layers). Testing and maintenance costs rise (every duplicate Presentation layer must be covered separately). Migration is much harder:
-   – From **Riverpod → Cubit/BLoC/Provider** requires building a GetIt‑based DI layer.
-   – From **BLoC → Riverpod/Provider** requires creating EventStreamManager equivalents.
-   – For both directions, shared infrastructure (themes, overlays, localization, routing, animations) must be replicated.
-   **Result:** each migration demands substantial infrastructure rebuild, making parity migrations often impractical in real projects.
-
-## 5. 🧨 Consequences
+## 3 🧨 Consequences of accepted decisions
 
 ### ✅ Positive
 
@@ -136,6 +102,45 @@ Within this monorepo, a base foundation has already been implemented as the core
 The core package includes: errors and overlays management, app navigation, localization, design system and theming, animations, form fields / inputs
 This infrastructure enables true symmetry by isolating app-level responsibilities from state management concerns, ensuring that state-symmetric features can operate identically across Riverpod, Cubit/BLoC, and Provider apps with minimal duplication.
 
+## 4. 💡 Success Criteria and Alternatives Considered
+
+### 🧪 Success Criteria for accepted decisions
+
+- [ ] **Reuse ROI**: Symmetry pays off when feature reuse probability ≥ **15–25%** across apps/stacks.
+- [ ] **Adapter Overhead**: amortized ≤ **5–10% LOC per feature** (target ≤200 LOC, hard cap 300 LOC).
+- [ ] **Migration Savings**: ≥ **40–80%** code saved when features migrate to another app with different SM.
+- [ ] **Testing & Maintenance Cost**: reduced duplication → no need to test/maintain multiple Presentation layers for the same feature; only adapters require thin coverage.
+- [ ] **Onboarding**: new developers productive in < **1 week** (familiar Clean Architecture + thin adapters).
+- [ ] **Delivery Speed**: feature delivery cycle < **2 weeks**, thanks to 90%+ reuse.
+- [ ] **Shared UI**: > **90% of UI widgets reused without modification** across apps.
+
+### **Alternatives Considered**
+
+1. **Pure State-Agnostic (heavy abstractions)**
+   • ✅ **Pros:** maximal state‑manager independence. With an already developed infrastructure (contracts, adapters, seams, test scaffolding), features can be migrated faster between different SMs‑based apps.
+   • ❌ **Cons:** verbose, complex, high parity tax, steep learning curve, slower delivery. Very high upfront cost — the infrastructure codebase must first be developed and later maintained, otherwise the benefits never materialize.
+
+2. **Choose one state‑manager per project (BLoC/Cubit for Enterprise/Banking, Riverpod for mid‑sized/modern apps, Provider for legacy/simple cases)**
+   • ✅ **Pros:** clean, minimal setup, small app size, familiar DX, straightforward onboarding.
+   • ❌ **Cons:** reduced flexibility — each feature is effectively locked into its chosen SM. Reuse across SMs is limited (→ at least duplicated Presentation layers). Testing and maintenance costs rise (every duplicate Presentation layer must be covered separately). Migration is much harder:
+   – From **Riverpod → Cubit/BLoC/Provider** requires building a GetIt‑based DI layer.
+   – From **BLoC → Riverpod/Provider** requires creating EventStreamManager equivalents.
+   – For both directions, shared infrastructure (themes, overlays, localization, routing, animations) must be replicated.
+   **Result:** each migration demands substantial infrastructure rebuild, making parity migrations often impractical in real projects.
+
+## 5. 📌 Summary
+
+> State-Symmetric is a **lighter, DX-focused evolution** of state-agnostic approach. It keeps the benefits of state-agnosticism but avoids its pitfalls.
+
+It delivers a **balanced Clean architecture with**:
+
+- 💡 **Reusable logic and UI**
+- ⚡ **High productivity** for teams in critical phases
+- 📈 **Scalability & flexibility**
+- 🤝 **Much improved developer experience**
+
+🟢 **Result:** 90%+ code reuse with low overhead, fast onboarding, and nice DX — a golden mean between state-agnostic approach (with its benefits) and engineering pragmatism, developer experience.
+
 ## 6. 🔗 Related info
 
 ### Related ADRs
@@ -147,16 +152,3 @@ This infrastructure enables true symmetry by isolating app-level responsibilitie
 
 - [Clean Architecture in Flutter](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 - [Flutter Architecture Guidelines](https://docs.flutter.dev/app-architecture)
-
-## 7. 📌 Summary
-
-> State-Symmetric is a **lighter, DX-focused evolution** of state-agnostic approach. It keeps the benefits of state-agnosticism but avoids its pitfalls.
-
-It delivers a **balanced Clean architecture with**:
-
-- 💡 **Reusable logic and UI**
-- ⚡ **High productivity** for teams in critical phases
-- 📈 **Scalability & flexibility**
-- 🤝 **Much improved developer experience**
-
-🟢 **Result:** 90%+ code reuse with low overhead, fast onboarding, and nice DX — a golden mean between state-agnostic approach with its benefits and engineering pragmatism, developer experience.
