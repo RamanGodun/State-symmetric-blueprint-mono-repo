@@ -1,110 +1,119 @@
-# ADR-004: Localization Strategy
+# ADR-004: Localization Strategy — EasyLocalization in a State‑Symmetric Architecture
 
-## 1. Review and Lifecycle
+## 1. Context (Problem & Goals)
 
-_Status_: _Accepted_ (2025-09-26)
-_Revision history:_ First version
-_Author:_ Roman Godun
+Localization (i18n) is a production‑grade requirement for multi‑language apps. Within the **State‑Symmetric** approach, the localization layer must remain **modular, testable, and state‑manager agnostic**, delivering identical behavior in both demo apps (Bloc/Cubit and Riverpod).
 
-## 2. 🎯 Context
+**Problems to solve**
 
-Localization (i18n) is a critical requirement for modern multi-language apps. This ADR defines a **state-symmetric, modular, and testable** localization system that acomplish next **Design Goals**:
+- Enable **runtime locale switching** without a full app restart.
+- Provide a **centralized API** for string resolution that works **inside and outside** the widget tree (overlays, validators, background tasks).
+- Ensure **graceful degradation** in apps that **do not ship i18n** (fallback‑only mode).
+- Preserve **clean architectural boundaries**: Domain/Data traffic in **keys**; Presentation resolves into **strings**.
 
-- Enables **real-time locale switching** (without full app reload)
-- Supports **both Riverpod and BLoC/Cubit/Riverpod** state managers
-- Centralizes localization logic for testability and consistency
-- Degrades gracefully in apps that **don’t require localization** (fallback-only mode)
-- Is compatible with **background tasks**, headless/CLI modes, and widgets outside the tree
+**Design constraints**
 
-The architecture is designed to ensure **DX, runtime performance, and extensibility**.
-
-- **State-Agnostic**: Can be used with any state management (Bloc, Riverpod, Provider, etc.) and supports global/local widget trees.
-- **Fallback-Resilient**: Always resolves a string for any key, even if no localization is configured (e.g., fallback to English or a hardcoded string).
-- **Centralized Resolution**: All translation lookups go through `AppLocalizer`, supporting logging and testability.
-- **Extensible & Open-Close Principle**: New languages, keys, or resolution modes can be added with zero impact on existing modules.
-- **Testable**: Fully mockable for unit tests, supports force-init with test/local/fake resolvers.
-- **Real-Time Locale Switching**: Supports user-triggered locale changes at runtime (no app reload).
-- **Separation of Concerns**: Domain/logic works with keys only, UI widgets are responsible for resolving keys.
-- **Consistent API**: Unified approach for all widgets (`TextWidget`, `AppTextField`, overlays, etc.).
-- **DX-Optimized**: Developers never touch raw `.tr()`/`BuildContext` in business logic or domain models.
-- **Safe**: Keys are generated and strongly typed (via `LocaleKeys`)
+- State‑manager symmetry (Bloc/Cubit ⇄ Riverpod) and DI‑agnostic wiring.
+- Codegen‑based, strongly‑typed keys for safety and DX.
+- Consistent behavior in tests, CLI, headless/background flows.
 
 ---
 
-## 3. ✅ Decisions, Key Principles
+## 2. Decisions (Concise)
 
-We adopt the following localization strategy:
+1. **Engine**
+   Use **`easy_localization`** as the localization engine (live switching, plural/gender, codegen, active maintenance).
 
-- Use [`easy_localization`] package as the base engine due to its feature set, active maintenance, real-time switching, and codegen support.
-- `LocalizationWrapper.configure()` is the single source of truth for app-wide localization context. Encapsulate all translation logic behind a **universal AppLocalizer singleton**, which supports both EasyLocalization and fallback-only modes (availabble easy switching between localization and fallback-only mode at bootstrap)
-- All translation must go through `AppLocalizer.translateSafely(...)`. In non-i18n apps or early boot, fallback-only mode is enabled via `LocalesFallbackMapper`
-- For UI text: use the `TextWidget` or `_resolveText()` wrapper — never `.tr()` directly
-- All domain/business logic (validation, failures, overlays, form fields) must operate on keys only; all actual translation is performed at the UI/widget layer where BuildContext is available.
-- Ensure all localization setup is **modular** and compatible with any DI/container pattern.
-- All keys are accessed via `LocaleKeys` generated via codegen
+2. **Single Resolution API**
+   Adopt **`AppLocalizer`** (singleton) as the _only_ public entry point for translations:
+   - `AppLocalizer.init(resolver: (key) => key.tr())` — normal mode (EasyLocalization present).
+   - `AppLocalizer.initWithFallback()` — fallback‑only mode (no EasyLocalization; returns predefined messages or the key itself).
+   - `translateSafely(key, fallback: ...)` — safe access with logging of missing keys.
+   - `forceInit(resolver: ...)` — test override for headless/CLI.
 
----
+3. **Root Integration**
+   Wrap the root widget with **`LocalizationWrapper.configure(child)`** to inject `supportedLocales`, `fallbackLocale`, `localizationsDelegates`, and the asset loader.
 
-## Solution Details
+4. **Strongly‑Typed Keys & Codegen**
+   Generate keys (e.g., **`LocaleKeys`**) and a `CodegenLoader`. Only generated keys are allowed in code (no magic strings).
 
-Solution Details are in [README of localization module](<../packages/core/lib/src/base_modules/localization/README(localization).md>)
+5. **Resolve Only in Presentation**
+   Domain/Data/Use‑cases/Validation pass **translation keys**; string resolution happens **only** in UI/overlays where needed. No `BuildContext` or `.tr()` in business logic.
 
----
+6. **Declarative UI Primitives**
+   Use safe UI wrappers (e.g., `TextWidget`, `_resolveText()`/`_resolveLabel()`) that delegate to `AppLocalizer` and always provide fallbacks.
 
-## 4. 💡 Success Criteria and Alternatives Considered
+7. **State‑Manager Symmetry**
+   Same API/behavior in **Bloc/Cubit** and **Riverpod** apps; DI/container choice must not affect localization usage.
 
-- **Flutter Intl / native flutter_gen**: Does not support live locale switching, less flexible for DI/testability.
-- **Slang**: Nice alternative. Will be considerated in next research
+8. **Error & Overlay Localization (principle)**
+   - **Domain failures carry i18n keys** via `FailureType.translationKey` (strongly typed constants, no raw strings).
+   - **Presenter maps `Failure → FailureUIEntity`** resolving localized text through `AppLocalizer.translateSafely(...)` with diagnostic fallback to `Failure.message` or `type.code`.
+   - **Overlay DSL consumes only localized strings**: `context.showError(FailureUIEntity, ...)` or `showAppDialog(...)` pulls confirm/cancel labels via `AppLocalizer` (never `.tr()` inline).
+   - **Fallback‑only mode** still renders meaningful messages (pre‑mapped dictionary + raw message fallback).
 
-### 🧪 Success Criteria
+9. **Form Field Localization**
+   - **Labels**: All form labels (e.g., name, email, password) use generated `LocaleKeys.form_*` constants. Labels are resolved via `AppLocalizer.translateSafely` inside `AppFormField`.
+   - **Validation Errors**: All `FormzInput` validators map enum values to keys (e.g., `LocaleKeys.form_email_is_invalid`). The UI consumes only `uiErrorKey`, which is resolved through the safe localizer.
+   - **Fallback Safety**: Both labels and validation errors degrade gracefully if i18n is disabled.
+   - **Symmetry**: Bloc and Riverpod apps follow the same contract — validators expose keys, presentation resolves them, no inline `.tr()` allowed.
 
-- [ ] Features migrate between apps with <10% code change
+## 3. Consequences
 
----
+### Positive
 
-## 5. 🧨 Consequences
+- **Unified contract** across state managers and layers.
+- **Runtime locale switching** without app restart.
+- **High testability**: `AppLocalizer.forceInit(...)` allows fake resolvers in tests/CLI/headless tasks.
+- **Graceful degradation**: apps without i18n work via the fallback resolver.
+- **Observability**: missing‑key usage is logged centrally.
 
-### ✅ Positive
+### Negative
 
-- Unified, modular localization
-- Shared across state managers (Riverpod/Bloc)
-- Declarative and clean usage patterns
-- Runtime locale switching, error-safe
-- Easy to mock/test
+- **Codegen pipeline required** (keys + loader must be generated).
+- **Bootstrap discipline**: initialization order matters and must happen at the top of the tree.
+- **Key drift risk** if translation JSONs are not kept in sync across locales (mitigate with CI checks).
+- **Native Material/Cupertino widgets are not localized by EasyLocalization**. Flutter’s built‑in UI (e.g., DatePicker, TimePicker, some Cupertino controls) relies on Flutter’s own localization delegates. If GlobalMaterialLocalizations, GlobalWidgetsLocalizations, and GlobalCupertinoLocalizations are not wired (via context.localizationDelegates) and supportedLocales is not kept in sync with assets and iOS CFBundleLocalizations, those widgets may fall back to English or show partially localized UI. Mitigation: enforce delegates through LocalizationWrapper, keep locale lists synchronized (Android/iOS/MaterialApp), add an integration test that switches locale and opens Material/Cupertino pickers, and rebuild views after runtime switching when a platform view requires it.
 
-### ⚠️ Negative
+## 4. Success Criteria & Alternatives
 
-- Requires setup at bootstrap
-- Codegen step mandatory
-- EasyLocalization still required under the hood (unless fallback-only mode)
+### Success Criteria
 
----
+- **Single API usage**: only `AppLocalizer`/`LocaleKeys` in the codebase; no scattered `.tr()` in business logic.
+- **Symmetric behavior** in both demo apps (Bloc and Riverpod) without conditional branches.
+- **Stable runtime switching** validated by integration tests.
+- **Fallback coverage** for critical messages (overlays, validations, form fields) so UI never breaks when i18n is absent.
+- **Feature migration** between apps requires < **10%** Presentation edits (keys remain identical).
+- **Error/overlay/form conformance**: failures and form inputs expose `translationKey`; UI resolves only via `AppLocalizer`.
 
-## 6. 🔗 Related info
+### Alternatives Considered
 
-## 🧭 Related ADRs
+- **Flutter gen‑l10n / flutter_localizations (native)**
+  Official and deeply integrated; however less ergonomic for our **context‑free/symmetric** DI model and headless usage. Live switching typically needs extra wrappers.
 
-- ADR-001: State-Symmetric Architecture
-- ADR-002: Dependency Injection (Bloc + GetIt / Riverpod)
-- ADR-003: Navigation Strategy (GoRouter)
+- **Slang**
+  Strong type safety and convenient API. Not part of the initial stack; requires a separate migration study and evaluation.
 
-## 📚 References
+## 5. Summary
+
+The adopted strategy yields **modular, symmetric, and testable** localization. `AppLocalizer` centralizes safe resolution and fallbacks; `LocalizationWrapper` cleanly injects context/delegates at the root; generated `LocaleKeys` + `CodegenLoader` provide compile‑time safety. Error handling, overlays, and form fields follow a **key‑in/domain → string‑in/presentation** pattern, ensuring consistent UX both with full i18n and in fallback‑only mode.
+
+## 6. Related Information
+
+**Module Docs**
+
+- [`README(localization).md`](../packages/core/lib/src/base_modules/localization/README%28localization%29.md)
+- [`README(errors_handling).md`](../packages/core/lib/src/base_modules/errors_management/README%28errors_handling%29.md)
+- [`README(overlays).md`](../packages/core/lib/src/base_modules/overlays/README%28overlays%29.md)
+- [`README(form_fields).md`](../packages/core/lib/src/base_modules/form_fields/README%28form_fields%29.md)
+
+**Related ADRs**
+
+- [ADR-001 — State-Symmetric Architecture](ADR-001-State-symmetric-architecture.md)
+- [ADR-002 — Dependency Injection](ADR-002-GetIt-for-context-dependent-state-managers.md)
+- [ADR-003 — Navigation & Routing](ADR-003-GoRouter-navigation.md)
+
+**References**
 
 - [EasyLocalization](https://pub.dev/packages/easy_localization)
 - [Flutter Internationalization Docs](https://docs.flutter.dev/accessibility-and-localization/internationalization)
-
----
-
-## 7. 📌 Summary
-
-> This localization strategy brings modularity, safety, nice DX, and state-symmetry to Flutter apps.
-
-- ✅ Testable
-- ✅ Runtime-switchable
-- ✅ Clean architecture ready
-- ✅ State manager independent
-- ✅ Production-grade
-
-Supports apps of any scale or architecture style, ready for any scale, future refactoring, or business requirement.
-
----
