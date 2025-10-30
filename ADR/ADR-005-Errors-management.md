@@ -74,7 +74,6 @@ Error handling is a **first-class concern** in production-grade apps. Within a *
 - **Boilerplate overhead**: each new SDK requires mapper + `FailureType` + translation key (mitigated by templates in `extensible_part/`).
 - **Learning curve**: developers must be comfortable with `Either` and FP patterns.
 - **Initialization discipline**: overlays/loggers must be wired at bootstrap.
-- **Extra indirection**: UI must map through `toUIEntity()`, never raw messages.
 
 ---
 

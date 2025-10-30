@@ -143,10 +143,10 @@ This ensures symmetry across Bloc and Riverpod apps while keeping the overlay co
 - **Polished animations** via a centralized engine.
 - **Testable**: Dispatcher is isolated and mockable.
 - **Extensible**: new types/presets/policies without touching the core.
+- **Open/Closed Principle**: Easy to add a new overlay types (require entry + platform widgets + optional preset).
 
 **Negative**
 
-- **Boilerplate**: new overlay types require entry + platform widgets (+ optional preset).
 - **Bootstrap discipline**: dispatcher resolvers must be wired at startup.
 - **Learning curve**: priorities/policies/queueing need to be understood.
 - **DI indirection**: dispatcher accessed via a port rather than direct constructors.
