@@ -47,7 +47,7 @@ scripts:
 
   #
   # Through apps/packages:
-  dcm:bloc: melos exec --scope="app_on_bloc" -- "dart pub global run dart_code_metrics:metrics analyze lib --exclude='{/**.g.dart,/**.freezed.dart}'"
+  dcm:cubit: melos exec --scope="app_on_cubit" -- "dart pub global run dart_code_metrics:metrics analyze lib --exclude='{/**.g.dart,/**.freezed.dart}'"
   dcm:core: melos exec --scope="core" -- "dart pub global run dart_code_metrics:metrics analyze lib --disable-sunset-warning --exclude='{/**.g.dart,/**.freezed.dart}'"
   dcm:riverpod: melos exec --scope="app_on_riverpod" -- "dart pub global run dart_code_metrics:metrics analyze lib --disable-sunset-warning --exclude='{/**.g.dart,/**.freezed.dart}'"
 
@@ -85,8 +85,8 @@ scripts:
   coverage: melos exec --scope="app_on_*" -- "flutter test --coverage --no-pub"
   #
   # --- Coverage per app (safe multiline) ---
-  coverage:bloc: |
-    melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  coverage:cubit: |
+    melos exec --scope="app_on_cubit" --concurrency=1 -- \
       bash -lc 'flutter test --coverage --no-pub && genhtml coverage/lcov.info -o coverage/html && (open coverage/html/index.html || xdg-open coverage/html/index.html || start coverage\\html\\index.html)'
   #
   coverage:riverpod: |
@@ -109,26 +109,26 @@ scripts:
   build:ios:rp:dev: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor development -t lib/main_development.dart"
   build:ios:rp:stg: melos exec --scope="app_on_riverpod" --concurrency=1 -- "flutter build ipa --flavor staging     -t lib/main_staging.dart"
 
-  # ---------- Run App on BLoC ----------
-  run:cubit:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  # ---------- Run App on cubit ----------
+  run:cubit:dev: melos exec --scope="app_on_cubit" --concurrency=1 -- \
     "flutter run --flavor development -t lib/main_development.dart"
-  run:cubit:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  run:cubit:stg: melos exec --scope="app_on_cubit" --concurrency=1 -- \
     "flutter run --flavor staging -t lib/main_staging.dart"
 
   #
-  # ---------- Build App on BLoC (Android) ----------
-  build:cubit:apk:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  # ---------- Build App on cubit (Android) ----------
+  build:cubit:apk:dev: melos exec --scope="app_on_cubit" --concurrency=1 -- \
     "flutter build apk --flavor development -t lib/main_development.dart"
-  build:cubit:apk:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  build:cubit:apk:stg: melos exec --scope="app_on_cubit" --concurrency=1 -- \
     "flutter build apk --flavor staging -t lib/main_staging.dart"
 
-  build:cubit:aab:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  build:cubit:aab:stg: melos exec --scope="app_on_cubit" --concurrency=1 -- \
     "flutter build appbundle --flavor staging -t lib/main_staging.dart"
 
-  # ---------- Build App on BLoC (iOS) ----------
-  build:ios:cubit:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  # ---------- Build App on cubit (iOS) ----------
+  build:ios:cubit:dev: melos exec --scope="app_on_cubit" --concurrency=1 -- \
     "flutter build ipa --flavor development -t lib/main_development.dart"
-  build:ios:cubit:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- \
+  build:ios:cubit:stg: melos exec --scope="app_on_cubit" --concurrency=1 -- \
     "flutter build ipa --flavor staging -t lib/main_staging.dart"
 
   #
@@ -137,9 +137,9 @@ scripts:
 
   # ----------- App icons ------------
 
-  # App on BLoC
-  icons:cubit:dev: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter pub run flutter_launcher_icons -f pubspec_dev.yaml"
-  icons:cubit:stg: melos exec --scope="app_on_bloc" --concurrency=1 -- "flutter pub run flutter_launcher_icons -f pubspec_stg.yaml"
+  # App on cubit
+  icons:cubit:dev: melos exec --scope="app_on_cubit" --concurrency=1 -- "flutter pub run flutter_launcher_icons -f pubspec_dev.yaml"
+  icons:cubit:stg: melos exec --scope="app_on_cubit" --concurrency=1 -- "flutter pub run flutter_launcher_icons -f pubspec_stg.yaml"
   icons:cubit:all: |
     melos run icons:cubit:dev
     melos run icons:cubit:stg
@@ -159,18 +159,18 @@ scripts:
     melos run icons:riverpod:stg
 
   # after icons changes run:
-  icons:aob:dev: melos exec --scope="app_on_bloc" -- "flutter pub run flutter_launcher_icons -f pubspec_dev.yaml"
-  icons:aob:stg: melos exec --scope="app_on_bloc" -- "flutter pub run flutter_launcher_icons -f pubspec_stg.yaml"
+  icons:aob:dev: melos exec --scope="app_on_cubit" -- "flutter pub run flutter_launcher_icons -f pubspec_dev.yaml"
+  icons:aob:stg: melos exec --scope="app_on_cubit" -- "flutter pub run flutter_launcher_icons -f pubspec_stg.yaml"
 
   # Riverpod app (android-only)
   icons:riverpod: bash scripts/generate_android_icons.sh apps/app_on_riverpod
 
-  # Bloc app (android-only)
-  icons:bloc: bash scripts/generate_android_icons.sh apps/app_on_bloc
+  # cubit app (android-only)
+  icons:cubit: bash scripts/generate_android_icons.sh apps/app_on_cubit
 
   icons:verify: |
     bash -lc '
-      for APP in apps/app_on_riverpod apps/app_on_bloc; do
+      for APP in apps/app_on_riverpod apps/app_on_cubit; do
         echo "== $APP ==";
         (cd "$APP/android/app" && \
           shasum src/main/res/mipmap-*/ic_launcher.png | sort | head -n1 && \
@@ -205,7 +205,7 @@ scripts:
     run: |
       melos exec --scope="app_on_riverpod" --concurrency=1 -- \
         dart run build_runner build --delete-conflicting-outputs || true
-      melos exec --scope="app_on_bloc" --concurrency=1 -- \
+      melos exec --scope="app_on_cubit" --concurrency=1 -- \
         dart run build_runner build --delete-conflicting-outputs || true
 
   # Clean for all
@@ -215,7 +215,7 @@ scripts:
       melos exec --scope="features" --concurrency=1 -- dart run build_runner clean || true
       melos exec --scope="core" --concurrency=1 -- dart run build_runner clean || true
       melos exec --scope="app_on_riverpod" --concurrency=1 -- dart run build_runner clean || true
-      melos exec --scope="app_on_bloc" --concurrency=1 -- dart run build_runner clean || true
+      melos exec --scope="app_on_cubit" --concurrency=1 -- dart run build_runner clean || true
 
   # ---------- Watch  ----------
   watch:adapters:
@@ -229,7 +229,7 @@ scripts:
   watch:apps:
     run: |
       melos exec --scope="app_on_riverpod" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
-      melos exec --scope="app_on_bloc" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
+      melos exec --scope="app_on_cubit" --concurrency=1 -- dart run build_runner watch --delete-conflicting-outputs
 
   #
   #
@@ -259,7 +259,7 @@ scripts:
 
   # Generate path for both apps
   spider:apps:gen: |
-    melos exec --scope="app_on_bloc" -- bash -lc 'export PATH="$PATH:$HOME/.pub-cache/bin"; \
+    melos exec --scope="app_on_cubit" -- bash -lc 'export PATH="$PATH:$HOME/.pub-cache/bin"; \
       spider -p lib/core/shared_presentation/utils/images_paths/spider.yaml build'
     melos exec --scope="app_on_riverpod" -- bash -lc 'export PATH="$PATH:$HOME/.pub-cache/bin"; \
       spider -p lib/core/shared_presentation/utils/images_paths/spider.yaml build'

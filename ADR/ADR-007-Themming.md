@@ -126,4 +126,4 @@ The module delivers **declarative, symmetric theming** with **cached `ThemeData`
 - `core/src/base_modules/ui_design/ui_constants/…` — colors, spacing, shadows, tokens
 - `bloc_adapter/src/core/base_modules/theme_module/…` — `AppThemeCubit` and widgets
 - `riverpod_adapter/src/core/base_modules/theme_module/…` — `themeProvider` and widgets
-- App shells (`apps/app_on_bloc/*`, `apps/app_on_riverpod/*`) — identical `MaterialApp.router` wiring
+- App shells (`apps/app_on_cubit/*`, `apps/app_on_riverpod/*`) — identical `MaterialApp.router` wiring

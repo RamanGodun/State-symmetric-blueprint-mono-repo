@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Usage:
 #   bash scripts/generate_android_icons.sh apps/app_on_riverpod
-#   bash scripts/generate_android_icons.sh apps/app_on_bloc
+#   bash scripts/generate_android_icons.sh apps/app_on_cubit
 #
 # Працює ТІЛЬКИ для ANDROID. iOS не чіпає взагалі.
 # Алгоритм:

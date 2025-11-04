@@ -44,4 +44,4 @@ const envExtra = process.env.COMMIT_SCOPES
 const BASE_DIR = path.dirname(__filename);
 
 module.exports.scopes = getScopes(getRoots(), [...defaultExtra, ...envExtra], BASE_DIR);
-// Result example: ['app_on_bloc','app_on_riverpod','assets','core','app_bootstrap']
+// Result example: ['app_on_cubit','app_on_riverpod','assets','core','app_bootstrap']

@@ -49,7 +49,7 @@ See also:
 
 Follow app-specific READMEs for environment setup, Firebase config (if any), and run scripts:
 
-- 📱 **BLoC/Cubit app:** [`apps/app_on_bloc/README.md`](apps/app_on_bloc/README.md)
+- 📱 **BLoC/Cubit app:** [`apps/app_on_cubit/README.md`](apps/app_on_cubit/README.md)
 - 📱 **Riverpod app:** [`apps/app_on_riverpod/README.md`](apps/app_on_riverpod/README.md)
 
 Common bootstrap:
@@ -65,7 +65,7 @@ melos bootstrap
 Run examples:
 
 ```sh
-# Riverpod app
+# Riverpod appj
 melos run run:rp:dev   # Dev flavor
 melos run run:rp:stg   # Staging flavor
 
@@ -81,7 +81,7 @@ The monorepo is structured into **two fully symmetrical apps (BLoC/Cubit and Riv
 ```text
 |
 ├── apps/                        # Symmetric demo apps
-│   ├── app_on_bloc/             # BLoC/Cubit implementation
+│   ├── app_on_cubit/            # BLoC/Cubit implementation
 │   └── app_on_riverpod/         # Riverpod implementation
 │
 ├── packages/                    # Shared Flutter packages, plugged into apps
@@ -146,7 +146,7 @@ This systematic organization ensures **every piece of code has a natural home wi
 
 **Both fully functional demo apps share identical functionality, UI, and UX**, showcasing the state-symmetric architecture in action.
 
-📱 [Cubit Demo App](apps/app_on_bloc/README.md)
+📱 [Cubit Demo App](apps/app_on_cubit/README.md)
 Showcases how Cubit integrates with `core`, `features`, and `adapters` while keeping 90%+ of the codebase unchanged.
 
 📱 [Riverpod Demo App](apps/app_on_riverpod/README.md)

@@ -6,7 +6,7 @@
       "name": "iPhone (cubit app - dev)",
       "type": "dart",
       "request": "launch",
-      "cwd": "${workspaceFolder}/apps/app_on_bloc",
+      "cwd": "${workspaceFolder}/apps/app_on_cubit",
       "program": "lib/main_development.dart",
       "args": ["--flavor", "development"],
       "deviceId": "96748265-B907-4F14-A4E5-0E01AEADC540"
@@ -15,7 +15,7 @@
       "name": "Android (cubit app - dev)",
       "type": "dart",
       "request": "launch",
-      "cwd": "${workspaceFolder}/apps/app_on_bloc",
+      "cwd": "${workspaceFolder}/apps/app_on_cubit",
       "program": "lib/main_development.dart",
       "args": ["--flavor", "development"],
       "deviceId": "emulator-5554"
@@ -24,7 +24,7 @@
       "name": "iPhone (cubit app - stg)",
       "type": "dart",
       "request": "launch",
-      "cwd": "${workspaceFolder}/apps/app_on_bloc",
+      "cwd": "${workspaceFolder}/apps/app_on_cubit",
       "program": "lib/main_staging.dart",
       "args": ["--flavor", "staging"],
       "deviceId": "96748265-B907-4F14-A4E5-0E01AEADC540"
@@ -33,7 +33,7 @@
       "name": "Android (cubit app - stg)",
       "type": "dart",
       "request": "launch",
-      "cwd": "${workspaceFolder}/apps/app_on_bloc",
+      "cwd": "${workspaceFolder}/apps/app_on_cubit",
       "program": "lib/main_staging.dart",
       "args": ["--flavor", "staging"],
       "deviceId": "emulator-5554"
