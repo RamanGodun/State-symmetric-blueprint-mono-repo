@@ -6,16 +6,19 @@ part of 'change_password__provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$changePasswordHash() => r'0e7493e33c871e0a05aae8629c07bebc374554f5';
+String _$changePasswordHash() => r'd6d19417cba916a0045556940df80de45659da0e';
 
 /// 🔐 [changePasswordProvider] — Handles password-change submission & side-effects.
-/// 🧰 Uses shared [SubmissionFlowState].
+/// 🧰 Uses shared [SubmissionFlowStateModel].
 /// 🔁 Symmetric to BLoC 'ChangePasswordCubit' (Initial → Loading → Success/Error/RequiresReauth).
 ///
 /// Copied from [ChangePassword].
 @ProviderFor(ChangePassword)
 final changePasswordProvider =
-    AutoDisposeNotifierProvider<ChangePassword, SubmissionFlowState>.internal(
+    AutoDisposeNotifierProvider<
+      ChangePassword,
+      SubmissionFlowStateModel
+    >.internal(
       ChangePassword.new,
       name: r'changePasswordProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -25,6 +28,6 @@ final changePasswordProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$ChangePassword = AutoDisposeNotifier<SubmissionFlowState>;
+typedef _$ChangePassword = AutoDisposeNotifier<SubmissionFlowStateModel>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
