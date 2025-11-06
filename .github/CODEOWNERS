@@ -1,10 +1,10 @@
 # Every change in these paths requires review from owners
 
 # All Dart workspace (apps + packages)
-apps/**     @RomanGodun
-packages/** @RomanGodun
+apps/**     @RamanGodun @RomanGodun
+packages/** @RamanGodun @RomanGodun
 
 # Repo-level infra
-.github/**  @RomanGodun
-melos.yaml  @RomanGodun
-pubspec.yaml @RomanGodun
+.github/**  @RamanGodun @RomanGodun
+melos.yaml  @RamanGodun @RomanGodun
+pubspec.yaml @RamanGodun @RomanGodun

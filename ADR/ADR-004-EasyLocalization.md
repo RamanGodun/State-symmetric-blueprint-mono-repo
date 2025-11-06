@@ -109,9 +109,12 @@ The adopted strategy yields **modular, symmetric, and testable** localization. `
 
 **Related ADRs**
 
-- [ADR-001 — State-Symmetric Architecture](ADR-001-State-symmetric-architecture.md)
-- [ADR-002 — Dependency Injection](ADR-002-GetIt-for-context-dependent-state-managers.md)
-- [ADR-003 — Navigation & Routing](ADR-003-GoRouter-navigation.md)
+- [ADR-001 State-Symmetric Architecture](./ADR-001-State-symmetric-architecture.md)
+- [ADR-002 Context-Free-DI.md](ADR-002-Context-Free-DI.md)
+- [ADR-003 GoRouter-navigation](ADR-003-GoRouter-navigation.md)
+- [ADR-005 Errors-management](ADR-005-Errors-management.md)
+- [ADR-006 Overlays-management](ADR-006-Overlays-management.md)
+- [ADR-007 Theming](ADR-007-Theming.md)
 
 **References**
 

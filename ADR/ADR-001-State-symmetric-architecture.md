@@ -18,6 +18,7 @@ Instead of heavy abstraction layers, the approach applies:
 - **Thin, symmetric facades/adapters** over native state managers (Bloc/Cubit, Riverpod, Provider),
 - **Clean Architecture principles and Dedicated Flutter packages** to split responsibilities cleanly,
 - **Lazy Parity Mode** to minimize overhead by adding adapters for other SMs only when required.
+- **Distributed modular structure:** the monorepo organizes code into dedicated Flutter packages, each with its own dependency scope and responsibility; this enforces isolation, clear ownership, and frictionless reuse across apps and state managers.
 
 👉 This monorepo was created to **demonstrate the State-Symmetric architecture style** and measure its **business value** in practice.
 
@@ -145,8 +146,12 @@ It delivers a **balanced Clean architecture with**:
 
 ### Related ADRs
 
-- ADR-002: Bloc + GetIt state management approach
-- ADR-003: Navigation and Routing strategy (GoRouter)
+- [ADR-002 Context-Free-DI.md](ADR-002-Context-Free-DI.md)
+- [ADR-003 GoRouter-navigation](ADR-003-GoRouter-navigation.md)
+- [ADR-004 EasyLocalization](ADR-004-EasyLocalization.md)
+- [ADR-005 Errors-management](ADR-005-Errors-management.md)
+- [ADR-006 Overlays-management](ADR-006-Overlays-management.md)
+- [ADR-007 Theming](ADR-007-Theming.md)
 
 ### References
 

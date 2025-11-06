@@ -314,4 +314,4 @@ This monorepo is licensed under the [![LICENSE][license_badge]](LICENSE).
 - 💬 [Addressing Critics](ADR/supporting_info/info-003-critics_reply.md)
 - 🔧 [Melos Configuration](melos.yaml)
 
-**Built with 🧠❤️ to demonstrate state-symmetric architecture**
+**P.S. “Cross‑state‑management architecture for cross‑platform Flutter” has a nice ring to it, doesn’t it? 😏**

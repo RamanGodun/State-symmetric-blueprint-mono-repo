@@ -210,9 +210,12 @@ Result: **predictable, native, conflict‑free** overlays with symmetric behavio
 
 **Related ADRs**
 
-- [ADR‑001 — State‑Symmetric Architecture](ADR-001-State-symmetric-architecture.md)
-- [ADR‑003 — Navigation & Routing](ADR-003-GoRouter-navigation.md)
-- [ADR‑005 — Errors Management Strategy](ADR-005-Errors-management.md)
+- [ADR-001 State-Symmetric Architecture](./ADR-001-State-symmetric-architecture.md)
+- [ADR-002 Context-Free-DI.md](ADR-002-Context-Free-DI.md)
+- [ADR-003 GoRouter-navigation](ADR-003-GoRouter-navigation.md)
+- [ADR-004 EasyLocalization](ADR-004-EasyLocalization.md)
+- [ADR-005 Errors-management](ADR-005-Errors-management.md)
+- [ADR-007 Theming](ADR-007-Theming.md)
 
 **References**
 

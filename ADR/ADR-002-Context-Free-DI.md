@@ -121,7 +121,12 @@ Provides:
 
 ### Related ADRs
 
-- [ADR-001: State-Symmetric Architecture](./ADR-001-State-symmetric-architecture.md)
+- [ADR-001 State-Symmetric Architecture](./ADR-001-State-symmetric-architecture.md)
+- [ADR-003 GoRouter-navigation](ADR-003-GoRouter-navigation.md)
+- [ADR-004 EasyLocalization](ADR-004-EasyLocalization.md)
+- [ADR-005 Errors-management](ADR-005-Errors-management.md)
+- [ADR-006 Overlays-management](ADR-006-Overlays-management.md)
+- [ADR-007 Theming](ADR-007-Theming.md)
 
 ### References
 

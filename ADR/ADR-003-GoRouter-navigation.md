@@ -140,9 +140,12 @@ This ensures consistent and predictable navigation without imperative logic in t
 
 ### Related ADRs
 
-- [ADR-001: State-Symmetric Architecture](./ADR-001-State-symmetric-architecture.md)
-- [ADR-002: Dependency Injection Strategy](./ADR-002-Dependency-Injection-Strategy.md)
-- ADR-004: Localization & Overlay Strategy
+- [ADR-001 State-Symmetric Architecture](./ADR-001-State-symmetric-architecture.md)
+- [ADR-002 Context-Free-DI.md](ADR-002-Context-Free-DI.md)
+- [ADR-004 EasyLocalization](ADR-004-EasyLocalization.md)
+- [ADR-005 Errors-management](ADR-005-Errors-management.md)
+- [ADR-006 Overlays-management](ADR-006-Overlays-management.md)
+- [ADR-007 Theming](ADR-007-Theming.md)
 
 ### References
 

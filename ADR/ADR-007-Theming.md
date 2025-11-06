@@ -113,11 +113,12 @@ The module delivers **declarative, symmetric theming** with **cached `ThemeData`
 
 ### Related ADRs
 
-- **ADR‑001 — State‑Symmetric Architecture**
-- **ADR‑002 — Dependency Injection Strategy** (PlatIt/GetIt for Bloc; native Riverpod DI)
-- **ADR‑003 — Navigation & Routing** (GoRouter parity)
-- **ADR‑004 — Localization Strategy** (single resolution API; fallback mode)
-- **ADR‑005 — Errors Management Strategy** (UI overlays integration)
+- [ADR-001 State-Symmetric Architecture](./ADR-001-State-symmetric-architecture.md)
+- [ADR-002 Context-Free-DI.md](ADR-002-Context-Free-DI.md)
+- [ADR-003 GoRouter-navigation](ADR-003-GoRouter-navigation.md)
+- [ADR-004 EasyLocalization](ADR-004-EasyLocalization.md)
+- [ADR-005 Errors-management](ADR-005-Errors-management.md)
+- [ADR-006 Overlays-management](ADR-006-Overlays-management.md)
 
 ### Module Docs & Sources (current repo)
 
