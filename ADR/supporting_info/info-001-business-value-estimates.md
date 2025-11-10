@@ -78,7 +78,7 @@ A **track** represents a group of features that share the **same state-symmetry 
 | **Pattern**       | Forms + submission                        | Async data fetching                      |
 | **Shared models** | `SubmissionFlowStateModel` + input states | `AsyncValue<T>` / `AsyncValueForBloc<T>` |
 | **Overhead**      | Low (148 LOC) — simple adapters           | High (377 LOC) — full parity model       |
-| **Reusability**   | High (most app has forms)                 | Very high (almos every apps fetch data)  |
+| **Reusability**   | High (most apps has forms)                | Very high (almos every apps fetch data)  |
 | **Break-even**    | Fast (9.8% at N=4)                        | Slow (25.6% at N=10)                     |
 
 ---
