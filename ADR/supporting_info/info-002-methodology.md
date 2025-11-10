@@ -256,79 +256,94 @@ Annual Savings: $1,400 per feature
 
 ## 🛡️ Insurance Model (Break‑Even)
 
-**Concept.** State‑Symmetric acts like insurance. You pay a **premium** (the one‑time OH) and get a **payout** (savings) if a “claim” happens — i.e., when a feature must be migrated to the app on another SM.
+**Concept.** State‑Symmetric acts like insurance. You pay a **premium** (the one‑time OH) and get a **payout** (savings) if a "claim" happens — i.e., when a feature must be migrated to the app on another SM.
 
 ### Premium (what we pay)
 
 - **One‑time OH (averaged):**
 
-  ```
+```
   OH_avg_LOC = (OH_RP + OH_CB) / 2
   OH_hours   = OH_avg_LOC × (rate_OH + test_OH) / 100
-  ```
+```
 
 - In planning with **N** features on the same track (adapters reused):
 
-  ```
+```
   OH_hours_effective = OH_hours / N
-  ```
+```
 
 ### Payout (what we gain when reuse happens)
 
-- **Migration savings per event (hours):**
+- **Migration savings per feature (constant for track):**
 
-  ```
-  S_mig = Σ_b (RT_BASE_b − RT_SYM_b) × (rate_b + test_b) / 100
-  ```
+```
+  Savings_per_feature = Total_Savings / N_features_in_track
+```
 
 - **Maintenance savings over Y years (hours):**
 
-  ```
+```
   S_maint = (CS_baseline − CS_symmetric) × K_change × N_changes_per_year × Y
-  ```
-
-- **Total expected payout per event:**
-
-  ```
-  S_total = S_mig + S_maint
-  ```
-
-### Break‑even probability (per feature)
-
-The insurance is worth it if expected savings cover the premium:
-
-```
-R* = OH_hours / (S_total × N)
 ```
 
-Where **R\*** is the **minimum reuse probability** at which symmetry is justified. In steady‑state (OH already paid), set `OH_hours_effective = 0`.
+- **Total expected payout per feature:**
+
+```
+  S_total_per_feature = Savings_per_feature + S_maint_per_feature
+```
+
+### Break‑even probability (corrected formula)
+
+The insurance is worth it if expected savings cover the amortized premium:
+
+```
+R* = OH_effective / Savings_per_feature
+
+Where:
+  OH_effective = OH_total / N  (amortized overhead per feature)
+  Savings_per_feature = Total_Savings / N_features_in_track  (constant)
+  N = number of features sharing the same adapters
+```
+
+**Key insight:** As N increases, `OH_effective` decreases linearly (`OH_total / N`), while `Savings_per_feature` remains constant, causing break-even probability to drop proportionally.
 
 ### Equivalent compact form (percent of track)
 
 When normalizing to % of track (still RT/2):
 
 ```
-R* = o / (p_clean − a)
+R* = (OH_total / N) / Savings_per_feature
 ```
 
-Where `o` is overhead as % of track, `p_clean` is Baseline migration cost % of track, and `a` is symmetric migration cost % of track.
+Where all values are expressed as percentages of `FEATURE_SIZE_TOTAL`.
 
 ### Planning helpers
 
-- **Target probability to features:**
+- **Required features for target break-even:**
 
-  ```
-  N* = OH_hours / (R_target × S_total)
-  ```
+```
+  N* = OH_total / (R_target × Savings_per_feature)
+```
 
-- **Amortization effect:** Larger N ↓ lowers `R*` linearly (`OH/N`). Recompute each sprint:
+- **Amortization tracking:** Recompute each sprint:
 
-  ```
-  effective_overhead = overhead_paid / features_using_it
-  break_even_R       = effective_overhead / migration_savings
-  ```
+```
+  effective_overhead = OH_total / current_feature_count
+  break_even_R       = effective_overhead / savings_per_feature
+```
 
-> Maintenance costs for sleeping adapters are already reflected via `CS_symmetric` (and ≤5% test/CI overhead); do **not** double‑count a separate “annual premium”.
+**Example (SCSM Track):**
+
+```
+OH_total = 148 LOC
+Savings_per_feature = 379 LOC
+At N=1:  R* = 148 / 379 = 39.1%
+At N=4:  R* = 37 / 379 = 9.8%
+At N=10: R* = 14.8 / 379 = 3.9%
+```
+
+> Maintenance costs for sleeping adapters are already reflected via `CS_symmetric` (and ≤5% test/CI overhead); do **not** double‑count a separate "annual premium".
 
 ---
 

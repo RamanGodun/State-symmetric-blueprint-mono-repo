@@ -23,7 +23,7 @@ Accepted Architecture Decision Record: **[ADR-001 — State-Symmetric Architectu
 | Presentation parity                                                                               | 90%+            | ✅ Apps differ only by thin adapters and SM glue |
 | ------------------------------------------------------------------------------------------------- |
 | Adapter overhead                                                                                  | ≤5–10% (amort.) | ✅ ≤5–10% (amort.) after sharing the same seams  |
-| Migration savings                                                                                 | 15–80%          | ✅ SCSM track: 53.3%, AVLSM track: 16.9%         |
+| Migration savings                                                                                 | 15–70%          | ✅ SCSM track: 53.3%, AVLSM track: 16.9%         |
 | ------------------------------------------------------------------------------------------------- |
 | Break-even Probability                                                                            | ≤10% (amort.)   | ✅ SCSM reaches ≈10% at very first feature       |
 |                                                                                                   |                 | ⚠️ AVLSM reaches ≈9% at 15 features              |

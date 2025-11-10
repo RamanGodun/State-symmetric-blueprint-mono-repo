@@ -180,3 +180,135 @@ Additionally, three intangible but critical benefits:
 - **Developer Experience** — one consistent coding model across state managers eliminates mental switching, improving speed and reducing errors.
 - **Maintainability** — fixes and improvements are applied once in the shared layer and reused across apps/SMs, preventing divergence and lowering long-term support costs.
 - **Time-to-Market** — code reuse shortens feature delivery cycles. New features ship significantly faster since ~90% of the code is already shared and validated.
+
+## 5. Decision Framework — When Symmetry Pays Off
+
+### ✅ **SCSM Track: Adopt by Default**
+
+**When to use:**
+
+- Building ≥2 features with **form inputs + submission** (auth, settings, contact, etc.)
+- Reuse probability ≥10% across apps with different state managers
+- UI/UX similarity ≥70% (forms follow similar patterns)
+
+**Decision rule:**
+
+```text
+IF (
+  features_with_forms ≥ 2
+  AND reuse_probability ≥ 10%
+  AND ui_similarity ≥ 70%
+) THEN
+  → Adopt SCSM Track
+  → Overhead amortizes rapidly (9.8% break-even at N=4)
+```
+
+**Why it's a no-brainer:**
+
+- Most apps need ≥4 form features (sign-in, sign-up, forgot password, profile edit)
+- Break-even at 9.8% is **lower than typical reuse rates**
+- Overhead **disappears** by N=10 (4.0% break-even)
+
+---
+
+### ⚠️ **AVLSM Track: Adopt Selectively**
+
+**When to use:**
+
+- Building ≥10 features that **fetch and display async data** (dashboards, lists, profiles)
+- Reuse probability ≥25% across apps
+- Long-lived product (3+ years) with expanding data features
+
+**Decision rule:**
+
+```text
+IF (
+  async_features ≥ 10
+  AND reuse_probability ≥ 25%
+  AND product_lifespan ≥ 3_years
+) THEN
+  → Adopt AVLSM Track
+  → Break-even at 25.6% (N=10) is achievable
+ELSE
+  → Skip AVLSM (negative ROI)
+  → Use single-SM implementation
+```
+
+**When to skip:**
+
+- Building <10 async features (overhead exceeds savings)
+- Single-product company (no cross-SM reuse)
+- MVP/prototype phase (premature optimization)
+
+---
+
+## 8. When NOT to Use State-Symmetric Architecture
+
+- ❌ **Anti-Pattern #1: Premature Optimization**
+  _Scenario:_ Startup builds 2 features with AVLSM "just in case"
+  _Result:_ 6 months later, pivots to B2B → all features scrapped
+  _Cost:_ Wasted 377 LOC overhead + team learning time
+  _Lesson:_ Wait until reuse probability is measurable, not speculative
+
+- ❌ **Anti-Pattern #2: Low UI Similarity**
+  _Scenario:_ E-commerce app + admin panel (radically different design systems)
+  _Result:_ Presentation layer NOT reusable → overhead unjustified
+  _Cost:_ 148 LOC adapters used by 0 features
+  _Lesson:_ Symmetry requires ≥70% UI/UX overlap
+
+- ❌ **Anti-Pattern #3: Single-Product Lock-In**
+  _Scenario:_ Company standardized on Riverpod, no other SM apps planned
+  _Result:_ Zero reuse probability → negative ROI guaranteed
+  _Cost:_ 148 LOC that will never pay back
+  _Lesson:_ Only adopt if cross-SM reuse is likely (not hypothetical)
+
+**Economic Anti-Patterns (Quick Checklist)**
+
+- ❌ Single-product company (one app, one SM)
+- ❌ Reuse probability <10% (SCSM) or <25% (AVLSM)
+- ❌ UI/UX similarity <70%
+- ❌ Team size <3 developers
+- ❌ MVP/prototype phase (aggressive pivoting)
+- ❌ No Clean Architecture discipline
+
+**Decision test:** If ≥2 anti-patterns present → skip symmetry
+
+---
+
+## 6. Summary & Decision Rules
+
+### 🏆 SCSM Track (Form Features)
+
+```yaml
+Overhead: 5.2% (148 LOC for 4 features)
+Savings: 53.5% (1,518 LOC per migration)
+Break-even: 9.8% reuse probability
+ROI: 9.2× return (924%)
+Verdict: ✅ Adopt by default for multi-app scenarios
+```
+
+**Decision rule:**
+
+```text
+IF building ≥2 form features → ALWAYS adopt SCSM
+```
+
+### ⚠️ AVLSM Track (Async Data Features)
+
+```yaml
+Overhead: 21.6% (377 LOC for 2 features)
+Savings: 16.8% (294 LOC per migration)
+Break-even: 128.6% → 25.6% at N=10
+ROI: -22% at N=2 → profitable at N≥10
+Verdict: ⚠️ Adopt only with ≥10 async features
+```
+
+**Decision rule:**
+
+```text
+IF (
+  roadmap shows ≥10 async features
+  AND reuse_probability ≥25%
+) → Adopt AVLSM
+ELSE → Skip (negative ROI)
+```
