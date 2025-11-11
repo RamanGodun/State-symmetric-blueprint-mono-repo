@@ -1,202 +1,295 @@
-# Business value Costs Methdology
+# Business Value Costs Methodology
 
-This document describes how we measure and interpret the cost of moving a feature between apps that use Riverpod and Cubit, using the State‑Symmetric architecture style.
+This document describes how we measure and interpret the cost of moving features between apps using Riverpod and Cubit, within the State-Symmetric Architecture framework.
+
+---
 
 ## 📖 Glossary
 
-- **SCSM (Shared Custom State Models) Track** — Pack of features with **custom shared models** (e.g., `SubmissionFlowStateModel`, `SignInFormState`, `SignUpFormState`, etc.). Consist of Sign‑In, Sign‑Up, Change Password, Reset Password features.
-- **AVLSM (AsyncValue‑Like State Models) Track** — includes features that rely on **AsyncValue-like state models** of each SM (Riverpod’s `AsyncValue<T>`, BLoC’s `AsyncValueForBloc<T>`). Consist of Profile and Email Verification features.
-- **Round‑Trip (RT)** — Sum of **RP→CB** and **CB→RP** migration efforts.
-- **RT/2** — Average cost **per migration leg**: `(RP→CB + CB→RP) / 2`.
+- **SCSM (Shared Custom State Models) Track** — Features with **custom shared state models** (e.g., `SubmissionFlowStateModel`, `SignInFormState`, `SignUpFormState`). Includes: Sign-In, Sign-Up, Change Password, Reset Password.
+- **AVLSM (AsyncValue-Like State Models) Track** — Features relying on **AsyncValue-like state models** for each SM (Riverpod's `AsyncValue<T>`, BLoC's `AsyncValueForBloc<T>`). Includes: Profile, Email Verification.
+- **Round-Trip (RT)** — Sum of **RP→CB** and **CB→RP** migration efforts.
+- **RT/2** — Average cost **per migration direction**: `(RP→CB + CB→RP) / 2`.
 - **Overhead (OH)** — Adapter/seam LOC. Counted **once per track adoption**, then averaged per migration as `(OH_RP + OH_CB)/2` for reporting.
-- **Change Surface (CS)** — Fraction (0–1) of a feature’s code that must change during routine maintenance.
-- **Lazy Parity** — Build the second SM’s adapters **only when reuse is confirmed**, preventing speculative OH.
+- **Change Surface (CS)** — Fraction (0–1) of a feature's code that must change during routine maintenance.
+- **Lazy Parity** — Build the second SM's adapters **only when reuse is confirmed**, preventing speculative overhead.
 
-## Assumptions and ROI formula
+---
 
-**ROI (planning) formula:**
+## 1. Core Assumptions & ROI Formula
+
+### ROI Planning Formula
 
 ```
 Expected ROI ≈ R · I · F − OMI · F
-  F   = feature cost (effort)
+
+Where:
+  F   = feature cost (development effort)
   R   = reuse probability (within planning horizon)
   I   = impact (savings from reuse)
   OMI = overhead + maintenance + initial training
 ```
 
-**Within methodology it was accepted next**:
+### Methodology Assumptions
 
-- **Visible UI parity: is ~ 95–100%** (widgets/screens are visually identical).
-- **Presentation parity is 90%+** (remaining differences are thin wrappers).
-- **Lazy Parity in production:** only one adapter is compiled; others remain in sleep mode (smoke/compile‑check only). Ongoing cost for tests and CI matrix is kept at ≤5%.
-- **Adapters are implemented as thin seams** (2–5 touchpoints per feature).
-- All **results are CONSERVATIVE**: the baseline for estimations (feature on Clean Architecture) also needs infra codebase, but evaluated **LOC are not counted** due to team/style variance. Within Baseline track the migration to another SM-based app it was counted only presentation layer + INIT/wiring of SM.
+1. **Visual UI parity: 95–100%** — Widgets/screens are visually identical across SMs
+2. **Presentation parity: 90%+** — Remaining differences are thin adapter wrappers
+3. **Lazy Parity in production** — Only one adapter compiled at a time; others in sleep mode (smoke/compile-check only). Test/CI overhead kept at ≤5%
+4. **Thin adapters** — 2–5 touchpoints per feature (listeners, selectors, submit buttons, guards)
+5. **Conservative estimates** — Baseline costs **exclude infrastructure** (theming, routing, i18n, animations). Only presentation layer + SM+INIT counted for migrations
 
-2. Costs always computed as a **round‑trip average** (ROUND_TRIP_AVG = (Cost_RP→CB + Cost_CB→RP) / 2)
+### Why Round-Trip Averaging?
 
-### 🎯 Why use Round‑Trip?
+Migration costs are **asymmetric**: RP→CB ≠ CB→RP. Computing both directions captures the full cost range.
 
-Migration costs are **asymmetric**: RP→CB ≠ CB→RP. By computing both directions we capture the full range of costs. To obtain a **statistically balanced, weighted average**, we then **divide the sum by two**. This reflects real projects where features may need to be reused in either direction.
+**Benefits:**
 
-_This way_:
+- Avoids double-counting — measures **average cost per migration direction**
+- Same principle for overhead: `(OH_RP + OH_CB) / 2` yields averaged cost per migration
+- Under Lazy Parity, typically only one seam is written, but round-trip average smooths this into a per-migration cost
+- Makes cross-track comparisons consistent and directly interpretable for ROI analysis
 
-- We avoid double‑counting and instead **measure the average cost of one migration leg**.
-- The same principle applies to **overhead**: we add `OH` for both legs, then divide by two to yield an averaged overhead cost. This reflects the practical case where, under Lazy Parity, only one seam is typically written, but our round‑trip average smooths it into a per‑migration cost.
-  > This makes comparisons across tracks consistent and directly interpretable for ROI analysis.
+---
 
-## 📦 Buckets (Counting Rules)
+## 2. Accounting Buckets (Counting Rules)
 
-We split all feature code into **six buckets**. Every LOC belongs to **exactly one** bucket. This enables transparent baseline vs. symmetric comparisons and isolates **SM+INIT vs. OH**.
+All feature code is split into **six buckets**. Every LOC belongs to **exactly one** bucket, enabling transparent baseline vs. symmetric comparisons.
 
-1. **Infrastructure (ignored)** — Tooling, codegen, configs, theming, error/overlay modules, i18n, routing, animations, etc.
-2. **Reused Core** — Always reused: Domain/Data layers and **stateless shared UI** (pure, SM‑agnostic widgets).
-3. **State‑Manager + Init (SM+INIT)** — Feature‑local Cubit/Bloc/Notifier/Provider **and** its initialization (DI bindings, provider creation, route wiring). Models themselves are reused.
-4. **State Models** — Shared state models used by the feature (live in shared packages). Accounted **separately** from presentation because they may be reused across SMs.
-5. **Overhead (OH)** — Thin adapters/facades that bridge shared models with a concrete SM and shared UI:
-   - **AVLSM:** one‑time OH for the **whole track** (e.g., `AsyncValueForBloc` + adapters); averaged as `(OH_RP + OH_CB)/2`.
-   - **SCSM:** OH is **per‑SM** (Lazy Parity). In a round‑trip we add OH for both legs and divide by two.
-6. **Presentation (stateful UI)** — SM‑dependent parts (selectors, builders, side‑effects listeners, submit buttons, footer guards). Must be **rewritten** in baseline; largely **reused** in symmetric.
+| Bucket                            | Description                                                                 | Baseline     | Symmetric         | Notes                                                       |
+| --------------------------------- | --------------------------------------------------------------------------- | ------------ | ----------------- | ----------------------------------------------------------- |
+| **1. Infrastructure**             | Tooling, codegen, theming, overlays, i18n, routing, animations              | Ignored      | Ignored           | Team/style variance too high                                |
+| **2. Reused Core**                | Domain/Data layers + stateless shared UI                                    | ✅ Reused    | ✅ Reused         | Always shared                                               |
+| **3. SM+INIT**                    | Feature-local SM + initialization (DI bindings, provider creation, routing) | ⚠️ Rewritten | ⚠️ Rewritten      | State models themselves are reused                          |
+| **4. State Models**               | Shared state models (live in packages)                                      | ⚠️ Rewritten | ✅ Reused         | Accounted separately from presentation                      |
+| **5. Overhead (OH)**              | Thin adapters/facades bridging models to UI                                 | N/A          | ⚠️ One-time       | **AVLSM:** whole-track cost; **SCSM:** per-SM (Lazy Parity) |
+| **6. Presentation (stateful UI)** | SM-dependent UI (selectors, builders, listeners, buttons, guards)           | ⚠️ Rewritten | ✅ Largely reused | Must rewrite in baseline                                    |
 
-> **Feature size for % calculations:** `FEATURE_SIZE_TOTAL = 2 + 3 + 4 + 6` (Infrastructure and OH excluded).
+What files in which bucket are shown in **[info-004-files_buckets.md](info-004-files_buckets.md)**
 
-## 🔎 Scenarios Compared
-
-### Baseline (Clean Architecture, no symmetry)
-
-- Reuse only **Reused Core**.
-- For each leg: rewrite **Presentation** (except stateless shared UI) **+ SM+INIT** for the target SM.
-- `OH = 0`.
-
-### AVLSM Track (Shared Async)
-
-- Reuse: **Core + AsyncValue‑like models + all Presentation**.
-- For each leg: (Overhead / 2) + **SM+INIT**.
-- Overhead counted **once** for both apps (e.g., `AsyncValueForBloc` + helpers + adapters), then **averaged** per migration.
-
-### SCSM Track (Shared Custom Models)
-
-- Reuse: **Core + Presentation + custom shared models**.
-- For each leg: implement **target SM+INIT + OH_target**.
-- Overhead per SM: `OH_RP` (adapters on Riverpod side) and `OH_CB` (adapters on Cubit side); report average `(OH_RP + OH_CB)/2`.
-
-## ✅ Calculation Algorithm (First Migration, RT/2)
-
-### 0) Buckets
-
-See the six buckets above. **Percent of track** is always computed relative to `FEATURE_SIZE_TOTAL = 2 + 3 + 4 + 6`.
-
-### 1) Baseline (per leg)
-
-Assumption: each SM defines **its own** state models; therefore **state models are rewritten** in all places of use.
-
-For a single leg:
+**Feature size for % calculations:**
 
 ```
-ΔLOC_base_leg = Presentation_full_under_target_SM
-               + State_Models_rewrite
-               + SM+INIT_target
+FEATURE_SIZE_TOTAL = Bucket_2 + Bucket_3 + Bucket_4 + Bucket_6
+(Infrastructure and OH excluded)
 ```
 
-Round‑trip averaging (balanced, no double count):
+---
+
+## 3. Scenarios Compared
+
+### Baseline (Clean Architecture, No Symmetry)
+
+**What's reused:** Only **Reused Core** (domain/data + stateless shared UI)
+
+**Per migration direction:**
 
 ```
-ROUND_TRIP_BASE_AVG = (ΔLOC_base_RP→CB + ΔLOC_base_CB→RP) / 2
+ΔLOC_baseline = Presentation_full + State_Models + SM+INIT_target
+OH = 0
 ```
 
-### 2) State‑Symmetric (per leg)
+---
 
-**SCSM track:**
+### SCSM Track (Shared Custom State Models)
 
-```
-ΔLOC_sym_leg = SM+INIT_target (bucket 3)
-             + OH_target_if_new (bucket 5)
-```
+**What's reused:** Core + Presentation + custom shared state models
 
-If the seam already exists → `OH_target_if_new = 0`.
-
-Average across legs:
+**Per migration direction:**
 
 ```
-ROUND_TRIP_SYM_AVG = (ΔLOC_sym_RP→CB + ΔLOC_sym_CB→RP) / 2
+ΔLOC_symmetric = SM+INIT_target + OH_target_if_new
 ```
 
-**AVLSM track:**
+**Overhead:** Per-SM adapters (`OH_RP` + `OH_CB`), reported as average `(OH_RP + OH_CB)/2`
 
-- `OH_target_if_new` is a **one‑time** cost: `AsyncValueForBloc` + all adapters/helpers + **SM+INIT**.
-- To report an **averaged** OH for the first migration, divide the one‑time OH by 2:
+**When seam already exists:** `OH_target_if_new = 0` (Lazy Parity benefit)
 
-```
-OH_avg_per_leg = (OH_RP + OH_CB) / 2    # for reporting
-```
+---
 
-Each migration leg then includes **only** `SM+INIT_target` (bucket 3).
+### AVLSM Track (Shared Async State Models)
 
-### 3) Migration Savings (no amortization)
+**What's reused:** Core + AsyncValue-like models + all Presentation
 
-```
-SAVINGS_migration = ROUND_TRIP_BASE_AVG − ROUND_TRIP_SYM_AVG
-```
-
-### 4) Overhead for the First Migration (averaged, no amortization)
-
-Only **adapters** (bucket 5) are OH. **SM+INIT (bucket 3) is not OH**.
-
-- **AVLSM:**
+**Per migration direction:**
 
 ```
-OH_avg_per_leg = (OH_AsyncValueForBloc_state_model
-                 + OH_adapters_RP
-                 + OH_adapters_CB) / 2
+ΔLOC_symmetric = SM+INIT_target
 ```
 
-- **SCSM:**
+**Overhead:** One-time for **whole track** (`AsyncValueForBloc<T>` + helpers + adapters for both SMs), reported separately as `(OH_RP + OH_CB)/2`
+
+**Critical:** Overhead is **NOT included** in per-leg migration cost — it's a one-time track adoption cost, reported separately.
+
+---
+
+## 4. Calculation Algorithm (First Migration)
+
+### Step 1: Baseline Cost (Per Direction)
+
+Assumption: Each SM defines **its own** state models → models rewritten in all usage sites
+
+```
+ΔLOC_baseline_leg = Presentation_full_under_target_SM
+                   + State_Models_rewrite
+                   + SM+INIT_target
+```
+
+**Round-trip average:**
+
+```
+ROUND_TRIP_BASELINE_AVG = (ΔLOC_RP→CB + ΔLOC_CB→RP) / 2
+```
+
+---
+
+### Step 2: Symmetric Cost (Per Direction)
+
+**SCSM Track:**
+
+```
+ΔLOC_symmetric_leg = SM+INIT_target + OH_target_if_new
+
+If seam exists: OH_target_if_new = 0
+```
+
+**AVLSM Track:**
+
+```
+ΔLOC_symmetric_leg = SM+INIT_target
+
+OH counted separately (one-time for track)
+```
+
+**Round-trip average:**
+
+```
+ROUND_TRIP_SYMMETRIC_AVG = (ΔLOC_RP→CB + ΔLOC_CB→RP) / 2
+```
+
+---
+
+### Step 3: Migration Savings
+
+```
+SAVINGS_migration = ROUND_TRIP_BASELINE_AVG − ROUND_TRIP_SYMMETRIC_AVG
+```
+
+---
+
+### Step 4: Overhead Calculation (Averaged, No Amortization)
+
+**Only adapters (Bucket 5) count as OH. SM+INIT (Bucket 3) is NOT overhead.**
+
+**SCSM Track:**
 
 ```
 OH_avg_per_leg = (OH_adapters_RP + OH_adapters_CB) / 2
 ```
 
-### 5) OH Ratio vs Feature Size
+**AVLSM Track:**
+
+```
+OH_avg_per_leg = (OH_AsyncValueForBloc_model
+                 + OH_adapters_RP
+                 + OH_adapters_CB) / 2
+```
+
+---
+
+### Step 5: Overhead Ratio (First Feature)
 
 ```
 OH_RATIO = OH_avg_per_leg / FEATURE_SIZE_TOTAL
 ```
 
-### 6) Optional: Full “Insurance” Benefit
+**Interpretation:**
 
-For planning, add maintenance/testing savings:
-
-```
-MAINT_BENEFIT   ≈ (CS_baseline − CS_symmetric) × N_changes × K_change
-EXPECTED_PAYOUT = SAVINGS_migration + MAINT_BENEFIT
-```
-
-Report both **migration‑only** and **migration+maintenance** scenarios in early iterations.
-
-### 📊 Outputs Reported
-
-1. **Round‑Trip Average Costs**: for Baseline track vs every of State-Symmetric tracks (AVLSM and CSM).
-2. **Savings:** for Baseline track vs every of State-Symmetric tracks (`SAVINGS = ROUND_TRIP_BASELINE − ROUND_TRIP_SYM`).
-3. **Overhead ratio:** (OH_RATIO = (OH_RP + OH_CB) / 2 / FEATURE_SIZE_TOTAL)
-4. **Amortized view:** Recompute with OH=0 to show steady‑state cost after overhead is paid.
+- **SCSM:** 148 / 2,838 = 5.2% (low overhead, thin adapters)
+- **AVLSM:** 377 / 1,746 = 21.6% (high overhead, front-loaded infrastructure)
 
 ---
 
-## ⏱ Lifecycle Cost Model (Hours/Budget)
+### Step 6: Optional — Full "Insurance" Benefit
 
-Convert LOC to hours and cost using per‑bucket rates.
+For planning, include maintenance/testing savings:
 
-**Core metrics**
+```
+MAINT_BENEFIT   = (CS_baseline − CS_symmetric) × N_changes × K_change
+EXPECTED_PAYOUT = SAVINGS_migration + MAINT_BENEFIT
+```
 
-- **ΔLOC**: lines changed in a migration (**use RT/2 per bucket**).
-- **CS (Change Surface)**: fraction of the feature touched by changes (0–1).
+**Report both:**
 
-**Development effort**
+- Migration-only savings (conservative)
+- Migration + maintenance savings (realistic long-term)
+
+---
+
+## 5. Amortization: How Overhead Decreases with Scale
+
+### Concept
+
+As more features join a track and reuse the same adapters, **overhead amortizes**:
+
+```
+OH_effective = OH_total / N
+
+Where:
+  N = number of features sharing the same track infrastructure
+```
+
+**Key insight:** Overhead is paid **once** but benefits **N** features → per-feature cost drops linearly.
+
+---
+
+### Amortization Formula
+
+```
+OH_per_feature(N) = OH_total / N
+
+Break-even_R*(N) = OH_per_feature(N) / Savings_per_feature
+                 = (OH_total / N) / (Total_Savings / N_features_in_track)
+```
+
+**Simplifies to:**
+
+```
+Break-even_R*(N) = OH_total / (N × Savings_per_feature)
+```
+
+--
+
+## 6. Reported Outputs
+
+### Primary Metrics
+
+1. **Round-Trip Average Costs** — For Baseline vs. each Symmetric track (SCSM, AVLSM)
+2. **Savings** — `SAVINGS = ROUND_TRIP_BASELINE − ROUND_TRIP_SYMMETRIC`
+3. **Overhead Ratio (First Feature)** — `OH_RATIO = OH_total / FEATURE_SIZE_TOTAL`
+4. **Amortized Overhead** — Per-feature overhead at different N values
+5. **Break-Even Probability** — Minimum reuse % for positive ROI at each N
+
+### Interpretation Guidelines
+
+- **SCSM Track:** Low overhead (5.2%), high savings (53.5%) → break-even at 9.8% (N=4)
+- **AVLSM Track:** High overhead (21.6%), modest savings (16.8%) → break-even at 25.6% (N≥10)
+
+---
+
+## 7. Lifecycle Cost Model (Hours/Budget)
+
+### Core Metrics
+
+- **ΔLOC** — Lines changed in a migration (use RT/2 per bucket)
+- **CS (Change Surface)** — Fraction of feature touched by changes (0–1)
+
+### Development Effort
 
 ```
 H_dev = Σ(ΔLOC_bucket_i × dev_rate_i)
 ```
 
-**Reference dev rates** (hours per 100 LOC, tune per team)
+**Reference rates** (hours per 100 LOC, tune per team):
 
 | Bucket Type             | Rate (h/100 LOC) | Rationale                     |
 | ----------------------- | ---------------- | ----------------------------- |
@@ -204,19 +297,23 @@ H_dev = Σ(ΔLOC_bucket_i × dev_rate_i)
 | Presentation (stateful) | 3.0–5.0          | UI integration, state binding |
 | Adapters/Seams (OH)     | 3.0–4.0          | Thin facades, careful design  |
 
-**Test coverage cost**
+---
+
+### Test Coverage Cost
 
 ```
 H_tests = Σ(ΔLOC_bucket_i × test_impact_factor_i)
 ```
 
-| Bucket Type    | Test Factor (h/100 LOC) | Coverage | Notes                                 |
-| -------------- | ----------------------- | -------- | ------------------------------------- |
-| SM+INIT        | +0.8–1.2                | 85–95%   | State transitions, DI wiring          |
-| Presentation   | +1.5–2.5                | 70–85%   | Widget/integration, goldens           |
-| Adapters/Seams | +1.0–1.8                | 90–100%  | Validate symmetry contract across SMs |
+| Bucket Type    | Test Factor (h/100 LOC) | Coverage | Notes                        |
+| -------------- | ----------------------- | -------- | ---------------------------- |
+| SM+INIT        | 0.8–1.2                 | 85–95%   | State transitions, DI wiring |
+| Presentation   | 1.5–2.5                 | 70–85%   | Widget/integration, goldens  |
+| Adapters/Seams | 1.0–1.8                 | 90–100%  | Validate symmetry contract   |
 
-**Additional components**
+---
+
+### Additional Components
 
 ```
 H_e2e       = scenarios × platforms × (0.8–1.2 h)
@@ -224,7 +321,7 @@ H_CI_fixed  = 0.5–2.0 h per PR
 H_review_PM = H_dev × (0.15–0.25)
 ```
 
-**Totals & budget**
+### Total Budget
 
 ```
 H_total = H_dev + H_tests + H_e2e + H_CI_fixed + H_review_PM
@@ -233,7 +330,7 @@ Cost    = H_total × blended_hourly_rate
 
 ---
 
-## 🔄 Maintenance Tax Model
+## 8. Maintenance Tax Model
 
 Ongoing cost after initial implementation:
 
@@ -242,73 +339,89 @@ Annual_Maintenance_Baseline  = N_changes × CS_baseline × K_change × hourly_ra
 Annual_Maintenance_Symmetric = N_changes × CS_symmetric × K_change × hourly_rate
 ```
 
-Typical ranges: `CS_baseline ≈ 0.4–0.6`, `CS_symmetric ≈ 0.1–0.2`.
+**Typical ranges:**
 
-**Example**
+- `CS_baseline ≈ 0.4–0.6` (40-60% of feature touched per change)
+- `CS_symmetric ≈ 0.1–0.2` (10-20% touched — shared layer + thin adapters)
+
+**Example:**
 
 ```
 Baseline:  10 changes/yr × 0.5 × 4h × $100 = $2,000/yr
 Symmetric: 10 changes/yr × 0.15 × 4h × $100 = $600/yr
+
 Annual Savings: $1,400 per feature
 ```
 
 ---
 
-## 🛡️ Insurance Model (Break‑Even)
+## 9. Insurance Model (Break-Even Analysis)
 
-**Concept.** State‑Symmetric acts like insurance. You pay a **premium** (the one‑time OH) and get a **payout** (savings) if a "claim" happens — i.e., when a feature must be migrated to the app on another SM.
+### Concept
 
-### Premium (what we pay)
+State-Symmetric Architecture functions as **engineering insurance**:
 
-- **One‑time OH (averaged):**
+- **Premium** — One-time overhead (adapters/seams)
+- **Payout** — Savings when features are reused across state managers
 
-```
-  OH_avg_LOC = (OH_RP + OH_CB) / 2
-  OH_hours   = OH_avg_LOC × (rate_OH + test_OH) / 100
-```
+### Premium (What We Pay)
 
-- In planning with **N** features on the same track (adapters reused):
+**One-time overhead (averaged):**
 
 ```
-  OH_hours_effective = OH_hours / N
+OH_avg_LOC = (OH_RP + OH_CB) / 2
+OH_hours   = OH_avg_LOC × (rate_OH + test_OH) / 100
 ```
 
-### Payout (what we gain when reuse happens)
-
-- **Migration savings per feature (constant for track):**
+**With N features on same track (adapters reused):**
 
 ```
-  Savings_per_feature = Total_Savings / N_features_in_track
+OH_hours_effective = OH_hours / N
 ```
 
-- **Maintenance savings over Y years (hours):**
+---
+
+### Payout (What We Gain)
+
+**Migration savings per feature (constant for track):**
 
 ```
-  S_maint = (CS_baseline − CS_symmetric) × K_change × N_changes_per_year × Y
+Savings_per_feature = Total_Savings / N_features_in_track
 ```
 
-- **Total expected payout per feature:**
+**Maintenance savings over Y years:**
 
 ```
-  S_total_per_feature = Savings_per_feature + S_maint_per_feature
+S_maint = (CS_baseline − CS_symmetric) × K_change × N_changes/yr × Y
 ```
 
-### Break‑even probability (corrected formula)
+**Total expected payout per feature:**
 
-The insurance is worth it if expected savings cover the amortized premium:
+```
+S_total_per_feature = Savings_per_feature + S_maint_per_feature
+```
+
+---
+
+### Break-Even Probability (Canonical Formula)
+
+Insurance is worth it if expected savings cover the amortized premium:
 
 ```
 R* = OH_effective / Savings_per_feature
 
 Where:
+  R* = Break-even reuse probability (minimum % for positive ROI)
   OH_effective = OH_total / N  (amortized overhead per feature)
   Savings_per_feature = Total_Savings / N_features_in_track  (constant)
   N = number of features sharing the same adapters
 ```
 
-**Key insight:** As N increases, `OH_effective` decreases linearly (`OH_total / N`), while `Savings_per_feature` remains constant, causing break-even probability to drop proportionally.
+**Key insight:** As N increases, `OH_effective` decreases linearly (`OH_total / N`), while `Savings_per_feature` stays constant → break-even probability drops proportionally.
 
-### Equivalent compact form (percent of track)
+---
+
+### Compact Form (Percent of Track)
 
 When normalizing to % of track (still RT/2):
 
@@ -316,21 +429,23 @@ When normalizing to % of track (still RT/2):
 R* = (OH_total / N) / Savings_per_feature
 ```
 
-Where all values are expressed as percentages of `FEATURE_SIZE_TOTAL`.
+All values expressed as percentages of `FEATURE_SIZE_TOTAL`.
 
-### Planning helpers
+---
 
-- **Required features for target break-even:**
+### Planning Helpers
 
-```
-  N* = OH_total / (R_target × Savings_per_feature)
-```
-
-- **Amortization tracking:** Recompute each sprint:
+**Required features for target break-even:**
 
 ```
-  effective_overhead = OH_total / current_feature_count
-  break_even_R       = effective_overhead / savings_per_feature
+N* = OH_total / (R_target × Savings_per_feature)
+```
+
+**Amortization tracking (recompute each sprint):**
+
+```
+effective_overhead = OH_total / current_feature_count
+break_even_R       = effective_overhead / savings_per_feature
 ```
 
 **Example (SCSM Track):**
@@ -338,17 +453,27 @@ Where all values are expressed as percentages of `FEATURE_SIZE_TOTAL`.
 ```
 OH_total = 148 LOC
 Savings_per_feature = 379 LOC
+
 At N=1:  R* = 148 / 379 = 39.1%
 At N=4:  R* = 37 / 379 = 9.8%
 At N=10: R* = 14.8 / 379 = 3.9%
-```
 
-> Maintenance costs for sleeping adapters are already reflected via `CS_symmetric` (and ≤5% test/CI overhead); do **not** double‑count a separate "annual premium".
+Note: Maintenance costs for sleeping adapters are already reflected via CS_symmetric (and ≤5% test/CI overhead). Do not double-count a separate "annual premium".
+```
 
 ---
 
-## Summary
+## 11. Summary
 
-This
+This methodology provides empirical, reproducible measurements for State-Symmetric Architecture business value.
 
-- If those conditions hold, the **State‑Symmetric “insurance”** is worth it; otherwise, stick to clean single‑SM implementation for that track.
+**Key principles:**
+
+- ✅ Conservative estimates — Infrastructure costs excluded, baseline already assumes Clean Architecture
+- ✅ Round-trip averaging — Captures asymmetric costs, avoids double-counting
+- ✅ Transparent buckets — Every LOC accounted for in one of six categories
+- ✅ Insurance model — Clear break-even thresholds based on measured overhead and savings
+- ✅ Amortization tracking — Overhead decreases linearly with N, break-even drops proportionally
+- ✅ Reproducible — Run `melos loc:report` in showcase monorepo to verify
+
+**For results and detailed ROI analysis** open [`info-001-business-value-estimates.md`](info-001-business-value-estimates.md)
