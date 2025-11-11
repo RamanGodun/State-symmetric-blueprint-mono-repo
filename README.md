@@ -2,14 +2,14 @@
 
 ## ✨ Overview
 
-This monorepo demonstrates a **State-Symmetric architecture code style** — a pragmatic refinement of state-agnostic principles, that **allows to reuse 90%+ of the feature's codebase across apps with different state managers** (Riverpod, Cubit/BLoC, Provider).
+This monorepo demonstrates a **State-Symmetric architecture code style** — a pragmatic refinement of state-agnostic principles, that **allows reusing 90%+ of the feature's codebase across apps with different state managers** (Riverpod, Cubit/BLoC, Provider).
 
 If you’re new to this repository, start with **[State_symmetric_Concept](state_symmetric_concept.md)**
 
 **The approach combines:**
 
 - **Clean Architecture** with strong layer separation — state managers orchestrate state only; UI remains thin and stateless.
-- **Thin adapters/facades** 2–5 touchpoints (per feature), that bridge state (with shared state models) to UI.
+- **Thin adapters/facades** 2–5 touchpoints per feature, that bridge state (with shared state models) to UI.
 - **Lazy Parity:** only one state manager (and its thin facades) is implemented and compiled. Other SM glue is added **on demand**, avoiding parity maintenance cost while still enabling 90%+ reuse.
 - **Distributed modular structure**: the codebase is organized into dedicated packages and modules (core, features, bloc_adapter, riverpod_adapter, firebase_adapter, app_bootstrap), ensuring clear architectural boundaries, isolated dependencies, and maximal reusability across apps and state managers.
 
@@ -21,23 +21,23 @@ Accepted Architecture Decision Record: **[ADR-001 — State-Symmetric Architectu
 | ------------------------------------------------------------------------------------------------- | --------------- | ------------------------------------------------ |
 | UI parity                                                                                         | 95–100%         | ✅ Widgets/screens visually identical            |
 | Presentation parity                                                                               | 90%+            | ✅ Apps differ only by thin adapters and SM glue |
-| ------------------------------------------------------------------------------------------------- |
+| ------------------------------------------------------------------------------------------------- | --------------- |                                                  |
 | Adapter overhead                                                                                  | ≤5–10% (amort.) | ✅ ≤5–10% (amort.) after sharing the same seams  |
 | Migration savings                                                                                 | 15–70%          | ✅ SCSM track: 53.3%, AVLSM track: 16.9%         |
-| ------------------------------------------------------------------------------------------------- |
-| Break-even Probability                                                                            | ≤10% (amort.)   | ✅ SCSM reaches ≈10% at very first feature       |
-|                                                                                                   |                 | ⚠️ AVLSM reaches ≈9% at 15 features              |
-| ------------------------------------------------------------------------------------------------- |
+| ------------------------------------------------------------------------------------------------- | --------------- |                                                  |
+| Break-even Probability                                                                            | ≤10% (amort.)   | ✅ SCSM reaches ≈10% at 4th feature              |
+|                                                                                                   |                 | ⚠️ AVLSM reaches ≈10% at 20+ features            |
+| ------------------------------------------------------------------------------------------------- | --------------- |
 
 ### **Business Value:**
 
 State symmetry acts as **low-cost insurance** **that pays off when**:
 
-- Probability of reusing a feature in an app with another SM is **exceeds measured break-even probability** within the planning horizon.
+- Probability of reusing a feature in an app with another SM **exceeds measured break-even probability** within the planning horizon.
 - Cross-app UI/UX similarity is **≥70%**.
 
-Approach can be valuable for small niche: **multi-product companies, white-label vendors, agencies, platform/SDK providers**.
-**Solo/indie** developers often get better ROI: with automation and single-person context the effective overhead can drop significantly, while reuse opportunities remain high — net-positive by default for features (that can be reused on another app with different state manager), built with mainstream state-model-patterns (eg, DataState/LoadingState/ErrorState, etc)
+The approach can be valuable for a small niche (<5% of market), for some projects/teams in: **multi-product companies, white-label vendors, agencies, platform/SDK providers**.
+**Solo/indie** developers often get better ROI: with automation and single-person context the effective overhead can drop significantly, while reuse opportunities remain high — net-positive by default for features, built with mainstream state-model-patterns (eg, DataState/LoadingState/ErrorState, etc) and that can be reused on another app with different state manager
 
 See also:
 
@@ -65,7 +65,7 @@ melos bootstrap
 Run examples:
 
 ```sh
-# Riverpod appj
+# Riverpod app
 melos run run:rp:dev   # Dev flavor
 melos run run:rp:stg   # Staging flavor
 
@@ -112,7 +112,7 @@ The monorepo is structured into **two fully symmetrical apps (BLoC/Cubit and Riv
 
 ### Organizational Principles
 
-The monorepo's files structure follows an universal organizational principles applied consistently to apps and packages.
+The monorepo's files structure follows the universal organizational principles applied consistently to apps and packages.
 
 **Apps and packages share a consistent three-tier structure:**
 
@@ -121,7 +121,7 @@ The monorepo's files structure follows an universal organizational principles ap
 
 2. **`core/`** → Shared foundation organized by concern:
    - `base_modules/` - Cross-cutting infrastructure (navigation, overlays, theming, localization, forms, etc.)
-   - `shared_{domain|data|presentation}/` - Layer-specific reusable code (eg, shared widgets/pages in presentation layer; entities/domain_extensions - in domain; DTOs/cache managers/mappers - in data)
+   - `shared_{domain|data|presentation}/` - Layer-specific reusable code (e.g., shared widgets/pages in presentation layer; entities/domain_extensions - in domain; DTOs/cache managers/mappers - in data)
    - `utils/` - Generic cross-cutting helpers, that don't fit elsewhere
 
 3. **`features/`** → Feature-scoped code with clear separation:
@@ -153,7 +153,7 @@ Showcases how Cubit integrates with `core`, `features`, and `adapters` while kee
 A symmetrical demo app built with **Riverpod**, featuring the exact same functionality and UI/UX as the Cubit app.
 Proves that the architecture is truly **state-symmetric** and reusable across different state managers.
 
-The choice of Cubit and Riverpod was deliberate — it’s enough to **visualize the approach**, demonstrate interoperability and the migration path:
+The choice of Cubit and Riverpod was deliberate — it's sufficient to **visualize the approach**, demonstrate interoperability and the migration path:
 
 - **Cubit → BLoC**: replace method calls with event dispatching (swap Cubit for BLoC, add Events, adjust DI bindings).
 - **Cubit → Provider**: slightly more changes. Since Provider depends on `BuildContext`, use **GetIt** (as in BLoC/Cubit apps), adjust DI bindings, replace Cubit with equivalent Providers exposing symmetric methods, and **add thin adapters**.

@@ -10,7 +10,7 @@ This analysis provides empirical business value measurements for the State-Symme
 
 **What's inside this document:**
 
-- Measured migration costs and savings (Symmetric vs Baseline on just Clean Architecture)
+- Measured migration costs and savings (Symmetric vs. Baseline based on Clean Architecture alone)
 - Break-even thresholds for different feature types
 - Amortization trajectories for both tracks
 - Design guardrails to prevent over-engineering
@@ -78,7 +78,7 @@ A **track** represents a group of features that share the **same state-symmetry 
 | **Pattern**       | Forms + submission                        | Async data fetching                      |
 | **Shared models** | `SubmissionFlowStateModel` + input states | `AsyncValue<T>` / `AsyncValueForBloc<T>` |
 | **Overhead**      | Low (148 LOC) — simple adapters           | High (377 LOC) — full parity model       |
-| **Reusability**   | High (most apps has forms)                | Very high (almos every apps fetch data)  |
+| **Reusability**   | High (most apps have forms)               | Very high (almost every app fetch data)  |
 | **Break-even**    | Fast (9.8% at N=4)                        | Slow (25.6% at N=10)                     |
 
 ---

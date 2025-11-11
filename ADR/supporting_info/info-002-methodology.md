@@ -6,9 +6,9 @@ This document describes how we measure and interpret the cost of moving features
 
 ## 📖 Glossary
 
-- **SCSM (Shared Custom State Models) Track** — Features with **custom shared state models** (e.g., `SubmissionFlowStateModel`, `SignInFormState`, `SignUpFormState`). Includes: Sign-In, Sign-Up, Change Password, Reset Password.
-- **AVLSM (AsyncValue-Like State Models) Track** — Features relying on **AsyncValue-like state models** for each SM (Riverpod's `AsyncValue<T>`, BLoC's `AsyncValueForBloc<T>`). Includes: Profile, Email Verification.
-- **Round-Trip (RT)** — Sum of **RP→CB** and **CB→RP** migration efforts.
+- **SCSM (Shared Custom State Models) Track** — Features with **custom shared state models** (e.g., `SubmissionFlowStateModel`, `SignInFormState`, `SignUpFormState`). Includes: Sign-In, Sign-Up, Change Password, Reset Password features.
+- **AVLSM (AsyncValue-Like State Models) Track** — Features relying on **AsyncValue-like state models** for each SM (Riverpod's `AsyncValue<T>`, BLoC's `AsyncValueForBloc<T>`). Includes: Profile, Email Verification features.
+- **Round-Trip (RT)** — Sum of **RP→CB** and **CB→RP** migration efforts (RP→CB migration from Riverpod app to Cubit, CB→RP - from Cubit to Riverpod)
 - **RT/2** — Average cost **per migration direction**: `(RP→CB + CB→RP) / 2`.
 - **Overhead (OH)** — Adapter/seam LOC. Counted **once per track adoption**, then averaged per migration as `(OH_RP + OH_CB)/2` for reporting.
 - **Change Surface (CS)** — Fraction (0–1) of a feature's code that must change during routine maintenance.
@@ -21,8 +21,9 @@ This document describes how we measure and interpret the cost of moving features
 ### ROI Planning Formula
 
 ```
-Expected ROI ≈ R · I · F − OMI · F
-
+-----------------------------------
+Expected ROI ≈ R · I · F − OMI · F,
+-----------------------------------
 Where:
   F   = feature cost (development effort)
   R   = reuse probability (within planning horizon)
