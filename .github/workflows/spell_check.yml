@@ -8,7 +8,7 @@ jobs:
   spell:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Run cspell
         uses: streetsidesoftware/cspell-action@v6
         with:
