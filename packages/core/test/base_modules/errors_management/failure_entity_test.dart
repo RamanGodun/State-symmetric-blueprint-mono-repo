@@ -1,6 +1,3 @@
-// Tests use const constructors extensively for immutable objects
-// ignore_for_file: prefer_const_constructors
-
 /// Tests for `Failure` entity
 ///
 /// This test suite follows Very Good Ventures best practices:
@@ -249,7 +246,7 @@ void main() {
         final code = failure.safeCode;
 
         // Assert
-        expect(code, equals(NetworkFailureType().code));
+        expect(code, equals(const NetworkFailureType().code));
         expect(code, isA<String>());
       });
 
@@ -265,7 +262,7 @@ void main() {
 
         // Assert
         expect(code, equals('404'));
-        expect(code, isNot(equals(ApiFailureType().code)));
+        expect(code, isNot(equals(const ApiFailureType().code)));
       });
 
       test('handles zero statusCode', () {
@@ -396,7 +393,7 @@ void main() {
         // Arrange
         final longMessage = 'Error: ' * 1000;
         final failure = Failure(
-          type: ApiFailureType(),
+          type: const ApiFailureType(),
           message: longMessage,
         );
 
