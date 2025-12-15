@@ -84,7 +84,7 @@ jobs:
 
       - name: Upload PR title artifact
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: pr-title-metadata
           path: pr-title.json
