@@ -1,6 +1,6 @@
 /// Tests for `Failure` entity
 ///
-/// This test suite follows Very Good Ventures best practices:
+/// This test suite follows best practices:
 /// ✅ AAA (Arrange-Act-Assert) pattern
 /// ✅ Descriptive test names
 /// ✅ Proper grouping by functionality

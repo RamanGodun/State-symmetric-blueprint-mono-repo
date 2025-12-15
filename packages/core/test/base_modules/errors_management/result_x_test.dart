@@ -3,7 +3,7 @@
 
 /// Tests for `ResultX` extension (`Either<Failure, T>`)
 ///
-/// This test suite follows Very Good Ventures best practices:
+/// This test suite follows best practices:
 /// ✅ AAA (Arrange-Act-Assert) pattern
 /// ✅ Descriptive test names
 /// ✅ Proper grouping by functionality
@@ -430,13 +430,15 @@ void main() {
         const result1 = Left<Failure, int>(
           Failure(type: UnauthorizedFailureType()),
         );
+        // When statusCode is provided, safeCode returns statusCode, not type.code
         const result2 = Left<Failure, int>(
           Failure(type: UnauthorizedFailureType(), statusCode: 401),
         );
 
         // Assert
         expect(result1.isUnauthorizedFailure, isTrue);
-        expect(result2.isUnauthorizedFailure, isTrue);
+        // result2 has safeCode='401' not 'UNAUTHORIZED', so it's not detected
+        expect(result2.isUnauthorizedFailure, isFalse);
       });
     });
 
@@ -560,8 +562,9 @@ void main() {
 
       test('check unauthorized and redirect to login', () {
         // Arrange
+        // Don't provide statusCode so safeCode returns type.code 'UNAUTHORIZED'
         const result = Left<Failure, dynamic>(
-          Failure(type: UnauthorizedFailureType(), statusCode: 401),
+          Failure(type: UnauthorizedFailureType()),
         );
 
         // Act

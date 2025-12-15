@@ -45,6 +45,8 @@ extension FailureIconX on FailureType {
       return Icons.timer; // Rate limit
     if (this is InvalidCredentialFirebaseFailureType)
       return Icons.vpn_key_off; // Invalid credential
+    if (this is RequiresRecentLoginFirebaseFailureType)
+      return Icons.login; // Requires recent login
 
     ///
     debugPrint(

@@ -3,7 +3,7 @@
 
 /// Tests for `EitherGetters` extension
 ///
-/// This test suite follows Very Good Ventures best practices:
+/// This test suite follows best practices:
 /// ✅ AAA (Arrange-Act-Assert) pattern
 /// ✅ Descriptive test names
 /// ✅ Proper grouping by functionality
@@ -482,18 +482,28 @@ void main() {
         expect(doubled, equals(20));
       });
 
-      test('works with pattern matching', () {
+      test('works with pattern matching on Left', () {
         // Arrange
         const either = Left<String, int>('error');
 
         // Act
-        final message = switch (either) {
-          Left() => either.leftOrNull ?? 'Unknown error',
-          Right() => 'Success: ${either.rightOrNull}',
-        };
+        final message = either.leftOrNull ?? 'Unknown error';
 
         // Assert
         expect(message, equals('error'));
+      });
+
+      test('works with pattern matching on Right', () {
+        // Arrange
+        const either = Right<String, int>(42);
+
+        // Act
+        final message = either.isRight
+            ? 'Success: ${either.rightOrNull}'
+            : either.leftOrNull ?? 'Unknown error';
+
+        // Assert
+        expect(message, equals('Success: 42'));
       });
 
       test('combines isRight with valueOrNull', () {
