@@ -1,7 +1,7 @@
 // Tests use const constructors extensively for immutable objects
 // ignore_for_file: prefer_const_constructors
 
-/// Tests for `Failure` entity - VGV Style
+/// Tests for `Failure` entity
 ///
 /// This test suite follows Very Good Ventures best practices:
 /// ✅ AAA (Arrange-Act-Assert) pattern
