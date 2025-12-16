@@ -24,7 +24,7 @@ IAuthRemoteDatabase authRemoteDatabase(Ref ref) {
 /// 🧩 [signInRepoProvider] — provides instance of [SignInRepoImpl],
 ///    injects [IAuthRemoteDatabase] from [authRemoteDatabaseProvider]
 //
-@Riverpod(keepAlive: false)
+@Riverpod()
 ISignInRepo signInRepo(Ref ref) {
   final remote = ref.watch(authRemoteDatabaseProvider);
   return SignInRepoImpl(remote);

@@ -8,6 +8,7 @@ part 'use_case_provider.g.dart';
 /// 🧩 [fetchProfileUseCaseProvider] — provides [FetchProfileUseCase]
 /// 🧼 Injects repository dependency from data layer
 //
+// ignore: avoid_redundant_argument_values
 @Riverpod(keepAlive: false)
 FetchProfileUseCase fetchProfileUseCase(Ref ref) {
   ///-----------------------------------------
