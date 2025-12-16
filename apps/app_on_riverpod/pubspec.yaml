@@ -48,6 +48,6 @@ flutter:
   assets:
     - .env.dev
     - .env.staging
-    # - assets/icons/
+    - assets/icons/
   generate: true
   uses-material-design: true
