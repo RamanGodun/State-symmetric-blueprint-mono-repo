@@ -129,7 +129,7 @@ void main() {
       testWidgets('detects English as current locale', (tester) async {
         // Arrange
         await tester.pumpWidget(
-          createTestWidget(initialLocale: const Locale('en')),
+          createTestWidget(),
         );
 
         // Act

@@ -114,7 +114,7 @@ void main() {
         const key = 'test.key';
 
         // Act
-        final result = key?.translateOrNull;
+        final result = key.translateOrNull;
 
         // Assert
         expect(result, equals('Translated Text'));

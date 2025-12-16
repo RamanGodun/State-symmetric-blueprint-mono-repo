@@ -21,7 +21,7 @@ void main() {
         const text = 'Test Text';
 
         // Act
-        final widget = text.from(TextType.bodyMedium);
+        final widget = text.from(TextType.bodyMedium) as TextWidget;
 
         // Assert
         expect(widget, isA<TextWidget>());
@@ -47,7 +47,7 @@ void main() {
           shadow: true,
           multiline: true,
           underline: true,
-        );
+        ) as TextWidget;
 
         // Assert
         expect(widget, isA<TextWidget>());
@@ -71,7 +71,7 @@ void main() {
         const text = 'Simple Text';
 
         // Act
-        final widget = text.from(TextType.bodySmall);
+        final widget = text.from(TextType.bodySmall) as TextWidget;
 
         // Assert
         expect(widget.color, isNull);
@@ -94,7 +94,7 @@ void main() {
         const text = 'Display';
 
         // Act
-        final widget = text.from(TextType.displayLarge);
+        final widget = text.from(TextType.displayLarge) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.displayLarge));
@@ -105,7 +105,7 @@ void main() {
         const text = 'Display';
 
         // Act
-        final widget = text.from(TextType.displayMedium);
+        final widget = text.from(TextType.displayMedium) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.displayMedium));
@@ -116,7 +116,7 @@ void main() {
         const text = 'Display';
 
         // Act
-        final widget = text.from(TextType.displaySmall);
+        final widget = text.from(TextType.displaySmall) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.displaySmall));
@@ -127,7 +127,7 @@ void main() {
         const text = 'Headline';
 
         // Act
-        final widget = text.from(TextType.headlineLarge);
+        final widget = text.from(TextType.headlineLarge) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.headlineLarge));
@@ -138,7 +138,7 @@ void main() {
         const text = 'Headline';
 
         // Act
-        final widget = text.from(TextType.headlineMedium);
+        final widget = text.from(TextType.headlineMedium) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.headlineMedium));
@@ -149,7 +149,7 @@ void main() {
         const text = 'Headline';
 
         // Act
-        final widget = text.from(TextType.headlineSmall);
+        final widget = text.from(TextType.headlineSmall) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.headlineSmall));
@@ -160,7 +160,7 @@ void main() {
         const text = 'Title';
 
         // Act
-        final widget = text.from(TextType.titleLarge);
+        final widget = text.from(TextType.titleLarge) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.titleLarge));
@@ -171,7 +171,7 @@ void main() {
         const text = 'Title';
 
         // Act
-        final widget = text.from(TextType.titleMedium);
+        final widget = text.from(TextType.titleMedium) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.titleMedium));
@@ -182,7 +182,7 @@ void main() {
         const text = 'Title';
 
         // Act
-        final widget = text.from(TextType.titleSmall);
+        final widget = text.from(TextType.titleSmall) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.titleSmall));
@@ -193,7 +193,7 @@ void main() {
         const text = 'Body';
 
         // Act
-        final widget = text.from(TextType.bodyLarge);
+        final widget = text.from(TextType.bodyLarge) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.bodyLarge));
@@ -204,7 +204,7 @@ void main() {
         const text = 'Body';
 
         // Act
-        final widget = text.from(TextType.bodyMedium);
+        final widget = text.from(TextType.bodyMedium) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.bodyMedium));
@@ -215,7 +215,7 @@ void main() {
         const text = 'Body';
 
         // Act
-        final widget = text.from(TextType.bodySmall);
+        final widget = text.from(TextType.bodySmall) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.bodySmall));
@@ -226,7 +226,7 @@ void main() {
         const text = 'Label';
 
         // Act
-        final widget = text.from(TextType.labelLarge);
+        final widget = text.from(TextType.labelLarge) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.labelLarge));
@@ -237,7 +237,7 @@ void main() {
         const text = 'Label';
 
         // Act
-        final widget = text.from(TextType.labelMedium);
+        final widget = text.from(TextType.labelMedium) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.labelMedium));
@@ -248,7 +248,7 @@ void main() {
         const text = 'Label';
 
         // Act
-        final widget = text.from(TextType.labelSmall);
+        final widget = text.from(TextType.labelSmall) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.labelSmall));
@@ -259,7 +259,7 @@ void main() {
         const text = 'Button';
 
         // Act
-        final widget = text.from(TextType.button);
+        final widget = text.from(TextType.button) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.button));
@@ -270,7 +270,7 @@ void main() {
         const text = 'Error';
 
         // Act
-        final widget = text.from(TextType.error);
+        final widget = text.from(TextType.error) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.error));
@@ -281,7 +281,7 @@ void main() {
         const text = 'Caption';
 
         // Act
-        final widget = text.from(TextType.caption);
+        final widget = text.from(TextType.caption) as TextWidget;
 
         // Assert
         expect(widget.textType, equals(TextType.caption));
@@ -294,7 +294,7 @@ void main() {
         const text = 'Colored';
 
         // Act
-        final widget = text.from(TextType.bodyMedium, color: Colors.blue);
+        final widget = text.from(TextType.bodyMedium, color: Colors.blue) as TextWidget;
 
         // Assert
         expect(widget.color, equals(Colors.blue));
@@ -305,7 +305,7 @@ void main() {
         const text = 'Aligned';
 
         // Act
-        final widget = text.from(TextType.bodyMedium, align: TextAlign.right);
+        final widget = text.from(TextType.bodyMedium, align: TextAlign.right) as TextWidget;
 
         // Assert
         expect(widget.alignment, equals(TextAlign.right));
@@ -316,7 +316,7 @@ void main() {
         const text = 'Weighted';
 
         // Act
-        final widget = text.from(TextType.bodyMedium, weight: FontWeight.w600);
+        final widget = text.from(TextType.bodyMedium, weight: FontWeight.w600) as TextWidget;
 
         // Assert
         expect(widget.fontWeight, equals(FontWeight.w600));
@@ -327,7 +327,7 @@ void main() {
         const text = 'Sized';
 
         // Act
-        final widget = text.from(TextType.bodyMedium, size: 18);
+        final widget = text.from(TextType.bodyMedium, size: 18) as TextWidget;
 
         // Assert
         expect(widget.fontSize, equals(18));
@@ -338,7 +338,7 @@ void main() {
         const text = 'Spaced';
 
         // Act
-        final widget = text.from(TextType.bodyMedium, spacing: 1.0);
+        final widget = text.from(TextType.bodyMedium, spacing: 1.0) as TextWidget;
 
         // Assert
         expect(widget.letterSpacing, equals(1.0));
@@ -349,7 +349,7 @@ void main() {
         const text = 'Height';
 
         // Act
-        final widget = text.from(TextType.bodyMedium, height: 1.5);
+        final widget = text.from(TextType.bodyMedium, height: 1.5) as TextWidget;
 
         // Assert
         expect(widget.height, equals(1.5));
@@ -363,7 +363,7 @@ void main() {
         final widget = text.from(
           TextType.bodyMedium,
           overflow: TextOverflow.clip,
-        );
+        ) as TextWidget;
 
         // Assert
         expect(widget.overflow, equals(TextOverflow.clip));
@@ -374,7 +374,7 @@ void main() {
         const text = 'MaxLines';
 
         // Act
-        final widget = text.from(TextType.bodyMedium, maxLines: 5);
+        final widget = text.from(TextType.bodyMedium, maxLines: 5) as TextWidget;
 
         // Assert
         expect(widget.maxLines, equals(5));
@@ -385,7 +385,7 @@ void main() {
         const text = 'Shadow';
 
         // Act
-        final widget = text.from(TextType.bodyMedium, shadow: true);
+        final widget = text.from(TextType.bodyMedium, shadow: true) as TextWidget;
 
         // Assert
         expect(widget.enableShadow, isTrue);
@@ -396,7 +396,7 @@ void main() {
         const text = 'Multiline';
 
         // Act
-        final widget = text.from(TextType.bodyMedium, multiline: true);
+        final widget = text.from(TextType.bodyMedium, multiline: true) as TextWidget;
 
         // Assert
         expect(widget.isTextOnFewStrings, isTrue);
@@ -407,7 +407,7 @@ void main() {
         const text = 'Underline';
 
         // Act
-        final widget = text.from(TextType.bodyMedium, underline: true);
+        final widget = text.from(TextType.bodyMedium, underline: true) as TextWidget;
 
         // Assert
         expect(widget.isUnderlined, isTrue);
@@ -420,7 +420,7 @@ void main() {
         const text = '';
 
         // Act
-        final widget = text.from(TextType.bodyMedium);
+        final widget = text.from(TextType.bodyMedium) as TextWidget;
 
         // Assert
         expect(widget.value, isEmpty);
@@ -431,7 +431,7 @@ void main() {
         final text = 'A' * 10000;
 
         // Act
-        final widget = text.from(TextType.bodyMedium);
+        final widget = text.from(TextType.bodyMedium) as TextWidget;
 
         // Assert
         expect(widget.value, equals(text));
@@ -443,7 +443,7 @@ void main() {
         const text = 'Текст 文本 🔥';
 
         // Act
-        final widget = text.from(TextType.bodyMedium);
+        final widget = text.from(TextType.bodyMedium) as TextWidget;
 
         // Assert
         expect(widget.value, equals('Текст 文本 🔥'));
@@ -454,7 +454,7 @@ void main() {
         const text = 'Line 1\nLine 2\nLine 3';
 
         // Act
-        final widget = text.from(TextType.bodyMedium);
+        final widget = text.from(TextType.bodyMedium) as TextWidget;
 
         // Assert
         expect(widget.value, contains('\n'));
@@ -465,7 +465,7 @@ void main() {
         const text = '@#\$%^&*()_+{}[]|\\:";\'<>?,./';
 
         // Act
-        final widget = text.from(TextType.bodyMedium);
+        final widget = text.from(TextType.bodyMedium) as TextWidget;
 
         // Assert
         expect(widget.value, equals(text));
@@ -476,7 +476,7 @@ void main() {
         const text = '     ';
 
         // Act
-        final widget = text.from(TextType.bodyMedium);
+        final widget = text.from(TextType.bodyMedium) as TextWidget;
 
         // Assert
         expect(widget.value, equals('     '));
@@ -489,8 +489,8 @@ void main() {
         const text = 'Same Text';
 
         // Act
-        final widget1 = text.from(TextType.bodyMedium);
-        final widget2 = text.from(TextType.titleLarge);
+        final widget1 = text.from(TextType.bodyMedium) as TextWidget;
+        final widget2 = text.from(TextType.titleLarge) as TextWidget;
 
         // Assert
         expect(identical(widget1, widget2), isFalse);
@@ -503,8 +503,8 @@ void main() {
         const text2 = 'Text 2';
 
         // Act
-        final widget1 = text1.from(TextType.bodyMedium);
-        final widget2 = text2.from(TextType.bodyMedium);
+        final widget1 = text1.from(TextType.bodyMedium) as TextWidget;
+        final widget2 = text2.from(TextType.bodyMedium) as TextWidget;
 
         // Assert
         expect(widget1.value, isNot(equals(widget2.value)));
@@ -515,7 +515,7 @@ void main() {
       testWidgets('created widget renders correctly', (tester) async {
         // Arrange
         const text = 'Rendered Text';
-        final widget = text.from(TextType.bodyMedium);
+        final widget = text.from(TextType.bodyMedium) as TextWidget;
 
         // Act
         await tester.pumpWidget(
@@ -533,7 +533,7 @@ void main() {
       testWidgets('created widget with custom color renders', (tester) async {
         // Arrange
         const text = 'Colored Text';
-        final widget = text.from(TextType.bodyMedium, color: Colors.red);
+        final widget = text.from(TextType.bodyMedium, color: Colors.red) as TextWidget;
 
         // Act
         await tester.pumpWidget(
@@ -558,7 +558,7 @@ void main() {
           TextType.titleLarge,
           color: Colors.blue,
           weight: FontWeight.bold,
-        );
+        ) as TextWidget;
 
         // Assert
         expect(widget.value, equals('Test'));
@@ -573,7 +573,7 @@ void main() {
 
         // Act
         final widgets = texts
-            .map((t) => t.from(TextType.bodyMedium))
+            .map((t) => t.from(TextType.bodyMedium) as TextWidget)
             .toList();
 
         // Assert
@@ -594,7 +594,7 @@ void main() {
         final widget = errorMessage.from(
           TextType.error,
           align: TextAlign.left,
-        );
+        ) as TextWidget;
 
         // Assert
         expect(widget.value, equals('Invalid email format'));
@@ -610,7 +610,7 @@ void main() {
         final widget = buttonLabel.from(
           TextType.button,
           weight: FontWeight.bold,
-        );
+        ) as TextWidget;
 
         // Assert
         expect(widget.value, equals('Submit'));
@@ -626,7 +626,7 @@ void main() {
         final widget = caption.from(
           TextType.caption,
           color: Colors.grey,
-        );
+        ) as TextWidget;
 
         // Assert
         expect(widget.value, contains('2024-01-01'));
@@ -643,7 +643,7 @@ void main() {
           TextType.bodyMedium,
           multiline: true,
           align: TextAlign.justify,
-        );
+        ) as TextWidget;
 
         // Assert
         expect(widget.value, contains('\n'));
@@ -658,7 +658,7 @@ void main() {
         const text = 'Test';
 
         // Act
-        final widget = text.from(TextType.bodyMedium);
+        final widget = text.from(TextType.bodyMedium) as TextWidget;
 
         // Assert
         expect(widget.color, isNull);
@@ -671,7 +671,7 @@ void main() {
         const text = 'Test';
 
         // Act
-        final widget = text.from(TextType.bodyMedium);
+        final widget = text.from(TextType.bodyMedium) as TextWidget;
 
         // Assert
         expect(widget.enableShadow, isFalse);

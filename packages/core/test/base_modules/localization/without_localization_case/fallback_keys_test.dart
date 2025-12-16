@@ -191,7 +191,7 @@ void main() {
 
       test('handles key with special characters', () {
         // Arrange
-        const key = 'failure.@#\$%^&*()';
+        const key = r'failure.@#$%^&*()';
 
         // Act
         final result = LocalesFallbackMapper.resolveFallback(key);
@@ -263,7 +263,7 @@ void main() {
     group('integration scenarios', () {
       test('can be used as AppLocalizer resolver', () {
         // Act
-        final resolver = LocalesFallbackMapper.resolveFallback;
+        const resolver = LocalesFallbackMapper.resolveFallback;
         final result = resolver('failure.network.no_connection');
 
         // Assert
@@ -432,7 +432,7 @@ void main() {
     group('usage scenarios', () {
       test('can be used in UI error messages', () {
         // Arrange
-        final errorMessage = FallbackKeysForErrors.noInternet;
+        const errorMessage = FallbackKeysForErrors.noInternet;
 
         // Assert
         expect(errorMessage, isNotEmpty);
@@ -441,7 +441,7 @@ void main() {
 
       test('can be used in overlay notifications', () {
         // Arrange
-        final notificationMessage = FallbackKeysForErrors.timeout;
+        const notificationMessage = FallbackKeysForErrors.timeout;
 
         // Assert
         expect(notificationMessage, contains('timeout'));

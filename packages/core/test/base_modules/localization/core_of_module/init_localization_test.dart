@@ -124,7 +124,7 @@ void main() {
       test('returns fallback when resolver returns null', () {
         // Arrange
         AppLocalizer.forceInit(
-          resolver: (key) => null,
+          resolver: (key) => '',
         );
 
         // Act
@@ -322,7 +322,7 @@ void main() {
       test('handles null from resolver with custom fallback', () {
         // Arrange
         AppLocalizer.forceInit(
-          resolver: (key) => null,
+          resolver: (key) => '',
         );
 
         // Act
