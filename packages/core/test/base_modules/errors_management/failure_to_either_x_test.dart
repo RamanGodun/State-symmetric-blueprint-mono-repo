@@ -142,12 +142,12 @@ void main() {
         const failure = Failure(type: NetworkFailureType());
 
         // Act
-        final result = failure
-            .toLeft<int>()
-            .mapLeft((f) => Failure(
-                  type: f.type,
-                  message: 'Mapped: ${f.message}',
-                ));
+        final result = failure.toLeft<int>().mapLeft(
+          (f) => Failure(
+            type: f.type,
+            message: 'Mapped: ${f.message}',
+          ),
+        );
 
         // Assert
         expect(result, isA<Left<Failure, int>>());
@@ -219,7 +219,7 @@ void main() {
         expect(mapperCalled, isFalse);
       });
 
-      test('toLeft result can be composed with other Eithers', () {
+      test('toLeft result can be composed with other either', () {
         // Arrange
         const failure = Failure(type: CacheFailureType());
         const successValue = 42;
@@ -315,8 +315,8 @@ void main() {
         );
 
         // Act - simulating repository method return
-        final Either<Failure, Map<String, dynamic>> repositoryResult =
-            failure.toLeft();
+        final Either<Failure, Map<String, dynamic>> repositoryResult = failure
+            .toLeft();
 
         // Assert
         expect(repositoryResult.isLeft, isTrue);
@@ -470,7 +470,7 @@ void main() {
         expect(result2, isA<Left<Failure, int>>());
       });
 
-      test('can be used in lists of Eithers', () {
+      test('can be used in lists of either', () {
         // Arrange
         const failure1 = Failure(type: NetworkFailureType());
         const failure2 = Failure(type: ApiFailureType());
