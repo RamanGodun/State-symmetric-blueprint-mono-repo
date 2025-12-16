@@ -1,14 +1,6 @@
 /// Tests for `ExceptionToFailureX` extension from
 /// _exceptions_to_failures_mapper_x.dart
 ///
-/// This test follows best practices:
-/// ✅ AAA (Arrange-Act-Assert) pattern
-/// ✅ Descriptive test names
-/// ✅ Proper grouping by functionality
-/// ✅ Edge cases coverage
-/// ✅ 100% code coverage goal
-/// ✅ Real-world scenarios
-///
 /// Coverage:
 /// - mapToFailure() for all exception types
 /// - SocketException → NetworkFailure

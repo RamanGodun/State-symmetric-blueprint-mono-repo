@@ -3,13 +3,6 @@
 
 /// Tests for all `FailureType` subclasses
 ///
-/// This test follows best practices:
-/// ✅ AAA (Arrange-Act-Assert) pattern
-/// ✅ Descriptive test names
-/// ✅ Proper grouping by functionality
-/// ✅ Edge cases coverage
-/// ✅ 100% code coverage goal
-///
 /// Coverage:
 /// - All Network failure types
 /// - All Firebase failure types

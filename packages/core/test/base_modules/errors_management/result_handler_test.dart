@@ -3,13 +3,6 @@
 
 /// Tests for `ResultHandler<T>` class
 ///
-/// This test follows best practices:
-/// ✅ AAA (Arrange-Act-Assert) pattern
-/// ✅ Descriptive test names
-/// ✅ Proper grouping by functionality
-/// ✅ Edge cases coverage
-/// ✅ 100% code coverage goal
-///
 /// Coverage:
 /// - Construction with `Either<Failure, T>`
 /// - onSuccess() callback execution

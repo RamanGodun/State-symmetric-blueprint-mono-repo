@@ -1,13 +1,5 @@
 /// Tests for `ResultFutureExtension` from _errors_handling_entry_point.dart
 ///
-/// This test follows best practices:
-/// ✅ AAA (Arrange-Act-Assert) pattern
-/// ✅ Descriptive test names
-/// ✅ Proper grouping by functionality
-/// ✅ Edge cases coverage
-/// ✅ 100% code coverage goal
-/// ✅ Real-world scenarios
-///
 /// Coverage:
 /// - runWithErrorHandling() success path
 /// - Failure catch handling

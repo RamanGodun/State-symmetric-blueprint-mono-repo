@@ -1,13 +1,5 @@
 /// Tests for `ResultX` extension from either__x.dart
 ///
-/// This test follows best practices:
-/// ✅ AAA (Arrange-Act-Assert) pattern
-/// ✅ Descriptive test names
-/// ✅ Proper grouping by functionality
-/// ✅ Edge cases coverage
-/// ✅ 100% code coverage goal
-/// ✅ Real-world scenarios
-///
 /// Coverage:
 /// - match() method with onFailure/onSuccess callbacks
 /// - getOrElse() fallback values

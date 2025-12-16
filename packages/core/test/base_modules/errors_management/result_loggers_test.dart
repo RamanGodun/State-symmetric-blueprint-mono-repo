@@ -1,14 +1,6 @@
 /// Tests for `ResultLoggerExt` and `FutureResultLoggerExt`
 /// from result_logger_x.dart and async_result_logger.dart
 ///
-/// This test follows best practices:
-/// ✅ AAA (Arrange-Act-Assert) pattern
-/// ✅ Descriptive test names
-/// ✅ Proper grouping by functionality
-/// ✅ Edge cases coverage
-/// ✅ 100% code coverage goal
-/// ✅ Real-world scenarios
-///
 /// Coverage:
 /// - log() method for Either (sync)
 /// - logSuccess() method for Either (sync)

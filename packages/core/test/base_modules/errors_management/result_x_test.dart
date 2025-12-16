@@ -3,13 +3,6 @@
 
 /// Tests for `ResultX` extension (`Either<Failure, T>`)
 ///
-/// This test follows best practices:
-/// ✅ AAA (Arrange-Act-Assert) pattern
-/// ✅ Descriptive test names
-/// ✅ Proper grouping by functionality
-/// ✅ Edge cases coverage
-/// ✅ 100% code coverage goal
-///
 /// Coverage:
 /// - match() method with logging
 /// - getOrElse() fallback
