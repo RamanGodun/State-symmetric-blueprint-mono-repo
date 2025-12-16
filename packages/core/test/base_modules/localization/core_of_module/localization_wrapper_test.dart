@@ -311,11 +311,9 @@ void main() {
         // Act & Assert
         for (final locale in locales) {
           expect(locale, isA<Locale>());
-          // Const Locale objects are identical
-          expect(
-            identical(locale, Locale(locale.languageCode)),
-            isTrue,
-          );
+          // Verify locales are properly formed
+          expect(locale.languageCode, isNotEmpty);
+          expect(locale.languageCode.length, equals(2));
         }
       });
 

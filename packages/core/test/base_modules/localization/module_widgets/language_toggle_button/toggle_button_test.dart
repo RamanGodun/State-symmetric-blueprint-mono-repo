@@ -8,6 +8,7 @@
 /// - Overlay banner display
 library;
 
+import 'package:core/src/base_modules/localization/generated/codegen_loader.g.dart';
 import 'package:core/src/base_modules/localization/module_widgets/language_toggle_button/language_option.dart';
 import 'package:core/src/base_modules/localization/module_widgets/language_toggle_button/toggle_button.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -27,6 +28,7 @@ void main() {
         fallbackLocale: const Locale('en'),
         startLocale: initialLocale,
         useOnlyLangCode: true,
+        assetLoader: const CodegenLoader(),
         child: Builder(
           builder: (context) {
             return MaterialApp(
@@ -207,6 +209,7 @@ void main() {
           supportedLocales: const [Locale('en')],
           path: 'assets/translations',
           fallbackLocale: const Locale('en'),
+          assetLoader: const CodegenLoader(),
           child: Builder(
             builder: (context) {
               return const MaterialApp(
@@ -241,6 +244,7 @@ void main() {
           supportedLocales: const [Locale('en')],
           path: 'assets/translations',
           fallbackLocale: const Locale('en'),
+          assetLoader: const CodegenLoader(),
           child: Builder(
             builder: (context) {
               return MaterialApp(
@@ -268,6 +272,7 @@ void main() {
           supportedLocales: const [Locale('en')],
           path: 'assets/translations',
           fallbackLocale: const Locale('en'),
+          assetLoader: const CodegenLoader(),
           child: Builder(
             builder: (context) {
               return const MaterialApp(
@@ -294,6 +299,7 @@ void main() {
           supportedLocales: const [Locale('en')],
           path: 'assets/translations',
           fallbackLocale: const Locale('en'),
+          assetLoader: const CodegenLoader(),
           child: Builder(
             builder: (context) {
               return const MaterialApp(

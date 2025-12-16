@@ -338,7 +338,7 @@ void main() {
         const text = 'Spaced';
 
         // Act
-        final widget = text.from(TextType.bodyMedium, spacing: 1.0) as TextWidget;
+        final widget = text.from(TextType.bodyMedium, spacing: 1) as TextWidget;
 
         // Assert
         expect(widget.letterSpacing, equals(1.0));

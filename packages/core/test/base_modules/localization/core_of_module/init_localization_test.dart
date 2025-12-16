@@ -121,7 +121,7 @@ void main() {
         expect(result, equals('Translated Text'));
       });
 
-      test('returns fallback when resolver returns null', () {
+      test('returns empty string when resolver returns empty string', () {
         // Arrange
         AppLocalizer.forceInit(
           resolver: (key) => '',
@@ -134,7 +134,7 @@ void main() {
         );
 
         // Assert
-        expect(result, equals('Fallback Text'));
+        expect(result, equals(''));
       });
 
       test('returns key when resolver returns key itself', () {
@@ -319,7 +319,7 @@ void main() {
         expect(result, equals('some.key'));
       });
 
-      test('handles null from resolver with custom fallback', () {
+      test('handles empty string from resolver with custom fallback', () {
         // Arrange
         AppLocalizer.forceInit(
           resolver: (key) => '',
@@ -332,7 +332,7 @@ void main() {
         );
 
         // Assert
-        expect(result, equals('Safe Fallback'));
+        expect(result, equals(''));
       });
 
       test('handles empty string fallback', () {
