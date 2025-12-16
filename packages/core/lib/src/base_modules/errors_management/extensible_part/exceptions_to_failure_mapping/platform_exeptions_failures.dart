@@ -29,7 +29,7 @@ final platformFailureMap = <String, Failure Function(String?)>{
   // ───────────────────────────────────────────────
   FailureCodes.networkRequestFailed: (m) =>
       Failure(type: const NetworkFailureType(), message: m),
-  FailureCodes.timeout: (m) =>
+  FirebaseCodes.timeout: (m) =>
       Failure(type: const NetworkTimeoutFailureType(), message: m),
   //
 };

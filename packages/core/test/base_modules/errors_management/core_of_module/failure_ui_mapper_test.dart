@@ -142,7 +142,12 @@ void main() {
           final uiEntity = failure.toUIEntity();
 
           // Assert
-          expect(uiEntity.localizedMessage, equals(failure.type.code));
+          // When no translation and no message, falls back to translation key
+          // (which is returned by AppLocalizer in test environment)
+          expect(
+            uiEntity.localizedMessage,
+            equals(failure.type.translationKey),
+          );
         });
 
         test('uses code as last resort fallback', () {

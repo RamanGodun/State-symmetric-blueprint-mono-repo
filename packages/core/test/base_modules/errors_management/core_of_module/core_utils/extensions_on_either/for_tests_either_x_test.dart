@@ -13,6 +13,8 @@ library;
 import 'package:core/public_api/base_modules/errors_management.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'for_tests_either_x.dart';
+
 void main() {
   group('ResultFutureTestX', () {
     group('expectSuccess()', () {
@@ -68,10 +70,10 @@ void main() {
           ),
         );
 
-        // Act & Assert - should throw assertion error
+        // Act & Assert - should throw TestFailure
         await expectLater(
           future.expectSuccess(42),
-          throwsA(isA<AssertionError>()),
+          throwsA(isA<TestFailure>()),
         );
       });
 
@@ -79,10 +81,10 @@ void main() {
         // Arrange
         final future = Future.value(const Right<Failure, int>(42));
 
-        // Act & Assert - should throw assertion error
+        // Act & Assert - should throw TestFailure
         await expectLater(
           future.expectSuccess(99),
-          throwsA(isA<AssertionError>()),
+          throwsA(isA<TestFailure>()),
         );
       });
 
@@ -93,7 +95,7 @@ void main() {
         // Act & Assert
         await expectLater(
           future.expectSuccess('goodbye'),
-          throwsA(isA<AssertionError>()),
+          throwsA(isA<TestFailure>()),
         );
       });
 
@@ -221,10 +223,10 @@ void main() {
         // Arrange
         final future = Future.value(const Right<Failure, int>(42));
 
-        // Act & Assert - should throw assertion error
+        // Act & Assert - should throw TestFailure
         await expectLater(
           future.expectFailure(),
-          throwsA(isA<AssertionError>()),
+          throwsA(isA<TestFailure>()),
         );
       });
 
@@ -236,10 +238,10 @@ void main() {
           ),
         );
 
-        // Act & Assert - should throw assertion error
+        // Act & Assert - should throw TestFailure
         await expectLater(
           future.expectFailure('API'),
-          throwsA(isA<AssertionError>()),
+          throwsA(isA<TestFailure>()),
         );
       });
 
@@ -256,7 +258,7 @@ void main() {
           // Act & Assert - statusCode is '404' not 'API'
           await expectLater(
             future.expectFailure('API'),
-            throwsA(isA<AssertionError>()),
+            throwsA(isA<TestFailure>()),
           );
         },
       );
@@ -542,10 +544,10 @@ void main() {
           ),
         );
 
-        // Act & Assert - should throw AssertionError mentioning Left
+        // Act & Assert - should throw TestFailure mentioning Left
         await expectLater(
           future.expectSuccess(42),
-          throwsA(isA<AssertionError>()),
+          throwsA(isA<TestFailure>()),
         );
       });
 
@@ -553,10 +555,10 @@ void main() {
         // Arrange
         final future = Future.value(const Right<Failure, int>(42));
 
-        // Act & Assert - should throw AssertionError mentioning Right
+        // Act & Assert - should throw TestFailure mentioning Right
         await expectLater(
           future.expectFailure('NETWORK'),
-          throwsA(isA<AssertionError>()),
+          throwsA(isA<TestFailure>()),
         );
       });
     });
@@ -571,10 +573,10 @@ void main() {
           // Act & Assert - wrong value should fail
           try {
             await future.expectSuccess(99);
-            fail('Should have thrown AssertionError');
+            fail('Should have thrown TestFailure');
           } on Object catch (e) {
-            expect(e, isA<AssertionError>());
-            // Assertion error should be thrown
+            expect(e, isA<TestFailure>());
+            // TestFailure should be thrown
           }
         },
       );
@@ -592,10 +594,10 @@ void main() {
           // Act & Assert
           try {
             await future.expectSuccess(42);
-            fail('Should have thrown AssertionError');
+            fail('Should have thrown TestFailure');
           } on Object catch (e) {
-            expect(e, isA<AssertionError>());
-            // Assertion error should be thrown
+            expect(e, isA<TestFailure>());
+            // TestFailure should be thrown
           }
         },
       );
@@ -609,10 +611,10 @@ void main() {
           // Act & Assert
           try {
             await future.expectFailure();
-            fail('Should have thrown AssertionError');
+            fail('Should have thrown TestFailure');
           } on Object catch (e) {
-            expect(e, isA<AssertionError>());
-            // Assertion error should be thrown
+            expect(e, isA<TestFailure>());
+            // TestFailure should be thrown
           }
         },
       );
@@ -630,10 +632,10 @@ void main() {
           // Act & Assert - wrong code should fail
           try {
             await future.expectFailure('API');
-            fail('Should have thrown AssertionError');
+            fail('Should have thrown TestFailure');
           } on Object catch (e) {
-            expect(e, isA<AssertionError>());
-            // Assertion error should be thrown
+            expect(e, isA<TestFailure>());
+            // TestFailure should be thrown
           }
         },
       );

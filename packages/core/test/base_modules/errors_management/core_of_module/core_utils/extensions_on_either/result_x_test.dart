@@ -9,7 +9,6 @@
 /// - failureMessage getter
 /// - mapRightX() transformation
 /// - mapLeftX() transformation
-/// - isUnauthorizedFailure checker
 /// - emitStates() state management
 library;
 
@@ -380,61 +379,6 @@ void main() {
       });
     });
 
-    group('isUnauthorizedFailure', () {
-      test('returns true for unauthorized failure', () {
-        // Arrange
-        const result = Left<Failure, int>(
-          Failure(type: UnauthorizedFailureType()),
-        );
-
-        // Act
-        final isUnauthorized = result.isUnauthorizedFailure;
-
-        // Assert
-        expect(isUnauthorized, isTrue);
-      });
-
-      test('returns false for other failure types', () {
-        // Arrange
-        const result = Left<Failure, int>(
-          Failure(type: NetworkFailureType()),
-        );
-
-        // Act
-        final isUnauthorized = result.isUnauthorizedFailure;
-
-        // Assert
-        expect(isUnauthorized, isFalse);
-      });
-
-      test('returns false for Right', () {
-        // Arrange
-        const result = Right<Failure, int>(42);
-
-        // Act
-        final isUnauthorized = result.isUnauthorizedFailure;
-
-        // Assert
-        expect(isUnauthorized, isFalse);
-      });
-
-      test('checks by safeCode UNAUTHORIZED', () {
-        // Arrange
-        const result1 = Left<Failure, int>(
-          Failure(type: UnauthorizedFailureType()),
-        );
-        // When statusCode is provided, safeCode returns statusCode, not type.code
-        const result2 = Left<Failure, int>(
-          Failure(type: UnauthorizedFailureType(), statusCode: 401),
-        );
-
-        // Assert
-        expect(result1.isUnauthorizedFailure, isTrue);
-        // result2 has safeCode='401' not 'UNAUTHORIZED', so it's not detected
-        expect(result2.isUnauthorizedFailure, isFalse);
-      });
-    });
-
     group('emitStates()', () {
       test('calls emitLoading then emitFailure for Left', () {
         // Arrange
@@ -555,13 +499,15 @@ void main() {
 
       test('check unauthorized and redirect to login', () {
         // Arrange
-        // Don't provide statusCode so safeCode returns type.code 'UNAUTHORIZED'
         const result = Left<Failure, dynamic>(
           Failure(type: UnauthorizedFailureType()),
         );
 
         // Act
-        final shouldRedirect = result.isUnauthorizedFailure;
+        final shouldRedirect = result.fold(
+          (f) => f.isUnauthorizedFailure,
+          (_) => false,
+        );
 
         // Assert
         expect(shouldRedirect, isTrue);
@@ -648,16 +594,17 @@ void main() {
         expect(processed, equals(10));
       });
 
-      test('uses isUnauthorizedFailure for conditional flow', () {
+      test('uses fold for conditional flow based on failure type', () {
         // Arrange
         const result = Left<Failure, dynamic>(
           Failure(type: UnauthorizedFailureType()),
         );
 
         // Act
-        final action = result.isUnauthorizedFailure
-            ? 'redirect_to_login'
-            : 'show_error';
+        final action = result.fold(
+          (f) => f.isUnauthorizedFailure ? 'redirect_to_login' : 'show_error',
+          (_) => 'show_success',
+        );
 
         // Assert
         expect(action, equals('redirect_to_login'));

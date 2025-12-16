@@ -1,7 +1,4 @@
-import 'package:core/src/base_modules/errors_management/core_of_module/core_utils/errors_observing/loggers/errors_log_util.dart';
-import 'package:core/src/base_modules/errors_management/core_of_module/either.dart'
-    show Either, Left, Right;
-import 'package:core/src/base_modules/errors_management/core_of_module/failure_entity.dart';
+import 'package:core/public_api/base_modules/errors_management.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 
 /// 🧩 [ResultX<T>] — Sync sugar for `Either<Failure, T>`
@@ -47,12 +44,6 @@ extension ResultX<T> on Either<Failure, T> {
   // Either<Failure, T> mapLeft(Failure Function(Failure) f) => this.mapLeft(f);
   Either<Failure, T> mapLeftX(Failure Function(Failure failure) transform) =>
       fold((l) => Left(transform(l)), Right.new);
-
-  /// 🔍 True if failure is Unauthorized
-  bool get isUnauthorizedFailure => switch (this) {
-    Left(:final value) => value.safeCode == 'UNAUTHORIZED',
-    Right() => false,
-  };
 
   /// 🔁 Emits state changes declaratively
   void emitStates({

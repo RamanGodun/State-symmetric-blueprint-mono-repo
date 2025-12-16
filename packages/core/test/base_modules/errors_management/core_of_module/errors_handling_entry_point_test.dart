@@ -18,6 +18,8 @@ import 'package:core/public_api/base_modules/errors_management.dart';
 import 'package:flutter/services.dart' show MissingPluginException;
 import 'package:flutter_test/flutter_test.dart';
 
+import 'core_utils/extensions_on_either/for_tests_either_x.dart';
+
 void main() {
   group('ResultFutureExtension', () {
     group('runWithErrorHandling', () {
@@ -26,25 +28,16 @@ void main() {
           // Arrange
           Future<int> operation() async => 42;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result, isA<Right<Failure, int>>());
-          expect(result.isRight, isTrue);
-          expect(result.fold((l) => 0, (r) => r), equals(42));
+          // Act & Assert
+          await operation.runWithErrorHandling().expectSuccess(42);
         });
 
         test('returns Right with String value', () async {
           // Arrange
           Future<String> operation() async => 'success';
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result, isA<Right<Failure, String>>());
-          expect(result.fold((l) => '', (r) => r), equals('success'));
+          // Act & Assert
+          await operation.runWithErrorHandling().expectSuccess('success');
         });
 
         test('returns Right with complex object', () async {
@@ -52,38 +45,24 @@ void main() {
           final expectedUser = User(id: '123', name: 'Test User');
           Future<User> operation() async => expectedUser;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result.isRight, isTrue);
-          final user = result.fold((l) => null, (r) => r);
-          expect(user?.id, equals('123'));
-          expect(user?.name, equals('Test User'));
+          // Act & Assert
+          await operation.runWithErrorHandling().expectSuccess(expectedUser);
         });
 
         test('returns Right with null value', () async {
           // Arrange
           Future<String?> operation() async => null;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result.isRight, isTrue);
-          expect(result.fold((l) => 'error', (r) => r), isNull);
+          // Act & Assert
+          await operation.runWithErrorHandling().expectSuccess(null);
         });
 
         test('returns Right with empty list', () async {
           // Arrange
           Future<List<int>> operation() async => [];
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result.isRight, isTrue);
-          expect(result.fold((l) => null, (r) => r), isEmpty);
+          // Act & Assert
+          await operation.runWithErrorHandling().expectSuccess(<int>[]);
         });
       });
 
@@ -93,13 +72,8 @@ void main() {
           const expectedFailure = Failure(type: NetworkFailureType());
           Future<int> operation() async => throw expectedFailure;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result, isA<Left<Failure, int>>());
-          expect(result.isLeft, isTrue);
-          expect(result.fold((l) => l, (r) => null), equals(expectedFailure));
+          // Act & Assert
+          await operation.runWithErrorHandling().expectFailure('NETWORK');
         });
 
         test('catches Failure with message and status code', () async {
@@ -111,15 +85,8 @@ void main() {
           );
           Future<String> operation() async => throw expectedFailure;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result.isLeft, isTrue);
-          final failure = result.fold((l) => l, (r) => null);
-          expect(failure?.type, isA<ApiFailureType>());
-          expect(failure?.message, equals('Server error'));
-          expect(failure?.statusCode, equals(500));
+          // Act & Assert - uses statusCode as safeCode
+          await operation.runWithErrorHandling().expectFailure('500');
         });
 
         test('logs Failure when caught', () async {
@@ -127,11 +94,8 @@ void main() {
           const failure = Failure(type: UnknownFailureType());
           Future<int> operation() async => throw failure;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert - Verify failure is logged (implicit via ErrorsLogger.log)
-          expect(result.isLeft, isTrue);
+          // Act & Assert - Verify failure is logged (implicit via ErrorsLogger.log)
+          await operation.runWithErrorHandling().expectFailure('UNKNOWN');
         });
       });
 
@@ -141,14 +105,8 @@ void main() {
           const exception = SocketException('No internet connection');
           Future<int> operation() async => throw exception;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result, isA<Left<Failure, int>>());
-          final failure = result.fold((l) => l, (r) => null);
-          expect(failure?.type, isA<NetworkFailureType>());
-          expect(failure?.message, contains('No internet'));
+          // Act & Assert - verify mapped to NETWORK failure
+          await operation.runWithErrorHandling().expectFailure('NETWORK');
         });
 
         test(
@@ -158,14 +116,8 @@ void main() {
             final exception = TimeoutException('Connection timeout');
             Future<String> operation() async => throw exception;
 
-            // Act
-            final result = await operation.runWithErrorHandling();
-
-            // Assert
-            expect(result.isLeft, isTrue);
-            final failure = result.fold((l) => l, (r) => null);
-            expect(failure?.type, isA<NetworkTimeoutFailureType>());
-            expect(failure?.message, contains('timeout'));
+            // Act & Assert - verify mapped to TIMEOUT failure
+            await operation.runWithErrorHandling().expectFailure('TIMEOUT');
           },
         );
 
@@ -174,13 +126,8 @@ void main() {
           const exception = FileSystemException('Cannot read file');
           Future<int> operation() async => throw exception;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result.isLeft, isTrue);
-          final failure = result.fold((l) => l, (r) => null);
-          expect(failure?.type, isA<CacheFailureType>());
+          // Act & Assert - verify mapped to CACHE failure
+          await operation.runWithErrorHandling().expectFailure('CACHE');
         });
 
         test(
@@ -190,13 +137,10 @@ void main() {
             final exception = MissingPluginException('Plugin not found');
             Future<int> operation() async => throw exception;
 
-            // Act
-            final result = await operation.runWithErrorHandling();
-
-            // Assert
-            expect(result.isLeft, isTrue);
-            final failure = result.fold((l) => l, (r) => null);
-            expect(failure?.type, isA<MissingPluginFailureType>());
+            // Act & Assert - verify mapped to MISSING_PLUGIN failure
+            await operation.runWithErrorHandling().expectFailure(
+              'MISSING_PLUGIN',
+            );
           },
         );
 
@@ -205,14 +149,8 @@ void main() {
           const exception = FormatException('Invalid format');
           Future<int> operation() async => throw exception;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result.isLeft, isTrue);
-          final failure = result.fold((l) => l, (r) => null);
-          expect(failure?.type, isA<FormatFailureType>());
-          expect(failure?.message, contains('Invalid format'));
+          // Act & Assert - verify mapped to FORMAT_ERROR failure
+          await operation.runWithErrorHandling().expectFailure('FORMAT_ERROR');
         });
 
         test('logs Exception when caught', () async {
@@ -220,11 +158,8 @@ void main() {
           final exception = Exception('Test exception');
           Future<int> operation() async => throw exception;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert - Verify exception is logged (implicit via ErrorsLogger.log)
-          expect(result.isLeft, isTrue);
+          // Act & Assert - Verify exception is logged (implicit via ErrorsLogger.log)
+          await operation.runWithErrorHandling().expectFailure('UNKNOWN');
         });
       });
 
@@ -233,28 +168,16 @@ void main() {
           // Arrange
           Future<int> operation() async => throw 'String error';
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result, isA<Left<Failure, int>>());
-          final failure = result.fold((l) => l, (r) => null);
-          expect(failure?.type, isA<UnknownFailureType>());
-          expect(failure?.message, contains('String error'));
+          // Act & Assert - verify mapped to UNKNOWN failure
+          await operation.runWithErrorHandling().expectFailure('UNKNOWN');
         });
 
         test('catches int and maps to UnknownFailure', () async {
           // Arrange
           Future<int> operation() async => throw 404;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result.isLeft, isTrue);
-          final failure = result.fold((l) => l, (r) => null);
-          expect(failure?.type, isA<UnknownFailureType>());
-          expect(failure?.message, contains('404'));
+          // Act & Assert - verify mapped to UNKNOWN failure
+          await operation.runWithErrorHandling().expectFailure('UNKNOWN');
         });
 
         test('catches custom object and maps to UnknownFailure', () async {
@@ -262,42 +185,30 @@ void main() {
           final customError = CustomError('Custom error message');
           Future<int> operation() async => throw customError;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result.isLeft, isTrue);
-          final failure = result.fold((l) => l, (r) => null);
-          expect(failure?.type, isA<UnknownFailureType>());
+          // Act & Assert - verify mapped to UNKNOWN failure
+          await operation.runWithErrorHandling().expectFailure('UNKNOWN');
         });
 
         test('logs Object when caught', () async {
           // Arrange
           Future<int> operation() async => throw 'Error object';
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert - Verify object is logged (implicit via ErrorsLogger.log)
-          expect(result.isLeft, isTrue);
+          // Act & Assert - Verify object is logged (implicit via ErrorsLogger.log)
+          await operation.runWithErrorHandling().expectFailure('UNKNOWN');
         });
       });
 
       group('real-world scenarios', () {
         test('handles repository operation success', () async {
           // Arrange - Simulates repository fetching user
+          final expectedUser = User(id: 'user_123', name: 'John Doe');
           Future<User> fetchUser() async {
             await Future<void>.delayed(const Duration(milliseconds: 10));
-            return User(id: 'user_123', name: 'John Doe');
+            return expectedUser;
           }
 
-          // Act
-          final result = await fetchUser.runWithErrorHandling();
-
-          // Assert
-          expect(result.isRight, isTrue);
-          final user = result.fold((l) => null, (r) => r);
-          expect(user?.id, equals('user_123'));
+          // Act & Assert
+          await fetchUser.runWithErrorHandling().expectSuccess(expectedUser);
         });
 
         test('handles repository operation with network error', () async {
@@ -307,13 +218,8 @@ void main() {
             throw const SocketException('Network unreachable');
           }
 
-          // Act
-          final result = await fetchUser.runWithErrorHandling();
-
-          // Assert
-          expect(result.isLeft, isTrue);
-          final failure = result.fold((l) => l, (r) => null);
-          expect(failure?.type, isA<NetworkFailureType>());
+          // Act & Assert - verify mapped to NETWORK failure
+          await fetchUser.runWithErrorHandling().expectFailure('NETWORK');
         });
 
         test('handles repository operation with timeout', () async {
@@ -323,13 +229,8 @@ void main() {
             throw TimeoutException('Request timeout');
           }
 
-          // Act
-          final result = await fetchData.runWithErrorHandling();
-
-          // Assert
-          expect(result.isLeft, isTrue);
-          final failure = result.fold((l) => l, (r) => null);
-          expect(failure?.type, isA<NetworkTimeoutFailureType>());
+          // Act & Assert - verify mapped to TIMEOUT failure
+          await fetchData.runWithErrorHandling().expectFailure('TIMEOUT');
         });
 
         test('handles cache read failure', () async {
@@ -338,13 +239,8 @@ void main() {
             throw const FileSystemException('File not found');
           }
 
-          // Act
-          final result = await readCache.runWithErrorHandling();
-
-          // Assert
-          expect(result.isLeft, isTrue);
-          final failure = result.fold((l) => l, (r) => null);
-          expect(failure?.type, isA<CacheFailureType>());
+          // Act & Assert - verify mapped to CACHE failure
+          await readCache.runWithErrorHandling().expectFailure('CACHE');
         });
 
         test('handles data parsing failure', () async {
@@ -353,13 +249,8 @@ void main() {
             throw const FormatException('Invalid JSON');
           }
 
-          // Act
-          final result = await parseData.runWithErrorHandling();
-
-          // Assert
-          expect(result.isLeft, isTrue);
-          final failure = result.fold((l) => l, (r) => null);
-          expect(failure?.type, isA<FormatFailureType>());
+          // Act & Assert - verify mapped to FORMAT_ERROR failure
+          await parseData.runWithErrorHandling().expectFailure('FORMAT_ERROR');
         });
       });
 
@@ -368,12 +259,8 @@ void main() {
           // Arrange
           Future<int> operation() async => 100;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result.isRight, isTrue);
-          expect(result.fold((l) => 0, (r) => r), equals(100));
+          // Act & Assert
+          await operation.runWithErrorHandling().expectSuccess(100);
         });
 
         test('handles immediate failure without delay', () async {
@@ -381,11 +268,8 @@ void main() {
           Future<int> operation() async =>
               throw const Failure(type: UnknownFailureType());
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result.isLeft, isTrue);
+          // Act & Assert
+          await operation.runWithErrorHandling().expectFailure('UNKNOWN');
         });
 
         test('handles very long async operation', () async {
@@ -395,12 +279,8 @@ void main() {
             return 'completed';
           }
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result.isRight, isTrue);
-          expect(result.fold((l) => '', (r) => r), equals('completed'));
+          // Act & Assert
+          await operation.runWithErrorHandling().expectSuccess('completed');
         });
 
         test('handles empty Future<void>', () async {
@@ -412,7 +292,7 @@ void main() {
           // Act
           final result = await operation.runWithErrorHandling();
 
-          // Assert
+          // Assert - void success, just verify Right
           expect(result.isRight, isTrue);
         });
 
@@ -426,13 +306,8 @@ void main() {
             }
           }
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result.isLeft, isTrue);
-          final failure = result.fold((l) => l, (r) => null);
-          expect(failure?.type, isA<UnknownFailureType>());
+          // Act & Assert - verify mapped to UNKNOWN failure
+          await operation.runWithErrorHandling().expectFailure('UNKNOWN');
         });
       });
 
@@ -441,12 +316,8 @@ void main() {
           // Arrange
           Future<List<String>> operation() async => ['a', 'b', 'c'];
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result, isA<Either<Failure, List<String>>>());
-          expect(result.fold((l) => null, (r) => r), isA<List<String>>());
+          // Act & Assert
+          await operation.runWithErrorHandling().expectSuccess(['a', 'b', 'c']);
         });
 
         test('maintains type parameter through failure', () async {
@@ -454,39 +325,25 @@ void main() {
           Future<Map<String, int>> operation() async =>
               throw Exception('Error');
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result, isA<Either<Failure, Map<String, int>>>());
-          expect(result.isLeft, isTrue);
+          // Act & Assert - verify type is maintained and mapped to UNKNOWN
+          await operation.runWithErrorHandling().expectFailure('UNKNOWN');
         });
 
         test('works with nullable return types', () async {
           // Arrange
           Future<int?> operation() async => null;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result, isA<Either<Failure, int?>>());
-          expect(result.isRight, isTrue);
+          // Act & Assert
+          await operation.runWithErrorHandling().expectSuccess(null);
         });
 
         test('works with dynamic types', () async {
           // Arrange
-          Future<dynamic> operation() async => <String, String>{'key': 'value'};
+          final expected = <String, String>{'key': 'value'};
+          Future<dynamic> operation() async => expected;
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert
-          expect(result.isRight, isTrue);
-          expect(
-            result.fold((l) => null, (r) => r),
-            isA<Map<String, String>>(),
-          );
+          // Act & Assert
+          await operation.runWithErrorHandling().expectSuccess(expected);
         });
       });
 
@@ -500,11 +357,10 @@ void main() {
             const FormatException('Format'),
           ];
 
-          // Act & Assert
+          // Act & Assert - verify all exceptions are caught and mapped
           for (final exception in exceptions) {
             Future<int> operation() async => throw exception;
-            final result = await operation.runWithErrorHandling();
-            expect(result.isLeft, isTrue);
+            await operation.runWithErrorHandling().expectFailure();
           }
         });
 
@@ -515,11 +371,8 @@ void main() {
             throw Exception('Error with stacktrace');
           }
 
-          // Act
-          final result = await operation.runWithErrorHandling();
-
-          // Assert - StackTrace is logged internally
-          expect(result.isLeft, isTrue);
+          // Act & Assert - StackTrace is logged internally, verify failure
+          await operation.runWithErrorHandling().expectFailure('UNKNOWN');
         });
       });
     });

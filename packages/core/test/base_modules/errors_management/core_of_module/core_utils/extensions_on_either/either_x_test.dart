@@ -6,7 +6,6 @@
 /// - failureMessage getter
 /// - mapRightX() transformation
 /// - mapLeftX() transformation
-/// - isUnauthorizedFailure getter
 /// - emitStates() declarative state emission
 /// - Integration with ErrorsLogger
 library;
@@ -420,66 +419,6 @@ void main() {
       });
     });
 
-    group('isUnauthorizedFailure', () {
-      test('returns true for UNAUTHORIZED failure', () {
-        // Arrange
-        const either = Left<Failure, int>(
-          Failure(
-            type: UnauthorizedFailureType(),
-            statusCode: 401,
-          ),
-        );
-
-        // Act
-        final result = either.isUnauthorizedFailure;
-
-        // Assert
-        expect(result, isTrue);
-      });
-
-      test('returns false for non-UNAUTHORIZED failure', () {
-        // Arrange
-        const either = Left<Failure, int>(
-          Failure(type: NetworkFailureType()),
-        );
-
-        // Act
-        final result = either.isUnauthorizedFailure;
-
-        // Assert
-        expect(result, isFalse);
-      });
-
-      test('returns false for Right', () {
-        // Arrange
-        const either = Right<Failure, int>(42);
-
-        // Act
-        final result = either.isUnauthorizedFailure;
-
-        // Assert
-        expect(result, isFalse);
-      });
-
-      test('checks safeCode equals UNAUTHORIZED', () {
-        // Arrange
-        const authFailure = Left<Failure, int>(
-          Failure(type: UnauthorizedFailureType()),
-        );
-        const networkFailure = Left<Failure, int>(
-          Failure(type: NetworkFailureType()),
-        );
-
-        // Act
-        final authResult = authFailure.isUnauthorizedFailure;
-        final networkResult = networkFailure.isUnauthorizedFailure;
-
-        // Assert
-        expect(authResult, isTrue);
-        expect(networkResult, isFalse);
-      });
-    });
-
     group('emitStates', () {
       test('calls emitFailure for Left', () {
         // Arrange
@@ -602,8 +541,14 @@ void main() {
         );
 
         // Act
-        final shouldRedirectAuth = authError.isUnauthorizedFailure;
-        final shouldRedirectNetwork = networkError.isUnauthorizedFailure;
+        final shouldRedirectAuth = authError.fold(
+          (f) => f.isUnauthorizedFailure,
+          (_) => false,
+        );
+        final shouldRedirectNetwork = networkError.fold(
+          (f) => f.isUnauthorizedFailure,
+          (_) => false,
+        );
 
         // Assert
         expect(shouldRedirectAuth, isTrue);

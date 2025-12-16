@@ -6,7 +6,6 @@ export '../../src/base_modules/errors_management/core_of_module/core_utils/error
 export '../../src/base_modules/errors_management/core_of_module/core_utils/extensions_on_either/either__x.dart';
 export '../../src/base_modules/errors_management/core_of_module/core_utils/extensions_on_either/either_async_x.dart';
 export '../../src/base_modules/errors_management/core_of_module/core_utils/extensions_on_either/either_getters_x.dart';
-export '../../src/base_modules/errors_management/core_of_module/core_utils/extensions_on_either/for_tests_either_x.dart';
 export '../../src/base_modules/errors_management/core_of_module/core_utils/extensions_on_failure/failure_to_either_x.dart';
 export '../../src/base_modules/errors_management/core_of_module/core_utils/result_handler.dart';
 export '../../src/base_modules/errors_management/core_of_module/core_utils/result_handler_async.dart';

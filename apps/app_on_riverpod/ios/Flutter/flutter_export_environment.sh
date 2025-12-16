@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=/Users/romangodun/Development/SDK/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/romangodun/.claude-worktrees/blueprint_mono_repo/funny-mcnulty/apps/app_on_riverpod"
+export "FLUTTER_APPLICATION_PATH=/Users/romangodun/Development/PROJECTS/STUDY/blueprint_mono_repo/apps/app_on_riverpod"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
