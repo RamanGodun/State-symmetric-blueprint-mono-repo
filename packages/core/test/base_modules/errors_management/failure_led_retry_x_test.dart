@@ -1,6 +1,6 @@
 /// Tests for `FailureRetryX` and `FailureTypeRetryX` extensions
 ///
-/// This test suite follows best practices:
+/// This test follows best practices:
 /// ✅ AAA (Arrange-Act-Assert) pattern
 /// ✅ Descriptive test names
 /// ✅ Proper grouping by functionality
@@ -319,15 +319,17 @@ void main() {
 
         // Act
         final retryableTypes = allTypes.where((t) => t.isRetryable).toList();
-        final nonRetryableTypes =
-            allTypes.where((t) => !t.isRetryable).toList();
+        final nonRetryableTypes = allTypes
+            .where((t) => !t.isRetryable)
+            .toList();
 
         // Assert
         expect(retryableTypes, hasLength(2)); // Network + Timeout
         expect(nonRetryableTypes, hasLength(8));
         expect(
-          retryableTypes.every((t) =>
-              t is NetworkFailureType || t is NetworkTimeoutFailureType),
+          retryableTypes.every(
+            (t) => t is NetworkFailureType || t is NetworkTimeoutFailureType,
+          ),
           isTrue,
         );
       });
@@ -441,8 +443,7 @@ void main() {
         ];
 
         // Act
-        final retryableFailures =
-            failures.where((f) => f.isRetryable).toList();
+        final retryableFailures = failures.where((f) => f.isRetryable).toList();
 
         // Assert
         expect(retryableFailures, hasLength(2));
@@ -490,27 +491,27 @@ void main() {
           (
             failure: const Failure(type: NetworkFailureType()),
             expectRetry: true,
-            label: 'Network error'
+            label: 'Network error',
           ),
           (
             failure: const Failure(type: NetworkTimeoutFailureType()),
             expectRetry: true,
-            label: 'Timeout'
+            label: 'Timeout',
           ),
           (
             failure: const Failure(type: ApiFailureType()),
             expectRetry: false,
-            label: 'API error'
+            label: 'API error',
           ),
           (
             failure: const Failure(type: UnauthorizedFailureType()),
             expectRetry: false,
-            label: 'Auth error'
+            label: 'Auth error',
           ),
           (
             failure: const Failure(type: CacheFailureType()),
             expectRetry: false,
-            label: 'Cache error'
+            label: 'Cache error',
           ),
         ];
 
@@ -537,8 +538,9 @@ void main() {
 
         // Act
         final retryAction = retryableFailure.isRetryable ? 'Retry' : 'Dismiss';
-        final permanentAction =
-            permanentFailure.isRetryable ? 'Retry' : 'Dismiss';
+        final permanentAction = permanentFailure.isRetryable
+            ? 'Retry'
+            : 'Dismiss';
 
         // Assert
         expect(retryAction, equals('Retry'));

@@ -1,6 +1,6 @@
 /// Tests for `FailureX` diagnostics extension
 ///
-/// This test suite follows best practices:
+/// This test follows best practices:
 /// ✅ AAA (Arrange-Act-Assert) pattern
 /// ✅ Descriptive test names
 /// ✅ Proper grouping by functionality
@@ -533,7 +533,8 @@ void main() {
         );
 
         // Act
-        final shouldRetry = failure.isNetworkFailure || failure.isTimeoutFailure;
+        final shouldRetry =
+            failure.isNetworkFailure || failure.isTimeoutFailure;
 
         // Assert
         expect(shouldRetry, isTrue);
@@ -603,7 +604,8 @@ void main() {
         );
 
         // Act
-        final isFirebase = failure.isFirebaseFailure || failure.isInvalidCredential;
+        final isFirebase =
+            failure.isFirebaseFailure || failure.isInvalidCredential;
         final summary = failure.label;
 
         // Assert
@@ -619,7 +621,8 @@ void main() {
         );
 
         // Act
-        final isFormatError = failure.isJsonErrorFailure || failure.isFormatErrorFailure;
+        final isFormatError =
+            failure.isJsonErrorFailure || failure.isFormatErrorFailure;
 
         // Assert
         expect(isFormatError, isTrue);
@@ -768,8 +771,9 @@ void main() {
         final networkOrTimeout = failures
             .where((f) => f.isNetworkFailure || f.isTimeoutFailure)
             .toList();
-        final apiOrAuth =
-            failures.where((f) => f.isApiFailure || f.isUnauthorizedFailure).toList();
+        final apiOrAuth = failures
+            .where((f) => f.isApiFailure || f.isUnauthorizedFailure)
+            .toList();
 
         // Assert
         expect(networkOrTimeout, hasLength(2));

@@ -3,7 +3,7 @@
 
 /// Tests for `FailureUIEntity`
 ///
-/// This test suite follows practices:
+/// This test follows practices:
 /// ✅ AAA (Arrange-Act-Assert) pattern
 /// ✅ Descriptive test names
 /// ✅ Proper grouping by functionality

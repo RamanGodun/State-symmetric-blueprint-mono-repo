@@ -3,7 +3,7 @@
 
 /// Tests for `ResultFutureX` extension (`Future<Either<Failure, T>>`)
 ///
-/// This test suite follows Very Good Ventures best practices:
+/// This test follows best practices:
 /// ✅ AAA (Arrange-Act-Assert) pattern
 /// ✅ Descriptive test names
 /// ✅ Proper grouping by functionality

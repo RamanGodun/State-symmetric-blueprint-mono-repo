@@ -1,6 +1,6 @@
 /// Tests for `FailureLogger` extension
 ///
-/// This test suite follows best practices:
+/// This test follows best practices:
 /// ✅ AAA (Arrange-Act-Assert) pattern
 /// ✅ Descriptive test names
 /// ✅ Proper grouping by functionality
@@ -444,9 +444,10 @@ void main() {
         // Act & Assert
         expect(
           () {
-            failure..log(StackTrace.current)
-            ..debugLog('API_CALL')
-            ..track((event) {});
+            failure
+              ..log(StackTrace.current)
+              ..debugLog('API_CALL')
+              ..track((event) {});
           },
           returnsNormally,
         );
@@ -494,8 +495,9 @@ void main() {
         var tracked = false;
 
         // Act
-        failure..log()
-        ..track((_) => tracked = true);
+        failure
+          ..log()
+          ..track((_) => tracked = true);
 
         // Assert
         expect(tracked, isTrue);
@@ -511,10 +513,8 @@ void main() {
         final events = <String>[];
 
         // Act
-        final result = failure
-            .debugLog('ERROR_HANDLER')
-            .track(events.add)
-        ..log();
+        final result = failure.debugLog('ERROR_HANDLER').track(events.add)
+          ..log();
 
         // Assert
         expect(result, equals(failure));
@@ -532,10 +532,8 @@ void main() {
         final events = <String>[];
 
         // Act
-        final result = failure
-            .debugLog('TIMEOUT')
-            .track(events.add)
-        ..log(StackTrace.current);
+        final result = failure.debugLog('TIMEOUT').track(events.add)
+          ..log(StackTrace.current);
 
         // Assert
         expect(result, equals(failure));
@@ -545,9 +543,8 @@ void main() {
       test('logging operations preserve failure identity', () {
         // Arrange
         final original = const Failure(type: CacheFailureType())
-
-        // Act
-        ..log();
+          // Act
+          ..log();
         final debugged = original.debugLog();
         final tracked = debugged.track((_) {});
 

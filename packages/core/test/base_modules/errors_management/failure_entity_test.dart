@@ -1,6 +1,6 @@
 /// Tests for `Failure` entity
 ///
-/// This test suite follows best practices:
+/// This test follows best practices:
 /// ✅ AAA (Arrange-Act-Assert) pattern
 /// ✅ Descriptive test names
 /// ✅ Proper grouping by functionality
