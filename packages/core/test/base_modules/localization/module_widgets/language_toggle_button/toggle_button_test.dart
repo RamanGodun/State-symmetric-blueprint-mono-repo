@@ -209,8 +209,8 @@ void main() {
           fallbackLocale: const Locale('en'),
           child: Builder(
             builder: (context) {
-              return MaterialApp(
-                home: const Scaffold(
+              return const MaterialApp(
+                home: Scaffold(
                   body: LanguageToggleButton(key: customKey),
                 ),
               );
@@ -270,9 +270,9 @@ void main() {
           fallbackLocale: const Locale('en'),
           child: Builder(
             builder: (context) {
-              return MaterialApp(
+              return const MaterialApp(
                 home: Scaffold(
-                  drawer: const Drawer(
+                  drawer: Drawer(
                     child: LanguageToggleButton(),
                   ),
                 ),
@@ -296,8 +296,8 @@ void main() {
           fallbackLocale: const Locale('en'),
           child: Builder(
             builder: (context) {
-              return MaterialApp(
-                home: const Scaffold(
+              return const MaterialApp(
+                home: Scaffold(
                   body: Column(
                     children: [
                       LanguageToggleButton(),

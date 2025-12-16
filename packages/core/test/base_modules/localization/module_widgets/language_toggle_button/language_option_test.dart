@@ -17,7 +17,7 @@ void main() {
     group('enum values', () {
       test('has three language options', () {
         // Act
-        final values = LanguageOption.values;
+        const values = LanguageOption.values;
 
         // Assert
         expect(values, hasLength(3));
@@ -28,7 +28,7 @@ void main() {
 
       test('en has correct properties', () {
         // Act
-        final option = LanguageOption.en;
+        const option = LanguageOption.en;
 
         // Assert
         expect(option.locale, equals(const Locale('en')));
@@ -39,7 +39,7 @@ void main() {
 
       test('uk has correct properties', () {
         // Act
-        final option = LanguageOption.uk;
+        const option = LanguageOption.uk;
 
         // Assert
         expect(option.locale, equals(const Locale('uk')));
@@ -50,7 +50,7 @@ void main() {
 
       test('pl has correct properties', () {
         // Act
-        final option = LanguageOption.pl;
+        const option = LanguageOption.pl;
 
         // Assert
         expect(option.locale, equals(const Locale('pl')));

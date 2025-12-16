@@ -42,7 +42,7 @@ void main() {
 
       test('returns translated value when key exists', () {
         // Arrange
-        const String? key = 'test.key';
+        const key = 'test.key';
 
         // Act
         final result = key.translateOrNull;
@@ -53,7 +53,7 @@ void main() {
 
       test('returns key itself when translation not found', () {
         // Arrange
-        const String? key = 'missing.key';
+        const key = 'missing.key';
 
         // Act
         final result = key.translateOrNull;
@@ -64,7 +64,7 @@ void main() {
 
       test('handles empty string', () {
         // Arrange
-        const String? key = '';
+        const key = '';
 
         // Act
         final result = key.translateOrNull;
@@ -76,7 +76,7 @@ void main() {
 
       test('translates validation keys', () {
         // Arrange
-        const String? key = 'validation.email';
+        const key = 'validation.email';
 
         // Act
         final result = key.translateOrNull;
@@ -87,7 +87,7 @@ void main() {
 
       test('translates error keys', () {
         // Arrange
-        const String? key = 'error.message';
+        const key = 'error.message';
 
         // Act
         final result = key.translateOrNull;
@@ -111,7 +111,7 @@ void main() {
 
       test('works with non-null string', () {
         // Arrange
-        String? key = 'test.key';
+        const key = 'test.key';
 
         // Act
         final result = key?.translateOrNull;
@@ -140,7 +140,7 @@ void main() {
             return 'translated';
           },
         );
-        const String? key = 'test.key';
+        const key = 'test.key';
 
         // Act
         key.translateOrNull;
@@ -151,7 +151,7 @@ void main() {
 
       test('respects AppLocalizer resolver changes', () {
         // Arrange
-        const String? key = 'test.key';
+        const key = 'test.key';
         AppLocalizer.forceInit(resolver: (k) => 'First: $k');
         final first = key.translateOrNull;
 
@@ -167,7 +167,7 @@ void main() {
       test('works when AppLocalizer is not initialized', () {
         // Arrange
         AppLocalizer.forceInit(resolver: (key) => key);
-        const String? key = 'some.key';
+        const key = 'some.key';
 
         // Act
         final result = key.translateOrNull;
@@ -186,7 +186,7 @@ void main() {
             return key;
           },
         );
-        const String? key = 'test.ключ';
+        const key = 'test.ключ';
 
         // Act
         final result = key.translateOrNull;
@@ -203,7 +203,7 @@ void main() {
             return key;
           },
         );
-        const String? key = 'test.🔥';
+        const key = 'test.🔥';
 
         // Act
         final result = key.translateOrNull;
@@ -214,7 +214,7 @@ void main() {
 
       test('handles keys with special symbols', () {
         // Arrange
-        const String? key = 'test.key.with.@#\$';
+        const key = r'test.key.with.@#$';
 
         // Act
         final result = key.translateOrNull;
@@ -225,7 +225,7 @@ void main() {
 
       test('handles keys with newlines', () {
         // Arrange
-        const String? key = 'test\nkey';
+        const key = 'test\nkey';
 
         // Act
         final result = key.translateOrNull;
@@ -239,7 +239,7 @@ void main() {
       test('handles very long keys', () {
         // Arrange
         final longKey = 'test.${'key.' * 1000}value';
-        String? nullableKey = longKey;
+        final nullableKey = longKey;
 
         // Act
         final result = nullableKey.translateOrNull;
@@ -250,7 +250,7 @@ void main() {
 
       test('handles whitespace-only keys', () {
         // Arrange
-        const String? key = '   ';
+        const key = '   ';
 
         // Act
         final result = key.translateOrNull;
@@ -262,7 +262,7 @@ void main() {
 
       test('handles keys with dots', () {
         // Arrange
-        const String? key = 'a.b.c.d.e';
+        const key = 'a.b.c.d.e';
 
         // Act
         final result = key.translateOrNull;
@@ -273,7 +273,7 @@ void main() {
 
       test('handles single character key', () {
         // Arrange
-        const String? key = 'a';
+        const key = 'a';
 
         // Act
         final result = key.translateOrNull;
@@ -286,7 +286,7 @@ void main() {
     group('type safety', () {
       test('returns String? type', () {
         // Arrange
-        const String? key = 'test.key';
+        const key = 'test.key';
 
         // Act
         final result = key.translateOrNull;
@@ -297,10 +297,10 @@ void main() {
 
       test('nullable result can be assigned to String?', () {
         // Arrange
-        const String? key = 'test.key';
+        const key = 'test.key';
 
         // Act
-        String? result = key.translateOrNull;
+        final result = key.translateOrNull;
 
         // Assert
         expect(result, isNotNull);
@@ -308,7 +308,7 @@ void main() {
 
       test('can use in conditional expressions', () {
         // Arrange
-        const String? key = 'test.key';
+        const key = 'test.key';
 
         // Act
         final result = key.translateOrNull ?? 'Default';
@@ -330,7 +330,7 @@ void main() {
             return errors[key] ?? key;
           },
         );
-        String? errorKey = 'form.email.invalid';
+        const errorKey = 'form.email.invalid';
 
         // Act
         final errorMessage = errorKey.translateOrNull;
@@ -352,7 +352,7 @@ void main() {
 
       test('works in widget error label scenario', () {
         // Arrange
-        String? errorLabelKey = 'validation.required';
+        const errorLabelKey = 'validation.required';
         AppLocalizer.forceInit(
           resolver: (key) {
             if (key == 'validation.required') return 'This field is required';
@@ -425,7 +425,7 @@ void main() {
     group('multiple calls', () {
       test('multiple calls with same key return consistent result', () {
         // Arrange
-        const String? key = 'test.key';
+        const key = 'test.key';
 
         // Act
         final result1 = key.translateOrNull;
@@ -439,8 +439,8 @@ void main() {
 
       test('different keys return different results', () {
         // Arrange
-        const String? key1 = 'test.key';
-        const String? key2 = 'validation.email';
+        const key1 = 'test.key';
+        const key2 = 'validation.email';
 
         // Act
         final result1 = key1.translateOrNull;

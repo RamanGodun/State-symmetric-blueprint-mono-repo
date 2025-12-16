@@ -408,7 +408,7 @@ void main() {
         const widget = TextWidget(
           'Spaced Text',
           TextType.bodyMedium,
-          letterSpacing: 2.0,
+          letterSpacing: 2,
         );
 
         // Act
@@ -424,7 +424,7 @@ void main() {
         const widget = TextWidget(
           'Tall Text',
           TextType.bodyMedium,
-          height: 2.0,
+          height: 2,
         );
 
         // Act
@@ -617,13 +617,13 @@ void main() {
 
       testWidgets('handles special characters', (tester) async {
         // Arrange
-        const widget = TextWidget('Test@#\$%^&*()', TextType.bodyMedium);
+        const widget = TextWidget(r'Test@#$%^&*()', TextType.bodyMedium);
 
         // Act
         await tester.pumpWidget(createTestWidget(widget));
 
         // Assert
-        expect(find.text('Test@#\$%^&*()'), findsOneWidget);
+        expect(find.text(r'Test@#$%^&*()'), findsOneWidget);
       });
     });
 
@@ -678,7 +678,7 @@ void main() {
 
         // Act
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: Column(
                 children: [widget1, widget2],

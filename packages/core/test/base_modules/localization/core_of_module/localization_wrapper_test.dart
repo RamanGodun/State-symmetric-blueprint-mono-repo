@@ -42,7 +42,7 @@ void main() {
 
       test('localizationPath points to correct assets directory', () {
         // Act
-        final path = LocalizationWrapper.localizationPath;
+        const path = LocalizationWrapper.localizationPath;
 
         // Assert
         expect(path, equals('assets/translations'));
@@ -51,7 +51,7 @@ void main() {
 
       test('fallbackLocale is English', () {
         // Act
-        final fallback = LocalizationWrapper.fallbackLocale;
+        const fallback = LocalizationWrapper.fallbackLocale;
 
         // Assert
         expect(fallback, equals(const Locale('en')));
@@ -214,7 +214,7 @@ void main() {
 
       test('fallback locale is in supported locales', () {
         // Arrange
-        final fallback = LocalizationWrapper.fallbackLocale;
+        const fallback = LocalizationWrapper.fallbackLocale;
         final supported = LocalizationWrapper.supportedLocales;
 
         // Act & Assert
@@ -321,8 +321,8 @@ void main() {
 
       test('fallbackLocale is const', () {
         // Arrange
-        final fallback1 = LocalizationWrapper.fallbackLocale;
-        final fallback2 = LocalizationWrapper.fallbackLocale;
+        const fallback1 = LocalizationWrapper.fallbackLocale;
+        const fallback2 = LocalizationWrapper.fallbackLocale;
 
         // Act & Assert
         expect(identical(fallback1, fallback2), isTrue);
@@ -334,7 +334,7 @@ void main() {
         const expectedPath = 'assets/translations';
 
         // Act
-        final path = LocalizationWrapper.localizationPath;
+        const path = LocalizationWrapper.localizationPath;
 
         // Assert
         expect(path, equals(expectedPath));
@@ -344,7 +344,7 @@ void main() {
     group('configuration properties', () {
       test('path follows Flutter asset convention', () {
         // Act
-        final path = LocalizationWrapper.localizationPath;
+        const path = LocalizationWrapper.localizationPath;
 
         // Assert
         expect(path, startsWith('assets/'));
@@ -365,7 +365,7 @@ void main() {
 
       test('fallback locale uses language code only', () {
         // Arrange
-        final fallback = LocalizationWrapper.fallbackLocale;
+        const fallback = LocalizationWrapper.fallbackLocale;
 
         // Act & Assert
         expect(fallback.countryCode, isNull);
