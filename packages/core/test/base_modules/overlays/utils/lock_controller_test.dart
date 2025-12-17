@@ -17,7 +17,11 @@ class MockOverlayActivityWatcher implements OverlayActivityWatcher {
   }
 
   void notifyListeners({required bool active}) {
-    for (final listener in _listeners) {
+    // Create a copy to avoid concurrent modification errors
+    final listenersCopy = List<void Function({required bool active})>.from(
+      _listeners,
+    );
+    for (final listener in listenersCopy) {
       listener(active: active);
     }
   }

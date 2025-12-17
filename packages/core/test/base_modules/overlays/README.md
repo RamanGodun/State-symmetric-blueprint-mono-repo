@@ -6,7 +6,14 @@ Comprehensive test coverage for the overlays module following Very Good Ventures
 
 The overlays module provides a sophisticated system for managing UI overlays (dialogs, snackbars, banners) with platform-specific implementations, conflict resolution, priority management, and queue handling.
 
-## Test Coverage
+## Test Coverage Summary
+
+```
+Total Test Files: 6
+Total Tests: ~220
+Test Groups: 36
+Lines of Test Code: ~2,500
+```
 
 ### Core Components
 
@@ -74,22 +81,52 @@ The overlays module provides a sophisticated system for managing UI overlays (di
   - `waitQueue`: Queues overlay instead of replacing
   - Independent debouncers per category
 
-## Test Statistics
+#### 5. Tap Through Overlay Barrier (`tap_through_overlay_barrier_test.dart`)
 
-```
-Total Test Files: 4
-Total Tests: ~150
-Test Groups: 24
-```
+- **Test Count**: ~25 tests across 6 groups
+- **Coverage**:
+  - Passthrough modes (enabled/disabled)
+  - Tap event handling
+  - Callback behavior
+  - Layout and rendering
+  - Edge cases (rapid taps, nested handlers)
+  - Integration scenarios (banner/dialog use cases)
+- **Key Features Tested**:
+  - IgnorePointer behavior based on passthrough flag
+  - onTapOverlay callback invocation
+  - Translucent HitTestBehavior
+  - Complex child widget support
+  - Dynamic passthrough toggling
+
+#### 6. Global Overlay Handler (`global_overlay_handler_test.dart`)
+
+- **Test Count**: ~30 tests across 7 groups
+- **Coverage**:
+  - Keyboard dismissal on tap outside
+  - Overlay dismissal behavior
+  - Flag configuration (dismissKeyboard, dismissOverlay)
+  - Layout preservation
+  - Edge cases (rapid taps, nested handlers)
+  - Integration scenarios (form fields, complex layouts)
+- **Key Features Tested**:
+  - GestureDetector with translucent behavior
+  - Automatic keyboard unfocus
+  - Respects dismiss policy before closing overlay
+  - Works with scrollable content
+  - Preserves gesture detection hierarchy
+
+## Test Statistics
 
 ### Coverage Breakdown
 
-| File                               | Tests | Groups | Lines |
-| ---------------------------------- | ----- | ------ | ----- |
-| enums_for_overlay_module_test.dart | ~45   | 7      | ~400  |
-| platform_mapper_test.dart          | ~30   | 4      | ~480  |
-| lock_controller_test.dart          | ~35   | 7      | ~420  |
-| policy_resolver_test.dart          | ~40   | 6      | ~580  |
+| File                                  | Tests | Groups | Lines |
+| ------------------------------------- | ----- | ------ | ----- |
+| enums_for_overlay_module_test.dart    | ~45   | 7      | ~400  |
+| platform_mapper_test.dart             | ~30   | 4      | ~480  |
+| lock_controller_test.dart             | ~35   | 7      | ~420  |
+| policy_resolver_test.dart             | ~40   | 6      | ~580  |
+| tap_through_overlay_barrier_test.dart | ~25   | 6      | ~330  |
+| global_overlay_handler_test.dart      | ~30   | 7      | ~300  |
 
 ## Testing Patterns
 
@@ -202,6 +239,8 @@ flutter test packages/core/test/base_modules/overlays/
 ```bash
 flutter test packages/core/test/base_modules/overlays/core/enums_for_overlay_module_test.dart
 flutter test packages/core/test/base_modules/overlays/core/platform_mapper_test.dart
+flutter test packages/core/test/base_modules/overlays/core/tap_through_overlay_barrier_test.dart
+flutter test packages/core/test/base_modules/overlays/core/global_overlay_handler_test.dart
 flutter test packages/core/test/base_modules/overlays/utils/lock_controller_test.dart
 flutter test packages/core/test/base_modules/overlays/overlays_dispatcher/policy_resolver_test.dart
 ```
@@ -225,7 +264,9 @@ test/base_modules/overlays/
 ├── README.md
 ├── core/
 │   ├── enums_for_overlay_module_test.dart
-│   └── platform_mapper_test.dart
+│   ├── platform_mapper_test.dart
+│   ├── tap_through_overlay_barrier_test.dart
+│   └── global_overlay_handler_test.dart
 ├── utils/
 │   └── lock_controller_test.dart
 └── overlays_dispatcher/
