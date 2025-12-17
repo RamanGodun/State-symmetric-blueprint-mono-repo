@@ -17,10 +17,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('LanguageToggleButton', () {
-    setUpAll(() async {
-      await EasyLocalization.ensureInitialized();
-    });
-
     Widget createTestWidget({Locale initialLocale = const Locale('en')}) {
       return EasyLocalization(
         supportedLocales: const [
