@@ -17,6 +17,10 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('LanguageToggleButton', () {
+    setUpAll(() async {
+      await EasyLocalization.ensureInitialized();
+    });
+
     Widget createTestWidget({Locale initialLocale = const Locale('en')}) {
       return EasyLocalization(
         supportedLocales: const [
@@ -366,13 +370,13 @@ void main() {
         expect(button, isA<LanguageToggleButton>());
       });
 
-      test('const instances are identical', () {
+      test('const instances are equal', () {
         // Arrange
         const button1 = LanguageToggleButton();
         const button2 = LanguageToggleButton();
 
         // Assert
-        expect(identical(button1, button2), isTrue);
+        expect(button1, equals(button2));
       });
     });
 

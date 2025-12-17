@@ -321,7 +321,7 @@ void main() {
         await tester.pumpWidget(createTestWidget(widget));
 
         // Assert
-        expect(find.text('missing.key'), findsOneWidget);
+        expect(find.text('Fallback Text'), findsOneWidget);
       });
 
       testWidgets('handles uninitialized AppLocalizer', (tester) async {
@@ -656,7 +656,7 @@ void main() {
     group('integration scenarios', () {
       testWidgets('works in Column layout', (tester) async {
         // Arrange
-        const widget = Column(
+        const column = Column(
           children: [
             TextWidget('First', TextType.titleLarge),
             TextWidget('Second', TextType.bodyMedium),
@@ -665,10 +665,18 @@ void main() {
         );
 
         // Act
-        await tester.pumpWidget(createTestWidget(widget as TextWidget));
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: column,
+            ),
+          ),
+        );
 
-        // Assert - would need proper MaterialApp wrapper for Column
-        expect(widget.children.length, equals(3));
+        // Assert
+        expect(find.text('First'), findsOneWidget);
+        expect(find.text('Second'), findsOneWidget);
+        expect(find.text('Third'), findsOneWidget);
       });
 
       testWidgets('can be used in RichText scenarios', (tester) async {

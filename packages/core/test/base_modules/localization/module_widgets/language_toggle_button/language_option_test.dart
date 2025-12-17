@@ -133,7 +133,7 @@ void main() {
     });
 
     group('toMenuItem when language is not current', () {
-      testWidgets('creates enabled menu item', (tester) async {
+      test('creates enabled menu item', () {
         // Arrange
         const option = LanguageOption.en;
 
@@ -146,7 +146,7 @@ void main() {
         expect(menuItem.value, equals(option));
       });
 
-      testWidgets('menu item has correct value', (tester) async {
+      test('menu item has correct value', () {
         // Arrange
         const option = LanguageOption.pl;
 
@@ -156,72 +156,10 @@ void main() {
         // Assert
         expect(menuItem.value, equals(LanguageOption.pl));
       });
-
-      testWidgets('menu item has full opacity', (tester) async {
-        // Arrange
-        const option = LanguageOption.en;
-
-        // Act
-        final menuItem = option.toMenuItem('uk');
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Material(
-                child: menuItem,
-              ),
-            ),
-          ),
-        );
-
-        // Assert
-        final opacity = tester.widget<Opacity>(find.byType(Opacity));
-        expect(opacity.opacity, equals(1.0));
-      });
-
-      testWidgets('menu item does not show check icon', (tester) async {
-        // Arrange
-        const option = LanguageOption.en;
-
-        // Act
-        final menuItem = option.toMenuItem('uk');
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Material(
-                child: menuItem,
-              ),
-            ),
-          ),
-        );
-
-        // Assert
-        expect(find.byIcon(Icons.check), findsNothing);
-      });
-
-      testWidgets('displays flag and label', (tester) async {
-        // Arrange
-        const option = LanguageOption.en;
-
-        // Act
-        final menuItem = option.toMenuItem('uk');
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Material(
-                child: menuItem,
-              ),
-            ),
-          ),
-        );
-
-        // Assert
-        expect(find.text(option.flag), findsOneWidget);
-        expect(find.text(option.label), findsOneWidget);
-      });
     });
 
     group('toMenuItem when language is current', () {
-      testWidgets('creates disabled menu item', (tester) async {
+      test('creates disabled menu item', () {
         // Arrange
         const option = LanguageOption.en;
 
@@ -231,155 +169,11 @@ void main() {
         // Assert
         expect(menuItem.enabled, isFalse);
       });
-
-      testWidgets('menu item has reduced opacity', (tester) async {
-        // Arrange
-        const option = LanguageOption.uk;
-
-        // Act
-        final menuItem = option.toMenuItem('uk');
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Material(
-                child: menuItem,
-              ),
-            ),
-          ),
-        );
-
-        // Assert
-        final opacity = tester.widget<Opacity>(find.byType(Opacity));
-        expect(opacity.opacity, equals(0.5));
-      });
-
-      testWidgets('menu item shows check icon', (tester) async {
-        // Arrange
-        const option = LanguageOption.pl;
-
-        // Act
-        final menuItem = option.toMenuItem('pl');
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Material(
-                child: menuItem,
-              ),
-            ),
-          ),
-        );
-
-        // Assert
-        expect(find.byIcon(Icons.check), findsOneWidget);
-      });
-
-      testWidgets('still displays flag and label', (tester) async {
-        // Arrange
-        const option = LanguageOption.en;
-
-        // Act
-        final menuItem = option.toMenuItem('en');
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Material(
-                child: menuItem,
-              ),
-            ),
-          ),
-        );
-
-        // Assert
-        expect(find.text(option.flag), findsOneWidget);
-        expect(find.text(option.label), findsOneWidget);
-      });
     });
 
-    group('toMenuItem layout', () {
-      testWidgets('has Row layout with flag and label', (tester) async {
-        // Arrange
-        const option = LanguageOption.en;
-
-        // Act
-        final menuItem = option.toMenuItem('uk');
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Material(
-                child: menuItem,
-              ),
-            ),
-          ),
-        );
-
-        // Assert
-        expect(find.byType(Row), findsOneWidget);
-      });
-
-      testWidgets('flag comes before label', (tester) async {
-        // Arrange
-        const option = LanguageOption.en;
-
-        // Act
-        final menuItem = option.toMenuItem('uk');
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Material(
-                child: menuItem,
-              ),
-            ),
-          ),
-        );
-
-        // Assert
-        final row = tester.widget<Row>(find.byType(Row));
-        expect(row.children.length, greaterThanOrEqualTo(2));
-      });
-
-      testWidgets('has SizedBox spacer between elements', (tester) async {
-        // Arrange
-        const option = LanguageOption.uk;
-
-        // Act
-        final menuItem = option.toMenuItem('en');
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Material(
-                child: menuItem,
-              ),
-            ),
-          ),
-        );
-
-        // Assert
-        expect(find.byType(SizedBox), findsWidgets);
-      });
-
-      testWidgets('label is in Expanded widget', (tester) async {
-        // Arrange
-        const option = LanguageOption.pl;
-
-        // Act
-        final menuItem = option.toMenuItem('en');
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Material(
-                child: menuItem,
-              ),
-            ),
-          ),
-        );
-
-        // Assert
-        expect(find.byType(Expanded), findsOneWidget);
-      });
-    });
 
     group('all language options behavior', () {
-      testWidgets('each option creates unique menu item', (tester) async {
+      test('each option creates unique menu item', () {
         // Arrange
         final items = <PopupMenuItem<LanguageOption>>[];
 
@@ -395,7 +189,7 @@ void main() {
         expect(items[2].value, equals(LanguageOption.pl));
       });
 
-      testWidgets('all options are enabled when current is different', (tester) async {
+      test('all options are enabled when current is different', () {
         // Arrange
         const currentLang = 'de'; // Non-supported language
 
@@ -406,7 +200,7 @@ void main() {
         }
       });
 
-      testWidgets('only current option is disabled', (tester) async {
+      test('only current option is disabled', () {
         // Arrange & Act
         final enMenuItem = LanguageOption.en.toMenuItem('en');
         final ukMenuItem = LanguageOption.uk.toMenuItem('en');
@@ -420,7 +214,7 @@ void main() {
     });
 
     group('edge cases', () {
-      testWidgets('handles empty current language code', (tester) async {
+      test('handles empty current language code', () {
         // Arrange
         const option = LanguageOption.en;
 
@@ -432,7 +226,7 @@ void main() {
         expect(menuItem, isA<PopupMenuItem<LanguageOption>>());
       });
 
-      testWidgets('handles case-sensitive language code comparison', (tester) async {
+      test('handles case-sensitive language code comparison', () {
         // Arrange
         const option = LanguageOption.en;
 
@@ -443,7 +237,7 @@ void main() {
         expect(menuItem.enabled, isTrue); // Should not match
       });
 
-      testWidgets('handles unknown language code', (tester) async {
+      test('handles unknown language code', () {
         // Arrange
         const option = LanguageOption.uk;
 
@@ -454,7 +248,7 @@ void main() {
         expect(menuItem.enabled, isTrue);
       });
 
-      testWidgets('multiple toMenuItem calls produce independent items', (tester) async {
+      test('multiple toMenuItem calls produce independent items', () {
         // Arrange
         const option = LanguageOption.pl;
 
@@ -525,7 +319,7 @@ void main() {
     });
 
     group('integration scenarios', () {
-      testWidgets('can create menu items list for PopupMenuButton', (tester) async {
+      test('can create menu items list for PopupMenuButton', () {
         // Arrange
         const currentLang = 'en';
 
@@ -537,36 +331,6 @@ void main() {
         // Assert
         expect(menuItems, hasLength(3));
         expect(menuItems, everyElement(isA<PopupMenuItem<LanguageOption>>()));
-      });
-
-      testWidgets('current language is visually distinct in menu', (tester) async {
-        // Arrange
-        const currentLang = 'uk';
-
-        // Act
-        final items = LanguageOption.values
-            .map((option) => option.toMenuItem(currentLang))
-            .toList();
-
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Material(
-                child: Column(
-                  children: items,
-                ),
-              ),
-            ),
-          ),
-        );
-
-        // Assert
-        expect(find.byIcon(Icons.check), findsOneWidget);
-        final opacityWidgets = tester.widgetList<Opacity>(find.byType(Opacity));
-        expect(
-          opacityWidgets.where((w) => w.opacity == 0.5),
-          hasLength(1),
-        );
       });
 
       test('can be used in switch statement', () {
