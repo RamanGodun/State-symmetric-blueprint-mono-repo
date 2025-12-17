@@ -141,6 +141,9 @@ void main() {
           },
         );
 
+        // Act
+        'test.key'.translateOrNull;
+
         // Assert
         expect(localizerCalled, isTrue);
       });
