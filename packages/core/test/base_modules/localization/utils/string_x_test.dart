@@ -103,7 +103,7 @@ void main() {
         String? nullableKey;
 
         // Act
-        final result = nullableKey?.translateOrNull ?? 'Default';
+        final result = nullableKey ?? 'Default';
 
         // Assert
         expect(result, equals('Default'));
@@ -140,10 +140,6 @@ void main() {
             return 'translated';
           },
         );
-        const key = 'test.key';
-
-        // Act
-        key.translateOrNull;
 
         // Assert
         expect(localizerCalled, isTrue);
@@ -471,10 +467,7 @@ void main() {
         final keys = <String?>['test.key', null, 'error.message'];
 
         // Act
-        final nonNullTranslations = keys
-            .map((k) => k.translateOrNull)
-            .where((t) => t != null)
-            .toList();
+        final nonNullTranslations = keys.map((k) => k.translateOrNull).where((t) => t != null).toList();
 
         // Assert
         expect(nonNullTranslations, hasLength(2));
