@@ -123,8 +123,9 @@ void main() {
         expect(find.text('Search: flutter'), findsOneWidget);
       });
 
-      testWidgets('falls back to pageNotFound on navigation error',
-          (tester) async {
+      testWidgets('falls back to pageNotFound on navigation error', (
+        tester,
+      ) async {
         // Arrange
         var navigatedToError = false;
         final router = GoRouter(
@@ -392,8 +393,7 @@ void main() {
     });
 
     group('pushTo', () {
-      testWidgets('pushes custom widget via MaterialPageRoute',
-          (tester) async {
+      testWidgets('pushes custom widget via MaterialPageRoute', (tester) async {
         // Arrange
         await tester.pumpWidget(
           MaterialApp(
@@ -506,11 +506,14 @@ void main() {
                 floatingActionButton: FloatingActionButton(
                   onPressed: () async {
                     final value = await context.replaceWith<String>(
-                      Scaffold(
-                        body: const Text('Replacement'),
-                        floatingActionButton: FloatingActionButton(
-                          onPressed: () => Navigator.of(context).pop('replaced'),
-                          child: const Icon(Icons.check),
+                      Builder(
+                        builder: (newContext) => Scaffold(
+                          body: const Text('Replacement'),
+                          floatingActionButton: FloatingActionButton(
+                            onPressed: () =>
+                                Navigator.of(newContext).pop('replaced'),
+                            child: const Icon(Icons.check),
+                          ),
                         ),
                       ),
                     );
@@ -571,8 +574,9 @@ void main() {
         expect(find.text('Profile'), findsOneWidget);
       });
 
-      testWidgets('does not navigate if context is not mounted',
-          (tester) async {
+      testWidgets('does not navigate if context is not mounted', (
+        tester,
+      ) async {
         // Arrange
         var navigated = false;
         BuildContext? savedContext;
@@ -614,8 +618,9 @@ void main() {
     });
 
     group('globalRouterContext', () {
-      testWidgets('returns global router context from navigatorKey',
-          (tester) async {
+      testWidgets('returns global router context from navigatorKey', (
+        tester,
+      ) async {
         // Arrange
         final navigatorKey = GlobalKey<NavigatorState>();
         final router = GoRouter(

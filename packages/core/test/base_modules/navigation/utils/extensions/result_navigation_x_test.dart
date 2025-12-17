@@ -3,7 +3,7 @@ import 'package:core/src/base_modules/errors_management/core_of_module/either.da
 import 'package:core/src/base_modules/errors_management/core_of_module/failure_entity.dart';
 import 'package:core/src/base_modules/errors_management/core_of_module/failure_type.dart';
 import 'package:core/src/base_modules/navigation/utils/extensions/result_navigation_x.dart';
-import 'package:flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('ResultNavigationExt', () {
@@ -144,12 +144,11 @@ void main() {
       test('does not modify original Either value', () {
         // Arrange
         const originalValue = 'original';
-        const result = Right<Failure, String>(originalValue);
-
-        // Act
-        result.redirectIfSuccess((value) {
-          // Try to modify (won't affect original since String is immutable)
-        });
+        final result = const Right<Failure, String>(originalValue)
+          // Act
+          ..redirectIfSuccess((value) {
+            // Try to modify (won't affect original since String is immutable)
+          });
 
         // Assert
         final extractedValue = result.fold((_) => '', (value) => value);
@@ -170,13 +169,15 @@ void main() {
       test('handles nullable success values', () {
         // Arrange
         const result = Right<Failure, String?>(null);
-        String? receivedValue = 'not null';
+        var navigatorCalled = false;
 
         // Act
-        result.redirectIfSuccess((value) => receivedValue = value);
+        result.redirectIfSuccess((value) => navigatorCalled = true);
 
         // Assert
-        expect(receivedValue, isNull);
+        // Navigator should NOT be called because rightOrNull returns null
+        // and the implementation checks if (value != null)
+        expect(navigatorCalled, isFalse);
       });
 
       test('navigator throwing exception propagates', () {
@@ -200,8 +201,9 @@ void main() {
     group('redirectIfSuccess', () {
       test('calls navigator callback when future result is success', () async {
         // Arrange
-        final futureResult =
-            Future.value(const Right<Failure, String>('async success'));
+        final futureResult = Future.value(
+          const Right<Failure, String>('async success'),
+        );
         var navigatorCalled = false;
         String? receivedValue;
 
@@ -246,8 +248,7 @@ void main() {
 
       test('navigator can be async function', () async {
         // Arrange
-        final futureResult =
-            Future.value(const Right<Failure, String>('data'));
+        final futureResult = Future.value(const Right<Failure, String>('data'));
         var asyncOperationCompleted = false;
 
         // Act
@@ -263,8 +264,9 @@ void main() {
       test('navigator receives correct value type from future', () async {
         // Arrange
         final intFuture = Future.value(const Right<Failure, int>(456));
-        final stringFuture =
-            Future.value(const Right<Failure, String>('async test'));
+        final stringFuture = Future.value(
+          const Right<Failure, String>('async test'),
+        );
         int? receivedInt;
         String? receivedString;
 
@@ -297,8 +299,9 @@ void main() {
 
       test('navigator can perform async side effects', () async {
         // Arrange
-        final futureResult =
-            Future.value(const Right<Failure, String>('async data'));
+        final futureResult = Future.value(
+          const Right<Failure, String>('async data'),
+        );
         final sideEffects = <String>[];
 
         // Act
@@ -405,13 +408,15 @@ void main() {
       test('handles nullable async success values', () async {
         // Arrange
         final futureResult = Future.value(const Right<Failure, String?>(null));
-        String? receivedValue = 'not null';
+        var navigatorCalled = false;
 
         // Act
-        await futureResult.redirectIfSuccess((value) => receivedValue = value);
+        await futureResult.redirectIfSuccess((value) => navigatorCalled = true);
 
         // Assert
-        expect(receivedValue, isNull);
+        // Navigator should NOT be called because rightOrNull returns null
+        // and the implementation checks if (value != null)
+        expect(navigatorCalled, isFalse);
       });
 
       test('async navigator throwing exception propagates', () async {
@@ -454,8 +459,9 @@ void main() {
 
       test('preserves result type through async chain', () async {
         // Arrange
-        final futureResult =
-            Future.value(const Right<Failure, List<int>>([1, 2, 3]));
+        final futureResult = Future.value(
+          const Right<Failure, List<int>>([1, 2, 3]),
+        );
 
         // Act
         final result = await futureResult.redirectIfSuccess((_) async {});

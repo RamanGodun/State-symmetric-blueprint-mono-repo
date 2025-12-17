@@ -1,7 +1,7 @@
 import 'package:core/src/base_modules/errors_management/core_of_module/failure_entity.dart';
 import 'package:core/src/base_modules/errors_management/core_of_module/failure_type.dart';
 import 'package:core/src/base_modules/navigation/utils/extensions/navigation_x_on_failure.dart';
-import 'package:flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('FailureNavigationX', () {
@@ -108,9 +108,21 @@ void main() {
       test('does not call callback for client errors other than 401', () {
         // Arrange
         const failures = [
-          Failure(type: ApiFailureType(), message: 'Bad Request', statusCode: 400),
-          Failure(type: ApiFailureType(), message: 'Forbidden', statusCode: 403),
-          Failure(type: ApiFailureType(), message: 'Not Found', statusCode: 404),
+          Failure(
+            type: ApiFailureType(),
+            message: 'Bad Request',
+            statusCode: 400,
+          ),
+          Failure(
+            type: ApiFailureType(),
+            message: 'Forbidden',
+            statusCode: 403,
+          ),
+          Failure(
+            type: ApiFailureType(),
+            message: 'Not Found',
+            statusCode: 404,
+          ),
           Failure(type: ApiFailureType(), message: 'Conflict', statusCode: 409),
         ];
         var callbackCount = 0;
@@ -132,7 +144,11 @@ void main() {
             message: 'Internal Server Error',
             statusCode: 500,
           ),
-          Failure(type: ApiFailureType(), message: 'Bad Gateway', statusCode: 502),
+          Failure(
+            type: ApiFailureType(),
+            message: 'Bad Gateway',
+            statusCode: 502,
+          ),
           Failure(
             type: ApiFailureType(),
             message: 'Service Unavailable',
