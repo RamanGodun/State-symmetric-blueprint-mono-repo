@@ -38,8 +38,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Act
-        final context = tester.element(find.byType(Scaffold))
-        ..goTo('profile');
+        tester.element(find.byType(Scaffold)).goTo('profile');
 
         await tester.pumpAndSettle();
 
@@ -75,8 +74,9 @@ void main() {
         await tester.pumpAndSettle();
 
         // Act
-        final context = tester.element(find.byType(Scaffold))
-        ..goTo('userProfile', pathParameters: {'userId': '123'});
+        tester
+            .element(find.byType(Scaffold))
+            .goTo('userProfile', pathParameters: {'userId': '123'});
 
         await tester.pumpAndSettle();
 
@@ -112,8 +112,9 @@ void main() {
         await tester.pumpAndSettle();
 
         // Act
-        final context = tester.element(find.byType(Scaffold))
-        ..goTo('search', queryParameters: {'q': 'flutter'});
+        tester
+            .element(find.byType(Scaffold))
+            .goTo('search', queryParameters: {'q': 'flutter'});
 
         await tester.pumpAndSettle();
 
@@ -148,8 +149,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Act - try to navigate to non-existent route
-        final context = tester.element(find.byType(Scaffold))
-        ..goTo('nonExistentRoute');
+        tester.element(find.byType(Scaffold)).goTo('nonExistentRoute');
 
         await tester.pumpAndSettle();
 
@@ -187,8 +187,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Act
-        final context = tester.element(find.byType(Scaffold))
-        ..goPushTo('profile');
+        tester.element(find.byType(Scaffold)).goPushTo('profile');
 
         await tester.pumpAndSettle();
 
@@ -222,8 +221,9 @@ void main() {
         await tester.pumpAndSettle();
 
         // Act
-        final context = tester.element(find.byType(Scaffold))
-        ..goPushTo('item', pathParameters: {'id': '456'});
+        tester
+            .element(find.byType(Scaffold))
+            .goPushTo('item', pathParameters: {'id': '456'});
 
         await tester.pumpAndSettle();
 
@@ -257,8 +257,9 @@ void main() {
         await tester.pumpAndSettle();
 
         // Act
-        final context = tester.element(find.byType(Scaffold))
-        ..goPushTo('list', queryParameters: {'filter': 'active'});
+        tester
+            .element(find.byType(Scaffold))
+            .goPushTo('list', queryParameters: {'filter': 'active'});
 
         await tester.pumpAndSettle();
 
@@ -292,8 +293,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Act
-        final context = tester.element(find.byType(Scaffold))
-        ..goPushTo('invalidRoute');
+        tester.element(find.byType(Scaffold)).goPushTo('invalidRoute');
 
         await tester.pumpAndSettle();
 
@@ -402,7 +402,9 @@ void main() {
                 body: const Text('Home'),
                 floatingActionButton: FloatingActionButton(
                   onPressed: () {
-                    context.pushTo(const Scaffold(body: Text('Custom Page')));
+                    context.pushTo<void>(
+                      const Scaffold(body: Text('Custom Page')),
+                    );
                   },
                   child: const Icon(Icons.add),
                 ),
@@ -471,7 +473,7 @@ void main() {
                 body: const Text('First Page'),
                 floatingActionButton: FloatingActionButton(
                   onPressed: () {
-                    context.replaceWith(
+                    context.replaceWith<void>(
                       const Scaffold(body: Text('Replacement Page')),
                     );
                   },
@@ -560,8 +562,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Act
-        final context = tester.element(find.byType(Scaffold))
-        ..goIfMounted('profile');
+        tester.element(find.byType(Scaffold)).goIfMounted('profile');
 
         await tester.pumpAndSettle();
 
@@ -652,12 +653,7 @@ void main() {
 
         // Act - try to get global router context without GoRouter
         final context = tester.element(find.byType(Scaffold));
-        BuildContext? globalContext;
-        try {
-          globalContext = context.globalRouterContext;
-        } catch (e) {
-          globalContext = null;
-        }
+        final globalContext = context.globalRouterContext;
 
         // Assert - should return null or handle error gracefully
         expect(globalContext, isNull);

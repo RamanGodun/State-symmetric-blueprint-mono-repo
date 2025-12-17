@@ -1,14 +1,16 @@
+import 'package:core/src/base_modules/errors_management/core_of_module/core_utils/extensions_on_either/either_getters_x.dart';
 import 'package:core/src/base_modules/errors_management/core_of_module/either.dart';
 import 'package:core/src/base_modules/errors_management/core_of_module/failure_entity.dart';
+import 'package:core/src/base_modules/errors_management/core_of_module/failure_type.dart';
 import 'package:core/src/base_modules/navigation/utils/extensions/result_navigation_x.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test.dart';
 
 void main() {
   group('ResultNavigationExt', () {
     group('redirectIfSuccess', () {
       test('calls navigator callback when result is success', () {
         // Arrange
-        const result = Either<Failure, String>.right('success value');
+        const result = Right<Failure, String>('success value');
         var navigatorCalled = false;
         String? receivedValue;
 
@@ -25,8 +27,11 @@ void main() {
 
       test('does not call navigator when result is failure', () {
         // Arrange
-        const failure = Failure(message: 'Error occurred');
-        const result = Either<Failure, String>.left(failure);
+        const failure = Failure(
+          type: ApiFailureType(),
+          message: 'Error occurred',
+        );
+        const result = Left<Failure, String>(failure);
         var navigatorCalled = false;
 
         // Act
@@ -40,7 +45,7 @@ void main() {
 
       test('returns the same Either instance', () {
         // Arrange
-        const result = Either<Failure, int>.right(42);
+        const result = Right<Failure, int>(42);
 
         // Act
         final returnedResult = result.redirectIfSuccess((_) {});
@@ -52,9 +57,9 @@ void main() {
 
       test('navigator receives correct value type', () {
         // Arrange
-        const intResult = Either<Failure, int>.right(123);
-        const stringResult = Either<Failure, String>.right('test');
-        const boolResult = Either<Failure, bool>.right(true);
+        const intResult = Right<Failure, int>(123);
+        const stringResult = Right<Failure, String>('test');
+        const boolResult = Right<Failure, bool>(true);
         int? receivedInt;
         String? receivedString;
         bool? receivedBool;
@@ -72,7 +77,7 @@ void main() {
 
       test('can be chained with other operations', () {
         // Arrange
-        const result = Either<Failure, int>.right(10);
+        const result = Right<Failure, int>(10);
         var navigated = false;
         int? finalValue;
 
@@ -88,14 +93,15 @@ void main() {
 
       test('navigator can perform side effects', () {
         // Arrange
-        const result = Either<Failure, String>.right('data');
+        const result = Right<Failure, String>('data');
         final sideEffects = <String>[];
 
         // Act
         result.redirectIfSuccess((value) {
-          sideEffects..add('Navigated to page')
-          ..add('Logged: $value')
-          ..add('Updated state');
+          sideEffects
+            ..add('Navigated to page')
+            ..add('Logged: $value')
+            ..add('Updated state');
         });
 
         // Assert
@@ -108,9 +114,7 @@ void main() {
       test('handles complex object types', () {
         // Arrange
         final complexObject = {'name': 'John', 'age': 30};
-        final result = Either<Failure, Map<String, dynamic>>.right(
-          complexObject,
-        );
+        final result = Right<Failure, Map<String, dynamic>>(complexObject);
         Map<String, dynamic>? receivedObject;
 
         // Act
@@ -124,13 +128,14 @@ void main() {
 
       test('multiple redirectIfSuccess calls work independently', () {
         // Arrange
-        const result = Either<Failure, int>.right(5);
+        const result = Right<Failure, int>(5);
         var callCount = 0;
 
         // Act
-        result..redirectIfSuccess((_) => callCount++)
-        ..redirectIfSuccess((_) => callCount++)
-        ..redirectIfSuccess((_) => callCount++);
+        result
+          ..redirectIfSuccess((_) => callCount++)
+          ..redirectIfSuccess((_) => callCount++)
+          ..redirectIfSuccess((_) => callCount++);
 
         // Assert
         expect(callCount, equals(3));
@@ -139,10 +144,10 @@ void main() {
       test('does not modify original Either value', () {
         // Arrange
         const originalValue = 'original';
-        const result = Either<Failure, String>.right(originalValue)
+        const result = Right<Failure, String>(originalValue);
 
         // Act
-        ..redirectIfSuccess((value) {
+        result.redirectIfSuccess((value) {
           // Try to modify (won't affect original since String is immutable)
         });
 
@@ -153,7 +158,7 @@ void main() {
 
       test('navigator can be a void function', () {
         // Arrange
-        const result = Either<Failure, int>.right(99);
+        const result = Right<Failure, int>(99);
 
         // Act & Assert - should not throw
         expect(
@@ -164,7 +169,7 @@ void main() {
 
       test('handles nullable success values', () {
         // Arrange
-        const result = Either<Failure, String?>.right(null);
+        const result = Right<Failure, String?>(null);
         String? receivedValue = 'not null';
 
         // Act
@@ -176,7 +181,7 @@ void main() {
 
       test('navigator throwing exception propagates', () {
         // Arrange
-        const result = Either<Failure, int>.right(42);
+        const result = Right<Failure, int>(42);
 
         void throwingNavigator(int value) {
           throw Exception('Navigation error');
@@ -195,9 +200,8 @@ void main() {
     group('redirectIfSuccess', () {
       test('calls navigator callback when future result is success', () async {
         // Arrange
-        final futureResult = Future.value(
-          const Either<Failure, String>.right('async success'),
-        );
+        final futureResult =
+            Future.value(const Right<Failure, String>('async success'));
         var navigatorCalled = false;
         String? receivedValue;
 
@@ -214,10 +218,8 @@ void main() {
 
       test('does not call navigator when future result is failure', () async {
         // Arrange
-        const failure = Failure(message: 'Async error');
-        final futureResult = Future.value(
-          const Either<Failure, String>.left(failure),
-        );
+        const failure = Failure(type: ApiFailureType(), message: 'Async error');
+        final futureResult = Future.value(const Left<Failure, String>(failure));
         var navigatorCalled = false;
 
         // Act
@@ -231,7 +233,7 @@ void main() {
 
       test('returns the same Either result after await', () async {
         // Arrange
-        const originalResult = Either<Failure, int>.right(42);
+        const originalResult = Right<Failure, int>(42);
         final futureResult = Future.value(originalResult);
 
         // Act
@@ -244,9 +246,8 @@ void main() {
 
       test('navigator can be async function', () async {
         // Arrange
-        final futureResult = Future.value(
-          const Either<Failure, String>.right('data'),
-        );
+        final futureResult =
+            Future.value(const Right<Failure, String>('data'));
         var asyncOperationCompleted = false;
 
         // Act
@@ -261,10 +262,9 @@ void main() {
 
       test('navigator receives correct value type from future', () async {
         // Arrange
-        final intFuture = Future.value(const Either<Failure, int>.right(456));
-        final stringFuture = Future.value(
-          const Either<Failure, String>.right('async test'),
-        );
+        final intFuture = Future.value(const Right<Failure, int>(456));
+        final stringFuture =
+            Future.value(const Right<Failure, String>('async test'));
         int? receivedInt;
         String? receivedString;
 
@@ -281,9 +281,7 @@ void main() {
 
       test('can be chained with other async operations', () async {
         // Arrange
-        final futureResult = Future.value(
-          const Either<Failure, int>.right(20),
-        );
+        final futureResult = Future.value(const Right<Failure, int>(20));
         var navigated = false;
 
         // Act
@@ -299,9 +297,8 @@ void main() {
 
       test('navigator can perform async side effects', () async {
         // Arrange
-        final futureResult = Future.value(
-          const Either<Failure, String>.right('async data'),
-        );
+        final futureResult =
+            Future.value(const Right<Failure, String>('async data'));
         final sideEffects = <String>[];
 
         // Act
@@ -321,7 +318,7 @@ void main() {
         // Arrange
         final futureResult = Future.delayed(
           const Duration(milliseconds: 50),
-          () => const Either<Failure, String>.right('delayed'),
+          () => const Right<Failure, String>('delayed'),
         );
         var navigatorCalled = false;
 
@@ -338,7 +335,7 @@ void main() {
         // Arrange
         final complexObject = {'id': 1, 'name': 'Test', 'active': true};
         final futureResult = Future.value(
-          Either<Failure, Map<String, dynamic>>.right(complexObject),
+          Right<Failure, Map<String, dynamic>>(complexObject),
         );
         Map<String, dynamic>? receivedObject;
 
@@ -356,9 +353,7 @@ void main() {
 
       test('multiple async redirects work sequentially', () async {
         // Arrange
-        final futureResult = Future.value(
-          const Either<Failure, int>.right(10),
-        );
+        final futureResult = Future.value(const Right<Failure, int>(10));
         final callOrder = <String>[];
 
         // Act
@@ -380,7 +375,7 @@ void main() {
         // Arrange
         const originalValue = 'original async';
         final futureResult = Future.value(
-          const Either<Failure, String>.right(originalValue),
+          const Right<Failure, String>(originalValue),
         );
 
         // Act
@@ -393,12 +388,8 @@ void main() {
 
       test('navigator can be sync or async', () async {
         // Arrange
-        final futureResult1 = Future.value(
-          const Either<Failure, int>.right(1),
-        );
-        final futureResult2 = Future.value(
-          const Either<Failure, int>.right(2),
-        );
+        final futureResult1 = Future.value(const Right<Failure, int>(1));
+        final futureResult2 = Future.value(const Right<Failure, int>(2));
         var syncCalled = false;
         var asyncCalled = false;
 
@@ -413,9 +404,7 @@ void main() {
 
       test('handles nullable async success values', () async {
         // Arrange
-        final futureResult = Future.value(
-          const Either<Failure, String?>.right(null),
-        );
+        final futureResult = Future.value(const Right<Failure, String?>(null));
         String? receivedValue = 'not null';
 
         // Act
@@ -427,9 +416,7 @@ void main() {
 
       test('async navigator throwing exception propagates', () async {
         // Arrange
-        final futureResult = Future.value(
-          const Either<Failure, int>.right(99),
-        );
+        final futureResult = Future.value(const Right<Failure, int>(99));
 
         Future<void> throwingNavigator(int value) async {
           await Future<void>.delayed(const Duration(milliseconds: 5));
@@ -446,12 +433,11 @@ void main() {
       test('handles future that completes with failure', () async {
         // Arrange
         const failure = Failure(
+          type: ApiFailureType(),
           message: 'Future failed',
           statusCode: 500,
         );
-        final futureResult = Future.value(
-          const Either<Failure, String>.left(failure),
-        );
+        final futureResult = Future.value(const Left<Failure, String>(failure));
         var navigatorCalled = false;
 
         // Act
@@ -462,14 +448,14 @@ void main() {
         // Assert
         expect(navigatorCalled, isFalse);
         expect(result.isLeft, isTrue);
-        expect(result.leftOrNull?.message, equals('Future failed'));
+        final leftValue = result.fold((f) => f, (_) => null);
+        expect(leftValue?.message, equals('Future failed'));
       });
 
       test('preserves result type through async chain', () async {
         // Arrange
-        final futureResult = Future.value(
-          const Either<Failure, List<int>>.right([1, 2, 3]),
-        );
+        final futureResult =
+            Future.value(const Right<Failure, List<int>>([1, 2, 3]));
 
         // Act
         final result = await futureResult.redirectIfSuccess((_) async {});

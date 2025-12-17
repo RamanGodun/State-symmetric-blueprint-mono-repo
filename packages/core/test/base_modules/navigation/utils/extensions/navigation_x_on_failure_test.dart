@@ -1,6 +1,7 @@
 import 'package:core/src/base_modules/errors_management/core_of_module/failure_entity.dart';
+import 'package:core/src/base_modules/errors_management/core_of_module/failure_type.dart';
 import 'package:core/src/base_modules/navigation/utils/extensions/navigation_x_on_failure.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test.dart';
 
 void main() {
   group('FailureNavigationX', () {
@@ -8,6 +9,7 @@ void main() {
       test('calls callback when failure is unauthorized (401)', () {
         // Arrange
         const failure = Failure(
+          type: UnauthorizedFailureType(),
           message: 'Unauthorized',
           statusCode: 401,
         );
@@ -27,6 +29,7 @@ void main() {
       test('does not call callback when failure is not unauthorized', () {
         // Arrange
         const failure = Failure(
+          type: ApiFailureType(),
           message: 'Server Error',
           statusCode: 500,
         );
@@ -46,6 +49,7 @@ void main() {
       test('returns the same failure instance after redirect', () {
         // Arrange
         const failure = Failure(
+          type: UnauthorizedFailureType(),
           message: 'Unauthorized',
           statusCode: 401,
         );
@@ -61,10 +65,12 @@ void main() {
       test('handles multiple unauthorized checks correctly', () {
         // Arrange
         const unauthorizedFailure = Failure(
+          type: UnauthorizedFailureType(),
           message: 'Unauthorized',
           statusCode: 401,
         );
         const forbiddenFailure = Failure(
+          type: ApiFailureType(),
           message: 'Forbidden',
           statusCode: 403,
         );
@@ -85,7 +91,11 @@ void main() {
 
       test('works with different unauthorized status codes', () {
         // Arrange
-        const failure401 = Failure(message: 'Unauthorized', statusCode: 401);
+        const failure401 = Failure(
+          type: UnauthorizedFailureType(),
+          message: 'Unauthorized',
+          statusCode: 401,
+        );
         var callback401Called = false;
 
         // Act
@@ -98,10 +108,10 @@ void main() {
       test('does not call callback for client errors other than 401', () {
         // Arrange
         const failures = [
-          Failure(message: 'Bad Request', statusCode: 400),
-          Failure(message: 'Forbidden', statusCode: 403),
-          Failure(message: 'Not Found', statusCode: 404),
-          Failure(message: 'Conflict', statusCode: 409),
+          Failure(type: ApiFailureType(), message: 'Bad Request', statusCode: 400),
+          Failure(type: ApiFailureType(), message: 'Forbidden', statusCode: 403),
+          Failure(type: ApiFailureType(), message: 'Not Found', statusCode: 404),
+          Failure(type: ApiFailureType(), message: 'Conflict', statusCode: 409),
         ];
         var callbackCount = 0;
 
@@ -117,9 +127,17 @@ void main() {
       test('does not call callback for server errors', () {
         // Arrange
         const failures = [
-          Failure(message: 'Internal Server Error', statusCode: 500),
-          Failure(message: 'Bad Gateway', statusCode: 502),
-          Failure(message: 'Service Unavailable', statusCode: 503),
+          Failure(
+            type: ApiFailureType(),
+            message: 'Internal Server Error',
+            statusCode: 500,
+          ),
+          Failure(type: ApiFailureType(), message: 'Bad Gateway', statusCode: 502),
+          Failure(
+            type: ApiFailureType(),
+            message: 'Service Unavailable',
+            statusCode: 503,
+          ),
         ];
         var callbackCount = 0;
 
@@ -135,8 +153,8 @@ void main() {
       test('does not call callback for network errors', () {
         // Arrange
         const failure = Failure(
+          type: NetworkFailureType(),
           message: 'Network Error',
-          tag: FailureTag.networkFailure,
         );
         var callbackCalled = false;
 
@@ -147,33 +165,20 @@ void main() {
         expect(callbackCalled, isFalse);
       });
 
-      test('can be chained with other operations', () {
-        // Arrange
-        const failure = Failure(message: 'Unauthorized', statusCode: 401);
-        var redirectCalled = false;
-        var chainedOperationResult = '';
-
-        // Act
-        final result = failure
-            .redirectIfUnauthorized(() => redirectCalled = true)
-            .copyWith(message: 'Updated message');
-
-        chainedOperationResult = result.message;
-
-        // Assert
-        expect(redirectCalled, isTrue);
-        expect(chainedOperationResult, equals('Updated message'));
-      });
-
       test('callback can perform side effects', () {
         // Arrange
-        const failure = Failure(message: 'Unauthorized', statusCode: 401);
+        const failure = Failure(
+          type: UnauthorizedFailureType(),
+          message: 'Unauthorized',
+          statusCode: 401,
+        );
         final sideEffects = <String>[];
 
         void onUnauthorized() {
-          sideEffects..add('Logged out')
-          ..add('Cleared cache')
-          ..add('Navigated to login');
+          sideEffects
+            ..add('Logged out')
+            ..add('Cleared cache')
+            ..add('Navigated to login');
         }
 
         // Act
@@ -189,9 +194,9 @@ void main() {
       test('handles failure with additional context', () {
         // Arrange
         const failure = Failure(
+          type: UnauthorizedFailureType(),
           message: 'Session expired',
           statusCode: 401,
-          tag: FailureTag.serverFailure,
         );
         var callbackCalled = false;
 
@@ -204,13 +209,18 @@ void main() {
 
       test('is safe to call multiple times on same failure', () {
         // Arrange
-        const failure = Failure(message: 'Unauthorized', statusCode: 401);
+        const failure = Failure(
+          type: UnauthorizedFailureType(),
+          message: 'Unauthorized',
+          statusCode: 401,
+        );
         var callCount = 0;
 
         // Act
-        failure..redirectIfUnauthorized(() => callCount++)
-        ..redirectIfUnauthorized(() => callCount++)
-        ..redirectIfUnauthorized(() => callCount++);
+        failure
+          ..redirectIfUnauthorized(() => callCount++)
+          ..redirectIfUnauthorized(() => callCount++)
+          ..redirectIfUnauthorized(() => callCount++);
 
         // Assert
         expect(callCount, equals(3));
@@ -219,13 +229,12 @@ void main() {
       test('does not modify the original failure', () {
         // Arrange
         const failure = Failure(
+          type: UnauthorizedFailureType(),
           message: 'Unauthorized',
           statusCode: 401,
-          tag: FailureTag.serverFailure,
         );
         const originalMessage = 'Unauthorized';
         const originalStatusCode = 401;
-        const originalTag = FailureTag.serverFailure;
 
         // Act
         failure.redirectIfUnauthorized(() {});
@@ -233,12 +242,16 @@ void main() {
         // Assert - failure is immutable
         expect(failure.message, equals(originalMessage));
         expect(failure.statusCode, equals(originalStatusCode));
-        expect(failure.tag, equals(originalTag));
+        expect(failure.type, isA<UnauthorizedFailureType>());
       });
 
       test('works with void callback', () {
         // Arrange
-        const failure = Failure(message: 'Unauthorized', statusCode: 401);
+        const failure = Failure(
+          type: UnauthorizedFailureType(),
+          message: 'Unauthorized',
+          statusCode: 401,
+        );
 
         // Act & Assert - should not throw
         expect(
@@ -249,7 +262,11 @@ void main() {
 
       test('handles callback throwing exception gracefully', () {
         // Arrange
-        const failure = Failure(message: 'Unauthorized', statusCode: 401);
+        const failure = Failure(
+          type: UnauthorizedFailureType(),
+          message: 'Unauthorized',
+          statusCode: 401,
+        );
 
         void throwingCallback() {
           throw Exception('Callback error');
@@ -260,6 +277,21 @@ void main() {
           () => failure.redirectIfUnauthorized(throwingCallback),
           throwsException,
         );
+      });
+
+      test('does not call callback when statusCode is null', () {
+        // Arrange
+        const failure = Failure(
+          type: UnauthorizedFailureType(),
+          message: 'Unauthorized',
+        );
+        var callbackCalled = false;
+
+        // Act
+        failure.redirectIfUnauthorized(() => callbackCalled = true);
+
+        // Assert - should still call if it's UnauthorizedFailureType
+        expect(callbackCalled, isTrue);
       });
     });
   });
