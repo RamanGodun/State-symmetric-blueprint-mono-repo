@@ -11,7 +11,9 @@ This test suite provides complete coverage of the error handling infrastructure,
 ### Core Module (`core_of_module/`)
 
 #### Error Handling Entry Point
+
 **`errors_handling_entry_point_test.dart`** (~400 lines, ~60 tests)
+
 - `runWithErrorHandling()` extension method
 - Exception-to-Failure mapping
 - Automatic error logging
@@ -19,6 +21,7 @@ This test suite provides complete coverage of the error handling infrastructure,
 - All exception type handling
 
 **Coverage:**
+
 - ✅ Failure catching and wrapping
 - ✅ Exception mapping (SocketException, TimeoutException, etc.)
 - ✅ Unknown object fallback
@@ -26,7 +29,9 @@ This test suite provides complete coverage of the error handling infrastructure,
 - ✅ Result type preservation
 
 #### Failure UI Mapping
+
 **`failure_ui_mapper_test.dart`** (~500 lines, ~70 tests)
+
 - `toUIEntity()` extension on Failure
 - Translation key resolution
 - Message fallback cascade
@@ -34,6 +39,7 @@ This test suite provides complete coverage of the error handling infrastructure,
 - Icon mapping per failure type
 
 **Coverage:**
+
 - ✅ All failure types to UI entity
 - ✅ Translation with/without message
 - ✅ Fallback chain validation
@@ -43,7 +49,9 @@ This test suite provides complete coverage of the error handling infrastructure,
 ### Core Utilities (`core_of_module/core_utils/`)
 
 #### Result Handlers
+
 **`result_handler_test.dart`** (~800 lines, ~120 tests)
+
 - Synchronous Either handling
 - `fold()`, `log()`, `match()` operations
 - `onSuccess()`, `onFailure()` callbacks
@@ -51,12 +59,14 @@ This test suite provides complete coverage of the error handling infrastructure,
 - Type transformation
 
 **`result_handler_async_test.dart`** (~600 lines, ~90 tests)
+
 - Asynchronous Either handling
 - `Future<Either>` operations
 - Async callbacks and transformations
 - Composition patterns
 
 **Coverage:**
+
 - ✅ All Either operations
 - ✅ Callback execution
 - ✅ Return value preservation
@@ -64,24 +74,29 @@ This test suite provides complete coverage of the error handling infrastructure,
 - ✅ Async/await handling
 
 #### Either Extensions
+
 **`either_x_test.dart`** (~700 lines, ~100 tests)
+
 - Synchronous `match()` extension
 - Side-effect execution
 - Logging integration
 - Success tag customization
 
 **`either_async_x_test.dart`** (~600 lines, ~80 tests)
+
 - Asynchronous `matchAsync()` extension
 - Future-based callbacks
 - Async logging
 - Delayed operations
 
 **`result_x_test.dart`** (~500 lines, ~70 tests)
+
 - Result-specific extensions
 - Success/failure pattern matching
 - Type-safe transformations
 
 **Coverage:**
+
 - ✅ Match pattern implementation
 - ✅ Callback invocation
 - ✅ Either preservation
@@ -89,13 +104,16 @@ This test suite provides complete coverage of the error handling infrastructure,
 - ✅ Stack trace propagation
 
 #### Error Observing
+
 **`errors_log_util_test.dart`** (~400 lines, ~60 tests)
+
 - `ErrorsLogger.exception()` logging
 - `ErrorsLogger.failure()` logging
 - Format validation
 - Exception type handling
 
 **`result_loggers_test.dart`** (~1000 lines, ~150 tests)
+
 - `log()` extension on Either
 - `logSuccess()` with custom tags
 - `track()` for analytics
@@ -103,12 +121,14 @@ This test suite provides complete coverage of the error handling infrastructure,
 - Async logging variants
 
 **`failure_logger_x_test.dart`** (~300 lines, ~40 tests)
+
 - `log()` extension on Failure
 - `debugLog()` with labels
 - `track()` integration
 - Stack trace handling
 
 **Coverage:**
+
 - ✅ Log format consistency
 - ✅ All exception types
 - ✅ All failure types
@@ -120,7 +140,9 @@ This test suite provides complete coverage of the error handling infrastructure,
 ### Extensible Part (`extensible_part/`)
 
 #### Exception Mapping
+
 **`exceptions_to_failures_mapper_x_test.dart`** (~800 lines, ~110 tests)
+
 - `mapToFailure()` extension
 - SocketException → NetworkFailure
 - TimeoutException → NetworkTimeoutFailure
@@ -131,6 +153,7 @@ This test suite provides complete coverage of the error handling infrastructure,
 - Unknown objects → UnknownFailure
 
 **Coverage:**
+
 - ✅ All standard exceptions
 - ✅ Firebase error codes
 - ✅ Unknown object handling
@@ -139,7 +162,9 @@ This test suite provides complete coverage of the error handling infrastructure,
 - ✅ Logging integration
 
 #### Failure Types
+
 **`failure_types_test.dart`** (~600 lines, ~80 tests)
+
 - All FailureType implementations
 - NetworkFailureType
 - ApiFailureType
@@ -148,6 +173,7 @@ This test suite provides complete coverage of the error handling infrastructure,
 - Code and icon properties
 
 **Coverage:**
+
 - ✅ Type hierarchy
 - ✅ Code uniqueness
 - ✅ Icon assignments
@@ -155,7 +181,9 @@ This test suite provides complete coverage of the error handling infrastructure,
 - ✅ toString() output
 
 #### Failure Model
+
 **`failure_test.dart`** (~500 lines, ~70 tests)
+
 - Failure data class
 - Constructor variations
 - Equality and hashCode
@@ -163,6 +191,7 @@ This test suite provides complete coverage of the error handling infrastructure,
 - Copyability
 
 **Coverage:**
+
 - ✅ All constructors
 - ✅ Nullable fields
 - ✅ Value equality
@@ -172,6 +201,7 @@ This test suite provides complete coverage of the error handling infrastructure,
 ### UI Layer (`ui_layer/`)
 
 **`failure_ui_entity_test.dart`** (~400 lines, ~50 tests)
+
 - FailureUIEntity model
 - formattedCode property
 - translatedText property
@@ -179,6 +209,7 @@ This test suite provides complete coverage of the error handling infrastructure,
 - Equality and serialization
 
 **Coverage:**
+
 - ✅ Model construction
 - ✅ Field validation
 - ✅ Equality checks
@@ -186,17 +217,18 @@ This test suite provides complete coverage of the error handling infrastructure,
 
 ## Test Statistics
 
-| Metric | Value |
-|--------|-------|
-| **Test Files** | 23 |
-| **Total Lines** | 14,842 |
-| **Test Groups** | ~400 |
-| **Individual Tests** | ~1,300+ |
-| **Coverage** | ~95-100% |
+| Metric               | Value    |
+| -------------------- | -------- |
+| **Test Files**       | 23       |
+| **Total Lines**      | 14,842   |
+| **Test Groups**      | ~400     |
+| **Individual Tests** | ~1,300+  |
+| **Coverage**         | ~95-100% |
 
 ## Testing Standards (VGV)
 
 ### AAA Pattern
+
 ```dart
 test('maps SocketException to NetworkFailure', () {
   // Arrange
@@ -212,6 +244,7 @@ test('maps SocketException to NetworkFailure', () {
 ```
 
 ### Naming Conventions
+
 - **Groups:** Component/functionality
 - **Tests:** Specific behavior description
 - **Examples:**
@@ -220,6 +253,7 @@ test('maps SocketException to NetworkFailure', () {
   - ❌ "test exception handling"
 
 ### Coverage Areas
+
 - ✅ **Happy path:** Successful operations
 - ✅ **Error path:** All exception types
 - ✅ **Edge cases:** null, empty, very long messages
@@ -229,6 +263,7 @@ test('maps SocketException to NetworkFailure', () {
 - ✅ **Real-world:** Practical usage patterns
 
 ### Testing Patterns
+
 - Mock operations returning `Future<Either>`
 - Stack trace generation and verification
 - Log output capture (where applicable)
@@ -239,6 +274,7 @@ test('maps SocketException to NetworkFailure', () {
 ## Architecture Coverage
 
 ### Error Flow
+
 ```
 Exception Thrown
     ↓
@@ -256,6 +292,7 @@ UI Display
 ```
 
 **Tests cover each step:**
+
 - ✅ Exception throwing
 - ✅ Catching and wrapping
 - ✅ Mapping logic
@@ -264,6 +301,7 @@ UI Display
 - ✅ UI entity generation
 
 ### Result Type Handling
+
 ```
 Future<Either<Failure, T>>
     ↓
@@ -277,6 +315,7 @@ Business Logic
 ```
 
 **Tests cover:**
+
 - ✅ Success path (Right)
 - ✅ Failure path (Left)
 - ✅ Transformation
@@ -304,14 +343,14 @@ open coverage/html/index.html
 
 ## Coverage Goals
 
-| Category | Target | Status |
-|----------|--------|--------|
-| Line Coverage | 100% | ✅ |
-| Branch Coverage | 100% | ✅ |
-| Exception Types | All | ✅ |
-| Failure Types | All | ✅ |
-| Edge Cases | Comprehensive | ✅ |
-| Integration | Full | ✅ |
+| Category        | Target        | Status |
+| --------------- | ------------- | ------ |
+| Line Coverage   | 100%          | ✅     |
+| Branch Coverage | 100%          | ✅     |
+| Exception Types | All           | ✅     |
+| Failure Types   | All           | ✅     |
+| Edge Cases      | Comprehensive | ✅     |
+| Integration     | Full          | ✅     |
 
 ## Maintenance Guidelines
 
@@ -329,39 +368,39 @@ When modifying error handling code:
 
 ## Key Test Files by Use Case
 
-| Use Case | Test File |
-|----------|-----------|
-| Adding new exception type | `exceptions_to_failures_mapper_x_test.dart` |
-| Adding new failure type | `failure_types_test.dart`, `failure_test.dart` |
-| Error logging | `errors_log_util_test.dart`, `result_loggers_test.dart` |
-| UI error display | `failure_ui_mapper_test.dart`, `failure_ui_entity_test.dart` |
-| Result handling | `result_handler_test.dart`, `either_x_test.dart` |
-| Async operations | `result_handler_async_test.dart`, `either_async_x_test.dart` |
-| Entry point | `errors_handling_entry_point_test.dart` |
+| Use Case                  | Test File                                                    |
+| ------------------------- | ------------------------------------------------------------ |
+| Adding new exception type | `exceptions_to_failures_mapper_x_test.dart`                  |
+| Adding new failure type   | `failure_types_test.dart`, `failure_test.dart`               |
+| Error logging             | `errors_log_util_test.dart`, `result_loggers_test.dart`      |
+| UI error display          | `failure_ui_mapper_test.dart`, `failure_ui_entity_test.dart` |
+| Result handling           | `result_handler_test.dart`, `either_x_test.dart`             |
+| Async operations          | `result_handler_async_test.dart`, `either_async_x_test.dart` |
+| Entry point               | `errors_handling_entry_point_test.dart`                      |
 
 ## Exception Type Coverage
 
-| Exception | Mapped Failure | Test File |
-|-----------|---------------|-----------|
-| SocketException | NetworkFailure | `exceptions_to_failures_mapper_x_test.dart` |
-| TimeoutException | NetworkTimeoutFailure | `exceptions_to_failures_mapper_x_test.dart` |
-| FileSystemException | CacheFailure | `exceptions_to_failures_mapper_x_test.dart` |
-| MissingPluginException | MissingPluginFailure | `exceptions_to_failures_mapper_x_test.dart` |
-| FormatException | FormatFailure | `exceptions_to_failures_mapper_x_test.dart` |
-| FirebaseException | Firebase failures | `exceptions_to_failures_mapper_x_test.dart` |
-| Failure | Pass-through | `errors_handling_entry_point_test.dart` |
-| Unknown | UnknownFailure | All exception tests |
+| Exception              | Mapped Failure        | Test File                                   |
+| ---------------------- | --------------------- | ------------------------------------------- |
+| SocketException        | NetworkFailure        | `exceptions_to_failures_mapper_x_test.dart` |
+| TimeoutException       | NetworkTimeoutFailure | `exceptions_to_failures_mapper_x_test.dart` |
+| FileSystemException    | CacheFailure          | `exceptions_to_failures_mapper_x_test.dart` |
+| MissingPluginException | MissingPluginFailure  | `exceptions_to_failures_mapper_x_test.dart` |
+| FormatException        | FormatFailure         | `exceptions_to_failures_mapper_x_test.dart` |
+| FirebaseException      | Firebase failures     | `exceptions_to_failures_mapper_x_test.dart` |
+| Failure                | Pass-through          | `errors_handling_entry_point_test.dart`     |
+| Unknown                | UnknownFailure        | All exception tests                         |
 
 ## Failure Type Coverage
 
-| Failure Type | Code | Icon | Tests |
-|-------------|------|------|-------|
-| NetworkFailure | NETWORK | Icons.wifi_off | ✅ |
-| ApiFailure | API | Icons.cloud_off | ✅ |
-| FirebaseFailures | varies | Icons.firebase | ✅ |
-| UnauthorizedFailure | UNAUTHORIZED | Icons.lock | ✅ |
-| CacheFailure | CACHE | Icons.storage | ✅ |
-| UnknownFailure | UNKNOWN | Icons.error | ✅ |
+| Failure Type        | Code         | Icon            | Tests |
+| ------------------- | ------------ | --------------- | ----- |
+| NetworkFailure      | NETWORK      | Icons.wifi_off  | ✅    |
+| ApiFailure          | API          | Icons.cloud_off | ✅    |
+| FirebaseFailures    | varies       | Icons.firebase  | ✅    |
+| UnauthorizedFailure | UNAUTHORIZED | Icons.lock      | ✅    |
+| CacheFailure        | CACHE        | Icons.storage   | ✅    |
+| UnknownFailure      | UNKNOWN      | Icons.error     | ✅    |
 
 ## Notes
 

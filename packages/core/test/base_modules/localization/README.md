@@ -11,7 +11,9 @@ This test suite provides complete coverage of the localization infrastructure, i
 ### Core Module (`core_of_module/`)
 
 #### `init_localization_test.dart` (593 lines, ~100 tests)
+
 **AppLocalizer Singleton Testing**
+
 - Initialization patterns: `init()`, `initWithFallback()`, `forceInit()`
 - Translation resolution via `translateSafely()`
 - Fallback cascade: resolver → fallback parameter → translation key
@@ -21,6 +23,7 @@ This test suite provides complete coverage of the localization infrastructure, i
 - Performance: resolver caching and efficiency
 
 **Coverage:**
+
 - ✅ Singleton pattern enforcement
 - ✅ Thread-safe initialization
 - ✅ Resolver function handling
@@ -28,7 +31,9 @@ This test suite provides complete coverage of the localization infrastructure, i
 - ✅ Fallback chain validation
 
 #### `localization_wrapper_test.dart` (377 lines, ~50 tests)
+
 **LocalizationWrapper Configuration**
+
 - Supported locales: `[en, uk, pl]`
 - Translation asset path configuration
 - Fallback locale behavior
@@ -37,6 +42,7 @@ This test suite provides complete coverage of the localization infrastructure, i
 - CodegenLoader usage
 
 **Coverage:**
+
 - ✅ Configuration validation
 - ✅ Widget tree structure
 - ✅ Locale propagation
@@ -45,7 +51,9 @@ This test suite provides complete coverage of the localization infrastructure, i
 ### Widget Module (`module_widgets/`)
 
 #### `language_toggle_button/language_option_test.dart` (603 lines, ~80 tests)
+
 **LanguageOption Enum**
+
 - Enum values: `en` (🇬🇧), `uk` (🇺🇦), `pl` (🇵🇱)
 - Locale objects and metadata
 - `toMenuItem()` factory method
@@ -54,6 +62,7 @@ This test suite provides complete coverage of the localization infrastructure, i
 - Visual indicators (checkmark for current)
 
 **Coverage:**
+
 - ✅ All enum properties
 - ✅ Locale code validation
 - ✅ Flag emoji display
@@ -62,7 +71,9 @@ This test suite provides complete coverage of the localization infrastructure, i
 - ✅ State management
 
 #### `language_toggle_button/toggle_button_test.dart` (54 lines, 3 tests)
+
 **LanguageToggleButton Widget**
+
 - Widget instantiation
 - Const constructor behavior
 - StatelessWidget properties
@@ -70,12 +81,15 @@ This test suite provides complete coverage of the localization infrastructure, i
 **Note:** Widget rendering tests require integration test environment due to EasyLocalization's dependency on `shared_preferences` plugin. Unit tests focus on object creation and type safety.
 
 **Coverage:**
+
 - ✅ Constructor validation
 - ✅ Type hierarchy
 - ✅ Const semantics
 
 #### `text_widget_test.dart` (696 lines, ~140 tests)
+
 **TextWidget Localization**
+
 - All 18 `TextType` variants (displayLarge → labelSmall, button, error, caption)
 - Translation key resolution
 - Fallback text handling
@@ -84,6 +98,7 @@ This test suite provides complete coverage of the localization infrastructure, i
 - Integration with `AppLocalizer`
 
 **Coverage:**
+
 - ✅ All TextType variants
 - ✅ Localization resolution
 - ✅ Style customization
@@ -93,33 +108,41 @@ This test suite provides complete coverage of the localization infrastructure, i
 ### Utilities (`utils/`)
 
 #### `localization_logger_test.dart` (232 lines, ~30 tests)
+
 **LocalizationLogger Debug Utility**
+
 - `missingKey()` logging with format: `🔍 Missing → "key". Fallback: "text"`
 - `fallbackUsed()` logging with format: `📄 Fallback → "key" → "value"`
 - Debug output validation
 - Edge cases: empty strings, unicode, very long messages
 
 **Coverage:**
+
 - ✅ Log format consistency
 - ✅ Special character handling
 - ✅ Multiple call scenarios
 - ✅ No-throw guarantee
 
 #### `string_x_test.dart` (~250 lines, ~40 tests)
+
 **TranslateNullableKey Extension**
+
 - `translateOrNull` getter
 - Null-safe translation resolution
 - Integration with `AppLocalizer.translateSafely()`
 - Collection operations support
 
 **Coverage:**
+
 - ✅ Null handling
 - ✅ AppLocalizer integration
 - ✅ Type safety
 - ✅ Edge cases
 
 #### `text_from_string_x_test.dart` (681 lines, ~120 tests)
+
 **GetTextWidget Extension**
+
 - `from()` method for fluent TextWidget creation
 - All 11 optional parameters
 - All 18 TextType variants
@@ -127,6 +150,7 @@ This test suite provides complete coverage of the localization infrastructure, i
 - Collection mapping support
 
 **Coverage:**
+
 - ✅ Parameter passing
 - ✅ Default value handling
 - ✅ Type preservation
@@ -136,7 +160,9 @@ This test suite provides complete coverage of the localization infrastructure, i
 ### Fallback System (`without_localization_case/`)
 
 #### `fallback_keys_test.dart` (553 lines, ~70 tests)
+
 **LocalesFallbackMapper & FallbackKeysForErrors**
+
 - `resolveFallback()` mapping logic
 - All error type fallback keys
 - `FallbackKeysForErrors` constant validation
@@ -144,6 +170,7 @@ This test suite provides complete coverage of the localization infrastructure, i
 - Case sensitivity verification
 
 **Coverage:**
+
 - ✅ All failure type mappings
 - ✅ Constant correctness
 - ✅ Unknown key fallback
@@ -151,17 +178,18 @@ This test suite provides complete coverage of the localization infrastructure, i
 
 ## Test Statistics
 
-| Metric | Value |
-|--------|-------|
-| **Test Files** | 9 |
-| **Total Lines** | 4,039 |
-| **Test Groups** | ~150 |
-| **Individual Tests** | ~573 |
-| **Coverage** | ~95-100% |
+| Metric               | Value    |
+| -------------------- | -------- |
+| **Test Files**       | 9        |
+| **Total Lines**      | 4,039    |
+| **Test Groups**      | ~150     |
+| **Individual Tests** | ~573     |
+| **Coverage**         | ~95-100% |
 
-## Testing Standards 
+## Testing Standards
 
 ### Structure
+
 ```dart
 group('ComponentName', () {
   group('methodName', () {
@@ -180,6 +208,7 @@ group('ComponentName', () {
 ```
 
 ### Naming Conventions
+
 - **Groups:** Component/method names
 - **Tests:** Active voice describing behavior
 - **Examples:**
@@ -187,6 +216,7 @@ group('ComponentName', () {
   - ❌ "test fallback"
 
 ### Coverage Areas
+
 - ✅ **Happy path:** Normal operation
 - ✅ **Edge cases:** Empty, null, unicode, special chars, very long inputs
 - ✅ **Error scenarios:** Invalid inputs, missing data
@@ -196,6 +226,7 @@ group('ComponentName', () {
 - ✅ **Real-world scenarios:** Practical usage examples
 
 ### Testing Patterns
+
 - Mock resolvers for `AppLocalizer`
 - `MaterialApp` wrapper for widget tests
 - Proper cleanup (`AppLocalizer.forceInit` reset)
@@ -219,13 +250,13 @@ open coverage/html/index.html
 
 ## Coverage Goals
 
-| Category | Target | Status |
-|----------|--------|--------|
-| Line Coverage | 100% | ✅ |
-| Branch Coverage | 100% | ✅ |
-| Edge Cases | Comprehensive | ✅ |
-| Integration | Full | ✅ |
-| Documentation | Complete | ✅ |
+| Category        | Target        | Status |
+| --------------- | ------------- | ------ |
+| Line Coverage   | 100%          | ✅     |
+| Branch Coverage | 100%          | ✅     |
+| Edge Cases      | Comprehensive | ✅     |
+| Integration     | Full          | ✅     |
+| Documentation   | Complete      | ✅     |
 
 ## Maintenance Guidelines
 
@@ -241,14 +272,14 @@ When modifying localization code:
 
 ## Key Test Files by Use Case
 
-| Use Case | Test File |
-|----------|-----------|
-| Adding new locale | `language_option_test.dart` |
-| Translation resolution | `init_localization_test.dart` |
-| Widget localization | `text_widget_test.dart` |
-| Fallback system | `fallback_keys_test.dart` |
-| String extensions | `string_x_test.dart`, `text_from_string_x_test.dart` |
-| Debug logging | `localization_logger_test.dart` |
+| Use Case               | Test File                                            |
+| ---------------------- | ---------------------------------------------------- |
+| Adding new locale      | `language_option_test.dart`                          |
+| Translation resolution | `init_localization_test.dart`                        |
+| Widget localization    | `text_widget_test.dart`                              |
+| Fallback system        | `fallback_keys_test.dart`                            |
+| String extensions      | `string_x_test.dart`, `text_from_string_x_test.dart` |
+| Debug logging          | `localization_logger_test.dart`                      |
 
 ## Notes
 
