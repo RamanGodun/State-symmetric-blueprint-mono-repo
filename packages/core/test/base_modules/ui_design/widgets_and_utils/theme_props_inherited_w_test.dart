@@ -332,24 +332,27 @@ void main() {
         await tester.pumpWidget(
           StatefulBuilder(
             builder: (context, setState) {
-              return ThemeProps(
-                theme: lightTheme,
-                darkTheme: darkTheme,
-                themeMode: currentMode,
-                child: Builder(
-                  builder: (context) {
-                    final props = ThemeProps.of(context);
-                    return ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          currentMode = currentMode == ThemeMode.light
-                              ? ThemeMode.dark
-                              : ThemeMode.light;
-                        });
-                      },
-                      child: Text(props.themeMode.toString()),
-                    );
-                  },
+              return Directionality(
+                textDirection: TextDirection.ltr,
+                child: ThemeProps(
+                  theme: lightTheme,
+                  darkTheme: darkTheme,
+                  themeMode: currentMode,
+                  child: Builder(
+                    builder: (context) {
+                      final props = ThemeProps.of(context);
+                      return ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            currentMode = currentMode == ThemeMode.light
+                                ? ThemeMode.dark
+                                : ThemeMode.light;
+                          });
+                        },
+                        child: Text(props.themeMode.toString()),
+                      );
+                    },
+                  ),
                 ),
               );
             },
@@ -438,19 +441,22 @@ void main() {
         await tester.pumpWidget(
           StatefulBuilder(
             builder: (context, setState) {
-              return ThemeProps(
-                theme: lightTheme,
-                darkTheme: darkTheme,
-                themeMode: ThemeMode.light,
-                child: Builder(
-                  builder: (context) {
-                    buildCount++;
-                    ThemeProps.of(context);
-                    return ElevatedButton(
-                      onPressed: () => setState(() {}),
-                      child: const Text('Rebuild'),
-                    );
-                  },
+              return Directionality(
+                textDirection: TextDirection.ltr,
+                child: ThemeProps(
+                  theme: lightTheme,
+                  darkTheme: darkTheme,
+                  themeMode: ThemeMode.light,
+                  child: Builder(
+                    builder: (context) {
+                      buildCount++;
+                      ThemeProps.of(context);
+                      return ElevatedButton(
+                        onPressed: () => setState(() {}),
+                        child: const Text('Rebuild'),
+                      );
+                    },
+                  ),
                 ),
               );
             },
@@ -492,23 +498,26 @@ void main() {
         await tester.pumpWidget(
           StatefulBuilder(
             builder: (context, setState) {
-              return ThemeProps(
-                theme: lightTheme,
-                darkTheme: darkTheme,
-                themeMode: currentMode,
-                child: Builder(
-                  builder: (context) {
-                    return ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          currentMode = currentMode == ThemeMode.light
-                              ? ThemeMode.dark
-                              : ThemeMode.light;
-                        });
-                      },
-                      child: const Text('Toggle'),
-                    );
-                  },
+              return Directionality(
+                textDirection: TextDirection.ltr,
+                child: ThemeProps(
+                  theme: lightTheme,
+                  darkTheme: darkTheme,
+                  themeMode: currentMode,
+                  child: Builder(
+                    builder: (context) {
+                      return ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            currentMode = currentMode == ThemeMode.light
+                                ? ThemeMode.dark
+                                : ThemeMode.light;
+                          });
+                        },
+                        child: const Text('Toggle'),
+                      );
+                    },
+                  ),
                 ),
               );
             },
