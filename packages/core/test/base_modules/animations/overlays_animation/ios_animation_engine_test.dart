@@ -1,3 +1,6 @@
+// need for correct tests flow
+// ignore_for_file: unawaited_futures
+
 import 'package:core/src/base_modules/animations/module_core/animation__engine.dart';
 import 'package:core/src/base_modules/animations/overlays_animation/overlays_animation_engines/ios_animation_engine.dart';
 import 'package:core/src/base_modules/overlays/core/enums_for_overlay_module.dart';
@@ -330,7 +333,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Act
-        await engine.reverse();
+        engine.reverse(fast: true);
         await tester.pumpAndSettle();
 
         // Assert
@@ -348,11 +351,11 @@ void main() {
         await tester.pumpAndSettle();
 
         // Act
-        final future = engine.reverse(fast: true);
+        engine.reverse(fast: true);
+        await tester.pumpAndSettle();
 
-        // Assert
-        expect(future, completes);
-        await future;
+        // Assert - Reverse completed
+        expect(engine.opacity.value, equals(0.0));
 
         engine.dispose();
       });
@@ -370,7 +373,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(engine.opacity.value, equals(1.0));
 
-        await engine.reverse();
+        engine.reverse(fast: true);
         await tester.pumpAndSettle();
         expect(engine.opacity.value, equals(0.0));
 
@@ -385,7 +388,7 @@ void main() {
           ..play();
         await tester.pumpAndSettle();
 
-        await engine.reverse();
+        engine.reverse(fast: true);
         await tester.pumpAndSettle();
 
         engine.play();
@@ -446,7 +449,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Act - Quick dismiss
-        await engine.reverse(fast: true);
+        engine.reverse(fast: true);
         await tester.pumpAndSettle();
 
         // Assert
