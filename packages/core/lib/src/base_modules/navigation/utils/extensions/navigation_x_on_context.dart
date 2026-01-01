@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,10 +37,12 @@ extension NavigationX on BuildContext {
   }) {
     debugPrint('🔄 goPushTo → $routeName');
     try {
-      GoRouter.of(this).pushNamed(
-        routeName,
-        pathParameters: pathParameters,
-        queryParameters: queryParameters, // go_router expects dynamic
+      unawaited(
+        GoRouter.of(this).pushNamed(
+          routeName,
+          pathParameters: pathParameters,
+          queryParameters: queryParameters, // go_router expects dynamic
+        ),
       );
     } on Object catch (e) {
       debugPrint('❌ pushNamed failed: $e');

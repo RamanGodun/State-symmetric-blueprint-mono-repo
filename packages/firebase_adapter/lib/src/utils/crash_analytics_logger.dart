@@ -1,3 +1,5 @@
+import 'dart:async' show unawaited;
+
 import 'package:core/public_api/base_modules/errors_management.dart'
     show Failure, FailureX;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -18,10 +20,12 @@ abstract final class CrashlyticsLogger {
     required String reason,
   }) {
     if (kDebugMode) debugPrint(reason);
-    FirebaseCrashlytics.instance.recordError(
-      error,
-      stackTrace,
-      reason: reason,
+    unawaited(
+      FirebaseCrashlytics.instance.recordError(
+        error,
+        stackTrace,
+        reason: reason,
+      ),
     );
   }
 
@@ -59,7 +63,7 @@ abstract final class CrashlyticsLogger {
   /// 🗂 Logs general info (non-error, non-crash messages).
   static void log(String message) {
     if (kDebugMode) debugPrint('[LOG] $message');
-    FirebaseCrashlytics.instance.log(message);
+    unawaited(FirebaseCrashlytics.instance.log(message));
   }
 
   //

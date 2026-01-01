@@ -1,4 +1,4 @@
-import 'dart:async' show StreamSubscription;
+import 'dart:async' show StreamSubscription, unawaited;
 
 import 'package:flutter/material.dart' show ChangeNotifier;
 
@@ -21,7 +21,7 @@ final class StreamChangeNotifier<T> extends ChangeNotifier {
   /// 🧹 Cancels subscription on dispose to prevent leaks
   @override
   void dispose() {
-    _subscription?.cancel();
+    unawaited(_subscription?.cancel());
     super.dispose();
   }
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/src/base_modules/navigation/utils/extensions/navigation_x_on_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -314,13 +316,15 @@ void main() {
                 body: const Text('First Page'),
                 floatingActionButton: FloatingActionButton(
                   onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => Scaffold(
-                          body: const Text('Second Page'),
-                          floatingActionButton: FloatingActionButton(
-                            onPressed: () => context.popView(),
-                            child: const Icon(Icons.arrow_back),
+                    unawaited(
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => Scaffold(
+                            body: const Text('Second Page'),
+                            floatingActionButton: FloatingActionButton(
+                              onPressed: () => context.popView(),
+                              child: const Icon(Icons.arrow_back),
+                            ),
                           ),
                         ),
                       ),
@@ -402,8 +406,10 @@ void main() {
                 body: const Text('Home'),
                 floatingActionButton: FloatingActionButton(
                   onPressed: () {
-                    context.pushTo<void>(
-                      const Scaffold(body: Text('Custom Page')),
+                    unawaited(
+                      context.pushTo<void>(
+                        const Scaffold(body: Text('Custom Page')),
+                      ),
                     );
                   },
                   child: const Icon(Icons.add),
@@ -473,8 +479,10 @@ void main() {
                 body: const Text('First Page'),
                 floatingActionButton: FloatingActionButton(
                   onPressed: () {
-                    context.replaceWith<void>(
-                      const Scaffold(body: Text('Replacement Page')),
+                    unawaited(
+                      context.replaceWith<void>(
+                        const Scaffold(body: Text('Replacement Page')),
+                      ),
                     );
                   },
                   child: const Icon(Icons.swap_horiz),

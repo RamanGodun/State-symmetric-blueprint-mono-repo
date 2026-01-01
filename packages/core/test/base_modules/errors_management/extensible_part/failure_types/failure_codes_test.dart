@@ -1,5 +1,4 @@
 // Tests use const values extensively
-// ignore_for_file: prefer_const_constructors
 
 /// Tests for `FailureCodes` and `FirebaseCodes`
 ///

@@ -28,7 +28,7 @@ extension ContextMediaX on BuildContext {
   bool get isTablet => size.shortestSide >= 600;
 
   /// 🔤 Text scale factor (for accessibility)
-  double get textScale => mediaQuery.textScaleFactor;
+  double get textScale => mediaQuery.textScaler.scale(1);
 
   /// 🧪 Screen pixel density
   double get pixelRatio => mediaQuery.devicePixelRatio;

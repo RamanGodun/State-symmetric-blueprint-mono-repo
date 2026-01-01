@@ -1,5 +1,5 @@
 // Tests use const constructors extensively for immutable objects
-// ignore_for_file: prefer_const_constructors, equal_elements_in_set
+// ignore_for_file: equal_elements_in_set
 
 /// Tests for all `FailureType` subclasses
 ///

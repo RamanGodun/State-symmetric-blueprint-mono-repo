@@ -54,3 +54,4 @@ analyzer:
     invalid_annotation_target: warning
     # Ignore deprecated member usage warnings
     deprecated_member_use: ignore
+    discarded_futures: ignore

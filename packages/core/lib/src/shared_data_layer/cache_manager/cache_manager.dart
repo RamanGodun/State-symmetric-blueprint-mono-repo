@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/src/utils_shared/timing_control/timing_config.dart';
 
 part 'cache_items.dart';
@@ -85,7 +87,7 @@ final class CacheManager<T, K> {
   /// ❌ Removes [key] from cache and in-flight map
   void remove(K key) {
     _storage.remove(key);
-    _inFlightRequests.remove(key);
+    unawaited(_inFlightRequests.remove(key));
   }
 
   /// ♻️ Clears all cache and in-flight requests

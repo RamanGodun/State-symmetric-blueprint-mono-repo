@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/src/base_modules/overlays/utils/ports/overlay_dispatcher_locator.dart'
     show resolveOverlayDispatcher;
 import 'package:flutter/material.dart';
@@ -13,12 +15,14 @@ abstract final class OverlayUtils {
   static VoidCallback dismissAndRun(VoidCallback action, BuildContext context) {
     return () {
       final d = resolveOverlayDispatcher(context);
-      d.dismissCurrent(force: true).whenComplete(() {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          debugPrint('[OverlayUtils] running deferred action');
-          action();
-        });
-      });
+      unawaited(
+        d.dismissCurrent(force: true).whenComplete(() {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            debugPrint('[OverlayUtils] running deferred action');
+            action();
+          });
+        }),
+      );
     };
   }
 

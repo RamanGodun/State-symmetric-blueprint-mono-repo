@@ -43,7 +43,7 @@ dev_dependencies:
     sdk: flutter
   mocktail: ^1.0.4
   test_api: ^0.7.7
-  very_good_analysis: ^9.0.0
+  very_good_analysis: ^10.0.0
 
 # =============================
 # FLUTTER CONFIG

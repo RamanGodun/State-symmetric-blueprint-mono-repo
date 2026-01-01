@@ -1,5 +1,4 @@
 // Tests use const constructors extensively for immutable objects
-// ignore_for_file: prefer_const_constructors
 
 /// Tests for EmailInputValidation
 ///

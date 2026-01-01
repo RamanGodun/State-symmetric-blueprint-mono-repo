@@ -1,6 +1,3 @@
-// 📌 No need for public API docs.
-// ignore_for_file: public_member_api_docs
-
 part of '../../core_of_module/_errors_handling_entry_point.dart';
 
 /// 🗺️ [firebaseFailureMap] — Maps Firebase error codes to domain [Failure]s

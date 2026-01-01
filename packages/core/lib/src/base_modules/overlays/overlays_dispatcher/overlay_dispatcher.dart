@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:core/src/base_modules/animations/overlays_animation/animation_wrapper/overlay_animation_x_for_widget.dart';
@@ -132,7 +133,7 @@ final class OverlayDispatcher {
           onTapOverlay: () {
             if (item.request.dismissPolicy ==
                 OverlayDismissPolicy.dismissible) {
-              dismissCurrent();
+              unawaited(dismissCurrent());
             }
           },
           child: processedWidget,

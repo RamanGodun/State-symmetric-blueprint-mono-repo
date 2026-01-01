@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/public_api/base_modules/ui_design.dart'
     show AppFontFamily, ThemePreferences, ThemeVariantsEnum, parseAppFontFamily;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,7 +56,7 @@ final class ThemeConfigNotifier extends StateNotifier<ThemePreferences> {
   /// 🌓 Update theme only
   void setTheme(ThemeVariantsEnum theme) {
     state = ThemePreferences(theme: theme, font: state.font);
-    _storage.write(_themeKey, theme.name);
+    unawaited(_storage.write(_themeKey, theme.name));
   }
 
   /// 🌓 Toggle light ↔ dark (залишає AMOLED поза циклом — як і було)
@@ -74,7 +76,7 @@ final class ThemeConfigNotifier extends StateNotifier<ThemePreferences> {
   /// 🔤 Update font only
   void setFont(AppFontFamily font) {
     state = ThemePreferences(theme: state.theme, font: font);
-    _storage.write(_fontKey, font.name);
+    unawaited(_storage.write(_fontKey, font.name));
   }
 
   /// 🧩 Update both at once

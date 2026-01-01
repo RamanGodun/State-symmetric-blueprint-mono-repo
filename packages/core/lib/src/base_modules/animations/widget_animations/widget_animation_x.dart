@@ -132,7 +132,7 @@ extension WidgetAnimationX on Widget {
             (currentChild, previousChildren) => Stack(
               alignment: Alignment.center,
               children: [
-                if (currentChild != null) currentChild,
+                ?currentChild,
                 ...previousChildren,
               ],
             ),

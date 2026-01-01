@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/src/base_modules/overlays/core/tap_through_overlay_barrier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -141,7 +143,7 @@ void main() {
         );
         // Find the one with ignoring=false (from TapThroughOverlayBarrier)
         final ignorePointer = ignorePointers.firstWhere(
-          (ip) => ip.ignoring == false,
+          (ip) => !ip.ignoring,
         );
 
         // Assert
@@ -232,7 +234,7 @@ void main() {
         );
         // Find the one with ignoring=true (from TapThroughOverlayBarrier)
         final ignorePointer = ignorePointers.firstWhere(
-          (ip) => ip.ignoring == true,
+          (ip) => ip.ignoring,
         );
 
         // Assert
@@ -338,9 +340,12 @@ void main() {
                 body: TapThroughOverlayBarrier(
                   enablePassthrough: true,
                   onTapOverlay: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => const Scaffold(body: Text('New Page')),
+                    unawaited(
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) =>
+                              const Scaffold(body: Text('New Page')),
+                        ),
                       ),
                     );
                     navigated = true;

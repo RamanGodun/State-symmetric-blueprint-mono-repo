@@ -85,7 +85,6 @@ void main() {
 
       test('isInitialized returns false when not initialized', () {
         // Arrange
-        // ignore: invalid_use_of_visible_for_testing_member
         AppLocalizer.forceInit(resolver: (key) => key);
         // We can't truly uninitialize, but we can check the property works
 

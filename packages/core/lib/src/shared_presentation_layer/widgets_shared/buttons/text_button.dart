@@ -39,7 +39,7 @@ final class AppTextButton extends StatelessWidget {
     final colorScheme = context.colorScheme;
     final effectiveColor = (isEnabled && !isLoading)
         ? (foregroundColor ?? colorScheme.primary)
-        : colorScheme.onSurface.withOpacity(0.4);
+        : colorScheme.onSurface.withValues(alpha: 0.4);
 
     return Semantics(
       button: true,
@@ -66,7 +66,7 @@ final class AppTextButton extends StatelessWidget {
             layoutBuilder: (currentChild, previousChildren) => Stack(
               alignment: Alignment.center,
               children: [
-                if (currentChild != null) currentChild,
+                ?currentChild,
                 ...previousChildren,
               ],
             ),

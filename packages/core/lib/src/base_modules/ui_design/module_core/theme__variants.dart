@@ -23,7 +23,7 @@ enum ThemeVariantsEnum {
     colorScheme: ColorScheme.light(
       primary: AppColors.lightPrimary,
       secondary: AppColors.lightAccent,
-      background: AppColors.lightBackground,
+      surface: AppColors.lightBackground,
       error: AppColors.forErrors,
     ),
     // font: AppFontFamily.someFont,
@@ -39,7 +39,6 @@ enum ThemeVariantsEnum {
     colorScheme: ColorScheme.dark(
       primary: AppColors.darkPrimary,
       secondary: AppColors.darkAccent,
-      background: AppColors.darkBackground,
       surface: AppColors.darkSurface,
       onPrimary: AppColors.white,
       onSecondary: AppColors.white,
@@ -58,11 +57,9 @@ enum ThemeVariantsEnum {
     colorScheme: ColorScheme.dark(
       primary: AppColors.amoledPrimary,
       secondary: AppColors.amoledAccent,
-      background: AppColors.amoledBackground,
       surface: AppColors.amoledSurface,
       onPrimary: AppColors.amoledOnPrimary,
       onSecondary: AppColors.amoledOnSecondary,
-      onBackground: AppColors.amoledOnSurface,
       onSurface: AppColors.amoledOnSurface,
       error: AppColors.forErrors,
       outline: AppColors.amoledOutline,

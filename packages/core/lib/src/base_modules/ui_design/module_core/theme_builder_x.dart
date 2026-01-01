@@ -38,7 +38,6 @@ extension ThemeVariantX on ThemeVariantsEnum {
         // ✅ Normalize on* values if defined in palette
         onPrimary: colorScheme.onPrimary,
         onSecondary: colorScheme.onSecondary,
-        onBackground: colorScheme.onBackground,
         onSurface: colorScheme.onSurface,
       ),
 
@@ -57,14 +56,16 @@ extension ThemeVariantX on ThemeVariantsEnum {
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           backgroundColor: isAmoled
-              ? colorScheme.primary.withOpacity(0.95)
-              : colorScheme.primary.withOpacity(isDark ? 0.37 : 0.72),
+              ? colorScheme.primary.withValues(alpha: 0.95)
+              : colorScheme.primary.withValues(alpha: isDark ? 0.37 : 0.72),
           foregroundColor: colorScheme.onPrimary,
           disabledBackgroundColor: isAmoled
               ? AppColors.black5
               : (isDark ? AppColors.white10 : AppColors.black12),
           // disabledForegroundColor: AppColors.white24,
-          disabledForegroundColor: colorScheme.onSurface.withOpacity(0.38),
+          disabledForegroundColor: colorScheme.onSurface.withValues(
+            alpha: 0.38,
+          ),
           surfaceTintColor: isAmoled
               ? Colors.transparent
               : AppColors.transparent,

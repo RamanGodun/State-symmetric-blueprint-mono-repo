@@ -126,7 +126,7 @@ void main() {
         final theme = ThemeVariantsEnum.amoled.build();
 
         // Assert
-        expect(theme.colorScheme.onBackground, isNotNull);
+        expect(theme.colorScheme.onSurface, isNotNull);
       });
 
       test('normalizes onSurface color in scheme', () {

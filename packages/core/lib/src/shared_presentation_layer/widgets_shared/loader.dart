@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+
 import 'package:core/src/base_modules/ui_design/widgets_and_utils/extensions/theme_x.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -67,11 +68,11 @@ final class AppLoader extends StatelessWidget {
               width: size,
               height: size,
               decoration: BoxDecoration(
-                color: colorScheme.surface.withOpacity(0.08),
+                color: colorScheme.surface.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(14),
                 boxShadow: [
                   BoxShadow(
-                    color: colorScheme.shadow.withOpacity(0.05),
+                    color: colorScheme.shadow.withValues(alpha: 0.05),
                     blurRadius: 12,
                     offset: const Offset(0, 6),
                   ),

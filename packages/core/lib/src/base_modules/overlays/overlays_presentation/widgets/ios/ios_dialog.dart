@@ -1,6 +1,8 @@
 // 📌 No need for public API docs.
 // ignore_for_file: public_member_api_docs
 
+import 'dart:async';
+
 import 'package:core/src/base_modules/animations/module_core/animation__engine.dart';
 import 'package:core/src/base_modules/animations/overlays_animation/animation_wrapper/animated_overlay_shell.dart';
 import 'package:core/src/base_modules/localization/module_widgets/text_widget.dart';
@@ -147,21 +149,25 @@ final class IOSAppDialog extends StatelessWidget {
     VoidCallback? action,
   ) {
     return () {
-      dispatcher.dismissCurrent(force: true).whenComplete(() {
-        Future.microtask(() {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            debugPrint(
-              '[Overlay] confirm tapped → running action after dismiss (postFrame)',
-            );
-            final run = action ?? () {};
-            try {
-              run();
-            } on Object catch (e, st) {
-              debugPrint('❌ onConfirm action threw: $e\n$st');
-            }
-          });
-        });
-      });
+      unawaited(
+        dispatcher.dismissCurrent(force: true).whenComplete(() {
+          unawaited(
+            Future.microtask(() {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                debugPrint(
+                  '[Overlay] confirm tapped → running action after dismiss (postFrame)',
+                );
+                final run = action ?? () {};
+                try {
+                  run();
+                } on Object catch (e, st) {
+                  debugPrint('❌ onConfirm action threw: $e\n$st');
+                }
+              });
+            }),
+          );
+        }),
+      );
     };
   }
 

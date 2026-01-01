@@ -83,7 +83,7 @@ final class AppFormField extends StatelessWidget {
         labelText: resolvedLabel,
         prefixIcon: Icon(icon),
         suffixIcon: suffixIcon,
-        errorText: errorKey?.translateOrNull,
+        errorText: errorKey.translateOrNull,
       ),
       onChanged: onChanged,
       onSubmitted: onSubmitted,

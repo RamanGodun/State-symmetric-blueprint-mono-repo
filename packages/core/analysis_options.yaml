@@ -54,5 +54,5 @@ analyzer:
   errors:
     # Show warnings instead of errors for invalid annotation targets
     invalid_annotation_target: warning
+    unreachable_from_main: ignore
     # Ignore deprecated member usage warnings
-    deprecated_member_use: ignore

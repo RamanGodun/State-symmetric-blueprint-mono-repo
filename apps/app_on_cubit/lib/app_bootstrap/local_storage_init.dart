@@ -1,22 +1,10 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:app_bootstrap/app_bootstrap.dart' show ILocalStorage;
 import 'package:flutter/foundation.dart' show debugPrint;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:hydrated_bloc/hydrated_bloc.dart'
     show HydratedBloc, HydratedStorage, HydratedStorageDirectory;
 import 'package:path_provider/path_provider.dart'
     show getApplicationDocumentsDirectory;
-
-/// 💾 [ILocalStorage] — Abstraction to decouple startup logic and enable mocking in tests.
-//
-abstract interface class ILocalStorage {
-  ///--------------------------------
-  //
-  /// Initializes all local storage services
-  Future<void> init();
-  //
-}
-
-////
-////
 
 /// 🧩📦 [HydratedLocalStorage] — Current implementation of [ILocalStorage] with initialization logic.
 //

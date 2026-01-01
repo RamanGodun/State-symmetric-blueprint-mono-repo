@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/src/utils_shared/timing_control/timing_config.dart';
 import 'package:flutter/material.dart';
 

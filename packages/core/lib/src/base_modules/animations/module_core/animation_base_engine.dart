@@ -43,7 +43,7 @@ abstract base class BaseAnimationEngine extends AnimationEngine {
   void play({Duration? durationOverride}) {
     if (!_isInitialized || _controller == null) return;
     if (durationOverride != null) controller.duration = durationOverride;
-    controller.forward(from: 0);
+    unawaited(controller.forward(from: 0));
   }
 
   /// ⏪ Reverses animation (with optional fast collapse)

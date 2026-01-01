@@ -7,7 +7,7 @@
 /// - Object catch and mapping
 /// - Integration with ErrorsLogger
 /// - Integration with mapToFailure()
-// ignore_for_file: only_throw_errors
+// ignore_for_file: only_throw_errors, unreachable_from_main
 
 library;
 

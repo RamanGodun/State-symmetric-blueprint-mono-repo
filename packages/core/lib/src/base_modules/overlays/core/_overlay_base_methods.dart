@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/src/base_modules/animations/overlays_animation/animation_wrapper/animated_overlay_wrapper.dart';
 import 'package:core/src/base_modules/animations/overlays_animation/engine_mapper_x_on_context.dart';
 import 'package:core/src/base_modules/localization/core_of_module/init_localization.dart';
@@ -21,7 +23,7 @@ extension OverlayBaseMethods on BuildContext {
 
   /// 5️⃣  📥 Adds a new request to the [OverlayDispatcher]
   void addOverlayRequest(OverlayUIEntry entry) {
-    dispatcher.enqueueRequest(this, entry);
+    unawaited(dispatcher.enqueueRequest(this, entry));
   }
 
   /// 💬 Shows a short platform-adaptive dialog (iOS/Android)

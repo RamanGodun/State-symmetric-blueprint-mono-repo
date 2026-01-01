@@ -1,5 +1,5 @@
 import 'package:app_bootstrap/app_bootstrap.dart'
-    show IAppBootstrap, IRemoteDataBase, PlatformValidationUtil;
+    show IAppBootstrap, ILocalStorage, IRemoteDataBase, PlatformValidationUtil;
 import 'package:app_on_cubit/app_bootstrap/di_container/di_container_init.dart';
 import 'package:app_on_cubit/app_bootstrap/firebase_initializer.dart';
 import 'package:app_on_cubit/app_bootstrap/local_storage_init.dart';
