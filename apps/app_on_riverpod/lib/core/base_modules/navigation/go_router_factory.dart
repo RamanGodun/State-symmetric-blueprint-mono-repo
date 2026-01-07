@@ -1,6 +1,7 @@
 import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:app_on_riverpod/core/shared_presentation/pages/page_not_found.dart';
-import 'package:core/public_api/core.dart';
+import 'package:core/public_api/core.dart' hide PageNotFound;
+import 'package:core/public_api/shared_layers/presentation.dart'
+    show PageNotFound;
 import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -43,7 +44,7 @@ GoRouter buildGoRouter(Ref ref) {
 
     /// ❌ Fallback for unknown routes
     errorBuilder: (context, state) =>
-        PageNotFound(errorMessage: state.error.toString()),
+        PageNotFound(onGoHome: () => context.goTo(RoutesNames.home)),
 
     ////
 

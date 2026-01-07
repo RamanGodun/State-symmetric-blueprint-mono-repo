@@ -1,5 +1,5 @@
 import 'package:app_on_cubit/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:app_on_cubit/core/shared_presentation/utils/images_paths/flavor_x.dart';
+import 'package:app_on_cubit/core/shared_presentation/utils/flavor_x.dart';
 import 'package:app_on_cubit/features/password_changing_or_reset/reset_password/cubits/form_fields_cubit.dart';
 import 'package:app_on_cubit/features/password_changing_or_reset/reset_password/cubits/reset_password_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';

@@ -1,4 +1,4 @@
-import 'package:app_on_cubit/core/shared_presentation/utils/images_paths/flavor_x.dart';
+import 'package:app_on_cubit/core/shared_presentation/utils/flavor_x.dart';
 import 'package:app_on_cubit/features/auth/sign_in/sign_in__page.dart'
     show SignInPage;
 import 'package:app_on_cubit/features/auth/sign_up/cubit/form_fields_cubit.dart';

@@ -1,6 +1,6 @@
 import 'package:app_on_cubit/app_bootstrap/di_container/modules/auth_module.dart';
 import 'package:app_on_cubit/app_bootstrap/di_container/modules/profile_module.dart';
-import 'package:app_on_cubit/core/shared_presentation/utils/warmup_controller.dart';
+import 'package:app_on_cubit/app_bootstrap/warmup_controller.dart';
 import 'package:app_on_cubit/features/profile/cubit/profile_page_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart' show AuthCubit, DIModule, di;
 

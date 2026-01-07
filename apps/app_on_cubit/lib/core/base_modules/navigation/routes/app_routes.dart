@@ -1,5 +1,4 @@
 import 'package:app_on_cubit/core/shared_presentation/pages/home_page.dart';
-import 'package:app_on_cubit/core/shared_presentation/pages/page_not_found.dart';
 import 'package:app_on_cubit/features/auth/sign_in/sign_in__page.dart';
 import 'package:app_on_cubit/features/auth/sign_up/sign_up__page.dart';
 import 'package:app_on_cubit/features/email_verification/email_verification_page.dart';
@@ -8,8 +7,9 @@ import 'package:app_on_cubit/features/password_changing_or_reset/reset_password/
 import 'package:app_on_cubit/features/profile/profile_page.dart';
 import 'package:core/public_api/base_modules/animations.dart'
     show AppTransitions;
+import 'package:core/public_api/base_modules/navigation.dart' show NavigationX;
 import 'package:core/public_api/shared_layers/presentation.dart'
-    show SplashPage;
+    show PageNotFound, SplashPage;
 import 'package:go_router/go_router.dart';
 
 part 'route_paths.dart';
@@ -91,7 +91,7 @@ abstract final class AppRoutes {
       path: RoutesPaths.pageNotFound,
       name: RoutesNames.pageNotFound,
       pageBuilder: (context, state) => AppTransitions.fade(
-        const PageNotFound(errorMessage: 'Page not found'),
+        PageNotFound(onGoHome: () => context.goTo(RoutesNames.home)),
       ),
     ),
 

@@ -1,5 +1,4 @@
 import 'package:app_on_cubit/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:app_on_cubit/core/shared_presentation/pages/page_not_found.dart';
 import 'package:core/public_api/core.dart';
 import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
 import 'package:go_router/go_router.dart';
@@ -37,7 +36,7 @@ GoRouter buildGoRouter(AuthGateway gateway) {
 
     /// ❌ Fallback for unknown routes
     errorBuilder: (context, state) =>
-        PageNotFound(errorMessage: state.error.toString()),
+        PageNotFound(onGoHome: () => context.goTo(RoutesNames.home)),
 
     ////
 

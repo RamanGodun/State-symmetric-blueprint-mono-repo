@@ -2,7 +2,8 @@ import 'package:app_bootstrap/app_bootstrap.dart';
 import 'package:app_on_riverpod/app_bootstrap/di_config_sync.dart';
 import 'package:app_on_riverpod/app_bootstrap/firebase_initializer.dart';
 import 'package:app_on_riverpod/app_bootstrap/local_storage_init.dart';
-import 'package:app_on_riverpod/core/shared_presentation/utils/warmup_provider.dart';
+import 'package:app_on_riverpod/app_bootstrap/warmup_provider.dart'
+    show warmupProvider;
 import 'package:core/public_api/base_modules/localization.dart'
     show AppLocalizer;
 import 'package:easy_localization/easy_localization.dart';

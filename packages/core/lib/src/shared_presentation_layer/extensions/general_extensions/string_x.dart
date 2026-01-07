@@ -3,6 +3,13 @@
 extension StringX on String {
   ///---------------------
 
+  /// Returns string value if not null and not empty,
+  /// otherwise returns provided fallback.
+  String orLocale(String fallback) => switch (this) {
+    final value when value.isNotEmpty => value,
+    _ => fallback,
+  };
+
   /// 🔠 Capitalizes the first letter of the string
   String capitalize() =>
       isEmpty ? this : '${this[0].toUpperCase()}${substring(1)}';
@@ -22,6 +29,24 @@ extension StringX on String {
     username = '${username[0]}****${username[username.length - 1]}';
     return '$username@$domain';
   }
+
+  //
+}
+
+////
+////
+
+/// 🔤 [NullableStringX] — Utilities for nullable strings
+//
+extension NullableStringX on String? {
+  ///---------------------
+
+  /// Returns string value if not null and not empty,
+  /// otherwise returns provided fallback.
+  String orLocale(String fallback) => switch (this) {
+    final value? when value.isNotEmpty => value,
+    _ => fallback,
+  };
 
   //
 }

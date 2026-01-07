@@ -1,6 +1,6 @@
 import 'package:app_on_cubit/core/base_modules/navigation/routes/app_routes.dart'
     show RoutesNames;
-import 'package:app_on_cubit/core/shared_presentation/utils/images_paths/flavor_x.dart';
+import 'package:app_on_cubit/core/shared_presentation/utils/flavor_x.dart';
 import 'package:app_on_cubit/features/auth/sign_in/cubit/form_fields_cubit.dart';
 import 'package:app_on_cubit/features/auth/sign_in/cubit/sign_in_cubit.dart';
 import 'package:bloc_adapter/bloc_adapter.dart';

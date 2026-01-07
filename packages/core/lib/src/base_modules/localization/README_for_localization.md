@@ -1,10 +1,10 @@
 # 🌍 Localization Module Guide
 
-_Last updated: 2025-08-01_
+_Last updated: 2026-01-03_
 
 ---
 
-## 🎯 GOAL
+## 1. 🎯 GOAL
 
 This module provides a **universal, modular, and scalable localization system** for Flutter apps, based on `EasyLocalization`.
 It supports both **Riverpod** and **cubit/BLoC** without code duplication and enables fully declarative, testable, and fallback-ready i18n.
@@ -16,11 +16,53 @@ It supports both **Riverpod** and **cubit/BLoC** without code duplication and en
 
 ---
 
-## 🚀 Setup Guide
+## 2. 🚀 Quick Start (in this monorepo)
+
+1.  Generate All Localizations
+
+```bash
+# Generate everything (Core + All Apps)
+melos run localization:gen:all
+
+# Or use the alias
+melos run locale:regen
+```
+
+2.  Generate Only Core
+
+```bash
+melos run localization:gen:core
+```
+
+3.  Generate Only App-Specific
+
+```bash
+# For Cubit app
+melos run localization:gen:cubit
+
+# For Riverpod app
+melos run localization:gen:riverpod
+
+# For all apps
+melos run localization:gen:apps
+```
+
+### 📊 Available Melos Commands
+
+| Command                               | Description                                  |
+| ------------------------------------- | -------------------------------------------- |
+| `melos run localization:gen:all`      | Generate EVERYTHING (Core + All Apps)        |
+| `melos run locale:regen`              | Alias for `localization:gen:all`             |
+| `melos run localization:gen:core`     | Generate only CoreLocaleKeys                 |
+| `melos run localization:gen:cubit`    | Generate only AppLocaleKeys for Cubit app    |
+| `melos run localization:gen:riverpod` | Generate only AppLocaleKeys for Riverpod app |
+| `melos run localization:gen:apps`     | Generate AppLocaleKeys for all apps          |
 
 ---
 
-### 1. Add Dependency
+## 3. 🚀 Localization Setup (from scratch) Guide
+
+1.  Add Dependency
 
 ```yaml
 dependencies:
@@ -29,7 +71,7 @@ dependencies:
 
 ---
 
-### 2. Create JSON Files in `assets/translations/`:
+2.  Create JSON Files in `assets/translations/`:
 
 ```
 assets/translations/
@@ -40,7 +82,7 @@ assets/translations/
 
 ---
 
-### 3. Register Assets in `pubspec.yaml`
+3.  Register Assets in `pubspec.yaml`
 
 ```yaml
 flutter:
@@ -50,7 +92,7 @@ flutter:
 
 ---
 
-### 4. iOS Setup
+4.  iOS Setup
 
 ```xml
 <key>CFBundleLocalizations</key>
@@ -135,7 +177,7 @@ Localization is injected into `MaterialApp.router()` for hot reload support.
 
 ---
 
-### ⚙️ 9. Use Code Generation.
+### ⚙️ 9. Use Code Generation or melos scripts
 
 You MUST generate keys + loader:
 
@@ -162,7 +204,7 @@ dart run easy_localization:generate \
 
 ---
 
-## 📝 Usage
+## 📝 Usage general examples
 
 - Use only generated keys — never hardcode translation keys or locale codes in the UI/business logic.
 
@@ -229,7 +271,7 @@ AppTextField(label: LocaleKeys.form_email, fallback: 'Email', ...)
 
 ---
 
-### 🧾 Localizing Form Validation
+## 🧾 Usage in Localizing Form Validation
 
 Your form inputs (email, name, password, etc.) can expose **localization-ready validation keys**,
 which are resolved into readable messages only at the UI level.
@@ -286,17 +328,7 @@ Because the key is passed as a string constant, validation logic and `FormzInput
 
 ---
 
-#### 🛡️ Best Practices
-
-- Always pass localization keys instead of raw error messages.
-- Convert to localized string only in widgets or overlay builders.
-- Always provide a `fallback:` in `AppLocalizer.translateSafely(...)` to ensure graceful degradation.
-
-> ✅ This approach keeps your validation logic clean, testable, and localization-aware without tight UI coupling.
-
----
-
-### 🔥 Localizing of Errors Overlays
+### 🔥 Usage in Overlays flow
 
 In addition to regular UI strings, this module supports full localization of error messages coming from
 your app’s failure-handling system. All domain or infrastructure errors (e.g. Firebase, HTTP)
@@ -349,12 +381,63 @@ final uiText = AppLocalizer.t(failure.translationKey!, fallback: failure.message
 
 ---
 
+### 🌍📋 Dual-Layer Localization Guide
+
+This monorepo uses a **dual-layer localization strategy**:
+
+1. **Core Layer** (`CoreLocaleKeys`) — Shared translations in `packages/shared_core_modules`
+   - Errors, validation messages, common UI labels
+   - Used by all apps and reusable packages
+
+2. **App Layer** (`AppLocaleKeys`) — App-specific translations in `apps/*/`
+   - Features, screens, business logic specific to each app
+   - Each app has its own set of AppLocaleKeys
+
+### Translation Resolution Order
+
+```
+User requests translation for key "auth.sign_in_title"
+    ↓
+1. Check app-specific translations (AppLocaleKeys)
+    ↓ (if not found)
+2. Check core shared translations (CoreLocaleKeys)
+    ↓ (if not found)
+3. Fallback to fallback locale (en)
+```
+
 ## 📦 File Structure
 
 - No tight coupling with app-level DI or state management. Only localization logic inside this module.
   Each folder and file is strictly responsible for a single concern (core, assets, extensions, context, keys, etc). Example structure:
 
+```regarding dual layer
+monorepo/
+├── packages/shared_core_modules/
+│   ├── assets/translations/                     # CORE translations
+│   │   ├── en.json                              # { "errors": {...}, "validation": {...} }
+│   │   ├── uk.json
+│   │   └── pl.json
+│   └── lib/src/localization/generated/
+│       ├── core_locale_keys.g.dart              # CoreLocaleKeys class
+│       └── codegen_loader.g.dart
+│
+└── apps/
+    ├── state_symmetric_on_cubit/
+    │   ├── assets/translations/                 # APP translations
+    │   │   ├── en.json                          # { "home": {...}, "auth": {...} }
+    │   │   ├── uk.json
+    │   │   └── pl.json
+    │   └── lib/core/base_modules/localization/
+    │       ├── localization_wrapper.dart        # EasyLocalization config
+    │       └── generated/
+    │           ├── app_locale_keys.g.dart       # AppLocaleKeys class
+    │           └── codegen_loader.g.dart
+    │
+    └── state_symmetric_on_riverpod/
+        └── (same structure)
 ```
+
+```localization module files structure
 localization/
       .
       ├── core_of_module
@@ -389,14 +472,6 @@ localization/
 ---
 
 ## ❓ FAQ
-
-> **How do I add a new language?**
-
-- Add a new JSON file (e.g. `fr-FR.json`) to `assets/translations/`.
-- Add the new locale to `supportedLocales` in your bootstrap/init config.
-- Add all translation keys to the new file.
-
----
 
 > **How do I use custom pluralization or context?**
 
@@ -434,6 +509,58 @@ final uiText = AppLocalizer.t(failure.key!, fallback: failure.message);
     - Always returns readable message
     - Logs missing or raw strings
 
+
+
+> **How do I add a new language?**
+
+1. Add JSON files
+**Core:**
+```bash
+cp packages/shared_core_modules/assets/translations/en.json \
+   packages/shared_core_modules/assets/translations/es.json
+# Edit es.json with Spanish translations
+```
+
+**Apps:**
+```bash
+cp apps/state_symmetric_on_cubit/assets/translations/en.json \
+   apps/state_symmetric_on_cubit/assets/translations/es.json
+# Edit es.json with Spanish translations
+```
+
+2. Update `localization_wrapper.dart`
+
+```dart
+// apps/state_symmetric_on_cubit/lib/core/base_modules/localization/localization_wrapper.dart
+abstract final class LocalizationWrapper {
+  static const supportedLocales = [
+    Locale('en'),
+    Locale('uk'),
+    Locale('pl'),
+    Locale('es'),  // ← Add this
+  ];
+  // ...
+}
+```
+
+3. Regenerate keys
+
+```bash
+melos run localization:gen:all
+```
+
+4. Update iOS Info.plist
+
+```xml
+<!-- apps/state_symmetric_on_cubit/ios/Runner/Info.plist -->
+<key>CFBundleLocalizations</key>
+<array>
+  <string>en</string>
+  <string>uk</string>
+  <string>pl</string>
+  <string>es</string>  <!-- Add this -->
+</array>
+```
 
 
 -----------
@@ -480,15 +607,21 @@ This injects both EasyLocalization and native ones:
 
 ## 💡 Best Practices
 
-- Always use `LocaleKeys` — never hardcode translation keys in code.
+- Always pass localization keys instead of raw error messages, and always use `CoreLocaleKeys/AppLocaleKeys` — never hardcode translation keys in code.
 - Inject localization context/delegates as high as possible in the widget tree (`MaterialApp.router`).
 - Use extension methods for context locale access and switching — never call EasyLocalization statically in UI.
 - Place all translation assets in `/assets/translations/` for easy scaling/maintenance.
-- Always regenerate keys after adding translations.
+- Always regenerate keys after editing of JSON files with translations (melos run locale:regen)
 - Prefer context-based pluralization and gender forms for natural language.
 - Keep translation files clean and consistent across languages — avoid key drift or inconsistent structure.
 - Document custom logic, pluralization rules, or loaders at module level.
 - Implement `_resolveText()` in custom widgets
+- Always provide a `fallback:` in `AppLocalizer.translateSafely(...)` to ensure graceful degradation.
+- Keep core translations keys file minimal (only truly shared content, avoid feature-specific text keys), group related translations, document special translations
+- Keep overlay and errors handling logic fully decoupled from localization.
+- Always assign `translationKey` inside domain or data layer when throwing a `Failure`.
+- Convert to localized string only in widgets or overlay builders.
+- Use fallback `message` to show something meaningful if localization fails.
 
 ---
 
@@ -500,6 +633,8 @@ This injects both EasyLocalization and native ones:
 - Don’t add translation keys in only one language — always update all translation files in sync.
 - Never override built-in EasyLocalization logic unless absolutely necessary.
 - Avoid large, monolithic translation files — modularize by features for scale.
+
+> ✅ This approach keeps your validation logic clean, testable, and localization-aware without tight UI coupling.
 
 ---
 
@@ -519,114 +654,3 @@ This injects both EasyLocalization and native ones:
 > Build robust, scalable Flutter apps for every market, language, and audience and ... architecture-first.
 
 ---
-
-from VGV
-
-## Working with Translations 🌐
-
-This project relies on [flutter_localizations][flutter_localizations_link] and follows the [official internationalization guide for Flutter][internationalization_link].
-
-### Adding Strings
-
-1. To add a new localizable string, open the `app_en.arb` file at `lib/l10n/arb/app_en.arb`.
-
-```arb
-{
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    }
-}
-```
-
-2. Then add a new key/value and description
-
-```arb
-{
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    },
-    "helloWorld": "Hello World",
-    "@helloWorld": {
-        "description": "Hello World Text"
-    }
-}
-```
-
-3. Use the new string
-
-```dart
-import 'package:app_on_cubit/l10n/l10n.dart';
-
-@override
-Widget build(BuildContext context) {
-  final l10n = context.l10n;
-  return Text(l10n.helloWorld);
-}
-```
-
-### Adding Supported Locales
-
-Update the `CFBundleLocalizations` array in the `Info.plist` at `ios/Runner/Info.plist` to include the new locale.
-
-```xml
-    ...
-
-    <key>CFBundleLocalizations</key>
-	<array>
-		<string>en</string>
-		<string>es</string>
-	</array>
-
-    ...
-```
-
-### Adding Translations
-
-1. For each supported locale, add a new ARB file in `lib/l10n/arb`.
-
-```
-├── l10n
-│   ├── arb
-│   │   ├── app_en.arb
-│   │   └── app_es.arb
-```
-
-2. Add the translated strings to each `.arb` file:
-
-`app_en.arb`
-
-```arb
-{
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    }
-}
-```
-
-`app_es.arb`
-
-```arb
-{
-    "@@locale": "es",
-    "counterAppBarTitle": "Contador",
-    "@counterAppBarTitle": {
-        "description": "Texto mostrado en la AppBar de la página del contador"
-    }
-}
-```
-
-### Generating Translations
-
-To use the latest translations changes, you will need to generate them:
-
-1. Generate localizations for the current project:
-
-```sh
-flutter gen-l10n --arb-dir="lib/l10n/arb"
-```

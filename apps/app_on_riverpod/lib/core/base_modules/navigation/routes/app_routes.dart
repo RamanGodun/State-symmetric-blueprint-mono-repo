@@ -1,6 +1,5 @@
 import 'package:app_on_riverpod/core/base_modules/navigation/go_router_factory.dart';
 import 'package:app_on_riverpod/core/shared_presentation/pages/home_page.dart';
-import 'package:app_on_riverpod/core/shared_presentation/pages/page_not_found.dart';
 import 'package:app_on_riverpod/features/auth/sign_in/sign_in__page.dart';
 import 'package:app_on_riverpod/features/auth/sign_up/sign_up__page.dart';
 import 'package:app_on_riverpod/features/email_verification/email_verification_page.dart';
@@ -88,7 +87,7 @@ abstract final class AppRoutes {
       path: RoutesPaths.pageNotFound,
       name: RoutesNames.pageNotFound,
       pageBuilder: (context, state) => AppTransitions.fade(
-        const PageNotFound(errorMessage: 'Page not found'),
+        PageNotFound(onGoHome: () => context.goTo(RoutesNames.home)),
       ),
     ),
 
