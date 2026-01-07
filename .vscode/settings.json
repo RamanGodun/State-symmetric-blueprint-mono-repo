@@ -52,7 +52,7 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
-    "pubspec.yaml": "pubspec.lock, .packages, .metadata, analysis_options.yaml, *.iml",
+    "pubspec.yaml": "pubspec.lock, pubspec_overrides.yaml, pubspec_dev.yaml, pubspec_stg.yaml, pubspec_prod.yaml, .packages, .metadata, analysis_options.yaml, *.iml",
     "README.md": "*.md",
     // Group generated files under their base .dart file
     "*.dart": "${capture}.g.dart, ${capture}.freezed.dart, ${capture}.mocks.dart, ${capture}.gen.dart"
@@ -72,7 +72,37 @@
     "**/build/**": true,
     "**/coverage/**": true,
     "**/node_modules/**": true,
-    "**/.fvm/**": true
+    "**/.fvm/**": true,
+    "**/*.g.dart": true,
+    "**/*.freezed.dart": true,
+    "**/*.gen.dart": true,
+    "**/pubspec.lock": true,
+    "**/package-lock.json": true,
+    "**/.melos_tool/**": true
+  },
+
+  // -------- Hide files from explorer --------
+
+  "files.exclude": {
+    "**/.dart_tool": true,
+    "**/.packages": true,
+    "**/.flutter-plugins": true,
+    "**/.flutter-plugins-dependencies": true,
+    "**/pubspec.lock": true,
+    "**/.melos_tool": true,
+    "**/.idea": true,
+    "**/build/": true,
+    "**/.DS_Store": true,
+    "Icon\r": true,
+    "Icon": true,
+    "**/Icon\r": true,
+    "**/Icon": true,
+    "apps/Icon\r": true,
+    "apps/Icon": true,
+    "packages/Icon\r": true,
+    "packages/Icon": true,
+    "**/node_modules": true,
+    "**/package-lock.json": true
   },
 
   // -------- File hygiene --------
