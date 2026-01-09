@@ -55,4 +55,4 @@ analyzer:
     # Show warnings instead of errors for invalid annotation targets
     invalid_annotation_target: warning
     # Ignore deprecated member usage warnings
-    deprecated_member_use: ignore
+    # deprecated_member_use: ignore

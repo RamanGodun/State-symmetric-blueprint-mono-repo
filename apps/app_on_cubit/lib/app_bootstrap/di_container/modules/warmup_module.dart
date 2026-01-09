@@ -1,8 +1,13 @@
-import 'package:app_on_cubit/app_bootstrap/di_container/modules/auth_module.dart';
-import 'package:app_on_cubit/app_bootstrap/di_container/modules/profile_module.dart';
-import 'package:app_on_cubit/app_bootstrap/warmup_controller.dart';
-import 'package:app_on_cubit/features/profile/cubit/profile_page_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart' show AuthCubit, DIModule, di;
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
+    show AuthCubit, DIModule, di;
+import 'package:app_on_cubit/app_bootstrap/di_container/modules/auth_module.dart'
+    show AuthModule;
+import 'package:app_on_cubit/app_bootstrap/di_container/modules/profile_module.dart'
+    show ProfileModule;
+import 'package:app_on_cubit/app_bootstrap/warmup_controller.dart'
+    show WarmupController;
+import 'package:app_on_cubit/features/profile/cubit/profile_page_cubit.dart'
+    show ProfileCubit;
 
 /// 🔥 [WarmupModule] — DI module that wires the global [WarmupController].
 /// ✅ Ensures profile is pre-fetched as soon as user signs in.

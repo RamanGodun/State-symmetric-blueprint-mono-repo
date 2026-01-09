@@ -1,9 +1,28 @@
-import 'package:app_on_cubit/app_bootstrap/di_container/modules/firebase_module.dart';
-import 'package:app_on_cubit/features/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/public_api/core.dart';
-import 'package:features/features.dart';
-import 'package:firebase_adapter/firebase_adapter.dart';
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
+    show AuthCubit, DIModule, SafeRegistration, di;
+import 'package:adapters_for_firebase/adapters_for_firebase.dart'
+    show FirebaseAuth, FirebaseAuthGateway, UsersCollection;
+import 'package:app_on_cubit/app_bootstrap/di_container/modules/firebase_module.dart'
+    show FirebaseModule, kFbAuthInstance, kUsersCollection;
+import 'package:app_on_cubit/features/auth/sign_out/sign_out_cubit/sign_out_cubit.dart'
+    show SignOutCubit;
+import 'package:features_dd_layers/public_api/auth/auth.dart'
+    show
+        ISignInRepo,
+        ISignOutRepo,
+        ISignUpRepo,
+        SignInUseCase,
+        SignOutUseCase,
+        SignUpUseCase;
+import 'package:features_dd_layers/public_api/auth/auth_infra.dart'
+    show
+        AuthRemoteDatabaseImpl,
+        IAuthRemoteDatabase,
+        SignInRepoImpl,
+        SignOutRepoImpl,
+        SignUpRepoImpl;
+import 'package:shared_core_modules/public_api/core_contracts/auth.dart'
+    show AuthGateway;
 
 ///
 final class AuthModule implements DIModule {

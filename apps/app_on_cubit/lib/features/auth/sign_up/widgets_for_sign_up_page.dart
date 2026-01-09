@@ -24,11 +24,11 @@ final class _SignUpHeader extends StatelessWidget {
         ),
         //
         /// 🏷️ Header text
-        const TextWidget(LocaleKeys.pages_sign_up, TextType.headlineSmall),
+        const TextWidget(AppLocaleKeys.pages_sign_up, TextType.headlineSmall),
         //
         /// 📝 Sub-header text
         const TextWidget(
-          LocaleKeys.sign_up_sub_header,
+          AppLocaleKeys.sign_up_sub_header,
           TextType.bodyLarge,
         ).withPaddingBottom(AppSpacing.l),
       ],
@@ -55,7 +55,7 @@ final class _SignUpSubmitButton extends StatelessWidget {
           SignUpFormState,
           SignUpCubit
         >(
-          label: LocaleKeys.buttons_sign_up,
+          label: AppLocaleKeys.buttons_sign_up,
           isFormValid: (state) => state.isValid,
           isLoadingSelector: (state) => state.isLoading,
           onPressed: () => context.submitSignUp(),
@@ -106,11 +106,11 @@ final class _SignUpPageFooter extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         const TextWidget(
-          LocaleKeys.buttons_redirect_to_sign_in,
+          AppLocaleKeys.buttons_redirect_to_sign_in,
           TextType.bodyMedium,
         ),
         AppTextButton(
-          label: LocaleKeys.pages_sign_in,
+          label: AppLocaleKeys.pages_sign_in,
           isEnabled: isEnabled,
           onPressed: () => context.popView(),
         ).withPaddingBottom(AppSpacing.xxxm),

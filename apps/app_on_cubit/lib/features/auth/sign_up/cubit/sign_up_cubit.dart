@@ -1,6 +1,17 @@
-import 'package:core/public_api/core.dart';
-import 'package:features/features_barrels/auth/auth.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:features_dd_layers/public_api/auth/auth.dart'
+    show SignUpUseCase;
+import 'package:flutter_bloc/flutter_bloc.dart' show Cubit;
+import 'package:shared_core_modules/public_api/base_modules/errors_management.dart'
+    show ConsumableX, FailureLogger;
+import 'package:shared_layers/public_api/presentation_layer_shared.dart'
+    show
+        ButtonSubmissionErrorState,
+        ButtonSubmissionLoadingState,
+        ButtonSubmissionSuccessState,
+        SubmissionFlowInitialState,
+        SubmissionFlowStateModel;
+import 'package:shared_utils/public_api/general_utils.dart'
+    show AppDurations, Debouncer;
 
 /// 🔐 [SignUpCubit] — Handles sign-up submission & side-effects.
 /// 🧰 Uses shared [SubmissionFlowStateModel].

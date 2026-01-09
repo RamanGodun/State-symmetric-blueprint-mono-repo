@@ -1,10 +1,22 @@
-import 'package:app_on_cubit/app_bootstrap/di_container/modules/auth_module.dart';
-import 'package:app_on_cubit/app_bootstrap/di_container/modules/firebase_module.dart';
-import 'package:app_on_cubit/features/email_verification/email_verification_cubit/email_verification_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/public_api/core.dart';
-import 'package:features/features.dart';
-import 'package:firebase_adapter/firebase_adapter.dart';
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
+    show DIModule, SafeDispose, SafeRegistration, di;
+import 'package:adapters_for_firebase/adapters_for_firebase.dart'
+    show FirebaseAuth;
+import 'package:app_on_cubit/app_bootstrap/di_container/modules/auth_module.dart'
+    show AuthModule;
+import 'package:app_on_cubit/app_bootstrap/di_container/modules/firebase_module.dart'
+    show FirebaseModule, kFbAuthInstance;
+import 'package:app_on_cubit/features/email_verification/email_verification_cubit/email_verification_cubit.dart'
+    show EmailVerificationCubit;
+import 'package:features_dd_layers/public_api/email_verification/email_verification.dart'
+    show EmailVerificationUseCase, IUserValidationRepo;
+import 'package:features_dd_layers/public_api/email_verification/email_verification_infra.dart'
+    show
+        IUserValidationRemoteDataSource,
+        IUserValidationRemoteDataSourceImpl,
+        IUserValidationRepoImpl;
+import 'package:shared_core_modules/public_api/core_contracts/auth.dart'
+    show AuthGateway;
 
 ///
 final class EmailVerificationModule implements DIModule {

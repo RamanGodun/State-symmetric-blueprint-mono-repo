@@ -11,7 +11,7 @@ publish_to: none
 # =============================
 environment:
   flutter: ">=3.22.0"
-  sdk: ^3.8.0
+  sdk: ^3.10.0
 
 # =============================
 # DEPENDENCIES
@@ -31,7 +31,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.4
-  very_good_analysis: ^9.0.0
+  very_good_analysis: ^10.0.0
 
 # =============================
 # FLUTTER CONFIG

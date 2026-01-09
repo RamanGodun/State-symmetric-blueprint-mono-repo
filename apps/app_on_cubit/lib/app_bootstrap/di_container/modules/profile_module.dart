@@ -1,10 +1,15 @@
-import 'package:app_on_cubit/app_bootstrap/di_container/modules/auth_module.dart';
-import 'package:app_on_cubit/app_bootstrap/di_container/modules/firebase_module.dart';
-import 'package:app_on_cubit/features/profile/cubit/profile_page_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart'
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
     show DIModule, SafeRegistration, di;
-import 'package:features/features_barrels/profile/profile.dart';
-import 'package:features/features_barrels/profile/profile_infra.dart';
+import 'package:app_on_cubit/app_bootstrap/di_container/modules/auth_module.dart'
+    show AuthModule;
+import 'package:app_on_cubit/app_bootstrap/di_container/modules/firebase_module.dart'
+    show FirebaseModule;
+import 'package:app_on_cubit/features/profile/cubit/profile_page_cubit.dart'
+    show ProfileCubit;
+import 'package:features_dd_layers/public_api/profile/profile.dart'
+    show FetchProfileUseCase, IProfileRepo;
+import 'package:features_dd_layers/public_api/profile/profile_infra.dart'
+    show ProfileRepoImpl;
 
 ///
 final class ProfileModule implements DIModule {

@@ -1,5 +1,8 @@
-import 'package:core/public_api/core.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show Cubit;
+import 'package:shared_core_modules/public_api/base_modules/forms.dart'
+    show SignUpFormState;
+import 'package:shared_utils/public_api/general_utils.dart'
+    show AppDurations, Debouncer;
 
 /// 📝 [SignUpFormFieldCubit] — Handles sign-up form fields & validation (UI-only).
 /// 🧰 Uses shared [SignUpFormState].

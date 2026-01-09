@@ -25,11 +25,11 @@ final class _SignInHeader extends StatelessWidget {
         ),
         //
         /// 🏷️ Main header text
-        const TextWidget(LocaleKeys.sign_in_header, TextType.headlineSmall),
+        const TextWidget(AppLocaleKeys.sign_in_header, TextType.headlineSmall),
         //
         /// 📝 Sub-header text
         const TextWidget(
-          LocaleKeys.sign_in_sub_header,
+          AppLocaleKeys.sign_in_sub_header,
           TextType.bodyLarge,
         ).withPaddingBottom(AppSpacing.xl),
       ],
@@ -141,7 +141,7 @@ final class _SignInSubmitButton extends StatelessWidget {
           SignInFormState,
           SignInCubit
         >(
-          label: LocaleKeys.buttons_sign_in,
+          label: AppLocaleKeys.buttons_sign_in,
           isFormValid: (state) => state.isValid,
           isLoadingSelector: (state) => state.isLoading,
           onPressed: () => context.submitSignIn(),
@@ -194,22 +194,22 @@ final class _SignInPageFooter extends StatelessWidget {
       children: [
         /// 🧭 Redirect to [SignUpPage]
         const TextWidget(
-          LocaleKeys.buttons_redirect_to_sign_up,
+          AppLocaleKeys.buttons_redirect_to_sign_up,
           TextType.bodyMedium,
         ),
         AppTextButton(
-          label: LocaleKeys.buttons_sign_up,
+          label: AppLocaleKeys.buttons_sign_up,
           isEnabled: isEnabled,
           onPressed: () => context.goPushTo(RoutesNames.signUp),
         ).withPaddingBottom(AppSpacing.xxxm),
 
         /// 🧭 Redirect to [ResetPasswordPage]
         const TextWidget(
-          LocaleKeys.sign_in_forgot_password,
+          AppLocaleKeys.sign_in_forgot_password,
           TextType.bodyMedium,
         ),
         AppTextButton(
-          label: LocaleKeys.buttons_reset_password,
+          label: AppLocaleKeys.buttons_reset_password,
           foregroundColor: AppColors.forErrors,
           isEnabled: isEnabled,
           onPressed: () => context.goPushTo(RoutesNames.resetPassword),

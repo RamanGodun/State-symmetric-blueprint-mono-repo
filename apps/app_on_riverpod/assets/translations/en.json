@@ -1,0 +1,92 @@
+{
+  "app": {
+    "title": "App on Riverpod"
+  },
+
+  "pages": {
+    "home": "     Home Page",
+    "home_message": "You can go to profile page and make some settings",
+    "profile": "Profile",
+    "change_password": "Change Password",
+    "reset_password": "Reset Password",
+    "verify_email": "Email Verification",
+    "sign_in": "Sign in to your account",
+    "sign_up": "Join Us!",
+    "reauthentication": "Reauthentication"
+  },
+
+  "profile": {
+    "name": "👤 Name:   ",
+    "id": "🆔 ID:         ",
+    "email": "📧 Email:    ",
+    "points": "📊 Points:  ",
+    "rank": "🏆 Rank:    ",
+    "error": "Oops!\nSomething went wrong."
+  },
+
+  "reset_password": {
+    "header": "Reset your password",
+    "sub_header": "We will send you an email to reset it.",
+    "success": "Password reset email has been sent",
+    "remember": "Remember password?    "
+  },
+
+  "change_password": {
+    "title": "Change Password",
+    "warning": "If you change your password,",
+    "prefix": "you will be ",
+    "signed_out": "signed out!",
+    "password_updated": "password updating succeed",
+    "success": "Successfully reauthenticated"
+  },
+
+  "sign_in": {
+    "header": "Welcome Back!",
+    "sub_header": "Please sign in to continue.",
+    "forgot_password": "Forgot Password?",
+    "not_member": "Not a member?",
+    "button": "Sign In",
+    "success": "Login successful"
+  },
+
+  "sign_up": {
+    "sub_header": "Create an account to get started.",
+    "already_have_account": "Already have an account?",
+    "button": "Sign Up",
+    "success": "Account successfully registered"
+  },
+
+  "reauth": {
+    "label": "Reauthenticate",
+    "description": "This is a security-sensitive operation, you must have recently signed in!",
+    "redirect_note": "Or you can go     ",
+    "page": "   page"
+  },
+
+  "verify_email": {
+    "sent": "Verification email has been sent to",
+    "not_found": "If you cannot find the email,",
+    "check_prefix": "Please check ",
+    "spam": "SPAM",
+    "check_suffix": " folder.",
+    "ensure_correct": "Ensure your email is correct.",
+    "unknown": "Unknown",
+    "or": "OR"
+  },
+
+  "buttons": {
+    "ok": "OK",
+    "sign_in": "Sign In",
+    "sign_up": "Sign Up",
+    "sign_out": "Sign in",
+    "submitting": "Submitting...",
+    "retry": "Retry",
+    "redirect_to_sign_up": "Not a member?   ",
+    "redirect_to_sign_in": "Already a member?  ",
+    "cancel": "Cancel",
+    "go_to_home": "To Home Page",
+    "reset_password": "Reset Password",
+    "resend_email": "Resend verification email",
+    "loading": "Loading..."
+  }
+}

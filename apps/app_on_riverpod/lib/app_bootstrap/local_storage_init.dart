@@ -1,6 +1,6 @@
 import 'package:app_bootstrap/app_bootstrap.dart' show ILocalStorage;
 import 'package:flutter/foundation.dart' show debugPrint;
-import 'package:get_storage/get_storage.dart';
+import 'package:get_storage/get_storage.dart' show GetStorage;
 
 /// 🧩📦 [LocalStorage] — Current implementation of [ILocalStorage] with initialization logic.
 //

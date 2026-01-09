@@ -263,3 +263,14 @@ scripts:
       spider -p lib/core/shared_presentation/utils/images_paths/spider.yaml build'
     melos exec --scope="app_on_riverpod" -- bash -lc 'export PATH="$PATH:$HOME/.pub-cache/bin"; \
       spider -p lib/core/shared_presentation/utils/images_paths/spider.yaml build'
+
+  # ---------------------------------------------------------------------------------------------------
+
+  # ---------- VeryGood CLI Commands ----------
+  # Create a new Flutter app or package
+  # Usage: melos run create app --my_new_app (or pkg --my_new_package)
+  create:
+    run: bash scripts/vgv_cli/create.sh $MELOS_SCRIPT_EXTRA_ARGS
+    description: Create Flutter app or package (use 'app' or 'pkg' as first arg)
+
+  # ---------------------------------------------------------------------------------------------------

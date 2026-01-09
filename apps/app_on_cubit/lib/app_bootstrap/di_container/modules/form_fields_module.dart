@@ -1,4 +1,4 @@
-import 'package:bloc_adapter/bloc_adapter.dart' show DIModule;
+import 'package:adapters_for_bloc/adapters_for_bloc.dart' show DIModule;
 
 ///  🔐 Registers form validation service
 //

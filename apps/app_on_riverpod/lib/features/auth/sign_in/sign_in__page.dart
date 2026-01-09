@@ -1,12 +1,38 @@
-import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:app_on_riverpod/core/shared_presentation/utils/flavor_x.dart';
-import 'package:app_on_riverpod/features/auth/sign_in/providers/input_form_fields_provider.dart';
-import 'package:app_on_riverpod/features/auth/sign_in/providers/sign_in__provider.dart';
-import 'package:core/public_api/core.dart';
+import 'package:adapters_for_riverpod/adapters_for_riverpod.dart'
+    show
+        RiverpodAdapterForFooterGuard,
+        RiverpodAdapterForSubmissionFlowSideEffects,
+        RiverpodAdapterForSubmitButton;
+import 'package:app_on_riverpod/core/base_modules/localization/generated/app_locale_keys.g.dart'
+    show AppLocaleKeys;
+import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart'
+    show RoutesNames;
+import 'package:app_on_riverpod/core/shared_presentation/utils/flavor_x.dart'
+    show FlavorX;
+import 'package:app_on_riverpod/features/auth/sign_in/providers/input_form_fields_provider.dart'
+    show signInFormProvider;
+import 'package:app_on_riverpod/features/auth/sign_in/providers/sign_in__provider.dart'
+    show signInProvider;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' show HookWidget;
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_adapter/riverpod_adapter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show ConsumerWidget, WidgetRef;
+import 'package:shared_core_modules/public_api/base_modules/forms.dart';
+import 'package:shared_core_modules/public_api/base_modules/navigation.dart'
+    show NavigationX;
+import 'package:shared_core_modules/public_api/base_modules/overlays.dart'
+    show OverlayBaseMethods;
+import 'package:shared_core_modules/public_api/base_modules/ui_design.dart'
+    show AppColors, AppSpacing, OtherContextX, WidgetAlignX, WidgetPaddingX;
+import 'package:shared_layers/public_api/presentation_layer_shared.dart'
+    show
+        ButtonSubmissionStateX,
+        SubmissionFlowStateModel,
+        SubmissionSideEffectsConfig;
+import 'package:shared_widgets/public_api/buttons.dart' show AppTextButton;
+import 'package:shared_widgets/public_api/footers.dart'
+    show FooterEnabledContextX;
+import 'package:shared_widgets/public_api/text_widgets.dart';
 
 part 'widgets_for_sign_in_page.dart';
 
@@ -27,7 +53,7 @@ final class SignInPage extends ConsumerWidget {
       config: SubmissionSideEffectsConfig(
         // ✅ Success → snackbar + go home
         onSuccess: (ctx, _) =>
-            ctx.showSnackbar(message: LocaleKeys.sign_in_success),
+            ctx.showSnackbar(message: AppLocaleKeys.sign_in_success),
         // 🔁 Retry with current form state
         onRetry: (ctx) => ref.submitSignIn(),
         // 🧹 (optional) forms' reset after error

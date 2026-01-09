@@ -1,6 +1,8 @@
-import 'package:app_on_riverpod/features/profile/providers/profile_page_provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_adapter/riverpod_adapter.dart';
+import 'package:adapters_for_riverpod/adapters_for_riverpod.dart'
+    show authUidProvider;
+import 'package:app_on_riverpod/features/profile/providers/profile_page_provider.dart'
+    show profileProvider;
+import 'package:flutter_riverpod/flutter_riverpod.dart' show Ref;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'warmup_provider.g.dart';

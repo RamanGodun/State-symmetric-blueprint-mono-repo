@@ -1,13 +1,42 @@
-import 'package:app_on_cubit/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:app_on_cubit/core/shared_presentation/utils/flavor_x.dart';
-import 'package:app_on_cubit/features/password_changing_or_reset/reset_password/cubits/form_fields_cubit.dart';
-import 'package:app_on_cubit/features/password_changing_or_reset/reset_password/cubits/reset_password_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/public_api/core.dart';
-import 'package:features/features_barrels/password_changing_or_reset/password_changing_or_reset.dart';
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
+    show
+        BlocAdapterForFooterGuard,
+        BlocAdapterForSubmissionFlowSideEffects,
+        BlocAdapterForSubmitButton,
+        BlocWatchSelectX,
+        di;
+import 'package:app_on_cubit/core/base_modules/localization/generated/app_locale_keys.g.dart'
+    show AppLocaleKeys;
+import 'package:app_on_cubit/core/base_modules/navigation/routes/app_routes.dart'
+    show RoutesNames;
+import 'package:app_on_cubit/core/shared_presentation/utils/flavor_x.dart'
+    show FlavorX;
+import 'package:app_on_cubit/features/password_changing_or_reset/reset_password/cubits/form_fields_cubit.dart'
+    show ResetPasswordFormFieldsCubit;
+import 'package:app_on_cubit/features/password_changing_or_reset/reset_password/cubits/reset_password_cubit.dart'
+    show ResetPasswordCubit;
+import 'package:features_dd_layers/public_api/password_changing_or_reset/password_changing_or_reset.dart'
+    show PasswordRelatedUseCases;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_bloc/flutter_bloc.dart'
+    show BlocProvider, MultiBlocProvider, ReadContext;
+import 'package:flutter_hooks/flutter_hooks.dart' show HookWidget;
+import 'package:shared_core_modules/public_api/base_modules/forms.dart';
+import 'package:shared_core_modules/public_api/base_modules/navigation.dart'
+    show NavigationX;
+import 'package:shared_core_modules/public_api/base_modules/overlays.dart'
+    show OverlayBaseMethods;
+import 'package:shared_core_modules/public_api/base_modules/ui_design.dart'
+    show AppSpacing, OtherContextX, WidgetPaddingX;
+import 'package:shared_layers/public_api/presentation_layer_shared.dart'
+    show
+        ButtonSubmissionStateX,
+        SubmissionFlowStateModel,
+        SubmissionSideEffectsConfig;
+import 'package:shared_widgets/public_api/buttons.dart' show AppTextButton;
+import 'package:shared_widgets/public_api/footers.dart'
+    show FooterEnabledContextX;
+import 'package:shared_widgets/public_api/text_widgets.dart';
 
 part 'widgets_for_reset_password_page.dart';
 
@@ -37,7 +66,7 @@ final class ResetPasswordPage extends StatelessWidget {
         config: SubmissionSideEffectsConfig(
           // ✅ Success → snackbar + go [SignInPage]
           onSuccess: (ctx, _) => ctx
-            ..showSnackbar(message: LocaleKeys.reset_password_success)
+            ..showSnackbar(message: AppLocaleKeys.reset_password_success)
             ..goTo(RoutesNames.signIn),
           // 🔁 Retry with current form state
           onRetry: (ctx) => ctx.submitResetPassword(),

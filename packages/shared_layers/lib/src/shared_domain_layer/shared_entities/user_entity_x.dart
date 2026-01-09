@@ -1,0 +1,46 @@
+import 'package:shared_layers/public_api/data_layer_shared.dart' show UserDTO;
+import 'package:shared_layers/public_api/domain_layer_shared.dart'
+    show UserEntity;
+
+/// 🔁 [UserEntityX] — Extension on [UserEntity] with transformation and utility methods
+//
+extension UserEntityX on UserEntity {
+  ///------------------------------
+
+  /// 🧱 Converts [UserEntity] → [UserDTO] (for persistence or transfer)
+  UserDTO toDTO() => UserDTO(
+    id: id,
+    name: name,
+    email: email,
+    profileImage: profileImage,
+    point: point,
+    rank: rank,
+  );
+
+  /// 🧱 Allows `.copyWith()` on [UserEntity] entity (immutability support)
+  UserEntity copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? profileImage,
+    int? point,
+    String? rank,
+  }) {
+    return UserEntity(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      profileImage: profileImage ?? this.profileImage,
+      point: point ?? this.point,
+      rank: rank ?? this.rank,
+    );
+  }
+
+  /// ❓ Checks if user is considered empty
+  bool get isEmpty => id.isEmpty;
+
+  /// ✅ Opposite of [isEmpty]
+  bool get isNotEmpty => id.isNotEmpty;
+
+  //
+}

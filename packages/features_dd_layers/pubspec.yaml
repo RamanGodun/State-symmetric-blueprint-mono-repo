@@ -1,0 +1,50 @@
+name: features_dd_layers
+description: >
+  Shared feature modules (Domain/Data) for all apps. Technology-agnostic domain
+  and repository contracts + Firebase-ready remote implementations wired via DI
+  (using types re-exported, for example from firebase_bootstrap_config).
+
+version: 0.1.0+1
+publish_to: none
+
+# =============================
+# ENVIRONMENT
+# =============================
+environment:
+  sdk: ^3.10.0
+  flutter: ">=3.22.0"
+
+# =============================
+# DEPENDENCIES
+# =============================
+dependencies:
+  # Firebase bridges & type re-exports (e.g., FirebaseAuth, UsersCollection)
+  adapters_for_firebase:
+    path: ../../packages/adapters_for_firebase
+  # Flutter SDK (for foundation/debugPrint and basic types)
+  flutter:
+    sdk: flutter
+  # Core shared modules (Errors, DTOs, utils, etc.)
+  shared_core_modules:
+    path: ../../packages/shared_core_modules
+  shared_layers:
+    path: ../../packages/shared_layers
+  shared_utils:
+    path: ../../packages/shared_utils
+
+# =============================
+# DEV DEPENDENCIES
+# =============================
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+  very_good_analysis: ^9.0.0
+  # build_runner: ^2.5.4
+
+# =============================
+# FLUTTER CONFIG
+# =============================
+flutter:
+  generate: true
+  uses-material-design: true

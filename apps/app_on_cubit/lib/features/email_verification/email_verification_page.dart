@@ -1,13 +1,23 @@
-import 'package:app_on_cubit/features/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
+    show AsyncValueForBLoC, BlocAdapterForErrorsMultiListeners, di;
+import 'package:adapters_for_firebase/adapters_for_firebase.dart'
+    show FirebaseRefs;
+import 'package:app_on_cubit/core/base_modules/localization/generated/app_locale_keys.g.dart'
+    show AppLocaleKeys;
+import 'package:app_on_cubit/features/auth/sign_out/sign_out_cubit/sign_out_cubit.dart'
+    show SignOutCubit;
 import 'package:app_on_cubit/features/auth/sign_out/sign_out_widgets.dart'
     show VerifyEmailCancelButton;
-import 'package:app_on_cubit/features/email_verification/email_verification_cubit/email_verification_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/public_api/core.dart';
+import 'package:app_on_cubit/features/email_verification/email_verification_cubit/email_verification_cubit.dart'
+    show EmailVerificationCubit;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseRefs;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart'
+    show BlocProvider, MultiBlocProvider, ReadContext, SelectContext;
+import 'package:shared_core_modules/public_api/base_modules/ui_design.dart'
+    show AppColors, AppSpacing, ThemeXOnContext, WidgetPaddingX;
+import 'package:shared_widgets/public_api/loaders.dart' show AppLoader;
+import 'package:shared_widgets/public_api/text_widgets.dart';
 
 part 'widgets_for_email_verification_page.dart';
 
@@ -89,11 +99,13 @@ final class _VerifyEmailScreen extends StatelessWidget {
       body: Center(
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: AppColors.white.withOpacity(context.isDarkMode ? 0.05 : 0.9),
+            color: AppColors.white.withValues(
+              alpha: context.isDarkMode ? 0.05 : 0.9,
+            ),
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.07),
+                color: Colors.black.withValues(alpha: 0.07),
                 blurRadius: 20,
                 offset: const Offset(0, 4),
               ),

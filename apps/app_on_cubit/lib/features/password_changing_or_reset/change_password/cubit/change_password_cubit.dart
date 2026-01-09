@@ -1,7 +1,23 @@
-import 'package:core/public_api/core.dart';
-import 'package:features/features.dart';
+import 'package:features_dd_layers/features_dd_layers.dart'
+    show PasswordRelatedUseCases, SignOutUseCase;
 import 'package:flutter/foundation.dart' show debugPrint;
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show Cubit;
+import 'package:shared_core_modules/public_api/base_modules/errors_management.dart'
+    show
+        ConsumableX,
+        FailureLogger,
+        RequiresRecentLoginFirebaseFailureType,
+        ResultHandler;
+import 'package:shared_layers/public_api/presentation_layer_shared.dart'
+    show
+        ButtonSubmissionErrorState,
+        ButtonSubmissionLoadingState,
+        ButtonSubmissionRequiresReauthState,
+        ButtonSubmissionSuccessState,
+        SubmissionFlowInitialState,
+        SubmissionFlowStateModel;
+import 'package:shared_utils/public_api/general_utils.dart'
+    show AppDurations, Debouncer;
 
 /// 🔐 [ChangePasswordCubit] — Handles password-change submission & side-effects.
 /// 🧰 Uses shared [SubmissionFlowStateModel].

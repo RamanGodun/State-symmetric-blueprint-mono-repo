@@ -1,6 +1,10 @@
-import 'package:core/public_api/base_modules/forms.dart' show SignInFormState;
-import 'package:core/public_api/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_core_modules/public_api/base_modules/forms.dart'
+    show SignInFormState;
+import 'package:shared_core_modules/shared_core_modules.dart'
+    show SignInFormState;
+import 'package:shared_utils/public_api/general_utils.dart'
+    show AppDurations, Debouncer;
 
 part 'input_form_fields_provider.g.dart';
 

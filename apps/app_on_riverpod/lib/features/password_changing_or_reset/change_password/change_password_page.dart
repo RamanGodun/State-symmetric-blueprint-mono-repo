@@ -1,12 +1,33 @@
-import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:app_on_riverpod/features/password_changing_or_reset/change_password/providers/change_password__provider.dart';
-import 'package:app_on_riverpod/features/password_changing_or_reset/change_password/providers/input_fields_provider.dart';
-import 'package:core/public_api/core.dart';
+import 'package:adapters_for_riverpod/adapters_for_riverpod.dart'
+    show
+        RiverpodAdapterForSubmissionFlowSideEffects,
+        RiverpodAdapterForSubmitButton;
+import 'package:app_on_riverpod/core/base_modules/localization/generated/app_locale_keys.g.dart'
+    show AppLocaleKeys;
+import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart'
+    show RoutesNames;
+import 'package:app_on_riverpod/features/password_changing_or_reset/change_password/providers/change_password__provider.dart'
+    show changePasswordProvider;
+import 'package:app_on_riverpod/features/password_changing_or_reset/change_password/providers/input_fields_provider.dart'
+    show changePasswordFormProvider;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_adapter/riverpod_adapter.dart';
+import 'package:flutter_hooks/flutter_hooks.dart' show HookWidget;
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show ConsumerWidget, WidgetRef;
+import 'package:shared_core_modules/public_api/base_modules/forms.dart';
+import 'package:shared_core_modules/public_api/base_modules/navigation.dart'
+    show NavigationX;
+import 'package:shared_core_modules/public_api/base_modules/overlays.dart'
+    show ContextXForOverlays, OverlayBaseMethods;
+import 'package:shared_core_modules/public_api/base_modules/ui_design.dart'
+    show AppSpacing, OtherContextX, ThemeXOnContext, WidgetPaddingX;
+import 'package:shared_layers/public_api/presentation_layer_shared.dart'
+    show
+        ButtonSubmissionStateX,
+        SubmissionFlowStateModel,
+        SubmissionSideEffectsConfig;
+import 'package:shared_widgets/public_api/text_widgets.dart';
 
 part 'widgets_for_change_password.dart';
 
@@ -28,7 +49,7 @@ final class ChangePasswordPage extends ConsumerWidget {
         // ✅  Success → snackbar + go home
         onSuccess: (ctx, _) => ctx
           ..showSnackbar(
-            message: LocaleKeys.change_password_password_updated.tr(),
+            message: AppLocaleKeys.change_password_password_updated.tr(),
           )
           ..goIfMounted(RoutesNames.home),
         // 🔄 Requires reauth → dialog with confirm → signOut

@@ -1,7 +1,17 @@
-import 'package:app_on_cubit/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:core/public_api/core.dart';
+import 'package:app_on_cubit/core/base_modules/navigation/routes/app_routes.dart'
+    show AppRoutes, RoutesNames, RoutesPaths;
 import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRouter;
+import 'package:shared_core_modules/public_api/base_modules/navigation.dart'
+    show NavigationX;
+import 'package:shared_core_modules/public_api/base_modules/overlays.dart'
+    show OverlaysCleanerWithinNavigation;
+import 'package:shared_core_modules/public_api/core_contracts/auth.dart'
+    show AuthFailure, AuthGateway, AuthLoading, AuthReady, AuthSnapshot;
+import 'package:shared_layers/public_api/presentation_layer_shared.dart'
+    show PageNotFound;
+import 'package:shared_utils/public_api/general_utils.dart'
+    show StreamChangeNotifier;
 
 part 'routes_redirection_service.dart';
 

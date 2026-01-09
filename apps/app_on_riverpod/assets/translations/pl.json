@@ -1,0 +1,92 @@
+{
+  "app": {
+    "title": "Aplikacja na Cubicie"
+  },
+
+  "pages": {
+    "home": "     Strona główna",
+    "home_message": "Możesz przejść do profilu i zmienić ustawienia",
+    "profile": "Profil",
+    "change_password": "Zmień hasło",
+    "reset_password": "Zresetuj hasło",
+    "verify_email": "Weryfikacja e-maila",
+    "sign_in": "Zaloguj się do konta",
+    "sign_up": "Dołącz do nas!",
+    "reauthentication": "Ponowna autoryzacja"
+  },
+
+  "profile": {
+    "name": "👤 Imię:       ",
+    "id": "🆔 ID:           ",
+    "email": "📧 Email:     ",
+    "points": "📊 Punkty:   ",
+    "rank": "🏆 Ranga:    ",
+    "error": "Ups!\nCoś poszło nie tak."
+  },
+
+  "reset_password": {
+    "header": "Zresetuj swoje hasło",
+    "sub_header": "Wyślemy Ci e-mail z linkiem do resetowania.",
+    "success": "E-mail resetujący hasło został wysłany",
+    "remember": "Pamiętasz hasło?   "
+  },
+
+  "change_password": {
+    "title": "Zmień hasło",
+    "warning": "Jeśli zmienisz hasło,",
+    "prefix": "zostaniesz ",
+    "signed_out": "wylogowany!",
+    "password_updated": "Пароль успішно оновлено",
+    "success": "Pomyślnie uwierzytelniono ponownie"
+  },
+
+  "sign_in": {
+    "header": "Witaj ponownie!",
+    "sub_header": "Zaloguj się, aby kontynuować.",
+    "forgot_password": "Nie pamiętasz hasła?",
+    "not_member": "Nie masz konta?",
+    "button": "Zaloguj się",
+    "success": "Logowanie zakończone pomyślnie"
+  },
+
+  "sign_up": {
+    "sub_header": "Utwórz konto, aby rozpocząć.",
+    "already_have_account": "Masz już konto?",
+    "button": "Zarejestruj się",
+    "success": "Konto zostało pomyślnie zarejestrowane"
+  },
+
+  "reauth": {
+    "label": "Ponowna autoryzacja",
+    "description": "To operacja wymagająca bezpieczeństwa — musisz być ostatnio zalogowany!",
+    "redirect_note": "Lub możesz przejść do     ",
+    "page": "   strony"
+  },
+
+  "verify_email": {
+    "sent": "E-mail weryfikacyjny został wysłany do",
+    "not_found": "Jeśli nie widzisz wiadomości,",
+    "check_prefix": "Sprawdź folder ",
+    "spam": "SPAM",
+    "check_suffix": ".",
+    "ensure_correct": "Upewnij się, że Twój e-mail jest poprawny.",
+    "unknown": "Nieznany",
+    "or": "LUB"
+  },
+
+  "buttons": {
+    "ok": "OK",
+    "sign_in": "Zaloguj się",
+    "sign_up": "Zarejestruj się",
+    "sign_out": "Log",
+    "submitting": "Wysyłanie...",
+    "retry": "Spróbuj ponownie",
+    "redirect_to_sign_up": "Nie masz konta?   ",
+    "redirect_to_sign_in": "Masz już konto?   ",
+    "cancel": "Anuluj",
+    "go_to_home": "Na stronę główną",
+    "reset_password": "Zresetuj hasło",
+    "resend_email": "Wyślij ponownie e-mail weryfikacyjny",
+    "loading": "Ładowanie..."
+  }
+}

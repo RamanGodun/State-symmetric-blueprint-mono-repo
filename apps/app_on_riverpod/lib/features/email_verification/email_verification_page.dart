@@ -1,12 +1,23 @@
-import 'package:app_on_riverpod/features/auth/sign_out/sign_out_provider.dart';
-import 'package:app_on_riverpod/features/auth/sign_out/sign_out_widgets.dart';
-import 'package:app_on_riverpod/features/email_verification/provider/email_verification_provider.dart';
-import 'package:core/public_api/core.dart';
+import 'package:adapters_for_firebase/adapters_for_firebase.dart'
+    show FirebaseRefs;
+import 'package:adapters_for_riverpod/adapters_for_riverpod.dart'
+    show FailureSelectorX, RiverpodAdapterForErrorsMultiListeners;
+import 'package:app_on_riverpod/core/base_modules/localization/generated/app_locale_keys.g.dart'
+    show AppLocaleKeys;
+import 'package:app_on_riverpod/features/auth/sign_out/sign_out_provider.dart'
+    show signOutProvider;
+import 'package:app_on_riverpod/features/auth/sign_out/sign_out_widgets.dart'
+    show VerifyEmailCancelButton;
+import 'package:app_on_riverpod/features/email_verification/provider/email_verification_provider.dart'
+    show emailVerificationNotifierProvider;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseRefs;
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_adapter/riverpod_adapter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show AsyncValue, ConsumerWidget, WidgetRef;
+import 'package:shared_core_modules/public_api/base_modules/ui_design.dart'
+    show AppColors, AppSpacing, ThemeXOnContext, WidgetPaddingX;
+import 'package:shared_widgets/public_api/loaders.dart' show AppLoader;
+import 'package:shared_widgets/public_api/text_widgets.dart';
 
 part 'widgets_for_email_verification_page.dart';
 
@@ -64,11 +75,13 @@ final class _VerifyEmailScreen extends StatelessWidget {
       body: Center(
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: AppColors.white.withOpacity(context.isDarkMode ? 0.05 : 0.9),
+            color: AppColors.white.withValues(
+              alpha: context.isDarkMode ? 0.05 : 0.9,
+            ),
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.07),
+                color: Colors.black.withValues(alpha: 0.07),
                 blurRadius: 20,
                 offset: const Offset(0, 4),
               ),

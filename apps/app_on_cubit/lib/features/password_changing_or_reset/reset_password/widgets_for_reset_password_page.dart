@@ -21,11 +21,11 @@ final class _ResetPasswordHeader extends StatelessWidget {
           ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.l),
         ),
         const TextWidget(
-          LocaleKeys.reset_password_header,
+          AppLocaleKeys.reset_password_header,
           TextType.headlineSmall,
         ),
         const TextWidget(
-          LocaleKeys.reset_password_sub_header,
+          AppLocaleKeys.reset_password_sub_header,
           TextType.titleSmall,
           isTextOnFewStrings: true,
         ).withPaddingBottom(AppSpacing.xxl),
@@ -93,7 +93,7 @@ final class _ResetPasswordSubmitButton extends StatelessWidget {
           ResetPasswordFormState,
           ResetPasswordCubit
         >(
-          label: LocaleKeys.buttons_reset_password,
+          label: AppLocaleKeys.buttons_reset_password,
           isFormValid: (state) => state.isValid,
           isLoadingSelector: (state) => state.isLoading,
           onPressed: () => context.submitResetPassword(),
@@ -148,12 +148,12 @@ final class _ResetPasswordPageFooter extends StatelessWidget {
       children: [
         /// 🧭 Redirect to [SignInPage]
         const TextWidget(
-          LocaleKeys.reset_password_remember,
+          AppLocaleKeys.reset_password_remember,
           TextType.bodyMedium,
         ),
         //
         AppTextButton(
-          label: LocaleKeys.buttons_sign_in,
+          label: AppLocaleKeys.buttons_sign_in,
           isEnabled: isEnabled,
           onPressed: () => context.popView(),
         ).withPaddingBottom(AppSpacing.xxxm),

@@ -1,16 +1,18 @@
+import 'package:adapters_for_bloc/adapters_for_bloc.dart' show AppBlocObserver;
 import 'package:app_bootstrap/app_bootstrap.dart'
     show IAppBootstrap, ILocalStorage, IRemoteDataBase, PlatformValidationUtil;
-import 'package:app_on_cubit/app_bootstrap/di_container/di_container_init.dart';
-import 'package:app_on_cubit/app_bootstrap/firebase_initializer.dart';
-import 'package:app_on_cubit/app_bootstrap/local_storage_init.dart';
-import 'package:bloc_adapter/bloc_adapter.dart' show AppBlocObserver;
-import 'package:core/public_api/base_modules/localization.dart'
-    show AppLocalizer;
+import 'package:app_on_cubit/app_bootstrap/di_container/di_container_init.dart'
+    show DIContainer;
+import 'package:app_on_cubit/app_bootstrap/firebase_initializer.dart'
+    show FirebaseRemoteDataBase;
+import 'package:app_on_cubit/app_bootstrap/local_storage_init.dart'
+    show HydratedLocalStorage;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart' show debugPrint;
-import 'package:flutter/material.dart' show WidgetsFlutterBinding;
+import 'package:flutter/material.dart' show WidgetsFlutterBinding, debugPrint;
 import 'package:flutter/rendering.dart' show debugRepaintRainbowEnabled;
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show Bloc;
+import 'package:shared_core_modules/public_api/base_modules/localization.dart'
+    show AppLocalizer;
 
 /// 🧰 [DefaultAppBootstrap] — Handles all critical bootstrapping (with injectable stacks for testing/mocks).
 //

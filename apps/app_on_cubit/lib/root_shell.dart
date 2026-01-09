@@ -1,9 +1,24 @@
-import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/public_api/core.dart';
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
+    show AppThemeCubit, BlocWatchSelectX;
+import 'package:app_on_cubit/core/base_modules/localization/generated/app_locale_keys.g.dart'
+    show AppLocaleKeys;
+import 'package:app_on_cubit/core/base_modules/localization/localization_wrapper.dart'
+    show LocalizationWrapper;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter/material.dart'
+    show
+        BuildContext,
+        MaterialApp,
+        StatelessWidget,
+        ThemeData,
+        ThemeMode,
+        Widget;
+import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
+import 'package:go_router/go_router.dart' show GoRouter;
+import 'package:shared_core_modules/public_api/base_modules/overlays.dart'
+    show GlobalOverlayHandler;
+import 'package:shared_core_modules/public_api/base_modules/ui_design.dart'
+    show AppFontFamily, ThemePreferences, ThemeVariantsEnum;
 
 /// 🌍✅ [AppLocalizationShell] — Ensures the entire app tree is properly localized before rendering the root UI.
 //
@@ -94,7 +109,7 @@ final class _AppRootView extends StatelessWidget {
   Widget build(BuildContext context) {
     ///
     return MaterialApp.router(
-      title: LocaleKeys.app_title.tr(),
+      title: AppLocaleKeys.app_title.tr(),
       //
       /// 🌍 Localization setup via EasyLocalization
       locale: context.locale,

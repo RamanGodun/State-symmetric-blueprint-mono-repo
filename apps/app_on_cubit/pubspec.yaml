@@ -5,23 +5,21 @@ version: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: ^3.8.0
+  sdk: ^3.10.0
 
 dependencies:
+  # Shared BLoC-specific utilities for apps using Cubit/BLoC
+  adapters_for_bloc:
+    path: ../../packages/adapters_for_bloc
+  adapters_for_firebase:
+    path: ../../packages/adapters_for_firebase
   app_bootstrap:
     path: ../../packages/app_bootstrap
-  # Shared BLoC-specific utilities for apps using Cubit/BLoC
-  bloc_adapter:
-    path: ../../packages/bloc_adapter
   cached_network_image: ^3.4.1
-  core:
-    path: ../../packages/core
   easy_localization: ^3.0.8
   equatable: ^2.0.7
-  features:
-    path: ../../packages/features
-  firebase_adapter:
-    path: ../../packages/firebase_adapter
+  features_dd_layers:
+    path: ../../packages/features_dd_layers
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
@@ -32,6 +30,14 @@ dependencies:
   go_router: ^16.1.0
   hydrated_bloc: ^10.1.1
   path_provider: ^2.1.5
+  shared_core_modules:
+    path: ../../packages/shared_core_modules
+  shared_layers:
+    path: ../../packages/shared_layers
+  shared_utils:
+    path: ../../packages/shared_utils
+  shared_widgets:
+    path: ../../packages/shared_widgets
 
 dev_dependencies:
   bloc_test: ^10.0.0
@@ -47,7 +53,8 @@ flutter:
     - .env.dev
     - .env.staging
     - assets/icons/
+    - assets/images/
+    - assets/translations/
 
   # generate: true
   uses-material-design: true
-  #

@@ -1,6 +1,7 @@
-import 'package:app_on_riverpod/core/base_modules/navigation/go_router_factory.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:app_on_riverpod/core/base_modules/navigation/go_router_factory.dart'
+    show buildGoRouter;
+import 'package:flutter_riverpod/flutter_riverpod.dart' show Provider;
+import 'package:go_router/go_router.dart' show GoRouter;
 
 /// 🧩 [routerProvider] — public-facing provider for UI usage
 /// ✅ Use `ref.watch(routerProvider)` inside widgets

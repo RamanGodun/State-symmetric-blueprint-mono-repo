@@ -8,17 +8,18 @@ environment:
   sdk: ^3.8.0
 
 dependencies:
+  adapters_for_firebase:
+    path: ../../packages/adapters_for_firebase
+  # Shared Riverpod-specific utilities for apps using Riverpod
+  adapters_for_riverpod:
+    path: ../../packages/adapters_for_riverpod
   app_bootstrap:
     path: ../../packages/app_bootstrap
   cached_network_image: ^3.4.1
-  core:
-    path: ../../packages/core
   easy_localization: ^3.0.8
   equatable: ^2.0.7
-  features:
-    path: ../../packages/features
-  firebase_adapter:
-    path: ../../packages/firebase_adapter
+  features_dd_layers:
+    path: ../../packages/features_dd_layers
   flutter:
     sdk: flutter
   flutter_hooks: ^0.21.3
@@ -26,13 +27,16 @@ dependencies:
   formz: ^0.8.0
   get_storage: ^2.1.1
   go_router: ^16.2.0
-  # hooks_riverpod: ^2.6.1
-
-  # Shared Riverpod-specific utilities for apps using Riverpod
-  riverpod_adapter:
-    path: ../../packages/riverpod_adapter
-
   riverpod_annotation: ^2.6.1
+  shared_core_modules:
+    path: ../../packages/shared_core_modules
+  shared_layers:
+    path: ../../packages/shared_layers
+  shared_utils:
+    path: ../../packages/shared_utils
+  shared_widgets:
+    path: ../../packages/shared_widgets
+
   #
 
 dev_dependencies:
@@ -49,5 +53,7 @@ flutter:
     - .env.dev
     - .env.staging
     - assets/icons/
+    - assets/images/
+    - assets/translations/
   generate: true
   uses-material-design: true

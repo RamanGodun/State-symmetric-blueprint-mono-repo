@@ -1,0 +1,73 @@
+import 'package:flutter/material.dart' show immutable;
+import 'package:shared_core_modules/public_api/base_modules/errors_management.dart'
+    show Either, EitherGetters, Failure;
+import 'package:shared_core_modules/src/errors_management/core_of_module/core_utils/errors_observing/loggers/failure_logger_x.dart'
+    show FailureLogger;
+
+/// 🧩 [ResultHandler<T>] — wrapper around `Either<Failure, T>`
+/// ✅ Chainable and readable result API for cubits, Providers, UseCases.
+//
+@immutable
+final class ResultHandler<T> {
+  ///------------------------
+  const ResultHandler(this.result);
+
+  ///
+  final Either<Failure, T> result;
+
+  /// ───────────────────────────────
+  // 🔹 Success / Failure Callbacks
+  // ───────────────────────────────
+
+  /// 🔹 Executes handler if result is success
+  void onSuccess(void Function(T value) handler) {
+    if (result.isRight) handler(result.rightOrNull as T);
+  }
+
+  /// 🔹 Executes handler if result is failure
+  void onFailure(void Function(Failure failure) handler) {
+    if (result.isLeft) handler(result.leftOrNull!);
+  }
+
+  /// ───────────────────────────────
+  // 🎯 Accessors & Info
+  // ───────────────────────────────
+
+  /// ✅ Success value or fallback
+  T getOrElse(T fallback) => result.fold((_) => fallback, (r) => r);
+
+  /// ✅ Nullable success
+  T? get valueOrNull => result.rightOrNull;
+
+  /// ❌ Nullable failure
+  Failure? get failureOrNull => result.leftOrNull;
+
+  /// ✅ Indicates if result is failure
+  bool get didFail => result.isLeft;
+
+  /// ✅ Indicates if result is success
+  bool get didSucceed => result.isRight;
+
+  /// ───────────────────────────────
+  // 🔁 Fold Logic
+  // ───────────────────────────────
+
+  /// 🔁 Pattern match logic
+  void fold({
+    required void Function(Failure failure) onFailure,
+    required void Function(T value) onSuccess,
+  }) {
+    result.fold(onFailure, onSuccess);
+  }
+
+  /// ───────────────────────────────
+  // 🧪 Logging
+  // ───────────────────────────────
+
+  /// 🐞 Logs failure (debug or Crashlytics)
+  void log() {
+    result.leftOrNull?.log();
+  }
+
+  //
+}

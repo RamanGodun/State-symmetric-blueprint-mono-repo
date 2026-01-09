@@ -1,11 +1,20 @@
-import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:core/public_api/core.dart' hide PageNotFound;
-import 'package:core/public_api/shared_layers/presentation.dart'
-    show PageNotFound;
+import 'package:adapters_for_riverpod/adapters_for_riverpod.dart'
+    show authGatewayProvider;
+import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart'
+    show AppRoutes, RoutesNames, RoutesPaths;
 import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:riverpod_adapter/riverpod_adapter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' show Ref;
+import 'package:go_router/go_router.dart' show GoRouter;
+import 'package:shared_core_modules/public_api/base_modules/navigation.dart'
+    show NavigationX;
+import 'package:shared_core_modules/public_api/base_modules/overlays.dart'
+    show OverlaysCleanerWithinNavigation;
+import 'package:shared_core_modules/public_api/core_contracts/auth.dart'
+    show AuthFailure, AuthLoading, AuthReady, AuthSnapshot;
+import 'package:shared_layers/public_api/presentation_layer_shared.dart'
+    show PageNotFound;
+import 'package:shared_utils/public_api/general_utils.dart'
+    show StreamChangeNotifier;
 
 part 'routes_redirection_service.dart';
 

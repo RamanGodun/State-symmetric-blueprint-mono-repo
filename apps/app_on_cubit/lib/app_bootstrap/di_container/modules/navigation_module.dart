@@ -1,10 +1,12 @@
-import 'package:app_on_cubit/app_bootstrap/di_container/modules/auth_module.dart';
+import 'package:adapters_for_bloc/adapters_for_bloc.dart' show DIModule, di;
+import 'package:app_on_cubit/app_bootstrap/di_container/modules/auth_module.dart'
+    show AuthModule;
 import 'package:app_on_cubit/core/base_modules/navigation/go_router_factory.dart'
     show buildGoRouter;
-import 'package:bloc_adapter/bloc_adapter.dart' show DIModule, di;
-import 'package:core/public_api/utils.dart' show AuthGateway;
 import 'package:flutter/foundation.dart' show debugPrint;
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRouter;
+import 'package:shared_core_modules/public_api/core_contracts/auth.dart'
+    show AuthGateway;
 
 /// 🚦 [NavigationModule] — registers a singleton [GoRouter] in DI
 /// ✅ Ensures a single GoRouter instance is used for the whole app lifecycle

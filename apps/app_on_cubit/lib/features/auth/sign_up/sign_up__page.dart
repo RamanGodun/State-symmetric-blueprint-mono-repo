@@ -1,14 +1,42 @@
-import 'package:app_on_cubit/core/shared_presentation/utils/flavor_x.dart';
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
+    show
+        BlocAdapterForFooterGuard,
+        BlocAdapterForSubmissionFlowSideEffects,
+        BlocAdapterForSubmitButton,
+        BlocWatchSelectX,
+        di;
+import 'package:app_on_cubit/core/base_modules/localization/generated/app_locale_keys.g.dart'
+    show AppLocaleKeys;
+import 'package:app_on_cubit/core/shared_presentation/utils/flavor_x.dart'
+    show FlavorX;
 import 'package:app_on_cubit/features/auth/sign_in/sign_in__page.dart'
     show SignInPage;
-import 'package:app_on_cubit/features/auth/sign_up/cubit/form_fields_cubit.dart';
-import 'package:app_on_cubit/features/auth/sign_up/cubit/sign_up_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:core/public_api/core.dart';
-import 'package:features/features.dart' show SignUpUseCase;
+import 'package:app_on_cubit/features/auth/sign_up/cubit/form_fields_cubit.dart'
+    show SignUpFormFieldCubit;
+import 'package:app_on_cubit/features/auth/sign_up/cubit/sign_up_cubit.dart'
+    show SignUpCubit;
+import 'package:features_dd_layers/public_api/auth/auth.dart'
+    show SignUpUseCase;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart'
+    show BlocProvider, MultiBlocProvider, ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart' show HookWidget;
+import 'package:shared_core_modules/public_api/base_modules/forms.dart';
+import 'package:shared_core_modules/public_api/base_modules/navigation.dart'
+    show NavigationX;
+import 'package:shared_core_modules/public_api/base_modules/overlays.dart'
+    show OverlayBaseMethods;
+import 'package:shared_core_modules/public_api/base_modules/ui_design.dart'
+    show AppSpacing, OtherContextX, WidgetAlignX, WidgetPaddingX;
+import 'package:shared_layers/public_api/presentation_layer_shared.dart'
+    show
+        ButtonSubmissionStateX,
+        SubmissionFlowStateModel,
+        SubmissionSideEffectsConfig;
+import 'package:shared_widgets/public_api/buttons.dart' show AppTextButton;
+import 'package:shared_widgets/public_api/footers.dart'
+    show FooterEnabledContextX;
+import 'package:shared_widgets/public_api/text_widgets.dart';
 
 part 'sign_up_input_fields.dart';
 part 'widgets_for_sign_up_page.dart';
@@ -37,7 +65,7 @@ final class SignUpPage extends StatelessWidget {
         config: SubmissionSideEffectsConfig(
           /// ✅ Success → snackbar + go [VerifyEmailPage]
           onSuccess: (ctx, _) =>
-              ctx.showSnackbar(message: LocaleKeys.sign_up_success),
+              ctx.showSnackbar(message: AppLocaleKeys.sign_up_success),
           // 🔁 Retry with current form state
           onRetry: (ctx) => ctx.submitSignUp(),
           // 🧹 (optional) forms' reset after error

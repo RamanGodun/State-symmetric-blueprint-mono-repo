@@ -1,0 +1,79 @@
+{
+  "buttons": {
+    "ok": "OK",
+    "submitting": "Wysyłanie...",
+    "retry": "Spróbuj ponownie",
+    "cancel": "Anuluj",
+    "go_to_home": "Na stronę główną",
+    "loading": "Ładowanie..."
+  },
+  "form": {
+    "name": "Imię",
+    "name_is_empty": "pole nie może być puste",
+    "name_is_too_short": "musi mieć co najmniej 3 znaki",
+    "email": "Email",
+    "email_is_empty": "nie może być puste",
+    "email_is_invalid": "nieprawidłowy format emaila",
+    "password": "Hasło",
+    "password_required": "wymagane jest hasło",
+    "password_too_short": "musi mieć co najmniej 6 znaków",
+    "confirm_password": "Potwierdź hasło",
+    "confirm_password_is_empty": "musisz ponownie wprowadzić hasło",
+    "confirm_password_mismatch": "hasła nie są zgodne"
+  },
+
+  "theme": {
+    "light_enabled": "Obecnie \"Tryb jasny\"",
+    "dark_enabled": "Obecnie \"Tryb ciemny\"",
+    "amoled_enabled": "Obecnie  \"Amoled Tryb\"",
+    "light": "Motyw jasny",
+    "dark": "Motyw ciemny",
+    "amoled": "Motyw AMOLED",
+    "choose_theme": "Wybierz motyw"
+  },
+
+  "languages": {
+    "switched_to_pl": "Język zmieniono na 🇵🇱 polski",
+    "switched_to_en": "Język zmieniono na 🇬🇧 angielski",
+    "switched_to_ua": "Język zmieniono na 🇺🇦 ukraiński"
+  },
+
+  "errors": {
+    "page_not_found_title": "Strony nie znaleziono",
+    "page_not_found_message": "Ups! Strona, której szukasz, nie istnieje.",
+    "error_dialog": "Wystąpił błąd"
+  },
+
+  "failures": {
+    "firebase": {
+      "generic": "Wystąpił błąd Firebase.",
+      "unauthorized": "Nie jesteś autoryzowany. Zaloguj się, proszę.",
+      "invalid_credential": "Nieprawidłowe dane logowania. Sprawdź poprawność i spróbuj ponownie.",
+      "account_exists_with_different_credential": "Konto z tym adresem e-mail już istnieje, ale z innymi danymi logowania.",
+      "email_already_in_use": "Ten adres e-mail jest już używany.",
+      "email_verification_timeout": "Weryfikacja e-maila trwała zbyt długo. Spróbuj ponownie później.",
+      "user_not_found": "Użytkownik nie został znaleziony.",
+      "no_current_user": "Brak aktualnie zalogowanego użytkownika.",
+      "doc_missing": "Brak profilu użytkownika.",
+      "user_disabled": "Konto zostało dezaktywowane.",
+      "operation_not_allowed": "Ta operacja nie jest dozwolona przez Firebase.",
+      "requires_recent_login": "Aby wykonać tę operację, musisz się ponownie zalogować.",
+      "too_many_requests": "Zbyt wiele żądań. Spróbuj ponownie później."
+    },
+
+    "network": {
+      "no_connection": "Brak połączenia z Internetem.",
+      "timeout": "Limit czasu połączenia został przekroczony. Spróbuj ponownie później."
+    },
+
+    "api": {
+      "generic": "API error occurred."
+    },
+
+    "plugin_missing": "Wykryto brakujący plugin. Skontaktuj się z pomocą techniczną.",
+    "format_error": "Otrzymano nieprawidłowy format danych.",
+    "cache_error": "Wystąpił błąd pamięci podręcznej.",
+    "timeout": "Limit czasu żądania został przekroczony. Spróbuj ponownie później.",
+    "unknown": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie."
+  }
+}

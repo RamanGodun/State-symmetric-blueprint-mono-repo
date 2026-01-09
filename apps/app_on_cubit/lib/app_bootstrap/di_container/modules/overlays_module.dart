@@ -1,5 +1,4 @@
-import 'package:app_on_cubit/app_bootstrap/di_container/modules/theme_module.dart';
-import 'package:bloc_adapter/bloc_adapter.dart'
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
     show
         BlocOverlayActivityPort,
         DIModule,
@@ -8,7 +7,9 @@ import 'package:bloc_adapter/bloc_adapter.dart'
         SafeDispose,
         SafeRegistration,
         di;
-import 'package:core/public_api/base_modules/overlays.dart'
+import 'package:app_on_cubit/app_bootstrap/di_container/modules/theme_module.dart'
+    show ThemeModule;
+import 'package:shared_core_modules/public_api/base_modules/overlays.dart'
     show OverlayDispatcher;
 
 /// 📤 [OverlaysModule] — wires overlay system into DI

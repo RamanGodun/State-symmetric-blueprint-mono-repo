@@ -1,7 +1,13 @@
-import 'package:app_on_cubit/app_bootstrap/di_container/modules/firebase_module.dart';
-import 'package:bloc_adapter/bloc_adapter.dart';
-import 'package:features/features.dart';
-import 'package:firebase_adapter/firebase_adapter.dart';
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
+    show DIModule, SafeRegistration, di;
+import 'package:adapters_for_firebase/adapters_for_firebase.dart'
+    show FirebaseAuth;
+import 'package:app_on_cubit/app_bootstrap/di_container/modules/firebase_module.dart'
+    show FirebaseModule, kFbAuthInstance;
+import 'package:features_dd_layers/public_api/password_changing_or_reset/password_changing_or_reset.dart'
+    show IPasswordRepo, PasswordRelatedUseCases;
+import 'package:features_dd_layers/public_api/password_changing_or_reset/password_changing_or_reset_infra.dart'
+    show IPasswordRemoteDatabase, PasswordRemoteDatabaseImpl, PasswordRepoImpl;
 
 /// 🔐 [PasswordModule] — Registers dependencies for password-related features
 /// ⛓️ Depends on [FirebaseModule] to get `FirebaseAuth` instance via DI.

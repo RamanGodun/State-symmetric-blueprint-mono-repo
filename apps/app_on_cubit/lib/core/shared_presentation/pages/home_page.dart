@@ -1,6 +1,25 @@
-import 'package:app_on_cubit/core/base_modules/navigation/routes/app_routes.dart';
-import 'package:core/public_api/core.dart';
-import 'package:flutter/material.dart';
+import 'package:app_on_cubit/core/base_modules/localization/generated/app_locale_keys.g.dart'
+    show AppLocaleKeys;
+import 'package:app_on_cubit/core/base_modules/navigation/routes/app_routes.dart'
+    show RoutesNames;
+import 'package:flutter/material.dart'
+    show
+        BuildContext,
+        Center,
+        Icon,
+        IconButton,
+        Icons,
+        PopScope,
+        Scaffold,
+        StatelessWidget,
+        Widget;
+import 'package:shared_core_modules/public_api/base_modules/navigation.dart'
+    show NavigationX;
+import 'package:shared_core_modules/public_api/base_modules/ui_design.dart'
+    show AppSpacing, WidgetPaddingX;
+import 'package:shared_widgets/public_api/bars.dart' show CustomAppBar;
+import 'package:shared_widgets/public_api/text_widgets.dart'
+    show TextType, TextWidget;
 
 /// 🏠 [HomePage] — the main landing screen after login.
 /// Displays a toggle for theme switching and navigates to profile/settings.
@@ -16,13 +35,13 @@ final class HomePage extends StatelessWidget {
       canPop: false,
       child: Scaffold(
         appBar: const CustomAppBar(
-          title: LocaleKeys.pages_home,
+          title: AppLocaleKeys.pages_home,
           actionWidgets: [_GoToProfilePageButton()],
         ),
 
         body: Center(
           child: const TextWidget(
-            LocaleKeys.pages_home_message,
+            AppLocaleKeys.pages_home_message,
             TextType.titleMedium,
             isTextOnFewStrings: true,
           ).withPaddingHorizontal(AppSpacing.l),

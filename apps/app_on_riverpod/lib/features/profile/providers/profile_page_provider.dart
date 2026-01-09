@@ -1,6 +1,10 @@
-import 'package:core/public_api/core.dart' show AuthReady, UserEntity;
-import 'package:riverpod_adapter/riverpod_adapter.dart';
+import 'package:adapters_for_riverpod/adapters_for_riverpod.dart'
+    show authGatewayProvider, fetchProfileUseCaseProvider;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_core_modules/public_api/core_contracts/auth.dart'
+    show AuthReady;
+import 'package:shared_layers/public_api/domain_layer_shared.dart'
+    show UserEntity;
 
 part 'profile_page_provider.g.dart';
 

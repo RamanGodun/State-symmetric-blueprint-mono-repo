@@ -1,8 +1,12 @@
-import 'package:app_bootstrap/app_bootstrap.dart';
-import 'package:app_on_riverpod/app_bootstrap/app_bootstrap.dart';
-import 'package:app_on_riverpod/root_shell.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_adapter/riverpod_adapter.dart';
+import 'package:adapters_for_riverpod/adapters_for_riverpod.dart'
+    show GlobalDIContainer;
+import 'package:app_bootstrap/app_bootstrap.dart'
+    show AppFlavor, AppLauncher, FlavorConfig;
+import 'package:app_on_riverpod/app_bootstrap/app_bootstrap.dart'
+    show DefaultAppBootstrap;
+import 'package:app_on_riverpod/root_shell.dart' show AppLocalizationShell;
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show UncontrolledProviderScope;
 
 /// 🏁 Application entrypoint — Defines environment flavor and launches the app
 //
@@ -17,8 +21,8 @@ void main() async {
       // ? Here can be plugged in custom dependencies (e.g.  "localStorage: IsarLocalStorage()," )
     ),
     //
-    builder: () => ProviderScope(
-      parent: GlobalDIContainer.instance,
+    builder: () => UncontrolledProviderScope(
+      container: GlobalDIContainer.instance,
       child: const AppLocalizationShell(),
     ),
     //

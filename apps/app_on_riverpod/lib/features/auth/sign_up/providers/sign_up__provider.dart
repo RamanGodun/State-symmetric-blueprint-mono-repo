@@ -1,9 +1,20 @@
-import 'package:core/public_api/core.dart';
-import 'package:features/features.dart' show SignUpUseCase;
-import 'package:features/features_barrels/auth/auth.dart' show SignUpUseCase;
-import 'package:riverpod_adapter/riverpod_adapter.dart'
+import 'package:adapters_for_riverpod/adapters_for_riverpod.dart'
     show signUpUseCaseProvider;
+import 'package:features_dd_layers/features_dd_layers.dart' show SignUpUseCase;
+import 'package:features_dd_layers/public_api/auth/auth.dart'
+    show SignUpUseCase;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_core_modules/public_api/base_modules/errors_management.dart'
+    show ConsumableX, FailureLogger;
+import 'package:shared_layers/public_api/presentation_layer_shared.dart'
+    show
+        ButtonSubmissionErrorState,
+        ButtonSubmissionLoadingState,
+        ButtonSubmissionSuccessState,
+        SubmissionFlowInitialState,
+        SubmissionFlowStateModel;
+import 'package:shared_utils/public_api/general_utils.dart'
+    show AppDurations, Debouncer;
 
 part 'sign_up__provider.g.dart';
 

@@ -1,10 +1,26 @@
-import 'package:app_on_riverpod/core/base_modules/navigation/go_router_factory.dart';
-import 'package:app_on_riverpod/core/base_modules/navigation/router_provider.dart';
-import 'package:core/public_api/core.dart';
-import 'package:firebase_adapter/firebase_adapter.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:riverpod_adapter/riverpod_adapter.dart';
+import 'package:adapters_for_firebase/adapters_for_firebase.dart'
+    show FirebaseAuthGateway, FirebaseRefs;
+import 'package:adapters_for_riverpod/adapters_for_riverpod.dart'
+    show
+        IDIConfig,
+        ProviderDebugObserver,
+        RiverpodOverlayActivityPort,
+        ThemeConfigNotifier,
+        authGatewayProvider,
+        firebaseAuthProvider,
+        overlayDispatcherProvider,
+        themeProvider,
+        themeStorageProvider,
+        usersCollectionProvider;
+import 'package:app_on_riverpod/core/base_modules/navigation/go_router_factory.dart'
+    show buildGoRouter;
+import 'package:app_on_riverpod/core/base_modules/navigation/router_provider.dart'
+    show goRouter;
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show Override, ProviderObserver;
+import 'package:get_storage/get_storage.dart' show GetStorage;
+import 'package:shared_core_modules/public_api/base_modules/overlays.dart'
+    show OverlayDispatcher;
 
 /// 🛠️ [DIConfiguration] — default DI setup for the app runtime
 /// Wires core subsystems (theme, routing, overlays) and feature stacks (auth/profile).

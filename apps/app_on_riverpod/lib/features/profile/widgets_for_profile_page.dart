@@ -15,7 +15,7 @@ final class _ProfileAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     //
     return const CustomAppBar(
-      title: LocaleKeys.pages_profile,
+      title: AppLocaleKeys.pages_profile,
       actionWidgets: [LanguageToggleButton(), SignOutIconButton()],
     );
   }
@@ -67,7 +67,7 @@ final class _UserProfileCard extends StatelessWidget {
                     children: [
                       /// 👤 Name
                       KeyValueTextWidget(
-                        labelKey: LocaleKeys.profile_name,
+                        labelKey: AppLocaleKeys.profile_name,
                         value: user.name,
                         labelTextType: TextType.bodyMedium,
                         valueTextType: TextType.titleMedium,
@@ -75,7 +75,7 @@ final class _UserProfileCard extends StatelessWidget {
 
                       /// 🆔 ID
                       KeyValueTextWidget(
-                        labelKey: LocaleKeys.profile_id,
+                        labelKey: AppLocaleKeys.profile_id,
                         value: user.id,
                         labelTextType: TextType.bodyMedium,
                         valueTextType: TextType.bodySmall,
@@ -83,7 +83,7 @@ final class _UserProfileCard extends StatelessWidget {
 
                       /// 📧 Email
                       KeyValueTextWidget(
-                        labelKey: LocaleKeys.profile_email,
+                        labelKey: AppLocaleKeys.profile_email,
                         value: user.email,
                         labelTextType: TextType.bodyMedium,
                         valueTextType: TextType.titleSmall,
@@ -91,14 +91,14 @@ final class _UserProfileCard extends StatelessWidget {
 
                       /// 📊 Points
                       KeyValueTextWidget(
-                        labelKey: LocaleKeys.profile_points,
+                        labelKey: AppLocaleKeys.profile_points,
                         value: user.point.toString(),
                         labelTextType: TextType.bodyMedium,
                       ),
 
                       /// 🏆 Rank
                       KeyValueTextWidget(
-                        labelKey: LocaleKeys.profile_rank,
+                        labelKey: AppLocaleKeys.profile_rank,
                         value: user.rank,
                         labelTextType: TextType.bodyMedium,
                       ),
@@ -139,7 +139,7 @@ final class _ThemeSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextWidget(
-          LocaleKeys.theme_choose_theme.tr(),
+          CoreLocaleKeys.theme_choose_theme.tr(),
           TextType.titleMedium,
           fontWeight: FontWeight.w500,
         ),
@@ -171,7 +171,7 @@ final class _ChangePasswordButton extends StatelessWidget {
     //
     return CustomFilledButton(
       onPressed: () => context.goTo(RoutesNames.changePassword),
-      label: LocaleKeys.change_password_title,
+      label: AppLocaleKeys.change_password_title,
     );
   }
 }

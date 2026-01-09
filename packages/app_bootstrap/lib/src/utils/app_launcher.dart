@@ -1,8 +1,11 @@
-import 'dart:async';
-import 'dart:developer';
-import 'package:app_bootstrap/src/bootstrap_contracts/bootstrap.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'dart:async' show FutureOr, runZonedGuarded;
+import 'dart:developer' show log;
+
+import 'package:app_bootstrap/src/bootstrap_contracts/bootstrap.dart'
+    show IAppBootstrap;
+import 'package:flutter/foundation.dart' show PlatformDispatcher;
+import 'package:flutter/material.dart'
+    show FlutterError, FlutterErrorDetails, Widget, runApp;
 
 /// 🏗️ [AppBuilder] — Factory typedef for building the root [Widget]
 //

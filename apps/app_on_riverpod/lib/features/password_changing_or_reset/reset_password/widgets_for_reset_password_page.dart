@@ -21,11 +21,11 @@ final class _ResetPasswordHeader extends StatelessWidget {
           ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.l),
         ),
         const TextWidget(
-          LocaleKeys.reset_password_header,
+          AppLocaleKeys.reset_password_header,
           TextType.headlineSmall,
         ),
         const TextWidget(
-          LocaleKeys.reset_password_sub_header,
+          AppLocaleKeys.reset_password_sub_header,
           TextType.titleSmall,
           isTextOnFewStrings: true,
         ).withPaddingBottom(AppSpacing.xxl),
@@ -86,7 +86,7 @@ final class _ResetPasswordSubmitButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //
     return RiverpodAdapterForSubmitButton(
-      label: LocaleKeys.buttons_reset_password,
+      label: AppLocaleKeys.buttons_reset_password,
       isFormValid: resetPasswordFormProvider.select(
         (state) => state.isValid,
       ),
@@ -143,13 +143,13 @@ final class _ResetPasswordPageFooter extends StatelessWidget {
       children: [
         /// 🧭 Redirect to [SignInPage]
         const TextWidget(
-          LocaleKeys.reset_password_remember,
+          AppLocaleKeys.reset_password_remember,
           TextType.bodyMedium,
           fontWeight: FontWeight.w300,
         ),
         //
         AppTextButton(
-          label: LocaleKeys.buttons_sign_in,
+          label: AppLocaleKeys.buttons_sign_in,
           isEnabled: isEnabled,
           onPressed: () => context.popView(),
         ).withPaddingBottom(AppSpacing.xxxm),

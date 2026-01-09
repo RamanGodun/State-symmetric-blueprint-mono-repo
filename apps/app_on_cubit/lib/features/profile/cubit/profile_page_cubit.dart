@@ -1,6 +1,9 @@
-import 'package:bloc_adapter/bloc_adapter.dart' show CubitWithAsyncValue;
-import 'package:core/public_api/core.dart';
-import 'package:features/features.dart' show FetchProfileUseCase;
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
+    show CubitWithAsyncValue;
+import 'package:features_dd_layers/public_api/profile/profile.dart'
+    show FetchProfileUseCase;
+import 'package:shared_layers/public_api/domain_layer_shared.dart'
+    show UserEntity;
 
 /// 👤 [ProfileCubit] — keeps the authenticated user's profile.
 /// ✅ Mirrors the Riverpod profile provider API (prime / refresh / reset).

@@ -1,0 +1,111 @@
+// packages/core/lib/base_modules/theme/widgets/theme_picker_view.dart
+import 'package:flutter/material.dart'
+    show
+        BuildContext,
+        DropdownButton,
+        DropdownMenuItem,
+        FontWeight,
+        Icon,
+        Icons,
+        Localizations,
+        SizedBox,
+        StatelessWidget,
+        ValueKey,
+        Widget;
+import 'package:shared_core_modules/public_api/base_modules/localization.dart'
+    show AppLocalizer, CoreLocaleKeys;
+import 'package:shared_core_modules/public_api/base_modules/overlays.dart'
+    show ContextXForOverlays;
+import 'package:shared_core_modules/public_api/base_modules/ui_design.dart';
+import 'package:shared_widgets/public_api/text_widgets.dart';
+
+/// 🌗 [ThemePickerView] — Stateless “dumb-widget”
+/// ✅ Renders a dropdown with theme variants; invokes the provided callback.
+/// ❌ No dependency on state managers (Cubit/Riverpod) — receives data via props.
+///
+final class ThemePickerView extends StatelessWidget {
+  ///--------------------------------------
+  const ThemePickerView({
+    required this.current,
+    required this.onChanged,
+    super.key,
+  });
+
+  /// Currently selected theme variant
+  final ThemeVariantsEnum current;
+
+  /// Delegated handler for changing theme (provided by Cubit/Riverpod wrapper)
+  final Future<void> Function(ThemeVariantsEnum) onChanged;
+
+  /// 🔽 Available theme variants
+  static const List<ThemeVariantsEnum> _variants = [
+    ThemeVariantsEnum.light,
+    ThemeVariantsEnum.dark,
+    ThemeVariantsEnum.amoled,
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context);
+
+    return DropdownButton<ThemeVariantsEnum>(
+      key: ValueKey(locale.languageCode),
+      value: current,
+      icon: const Icon(Icons.arrow_drop_down),
+      underline: const SizedBox(),
+
+      /// 🔄 User picked a theme
+      onChanged: (ThemeVariantsEnum? selected) async {
+        final showUserBanner = context.showUserBanner;
+        if (selected == null) return;
+        await onChanged(selected);
+
+        /// 🏷️ Show confirmation banner
+        final label = _chosenThemeLabel(selected);
+        showUserBanner(message: label, icon: Icons.palette);
+      },
+
+      /// 🧾 Options list
+      items: _variants
+          .map(
+            (type) => DropdownMenuItem<ThemeVariantsEnum>(
+              value: type,
+              child: TextWidget(
+                _themeLabel(type),
+                TextType.titleSmall,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  ////
+
+  /// 🏷️ Localized label for dropdown items
+  String _themeLabel(ThemeVariantsEnum type) => switch (type) {
+    ThemeVariantsEnum.light => AppLocalizer.translateSafely(
+      CoreLocaleKeys.theme_light,
+    ),
+    ThemeVariantsEnum.dark => AppLocalizer.translateSafely(
+      CoreLocaleKeys.theme_dark,
+    ),
+    ThemeVariantsEnum.amoled => AppLocalizer.translateSafely(
+      CoreLocaleKeys.theme_amoled,
+    ),
+  };
+
+  /// 🏷️ Localized label for confirmation banner
+  String _chosenThemeLabel(ThemeVariantsEnum type) => switch (type) {
+    ThemeVariantsEnum.light => AppLocalizer.translateSafely(
+      CoreLocaleKeys.theme_light_enabled,
+    ),
+    ThemeVariantsEnum.dark => AppLocalizer.translateSafely(
+      CoreLocaleKeys.theme_dark_enabled,
+    ),
+    ThemeVariantsEnum.amoled => AppLocalizer.translateSafely(
+      CoreLocaleKeys.theme_amoled_enabled,
+    ),
+  };
+}

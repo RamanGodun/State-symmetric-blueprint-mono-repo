@@ -1,0 +1,80 @@
+{
+  "buttons": {
+    "ok": "OK",
+    "submitting": "Submitting...",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "go_to_home": "To Home Page",
+    "loading": "Loading..."
+  },
+
+  "form": {
+    "name": "Name",
+    "name_is_empty": "field cannot be empty",
+    "name_is_too_short": "must be at least 3 characters",
+    "email": "Email",
+    "email_is_empty": "cannot be empty",
+    "email_is_invalid": "invalid email format",
+    "password": "Password",
+    "password_required": "password is required",
+    "password_too_short": "must be at least 6 characters",
+    "confirm_password": "Confirm Password",
+    "confirm_password_is_empty": "need to re-enter the password",
+    "confirm_password_mismatch": "passwords do not match"
+  },
+
+  "theme": {
+    "light_enabled": "now is  \"Light Mode\"",
+    "dark_enabled": "now is  \"Dark Mode\"",
+    "amoled_enabled": "now is  \"Amoled Mode\"",
+    "light": "Light theme",
+    "dark": "Dark theme ",
+    "amoled": "Amoled theme",
+    "choose_theme": "Choose theme"
+  },
+
+  "languages": {
+    "switched_to_pl": "Language switched to 🇵🇱 Polish",
+    "switched_to_en": "Language switched to 🇬🇧 English",
+    "switched_to_ua": "Language switched to 🇺🇦 Ukrainian"
+  },
+
+  "errors": {
+    "page_not_found_title": "Page Not Found",
+    "page_not_found_message": "Oops! The page you’re looking for does not exist.",
+    "error_dialog": "An error occurred"
+  },
+
+  "failures": {
+    "firebase": {
+      "generic": "A Firebase error occurred.",
+      "unauthorized": "You are not authorized. Please sign in.",
+      "invalid_credential": "Invalid credentials. Please check your input and try again.",
+      "account_exists_with_different_credential": "An account with this email already exists but with different credentials.",
+      "email_already_in_use": "This email address is already in use.",
+      "email_verification_timeout": "Email verification took too long. Please try again later.",
+      "user_not_found": "User not found.",
+      "no_current_user": "No current user signed in.",
+      "doc_missing": "User profile is missing.",
+      "user_disabled": "Account has been disabled.",
+      "operation_not_allowed": "Operation not allowed by Firebase.",
+      "requires_recent_login": "You need to reauthenticate to perform this action.",
+      "too_many_requests": "Too many requests. Please try again later."
+    },
+
+    "network": {
+      "no_connection": "No internet connection.",
+      "timeout": "Connection timed out. Please try again later."
+    },
+
+    "api": {
+      "generic": "API error occurred."
+    },
+
+    "plugin_missing": "Missing plugin detected. Please contact support.",
+    "format_error": "Invalid data format received.",
+    "cache_error": "A cache error occurred.",
+    "timeout": "The request timed out. Please try again later.",
+    "unknown": "An unexpected error occurred. Please try again."
+  }
+}

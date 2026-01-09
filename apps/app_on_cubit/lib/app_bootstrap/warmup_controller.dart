@@ -1,6 +1,9 @@
-import 'dart:async';
-import 'package:app_on_cubit/features/profile/cubit/profile_page_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart';
+import 'dart:async' show StreamSubscription;
+
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
+    show AuthCubit, AuthViewReady, AuthViewState;
+import 'package:app_on_cubit/features/profile/cubit/profile_page_cubit.dart'
+    show ProfileCubit;
 
 /// 🚀 [WarmupController] — app-scope “pre-heater” for the BLoC app.
 /// ✅ Keeps critical cubits hot and synchronized from the very start

@@ -4,10 +4,13 @@
  * [LICENSE](../../../LICENSE).
  */
 
-import 'package:app_bootstrap/app_bootstrap.dart';
-import 'package:app_on_cubit/app_bootstrap/app_bootstrap.dart';
-import 'package:app_on_cubit/app_bootstrap/di_container/global_di_container.dart';
-import 'package:app_on_cubit/root_shell.dart';
+import 'package:app_bootstrap/app_bootstrap.dart'
+    show AppFlavor, AppLauncher, FlavorConfig;
+import 'package:app_on_cubit/app_bootstrap/app_bootstrap.dart'
+    show DefaultAppBootstrap;
+import 'package:app_on_cubit/app_bootstrap/di_container/global_di_container.dart'
+    show GlobalProviders;
+import 'package:app_on_cubit/root_shell.dart' show AppLocalizationShell;
 
 /// 🏁 Application entrypoint — Defines environment flavor and launches the app
 //

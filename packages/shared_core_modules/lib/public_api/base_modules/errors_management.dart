@@ -1,0 +1,21 @@
+export '../../../src/errors_management/core_of_module/_errors_handling_entry_point.dart';
+export '../../../src/errors_management/core_of_module/core_utils/consumable/consumable.dart';
+export '../../../src/errors_management/core_of_module/core_utils/errors_observing/loggers/errors_log_util.dart';
+export '../../../src/errors_management/core_of_module/core_utils/errors_observing/loggers/failure_logger_x.dart';
+export '../../../src/errors_management/core_of_module/core_utils/errors_observing/result_loggers/result_logger_x.dart';
+export '../../../src/errors_management/core_of_module/core_utils/extensions_on_either/either__x.dart';
+export '../../../src/errors_management/core_of_module/core_utils/extensions_on_either/either_async_x.dart';
+export '../../../src/errors_management/core_of_module/core_utils/extensions_on_either/either_getters_x.dart';
+export '../../../src/errors_management/core_of_module/core_utils/extensions_on_failure/failure_to_either_x.dart';
+export '../../../src/errors_management/core_of_module/core_utils/result_handler.dart';
+export '../../../src/errors_management/core_of_module/core_utils/result_handler_async.dart';
+export '../../../src/errors_management/core_of_module/core_utils/typedefs_for_errors_management.dart';
+export '../../../src/errors_management/core_of_module/either.dart';
+export '../../../src/errors_management/core_of_module/failure_entity.dart';
+export '../../../src/errors_management/core_of_module/failure_type.dart'; // has `part`s for concrete types
+export '../../../src/errors_management/core_of_module/failure_ui_entity.dart';
+export '../../../src/errors_management/core_of_module/failure_ui_mapper.dart';
+export '../../../src/errors_management/extensible_part/failure_extensions/failure_diagnostics_x.dart';
+export '../../../src/errors_management/extensible_part/failure_extensions/failure_icons_x.dart';
+export '../../../src/errors_management/extensible_part/failure_extensions/failure_led_retry_x.dart';
+export '../../../src/errors_management/extensible_part/failure_types/failure_codes.dart';

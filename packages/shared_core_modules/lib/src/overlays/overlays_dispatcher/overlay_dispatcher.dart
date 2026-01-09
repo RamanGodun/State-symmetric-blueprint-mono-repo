@@ -1,0 +1,216 @@
+import 'dart:async' show Future, unawaited;
+import 'dart:collection' show Queue;
+
+import 'package:flutter/material.dart'
+    show BuildContext, Navigator, Overlay, OverlayEntry, OverlayState;
+import 'package:shared_core_modules/public_api/base_modules/animations.dart'
+    show OverlayWidgetX;
+import 'package:shared_core_modules/public_api/base_modules/overlays.dart'
+    show
+        OverlayActivityPort,
+        OverlayCategory,
+        OverlayDismissPolicy,
+        OverlayReplacePolicy;
+import 'package:shared_core_modules/src/overlays/core/tap_through_overlay_barrier.dart'
+    show TapThroughOverlayBarrier;
+import 'package:shared_core_modules/src/overlays/overlays_dispatcher/overlay_entries/_overlay_entries_registry.dart'
+    show OverlayUIEntry;
+import 'package:shared_core_modules/src/overlays/utils/overlay_logger.dart'
+    show OverlayLogger;
+import 'package:shared_utils/public_api/general_utils.dart'
+    show AppDurations, Debouncer;
+
+part 'policy_resolver.dart';
+
+/// 🧠 [OverlayDispatcher] – Handles overlay lifecycle:
+/// - Queueing requests
+/// - Resolving conflicts
+/// - Managing overlay insertion & dismissal
+/// - Centralized logging
+//
+final class OverlayDispatcher {
+  ///------------------------
+  OverlayDispatcher({OverlayActivityPort? activityPort})
+    : _activityPort = activityPort;
+  //
+  final OverlayActivityPort? _activityPort;
+
+  ////
+
+  // 📦 Queue to hold pending overlay requests
+  final Queue<OverlayQueueItem> _queue = Queue();
+  // 🎯 Currently visible overlay entry in the widget tree
+  OverlayEntry? _activeEntry;
+  // 📄 Metadata of the currently shown overlay (used for decisions)
+  OverlayUIEntry? _activeRequest;
+  // 🚦 Whether an overlay is currently being inserted
+  bool _isProcessing = false;
+  //
+  /// 🔓 Whether the current overlay can be dismissed externally.
+  bool get canBeDismissedExternally =>
+      _activeRequest?.dismissPolicy == OverlayDismissPolicy.dismissible;
+  //
+  /// 📡 Notifies the [OverlayActivityPort] about overlay activity changes.
+  /// - `true`  → overlay became active (inserted into tree)
+  /// - `false` → overlay was dismissed / no active overlays
+  void _notify(bool isActive) => _activityPort?.setActive(isActive: isActive);
+  //
+
+  /// 📥 Adds a new request to the queue, resolves replacement/drop strategy
+  Future<void> enqueueRequest(
+    BuildContext context,
+    OverlayUIEntry request,
+  ) async {
+    if (!context.mounted) return; // ✅ avoid insertion if context is dead
+    OverlayLogger.show(request);
+    // final overlay = Overlay.of(context, rootOverlay: true);
+    final navigator = Navigator.maybeOf(context, rootNavigator: true);
+    final overlay =
+        navigator?.overlay ?? Overlay.of(context, rootOverlay: true);
+    //
+    if (_activeRequest != null) {
+      OverlayLogger.activeExists(_activeRequest);
+
+      /// 🚫 Drop if strategy disallows same-type duplicates
+      final isSameType =
+          request.runtimeType == _activeRequest.runtimeType &&
+          request.strategy.policy == OverlayReplacePolicy.dropIfSameType;
+      if (isSameType) {
+        OverlayLogger.droppedSameType();
+        return;
+      }
+      //
+      /// 🔁 Replace if conflict strategy allows
+      final shouldReplace = OverlayPolicyResolver.shouldReplaceCurrent(
+        request,
+        _activeRequest!,
+      );
+      if (shouldReplace) {
+        OverlayLogger.replacing();
+        await dismissCurrent(force: true);
+        OverlayPolicyResolver.getDebouncer(request.strategy.category).run(() {
+          _finalizeEnqueue(overlay, request);
+        });
+        return;
+      }
+    }
+    //
+    _finalizeEnqueue(overlay, request);
+  }
+
+  ////
+
+  /// 🧱 Finalizes the enqueue logic after replacement/drop resolution
+  void _finalizeEnqueue(OverlayState overlay, OverlayUIEntry request) {
+    _removeDuplicateInQueue(request);
+    _queue.add(OverlayQueueItem(overlay: overlay, request: request));
+    OverlayLogger.addedToQueue(_queue.length);
+    _tryProcessQueue();
+  }
+  //
+
+  /// ▶️ Processes the first item in queue if no active entry.
+  void _tryProcessQueue() {
+    if (_isProcessing || _queue.isEmpty) return;
+    _isProcessing = true;
+    //
+    try {
+      final item = _queue.removeFirst();
+      _activeRequest = item.request;
+      //
+      /// 🧠 Notify listeners overlay is shown
+      // onOverlayStateChanged?.call(isActive: true);
+      _notify(true);
+      //
+      final widget = item.request.buildWidget();
+      //
+      /// 🧠 Apply centralized dismiss handling if AnimatedOverlayWrapper is used
+      final processedWidget = widget.withDispatcherOverlayControl(
+        onDismiss: () async {
+          OverlayLogger.autoDismissed(_activeRequest);
+          _activeRequest?.onAutoDismissed();
+          await dismissCurrent(force: true);
+          _isProcessing = false;
+          _tryProcessQueue();
+        },
+      );
+      //
+      /// Inserts new OverlayEntry with tap-through barrier.
+      _activeEntry = OverlayEntry(
+        builder: (ctx) => TapThroughOverlayBarrier(
+          enablePassthrough: item.request.tapPassthroughEnabled,
+          onTapOverlay: () {
+            if (item.request.dismissPolicy ==
+                OverlayDismissPolicy.dismissible) {
+              unawaited(dismissCurrent());
+            }
+          },
+          child: processedWidget,
+        ),
+      );
+      //
+      item.overlay.insert(_activeEntry!);
+      OverlayLogger.inserted(_activeRequest);
+    } on Object catch (e, stack) {
+      OverlayLogger.dismissAnimationError(
+        _activeRequest,
+        error: e,
+        stackTrace: stack,
+      );
+      // ensure we don’t stick in a busy state
+      _activeEntry = null;
+      _activeRequest = null;
+      _notify(false);
+    } finally {
+      // do not reset here on normal path: onDismiss handler advances the queue.
+      // but if there was nothing inserted (caught above), allow processing to continue
+      if (_activeEntry == null) {
+        _isProcessing = false;
+        _tryProcessQueue();
+      }
+    }
+  }
+  //
+
+  /// ❌ Dismisses current overlay and clears queue if needed.
+  Future<void> dismissCurrent({
+    bool clearQueue = false,
+    bool force = false,
+  }) async {
+    await _dismissEntry(force: force);
+    if (clearQueue) _queue.clear();
+    _isProcessing = false;
+    _tryProcessQueue();
+  }
+
+  /// 🧹 Internal: removes entry, handles animation and resets state.
+  Future<void> _dismissEntry({bool force = false}) async {
+    try {
+      _activeEntry?.remove();
+      OverlayLogger.dismissed(_activeRequest);
+    } on Object catch (_) {
+      OverlayLogger.dismissAnimationError(_activeRequest);
+    }
+    _activeEntry = null;
+    _activeRequest = null;
+    //
+    /// 🧠 Notify listeners overlay was dismissed
+    // onOverlayStateChanged?.call(isActive: false);
+    _notify(false);
+  }
+
+  /// 🔁 Removes pending duplicates by type & category to avoid stacking
+  void _removeDuplicateInQueue(OverlayUIEntry request) {
+    _queue.removeWhere(
+      (item) =>
+          item.request.runtimeType == request.runtimeType &&
+          item.request.strategy.category == request.strategy.category &&
+          item.request.id == request.id,
+    );
+  }
+
+  /// ❌ Clears entire queue.
+  void clearAll() => _queue.clear();
+
+  //
+}

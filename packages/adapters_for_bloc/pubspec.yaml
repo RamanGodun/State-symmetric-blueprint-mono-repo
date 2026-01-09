@@ -1,0 +1,45 @@
+name: adapters_for_bloc
+description: >
+  Lightweight adapters that connect core ports to BLoC/cubit.
+
+# (!) This package is UI/adapter glue for BLoC/Cubit apps.
+# Avoid depending on app-specific code to prevent cycles.
+
+version: 0.1.0
+publish_to: none
+
+# =============================
+# ENVIRONMENT
+# =============================
+environment:
+  flutter: ">=3.22.0"
+  sdk: ">=3.8.0 <4.0.0"
+
+# =============================
+# DEPENDENCIES
+# =============================
+dependencies:
+  equatable: ^2.0.7
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  formz: ^0.8.0
+  get_it: ^8.2.0
+  hydrated_bloc: ^10.1.1
+  shared_core_modules:
+    path: ../shared_core_modules
+  shared_layers:
+    path: ../shared_layers
+  shared_utils:
+    path: ../../packages/shared_utils
+  shared_widgets:
+    path: ../../packages/shared_widgets
+
+# =============================
+# DEV DEPENDENCIES
+# =============================
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+  very_good_analysis: ^10.0.0

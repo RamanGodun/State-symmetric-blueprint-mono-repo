@@ -14,21 +14,21 @@ final class _ChangePasswordInfo extends StatelessWidget {
       children: [
         const SizedBox(height: AppSpacing.massive),
         const TextWidget(
-          LocaleKeys.change_password_title,
+          AppLocaleKeys.change_password_title,
           TextType.headlineSmall,
         ),
         const SizedBox(height: AppSpacing.xxxs),
         const TextWidget(
-          LocaleKeys.change_password_warning,
+          AppLocaleKeys.change_password_warning,
           TextType.titleSmall,
         ),
         Text.rich(
           TextSpan(
-            text: LocaleKeys.change_password_prefix.tr(),
+            text: AppLocaleKeys.change_password_prefix.tr(),
             style: context.textTheme.titleSmall,
             children: [
               TextSpan(
-                text: LocaleKeys.change_password_signed_out.tr(),
+                text: AppLocaleKeys.change_password_signed_out.tr(),
                 style: const TextStyle(
                   color: Colors.red,
                   fontSize: 16,
@@ -140,7 +140,7 @@ final class _ChangePasswordSubmitButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //
     return RiverpodAdapterForSubmitButton(
-      label: LocaleKeys.change_password_title,
+      label: AppLocaleKeys.change_password_title,
       isFormValid: changePasswordFormProvider.select(
         (state) => state.isValid,
       ),

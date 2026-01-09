@@ -1,0 +1,162 @@
+# Firebase Adapters Package
+
+**Firebase Adapters** centralizes all Firebase-related code (init, types, gateways, utils)
+so that apps and feature modules never depend on Firebase SDKs directly.
+
+Swap the backend by replacing this package (e.g., with another remote database) without touching other code.
+
+- ✅ **Single entry point** — one public barrel to import.
+- ✅ **Clean boundaries** — no Firebase deps leakage into `features`/apps.
+- ✅ **Composable** — inject concrete Firebase types via DI (GetIt / Riverpod).
+- ✅ **Swappable** — keep domain/data contracts backend-agnostic.
+
+---
+
+## Installation
+
+Add `adapters_for_firebase` as a local path:
+
+```yaml
+# apps/<your_app>/pubspec.yaml OR packages/<another_package>/pubspec.yaml
+dependencies:
+  adapters_for_firebase:
+    path: ../../packages/adapters_for_firebase
+```
+
+Import via the public barrel:
+
+```dart
+import 'package:adapters_for_firebase/adapters_for_firebase.dart';
+```
+
+---
+
+## Public API & Structure
+
+- `lib/firebase_adapter.dart` — **single public entry point** (barrel).
+- Types are re-exported to keep `features` backend-agnostic.
+
+```
+adapters_for_firebase/lib
+├─ adapters_for_firebase.dart             # 🧱 Public barrel (facade API)
+│
+└─ src/
+   ├─ app_bootstrap/
+   │   ├─ env_loader.dart                 # 🧪 Load .env and verify required keys
+   │   ├─ firebase_env_options.dart       # 🧭 FirebaseOptions from env (per-platform)
+   │   └─ firebase_init.dart              # 🛡️ Safe Firebase init (idempotent, validated)
+   │
+   ├─ features/
+   │   └─ auth/
+   │       └─ firebase_auth_gateway.dart  # 🔐 AuthGateway impl wrapping FirebaseAuth
+   │
+   └─ utils/
+       ├─ crash_analytics_logger.dart     # 🧰 Thin wrapper for Crashlytics/Analytics
+       ├─ firebase_refs.dart              # 📚 Strong refs for FirebaseAuth & Firestore
+       ├─ guarded_fb_user.dart            # 👤 Guarded FirebaseUser helpers
+       └─ typedefs.dart                   # 🔤 Curated typedefs & exported Firebase types
+```
+
+> If `utils/firebase_utils.dart` duplicates initialization logic — fold it into `bootstrap/firebase_initializer.dart`
+> to avoid two “init points”.
+
+---
+
+## Bootstrap (env + init)
+
+```dart
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:adapters_for_firebase/adapters_for_firebase.dart';
+
+Future<void> main() async {
+  // 📀 Load env first (decides FirebaseOptions)
+  await dotenv.load(fileName: '.env.development');
+
+  /// 🛡️ Initializes Firebase once (idempotent)
+  await FirebaseInitializer.run(
+    options: DotenvFirebaseOptions.currentPlatform,
+  );
+
+  // runApp(...)
+}
+```
+
+> On the **web** you must pass explicit `FirebaseOptions`.
+
+---
+
+## DI with GetIt
+
+```dart
+import 'package:get_it/get_it.dart';
+import 'package:adapters_for_firebase/adapters_for_firebase.dart' show
+  FirebaseAuth, UsersCollection, FirebaseConstants;
+import 'package:features_dd_layers/features_dd_layers.dart';
+
+final di = GetIt.instance;
+
+Future<void> registerFirebaseModule() async {
+  di
+    // Base Firebase instances
+    ..registerLazySingleton<FirebaseAuth>(() => FirebaseConstants.fbAuthInstance)
+    ..registerLazySingleton<UsersCollection>(() => FirebaseConstants.usersCollection)
+
+    // Feature data source (Auth) — backend-agnostic
+    ..registerLazySingleton<IAuthRemoteDatabase>(() => AuthRemoteDatabaseImpl(
+          di<FirebaseAuth>(),
+          di<UsersCollection>(),
+        ));
+}
+```
+
+---
+
+## DI with Riverpod
+
+```dart
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:adapters_for_firebase/adapters_for_firebase.dart' show
+  FirebaseAuth, UsersCollection, FirebaseConstants;
+
+part 'firebase_providers.g.dart';
+
+/// 🔌 [firebaseAuthProvider]
+@riverpod
+FirebaseAuth firebaseAuth(Ref ref) => FirebaseConstants.fbAuthInstance;
+
+/// 🗃️ [usersCollectionProvider]
+@riverpod
+UsersCollection usersCollection(Ref ref) => FirebaseConstants.usersCollection;
+```
+
+---
+
+## Conventions
+
+- Only this package imports `firebase_*` SDKs.
+- Expose abstracted types, gateways, and helpers to other packages/apps.
+- Keep one public barrel (`firebase_adapter.dart`).
+- For error reporting, use `CrashlyticsLogger` (debug logs + `recordError`).
+
+---
+
+## Development
+
+This monorepo uses [Melos](https://melos.invertase.dev/).
+
+```bash
+# From repo root
+melos bootstrap
+
+# Only this package
+melos exec --scope="adapters_for_firebase" -- flutter analyze
+melos exec --scope="adapters_for_firebase" -- flutter test
+```
+
+---
+
+## Roadmap
+
+- [ ] Optional web FirebaseOptions in `DotenvFirebaseOptions`.
+- [ ] Unified `dispose()` hooks for gateways (stream closure) via DI module.
+- [ ] Example: swap to `supabase_adapter` with identical typedefs/gateways

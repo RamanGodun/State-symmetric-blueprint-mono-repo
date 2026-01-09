@@ -1,16 +1,24 @@
-import 'package:app_on_cubit/core/shared_presentation/pages/home_page.dart';
-import 'package:app_on_cubit/features/auth/sign_in/sign_in__page.dart';
-import 'package:app_on_cubit/features/auth/sign_up/sign_up__page.dart';
-import 'package:app_on_cubit/features/email_verification/email_verification_page.dart';
-import 'package:app_on_cubit/features/password_changing_or_reset/change_password/change_password_page.dart';
-import 'package:app_on_cubit/features/password_changing_or_reset/reset_password/reset_password__page.dart';
-import 'package:app_on_cubit/features/profile/profile_page.dart';
-import 'package:core/public_api/base_modules/animations.dart'
+import 'package:app_on_cubit/core/shared_presentation/pages/home_page.dart'
+    show HomePage;
+import 'package:app_on_cubit/features/auth/sign_in/sign_in__page.dart'
+    show SignInPage;
+import 'package:app_on_cubit/features/auth/sign_up/sign_up__page.dart'
+    show SignUpPage;
+import 'package:app_on_cubit/features/email_verification/email_verification_page.dart'
+    show VerifyEmailPage;
+import 'package:app_on_cubit/features/password_changing_or_reset/change_password/change_password_page.dart'
+    show ChangePasswordPage;
+import 'package:app_on_cubit/features/password_changing_or_reset/reset_password/reset_password__page.dart'
+    show ResetPasswordPage;
+import 'package:app_on_cubit/features/profile/profile_page.dart'
+    show ProfilePage;
+import 'package:go_router/go_router.dart' show GoRoute;
+import 'package:shared_core_modules/public_api/base_modules/animations.dart'
     show AppTransitions;
-import 'package:core/public_api/base_modules/navigation.dart' show NavigationX;
-import 'package:core/public_api/shared_layers/presentation.dart'
+import 'package:shared_core_modules/public_api/base_modules/navigation.dart'
+    show NavigationX;
+import 'package:shared_layers/public_api/presentation_layer_shared.dart'
     show PageNotFound, SplashPage;
-import 'package:go_router/go_router.dart';
 
 part 'route_paths.dart';
 part 'routes_names.dart';

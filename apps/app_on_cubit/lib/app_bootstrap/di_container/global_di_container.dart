@@ -1,8 +1,11 @@
-import 'package:app_on_cubit/features/profile/cubit/profile_page_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart'
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
     show AppThemeCubit, AuthCubit, OverlayStatusCubit, di;
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:app_on_cubit/features/profile/cubit/profile_page_cubit.dart'
+    show ProfileCubit;
+import 'package:flutter/material.dart'
+    show BuildContext, StatelessWidget, Widget;
+import 'package:flutter_bloc/flutter_bloc.dart'
+    show BlocProvider, MultiBlocProvider, RepositoryProvider;
 import 'package:go_router/go_router.dart' show GoRouter;
 
 /// 📦 [GlobalProviders] — top-level widget that wires global Blocs/Repositories

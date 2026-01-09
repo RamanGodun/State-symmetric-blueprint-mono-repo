@@ -1,6 +1,5 @@
 import 'package:app_bootstrap/app_bootstrap.dart' show ILocalStorage;
-import 'package:flutter/foundation.dart' show debugPrint;
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
 import 'package:hydrated_bloc/hydrated_bloc.dart'
     show HydratedBloc, HydratedStorage, HydratedStorageDirectory;
 import 'package:path_provider/path_provider.dart'

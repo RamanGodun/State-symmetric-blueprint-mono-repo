@@ -1,17 +1,42 @@
-import 'package:app_on_cubit/core/base_modules/navigation/routes/app_routes.dart';
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
+    show
+        AsyncStateIntrospectionBlocX,
+        AsyncValueForBLoC,
+        BlocAdapterForErrorsMultiListeners,
+        ThemePicker,
+        ThemeTogglerIcon,
+        di;
+import 'package:app_on_cubit/core/base_modules/localization/generated/app_locale_keys.g.dart'
+    show AppLocaleKeys;
+import 'package:app_on_cubit/core/base_modules/navigation/routes/app_routes.dart'
+    show RoutesNames;
 import 'package:app_on_cubit/core/shared_presentation/utils/spider/images_paths/app_images_paths.dart'
     show AppImagesPaths;
-import 'package:app_on_cubit/features/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';
+import 'package:app_on_cubit/features/auth/sign_out/sign_out_cubit/sign_out_cubit.dart'
+    show SignOutCubit;
 import 'package:app_on_cubit/features/auth/sign_out/sign_out_widgets.dart'
     show SignOutIconButton;
-import 'package:app_on_cubit/features/profile/cubit/profile_page_cubit.dart';
-import 'package:bloc_adapter/bloc_adapter.dart';
+import 'package:app_on_cubit/features/profile/cubit/profile_page_cubit.dart'
+    show ProfileCubit;
 import 'package:cached_network_image/cached_network_image.dart'
     show CachedNetworkImage;
-import 'package:core/public_api/core.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart'
+    show BlocProvider, ReadContext, SelectContext;
+import 'package:shared_core_modules/public_api/base_modules/localization.dart'
+    show CoreLocaleKeys, LanguageToggleButton;
+import 'package:shared_core_modules/public_api/base_modules/navigation.dart'
+    show NavigationX;
+import 'package:shared_core_modules/public_api/base_modules/ui_design.dart'
+    show AppSpacing, BlurContainer, WidgetPaddingX;
+import 'package:shared_layers/public_api/domain_layer_shared.dart'
+    show UserEntity;
+import 'package:shared_widgets/public_api/bars.dart' show CustomAppBar;
+import 'package:shared_widgets/public_api/buttons.dart' show CustomFilledButton;
+import 'package:shared_widgets/public_api/loaders.dart' show AppLoader;
+import 'package:shared_widgets/public_api/text_widgets.dart'
+    show KeyValueTextWidget, TextType, TextWidget;
 
 part 'widgets_for_profile_page.dart';
 

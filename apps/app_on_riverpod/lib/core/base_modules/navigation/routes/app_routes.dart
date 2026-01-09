@@ -1,13 +1,26 @@
-import 'package:app_on_riverpod/core/base_modules/navigation/go_router_factory.dart';
-import 'package:app_on_riverpod/core/shared_presentation/pages/home_page.dart';
-import 'package:app_on_riverpod/features/auth/sign_in/sign_in__page.dart';
-import 'package:app_on_riverpod/features/auth/sign_up/sign_up__page.dart';
-import 'package:app_on_riverpod/features/email_verification/email_verification_page.dart';
-import 'package:app_on_riverpod/features/password_changing_or_reset/change_password/change_password_page.dart';
-import 'package:app_on_riverpod/features/password_changing_or_reset/reset_password/reset_password_page.dart';
-import 'package:app_on_riverpod/features/profile/profile_page.dart';
-import 'package:core/public_api/core.dart';
-import 'package:go_router/go_router.dart';
+import 'package:app_on_riverpod/core/base_modules/navigation/go_router_factory.dart'
+    show buildGoRouter;
+import 'package:app_on_riverpod/core/shared_presentation/pages/home_page.dart'
+    show HomePage;
+import 'package:app_on_riverpod/features/auth/sign_in/sign_in__page.dart'
+    show SignInPage;
+import 'package:app_on_riverpod/features/auth/sign_up/sign_up__page.dart'
+    show SignUpPage;
+import 'package:app_on_riverpod/features/email_verification/email_verification_page.dart'
+    show VerifyEmailPage;
+import 'package:app_on_riverpod/features/password_changing_or_reset/change_password/change_password_page.dart'
+    show ChangePasswordPage;
+import 'package:app_on_riverpod/features/password_changing_or_reset/reset_password/reset_password_page.dart'
+    show ResetPasswordPage;
+import 'package:app_on_riverpod/features/profile/profile_page.dart'
+    show ProfilePage;
+import 'package:go_router/go_router.dart' show GoRoute;
+import 'package:shared_core_modules/public_api/base_modules/animations.dart'
+    show AppTransitions;
+import 'package:shared_core_modules/public_api/base_modules/navigation.dart'
+    show NavigationX;
+import 'package:shared_layers/public_api/presentation_layer_shared.dart'
+    show PageNotFound, SplashPage;
 
 part 'route_paths.dart';
 part 'routes_names.dart';

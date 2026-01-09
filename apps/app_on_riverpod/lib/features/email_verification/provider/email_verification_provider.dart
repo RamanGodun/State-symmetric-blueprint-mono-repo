@@ -1,11 +1,17 @@
-import 'dart:async';
+import 'dart:async' show unawaited;
 
-import 'package:core/public_api/core.dart';
-import 'package:features/features.dart' show EmailVerificationUseCase;
-import 'package:firebase_adapter/firebase_adapter.dart' show FirebaseRefs;
+import 'package:adapters_for_firebase/adapters_for_firebase.dart'
+    show FirebaseRefs;
+import 'package:adapters_for_riverpod/adapters_for_riverpod.dart'
+    show SafeAsyncState, authGatewayProvider, emailVerificationUseCaseProvider;
+import 'package:features_dd_layers/public_api/email_verification/email_verification.dart'
+    show EmailVerificationUseCase;
 import 'package:flutter/foundation.dart' show debugPrint;
-import 'package:riverpod_adapter/riverpod_adapter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_core_modules/public_api/base_modules/errors_management.dart'
+    show EmailVerificationTimeoutFailureType, Failure, FailureLogger;
+import 'package:shared_utils/public_api/general_utils.dart'
+    show AppDurations, VerificationPoller;
 
 part 'email_verification_provider.g.dart';
 

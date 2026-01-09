@@ -1,0 +1,106 @@
+import 'package:features_dd_layers/src/profile/data/remote_database_contract.dart'
+    show IProfileRemoteDatabase;
+import 'package:features_dd_layers/src/profile/domain/repo_contract.dart'
+    show IProfileRepo;
+import 'package:shared_core_modules/public_api/base_modules/errors_management.dart'
+    show
+        Failure,
+        ResultFuture,
+        ResultFutureExtension,
+        UserMissingFirebaseFailureType,
+        UserNotFoundFirebaseFailureType;
+import 'package:shared_core_modules/public_api/base_modules/localization.dart'
+    show CoreLocaleKeys;
+import 'package:shared_layers/public_api/data_layer_shared.dart'
+    show CacheManager, CacheStats, UserDTO, UserDTOFactories, UserDTOX;
+import 'package:shared_layers/public_api/domain_layer_shared.dart'
+    show UserEntity;
+import 'package:shared_utils/public_api/general_utils.dart' show AppDurations;
+
+/// 🧩 [ProfileRepoImpl] — Repository implementation for profile feature with cache manager composition
+/// ✅ Handles in-memory and in-flight cache, mapping, and error handling
+//
+final class ProfileRepoImpl implements IProfileRepo {
+  ///─────────────────────────--------------------
+  ProfileRepoImpl(
+    this._remoteDatabase, {
+    CacheManager<UserEntity, String>? cacheManager,
+  }) : _cacheManager =
+           cacheManager ??
+           CacheManager<UserEntity, String>(ttl: AppDurations.min5);
+  //
+  //
+  final IProfileRemoteDatabase _remoteDatabase;
+  final CacheManager<UserEntity, String> _cacheManager;
+  //
+
+  ////
+
+  /// Returns cached user if fresh, otherwise fetches from remote
+  @override
+  ResultFuture<UserEntity> getProfile({required String uid}) => (() async {
+    return _cacheManager.execute(uid, () => _fetchProfile(uid));
+  }).runWithErrorHandling();
+
+  /// Force refresh profile (bypasses cache)
+  ResultFuture<UserEntity> refreshProfile({required String uid}) => (() async {
+    return _cacheManager.execute(
+      uid,
+      () => _fetchProfile(uid),
+      forceRefresh: true,
+    );
+  }).runWithErrorHandling();
+
+  /// Fetches user profile from remote source
+  Future<UserEntity> _fetchProfile(String uid) async {
+    final data = await _remoteDatabase.fetchUserMap(uid);
+    if (data == null)
+      throw const Failure(
+        type: UserNotFoundFirebaseFailureType(),
+        message: CoreLocaleKeys.failures_firebase_user_not_found,
+      );
+    final dto = UserDTOFactories.fromMap(data, id: uid);
+    return dto.toEntity();
+  }
+
+  ////
+
+  /// ♻️ Clears all profile cache
+  @override
+  void clearCache() => _cacheManager.clear();
+
+  /// 📊 Get cache statistics (useful for debugging)
+  CacheStats get cacheStats => _cacheManager.stats;
+
+  ////
+
+  ////
+
+  /// 🆕 Creates a new user profile in database for current user.
+  @override
+  ResultFuture<void> createUserProfile(String uid) => () async {
+    final authData = await _remoteDatabase.getCurrentUserAuthData();
+    if (authData == null)
+      throw const Failure(
+        type: UserMissingFirebaseFailureType(),
+        message: CoreLocaleKeys.failures_firebase_unauthorized,
+      );
+    //
+    final dto = _buildUserDTO(authData, uid);
+    await _remoteDatabase.createUserMap(dto.id, dto.toJsonMap());
+    //
+    /// Remove from cache to force fresh fetch next time
+    _cacheManager.remove(uid);
+  }.runWithErrorHandling();
+
+  /// Factory for building [UserDTO] from auth data
+  UserDTO _buildUserDTO(Map<String, dynamic> authData, String fallbackUid) {
+    return UserDTOFactories.newUser(
+      id: authData['uid'] as String,
+      name: authData['name'] as String,
+      email: authData['email'] as String,
+    );
+  }
+
+  //
+}

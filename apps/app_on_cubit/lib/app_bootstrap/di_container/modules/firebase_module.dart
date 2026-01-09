@@ -1,8 +1,9 @@
-import 'package:bloc_adapter/bloc_adapter.dart'
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
     show DIModule, SafeRegistration, di;
-import 'package:features/features_barrels/profile/profile_infra.dart';
-import 'package:firebase_adapter/firebase_adapter.dart'
+import 'package:adapters_for_firebase/adapters_for_firebase.dart'
     show FirebaseAuth, FirebaseRefs, UsersCollection;
+import 'package:features_dd_layers/public_api/profile/profile_infra.dart'
+    show IProfileRemoteDatabase, ProfileRemoteDatabaseImpl;
 
 ///
 final class FirebaseModule implements DIModule {

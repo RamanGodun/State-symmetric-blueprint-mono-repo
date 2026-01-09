@@ -1,4 +1,4 @@
-import 'package:bloc_adapter/bloc_adapter.dart'
+import 'package:adapters_for_bloc/adapters_for_bloc.dart'
     show AppThemeCubit, DIModule, SafeRegistration, di;
 
 /// 🎨 Registers theme cubit for loader (and later, the main app).

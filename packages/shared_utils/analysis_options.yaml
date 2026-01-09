@@ -1,0 +1,32 @@
+# Base ruleset from Very Good Ventures (includes recommended Flutter & Dart lints)
+include: package:very_good_analysis/analysis_options.yaml
+#
+
+# Linter rules overrides
+# ----------------------
+linter:
+  rules:
+    # Prefer const literals for immutable collections to improve performance
+    prefer_const_literals_to_create_immutables: true
+    # Allow omitting curly braces in single-line control flow statements
+    curly_braces_in_flow_control_structures: false
+    # Allow lines up to 120 characters
+    lines_longer_than_80_chars: false
+    #
+    one_member_abstracts: false
+
+# Analyzer configuration
+# ----------------------
+analyzer:
+  # Exclude generated files and non-Dart resources from analysis
+  exclude:
+    - "**/*.freezed.dart"
+    - "**/*.g.dart"
+    - "**/docs/**"
+    - "*.md"
+    - "**/*.md"
+
+  # Override severity levels for specific rules
+  errors:
+    # Show warnings instead of errors for invalid annotation targets
+    invalid_annotation_target: warning

@@ -1,0 +1,61 @@
+import 'dart:ui' show ImageFilter;
+
+import 'package:flutter/material.dart'
+    show BackdropFilter, Container, Positioned, Widget;
+import 'package:shared_core_modules/public_api/base_modules/overlays.dart'
+    show OverlayBlurLevel, ShowAs;
+import 'package:shared_core_modules/public_api/base_modules/ui_design.dart'
+    show AppColors;
+import 'package:shared_core_modules/shared_core_modules.dart'
+    show OverlayBlurLevel, ShowAs;
+
+/// 🧊 [OverlayBarrierFilter] — Consistent blurred overlay backgrounds
+/// - Used in: dialogs, banners, snackbars (iOS + Android)
+/// - Supports [ShowAs] or override with [OverlayBlurLevel]
+//
+final class OverlayBarrierFilter {
+  /// ───────────────────────────
+  const OverlayBarrierFilter._();
+  //
+
+  /// 📦 Main resolver: theme + type + optional [level] override
+  static Widget resolve({
+    required bool isDark,
+    ShowAs? type,
+    OverlayBlurLevel? level,
+  }) {
+    final (sigmaX, sigmaY) = switch (level) {
+      OverlayBlurLevel.soft => (2.0, 2.0),
+      OverlayBlurLevel.medium => (6.0, 6.0),
+      OverlayBlurLevel.strong => (12.0, 12.0),
+      null => _resolveSigma(type, isDark),
+    };
+
+    final color = isDark
+        ? AppColors.overlayDarkBarrier
+        : AppColors.overlayLightBarrier;
+
+    return Positioned.fill(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),
+        child: Container(color: color),
+      ),
+    );
+
+    //
+  }
+
+  ///
+
+  /// 🎚️ Theme + [ShowAs]-based blur config
+  static (double, double) _resolveSigma(ShowAs? type, bool isDark) {
+    return switch (type) {
+      ShowAs.banner => isDark ? (12, 12) : (6, 6),
+      ShowAs.dialog || ShowAs.infoDialog => isDark ? (6, 6) : (3, 3),
+      ShowAs.snackbar => isDark ? (4, 4) : (2, 2),
+      _ => (2.5, 2.5),
+    };
+  }
+
+  //
+}
