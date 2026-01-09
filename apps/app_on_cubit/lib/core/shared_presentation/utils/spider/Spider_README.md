@@ -21,29 +21,37 @@ brew install spider
 
 ### Create a configuration file in custom directory (recommended):
 
-```bash
-spider create -p packages/core/lib/src/shared_presentation_layer/spider/spider.yaml  // from monorepo root
+```bash (for example)
+    // from monorepo root
+spider create -p apps/state_symmetric_on_cubit/lib/core/shared_presentation_layer/utils/spider/icons_paths/spider.yaml
+
 or
-lib/src/shared_presentation_layer/spider/spider.yaml                                 // from package root
+
+    // from package root
+lib/core/shared_presentation_layer/utils/spider/images_paths/spider.yaml
 ```
 
-This creates: `packages/core/lib/shared_presentation_layer/spider/spider.yaml`
+This creates: `spider.yaml` file
 
 ### Sample `spider.yaml`
 
 ```yaml
-# spider.yaml (in lib/src/shared_presentation_layer/spider/ )
+# spider.yaml
 generate_tests: false
 no_comments: true
 export: false
 use_part_of: false
 
-package: src/shared_presentation_layer/spider/
+# Here will be generated file
+package: core/shared_presentation_layer/utils/spider/icons_paths
 
 groups:
-  - path: assets/images
-    class_name: AppImagesPaths
+  # for images in this folder will be generated paths
+  - path: assets/icons
+    # This is a name of generated class
+    class_name: AppIconsPaths
     types: [.png, .jpg, .jpeg, .webp, .gif]
+    file_name: app_icons_paths.dart
 ```
 
 ---

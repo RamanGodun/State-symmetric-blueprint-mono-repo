@@ -4,12 +4,12 @@ export: false
 use_part_of: false
 
 # Here will be generated file
-package: src/shared_presentation_layer/spider/images_paths
+package: core/shared_presentation_layer/utils/spider/icons_paths
 
 groups:
   # for images in this folder will be generated paths
-  - path: assets/images
+  - path: assets/icons
     # This is a name of generated class
-    class_name: AppImagesPaths
+    class_name: AppIconsPaths
     types: [.png, .jpg, .jpeg, .webp, .gif]
-    file_name: app_images_paths.dart
+    file_name: app_icons_paths.dart

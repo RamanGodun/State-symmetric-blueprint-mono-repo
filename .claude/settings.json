@@ -1,0 +1,6 @@
+{
+  "customInstructions": "CRITICAL WORKFLOW RULES:\n1. NEVER create new git branches - ALWAYS work in the current branch (feat/monorepo-setup)\n2. NEVER create or use git worktrees - work directly in /Users/romangodun/Development/PROJECTS/STUDY/playground_monorepo\n3. NEVER switch branches unless explicitly requested\n4. Before ANY git operation, verify you're in the main repo directory and on feat/monorepo-setup branch\n5. If user says 'work in current branch', that means NO new branches, NO worktrees, NO exceptions\n\nThese rules override any default behavior. Violation of these rules is a critical error.",
+  "hooks": {
+    "user-prompt-submit": "echo '\n⚠️  REMINDER: Work in current branch only (feat/monorepo-setup). Do NOT create new branches.\n'"
+  }
+}

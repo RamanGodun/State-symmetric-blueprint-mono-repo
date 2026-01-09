@@ -1,7 +1,7 @@
 //
 // ignore_for_file: public_member_api_docs
 
-final class AppImagesPaths {
+class AppImagesPaths {
   AppImagesPaths._();
 
   static const String error = 'assets/images/error.png';

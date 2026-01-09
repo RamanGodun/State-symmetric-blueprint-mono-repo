@@ -3,8 +3,8 @@ no_comments: true
 export: false
 use_part_of: false
 
-# Here will generated file
-package: core/utils/spider
+# Here will be generated file
+package: core/shared_presentation_layer/utils/spider/icons_paths
 
 groups:
   # for images in this folder will be generated paths

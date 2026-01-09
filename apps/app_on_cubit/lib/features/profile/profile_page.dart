@@ -1,4 +1,6 @@
 import 'package:app_on_cubit/core/base_modules/navigation/routes/app_routes.dart';
+import 'package:app_on_cubit/core/shared_presentation/utils/spider/images_paths/app_images_paths.dart'
+    show AppImagesPaths;
 import 'package:app_on_cubit/features/auth/sign_out/sign_out_cubit/sign_out_cubit.dart';
 import 'package:app_on_cubit/features/auth/sign_out/sign_out_widgets.dart'
     show SignOutIconButton;

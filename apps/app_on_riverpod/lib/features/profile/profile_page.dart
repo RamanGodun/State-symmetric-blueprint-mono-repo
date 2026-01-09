@@ -1,4 +1,6 @@
 import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart';
+import 'package:app_on_riverpod/core/shared_presentation/utils/spider/images_paths/app_images_paths.dart'
+    show AppImagesPaths;
 import 'package:app_on_riverpod/features/auth/sign_out/sign_out_provider.dart';
 import 'package:app_on_riverpod/features/auth/sign_out/sign_out_widgets.dart'
     show SignOutIconButton;
