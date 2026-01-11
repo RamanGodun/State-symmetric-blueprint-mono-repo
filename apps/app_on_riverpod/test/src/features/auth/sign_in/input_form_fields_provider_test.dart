@@ -66,7 +66,7 @@ void main() {
             .read(signInFormProvider.notifier)
             // Act
             .onEmailChanged(TestConstants.validEmail);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         final state = container.read(signInFormProvider);
@@ -82,7 +82,7 @@ void main() {
 
         // Act - Valid email
         ..onEmailChanged(TestConstants.validEmail);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         var state = container.read(signInFormProvider);
@@ -90,7 +90,7 @@ void main() {
 
         // Act - Invalid email
         notifier.onEmailChanged(TestConstants.invalidEmail);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         state = container.read(signInFormProvider);
@@ -105,7 +105,7 @@ void main() {
 
         // Act
         ..onEmailChanged('  ${TestConstants.validEmail}  ');
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         final state = container.read(signInFormProvider);
@@ -121,7 +121,7 @@ void main() {
 
         // Act
         ..onEmailChanged(TestConstants.emptyString);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         final state = container.read(signInFormProvider);
@@ -142,7 +142,7 @@ void main() {
         ..onEmailChanged(TestConstants.validEmail);
 
         // Wait for debounce
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert - Should only have the last value
         final state = container.read(signInFormProvider);
@@ -159,7 +159,7 @@ void main() {
 
         // Act
         ..onPasswordChanged(TestConstants.validPassword);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         final state = container.read(signInFormProvider);
@@ -175,7 +175,7 @@ void main() {
 
         // Act - Valid password
         ..onPasswordChanged(TestConstants.validPassword);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         var state = container.read(signInFormProvider);
@@ -183,7 +183,7 @@ void main() {
 
         // Act - Weak password
         notifier.onPasswordChanged(TestConstants.weakPassword);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         state = container.read(signInFormProvider);
@@ -198,7 +198,7 @@ void main() {
 
         // Act
         ..onPasswordChanged(TestConstants.emptyString);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         final state = container.read(signInFormProvider);
@@ -212,7 +212,7 @@ void main() {
         addTearDown(container.dispose);
 
         // Wait for debounce
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert - Should only have the last value
         final state = container.read(signInFormProvider);
@@ -255,7 +255,7 @@ void main() {
         // Set valid inputs
         ..onEmailChanged(TestConstants.validEmail)
         ..onPasswordChanged(TestConstants.validPassword);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         final stateBefore = container.read(signInFormProvider);
         final wasValid = stateBefore.isValid;
@@ -294,7 +294,7 @@ void main() {
         // Act
         ..onEmailChanged(TestConstants.validEmail)
         ..onPasswordChanged(TestConstants.validPassword);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         final state = container.read(signInFormProvider);
@@ -305,7 +305,7 @@ void main() {
         // Arrange
         final container = ProviderContainer();
         addTearDown(container.dispose);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         final state = container.read(signInFormProvider);
@@ -321,7 +321,7 @@ void main() {
         // Act
         ..onEmailChanged(TestConstants.validEmail)
         ..onPasswordChanged(TestConstants.weakPassword);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         final state = container.read(signInFormProvider);
@@ -337,7 +337,7 @@ void main() {
         // Act
         ..onEmailChanged(TestConstants.emptyString)
         ..onPasswordChanged(TestConstants.emptyString);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         final state = container.read(signInFormProvider);
@@ -356,7 +356,7 @@ void main() {
         ..onEmailChanged(TestConstants.validEmail)
         ..onPasswordChanged(TestConstants.validPassword)
         ..togglePasswordVisibility();
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Act
         notifier.resetState();
@@ -427,11 +427,11 @@ void main() {
 
         // Act - User types email
         ..onEmailChanged('john.doe@example.com');
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Act - User types password
         notifier.onPasswordChanged('SecurePassword123!');
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         final state = container.read(signInFormProvider);
@@ -448,14 +448,14 @@ void main() {
 
         // Act - User types invalid email
         ..onEmailChanged('invalid-email');
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         var state = container.read(signInFormProvider);
         expect(state.email.isValid, isFalse);
 
         // Act - User corrects email
         notifier.onEmailChanged('valid@example.com');
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Assert
         state = container.read(signInFormProvider);
@@ -470,7 +470,7 @@ void main() {
 
         // Act - User types password
         ..onPasswordChanged(TestConstants.validPassword);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         // Act - User wants to see password
         notifier.togglePasswordVisibility();
@@ -497,7 +497,7 @@ void main() {
         // Fill in form
         ..onEmailChanged(TestConstants.validEmail)
         ..onPasswordChanged(TestConstants.validPassword);
-        await wait(TestConstants.mediumDelayMs);
+        await wait(TestConstants.mediumDelay);
 
         expect(container.read(signInFormProvider).isValid, isTrue);
 

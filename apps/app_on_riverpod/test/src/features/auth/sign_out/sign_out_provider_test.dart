@@ -25,6 +25,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_core_modules/public_api/base_modules/errors_management.dart';
 
+import '../../../fixtures/test_constants.dart';
+import '../../../helpers/test_helpers.dart';
+
 // Since SignOutUseCase is a final class, we create a callable mock
 class MockSignOutUseCase extends Mock {
   ResultFuture<void> call();
@@ -45,7 +48,7 @@ void main() {
     ProviderContainer createContainer() {
       return ProviderContainer(
         overrides: [
-          signOutUseCaseProvider.overrideWithValue(mockUseCase),
+          signOutUseCaseProvider.overrideWithValue(mockUseCase as dynamic),
           profileRepoProvider.overrideWithValue(mockProfileRepo),
         ],
       );
@@ -223,7 +226,7 @@ void main() {
         final notifier = container.read(signOutProvider.notifier);
 
         when(() => mockUseCase()).thenAnswer((_) async {
-          await wait(500);
+          await wait(Duration(milliseconds: 500));
           return const Right(null);
         });
         when(() => mockProfileRepo.clearCache()).thenReturn(null);
@@ -423,7 +426,7 @@ void main() {
         final notifier = container.read(signOutProvider.notifier);
 
         when(() => mockUseCase()).thenAnswer((_) async {
-          await wait(500);
+          await wait(Duration(milliseconds: 500));
           return const Right(null);
         });
         when(() => mockProfileRepo.clearCache()).thenReturn(null);

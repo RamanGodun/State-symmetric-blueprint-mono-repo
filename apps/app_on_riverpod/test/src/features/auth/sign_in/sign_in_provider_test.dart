@@ -22,7 +22,6 @@ import 'dart:async';
 
 import 'package:adapters_for_riverpod/adapters_for_riverpod.dart';
 import 'package:app_on_riverpod/features/auth/sign_in/providers/sign_in__provider.dart';
-import 'package:features_dd_layers/public_api/auth/auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -48,7 +47,7 @@ void main() {
     ProviderContainer createContainer() {
       return ProviderContainer(
         overrides: [
-          signInUseCaseProvider.overrideWithValue(mockUseCase),
+          signInUseCaseProvider.overrideWithValue(mockUseCase as dynamic),
         ],
       );
     }
@@ -100,7 +99,7 @@ void main() {
         );
 
         // Wait for debouncer
-        await wait(700);
+        await wait(Duration(milliseconds: 700));
 
         // Assert - Loading state
         var state = container.read(signInProvider);
@@ -133,7 +132,7 @@ void main() {
           email: TestConstants.validEmail,
           password: TestConstants.validPassword,
         );
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         // Assert
         verify(
@@ -162,7 +161,7 @@ void main() {
           email: TestConstants.validEmail2,
           password: TestConstants.validPassword2,
         );
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         // Assert
         verify(
@@ -201,7 +200,7 @@ void main() {
           email: TestConstants.validEmail,
           password: TestConstants.validPassword,
         );
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         // Assert
         final state = container.read(signInProvider);
@@ -231,7 +230,7 @@ void main() {
           email: TestConstants.validEmail,
           password: TestConstants.validPassword,
         );
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         // Assert
         final state = container.read(signInProvider);
@@ -264,7 +263,7 @@ void main() {
           email: TestConstants.invalidEmail,
           password: TestConstants.validPassword,
         );
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         // Assert
         final state = container.read(signInProvider);
@@ -285,7 +284,7 @@ void main() {
             password: any(named: 'password'),
           ),
         ).thenAnswer((_) async {
-          await wait(1000);
+          await wait(Duration(milliseconds: 1000));
           return const Right(null);
         });
 
@@ -295,7 +294,7 @@ void main() {
           password: TestConstants.validPassword,
         );
 
-        await wait(700); // Wait for debouncer
+        await wait(Duration(milliseconds: 700)); // Wait for debouncer
 
         // State should be loading now
         expect(container.read(signInProvider), isA<ButtonSubmissionLoadingState>());
@@ -308,7 +307,7 @@ void main() {
 
         await future1;
         await future2;
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         // Assert - Use case should only be called once
         verify(
@@ -345,14 +344,14 @@ void main() {
           email: TestConstants.validEmail,
           password: TestConstants.validPassword,
         );
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         // Second attempt after first completes
         await notifier.signin(
           email: TestConstants.validEmail2,
           password: TestConstants.validPassword2,
         );
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         // Assert - Use case called twice
         verify(
@@ -388,7 +387,7 @@ void main() {
           email: TestConstants.validEmail,
           password: TestConstants.validPassword,
         );
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         expect(container.read(signInProvider), isA<ButtonSubmissionErrorState>());
 
@@ -418,7 +417,7 @@ void main() {
           email: TestConstants.validEmail,
           password: TestConstants.validPassword,
         );
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         expect(container.read(signInProvider), isA<ButtonSubmissionSuccessState>());
 
@@ -460,7 +459,7 @@ void main() {
         ));
 
         // Wait for debouncer
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         // Assert - Only last call should execute
         verify(
@@ -512,7 +511,7 @@ void main() {
           email: 'john.doe@example.com',
           password: 'SecurePassword123!',
         );
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         // Assert
         final state = container.read(signInProvider);
@@ -542,7 +541,7 @@ void main() {
           email: 'john@example.com',
           password: 'WrongPassword',
         );
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         // Assert
         final state = container.read(signInProvider);
@@ -572,7 +571,7 @@ void main() {
           email: TestConstants.validEmail,
           password: TestConstants.validPassword,
         );
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         expect(container.read(signInProvider), isA<ButtonSubmissionErrorState>());
 
@@ -592,7 +591,7 @@ void main() {
           email: TestConstants.validEmail,
           password: TestConstants.validPassword,
         );
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         // Assert
         final state = container.read(signInProvider);
@@ -611,7 +610,7 @@ void main() {
             password: any(named: 'password'),
           ),
         ).thenAnswer((_) async {
-          await wait(1000);
+          await wait(Duration(milliseconds: 1000));
           return const Right(null);
         });
 
@@ -629,7 +628,7 @@ void main() {
 
         await future1;
         await future2;
-        await wait(800);
+        await wait(Duration(milliseconds: 800));
 
         // Assert - Use case called only once due to debouncing + loading check
         verify(

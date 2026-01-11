@@ -48,7 +48,7 @@ void main() {
     ProviderContainer createContainer() {
       return ProviderContainer(
         overrides: [
-          fetchProfileUseCaseProvider.overrideWithValue(mockUseCase),
+          fetchProfileUseCaseProvider.overrideWithValue(mockUseCase as dynamic),
           authGatewayProvider.overrideWithValue(mockAuthGateway),
         ],
       );
