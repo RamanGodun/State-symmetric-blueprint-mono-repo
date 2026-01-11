@@ -47,7 +47,7 @@ void main() {
     ProviderContainer createContainer() {
       return ProviderContainer(
         overrides: [
-          signInUseCaseProvider.overrideWithValue(mockUseCase as dynamic),
+          signInUseCaseProvider.overrideWith((ref) => mockUseCase as SignInUseCase),
         ],
       );
     }

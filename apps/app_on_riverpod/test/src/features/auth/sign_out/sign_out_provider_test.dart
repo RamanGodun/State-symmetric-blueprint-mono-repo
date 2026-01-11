@@ -48,7 +48,7 @@ void main() {
     ProviderContainer createContainer() {
       return ProviderContainer(
         overrides: [
-          signOutUseCaseProvider.overrideWithValue(mockUseCase as dynamic),
+          signOutUseCaseProvider.overrideWith((ref) => mockUseCase as SignOutUseCase),
           profileRepoProvider.overrideWithValue(mockProfileRepo),
         ],
       );
@@ -62,7 +62,7 @@ void main() {
 
         // Act
         final future = container.read(signOutProvider.future);
-        await wait(TestConstants.shortDelayMs);
+        await wait(TestConstants.shortDelay);
 
         // Assert
         await expectLater(future, completes);
@@ -85,7 +85,7 @@ void main() {
 
         // Act
         final future = notifier.signOut();
-        await wait(TestConstants.shortDelayMs);
+        await wait(TestConstants.shortDelay);
 
         // Assert - Loading state
         var state = container.read(signOutProvider);
@@ -233,7 +233,7 @@ void main() {
 
         // Act - First call
         final future1 = notifier.signOut();
-        await wait(TestConstants.shortDelayMs);
+        await wait(TestConstants.shortDelay);
 
         // State should be loading now
         expect(container.read(signOutProvider), isA<AsyncLoading<void>>());

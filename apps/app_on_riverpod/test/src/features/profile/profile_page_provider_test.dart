@@ -27,6 +27,7 @@ import 'package:shared_core_modules/public_api/core_contracts/auth.dart';
 import 'package:shared_layers/public_api/domain_layer_shared.dart';
 
 import '../../../fixtures/test_constants.dart';
+import '../../../helpers/test_helpers.dart';
 
 // Since FetchProfileUseCase is a final class, we create a callable mock
 class MockFetchProfileUseCase extends Mock {
@@ -48,7 +49,7 @@ void main() {
     ProviderContainer createContainer() {
       return ProviderContainer(
         overrides: [
-          fetchProfileUseCaseProvider.overrideWithValue(mockUseCase as dynamic),
+          fetchProfileUseCaseProvider.overrideWith((ref) => mockUseCase as FetchProfileUseCase),
           authGatewayProvider.overrideWithValue(mockAuthGateway),
         ],
       );
@@ -106,12 +107,12 @@ void main() {
 
         // Act - Load again (should preserve UI)
         when(() => mockUseCase(any())).thenAnswer((_) async {
-          await wait(TestConstants.mediumDelayMs);
+          await wait(TestConstants.mediumDelay);
           return const Right(TestConstants.testUserEntity2);
         });
 
         final future = notifier.prime(TestConstants.testUserId2);
-        await wait(TestConstants.shortDelayMs);
+        await wait(TestConstants.shortDelay);
 
         // Assert - Loading state should preserve previous value
         final loadingState = container.read(profileProvider);
@@ -216,12 +217,12 @@ void main() {
 
         // Act - Refresh (should preserve UI)
         when(() => mockUseCase(any())).thenAnswer((_) async {
-          await wait(TestConstants.mediumDelayMs);
+          await wait(TestConstants.mediumDelay);
           return const Right(TestConstants.testUserEntity2);
         });
 
         final future = notifier.refresh();
-        await wait(TestConstants.shortDelayMs);
+        await wait(TestConstants.shortDelay);
 
         // Assert - Should have previous value while loading
         final loadingState = container.read(profileProvider);
@@ -250,7 +251,7 @@ void main() {
 
         // Act
         notifier.resetState();
-        await wait(TestConstants.shortDelayMs);
+        await wait(TestConstants.shortDelay);
 
         // Assert - State should be invalidated
         // Note: After invalidation, reading will trigger rebuild
