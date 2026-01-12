@@ -7,8 +7,8 @@ import 'package:adapters_for_bloc/adapters_for_bloc.dart'
         di;
 import 'package:app_on_cubit/core/base_modules/localization/generated/app_locale_keys.g.dart'
     show AppLocaleKeys;
-import 'package:app_on_cubit/core/shared_presentation/utils/flavor_x.dart'
-    show FlavorX;
+import 'package:app_on_cubit/core/shared_presentation/utils/flavor_icon_path__x.dart'
+    show FlavorIconPathX;
 import 'package:app_on_cubit/features/auth/sign_in/sign_in__page.dart'
     show SignInPage;
 import 'package:app_on_cubit/features/auth/sign_up/cubit/form_fields_cubit.dart'

@@ -5,8 +5,8 @@ import 'package:adapters_for_riverpod/adapters_for_riverpod.dart'
         RiverpodAdapterForSubmitButton;
 import 'package:app_on_riverpod/core/base_modules/localization/generated/app_locale_keys.g.dart'
     show AppLocaleKeys;
-import 'package:app_on_riverpod/core/shared_presentation/utils/flavor_x.dart'
-    show FlavorX;
+import 'package:app_on_riverpod/core/shared_presentation/utils/flavor_icon_path__x.dart'
+    show FlavorIconPathX;
 import 'package:app_on_riverpod/features/auth/sign_in/sign_in__page.dart'
     show SignInPage;
 import 'package:app_on_riverpod/features/auth/sign_up/providers/input_form_fields_provider.dart'

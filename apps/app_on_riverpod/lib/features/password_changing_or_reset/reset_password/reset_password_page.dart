@@ -7,8 +7,8 @@ import 'package:app_on_riverpod/core/base_modules/localization/generated/app_loc
     show AppLocaleKeys;
 import 'package:app_on_riverpod/core/base_modules/navigation/routes/app_routes.dart'
     show RoutesNames;
-import 'package:app_on_riverpod/core/shared_presentation/utils/flavor_x.dart'
-    show FlavorX;
+import 'package:app_on_riverpod/core/shared_presentation/utils/flavor_icon_path__x.dart'
+    show FlavorIconPathX;
 import 'package:app_on_riverpod/features/password_changing_or_reset/reset_password/providers/input_fields_provider.dart'
     show resetPasswordFormProvider;
 import 'package:app_on_riverpod/features/password_changing_or_reset/reset_password/providers/reset_password__provider.dart'

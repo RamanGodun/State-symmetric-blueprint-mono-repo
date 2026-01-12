@@ -13,7 +13,7 @@
 library;
 
 import 'package:app_bootstrap/app_bootstrap.dart';
-import 'package:app_on_riverpod/core/shared_presentation/utils/flavor_x.dart';
+import 'package:app_on_riverpod/core/shared_presentation/utils/flavor_icon_path__x.dart';
 import 'package:app_on_riverpod/core/shared_presentation/utils/spider/icons_paths/app_icons_paths.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -29,7 +29,7 @@ void main() {
 
     test('returns development icon', () {
       // Act
-      final icon = FlavorX.appIcon;
+      final icon = FlavorIconPathX.appIcon;
 
       // Assert
       expect(icon, equals(AppIconsPaths.devIcon));
@@ -59,7 +59,7 @@ void main() {
       }
 
       // Act
-      final icon = FlavorX.appIcon;
+      final icon = FlavorIconPathX.appIcon;
 
       // Assert
       expect(icon, equals(AppIconsPaths.stgIcon));

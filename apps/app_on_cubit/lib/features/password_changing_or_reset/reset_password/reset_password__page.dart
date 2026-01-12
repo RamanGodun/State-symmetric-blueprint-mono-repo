@@ -9,8 +9,8 @@ import 'package:app_on_cubit/core/base_modules/localization/generated/app_locale
     show AppLocaleKeys;
 import 'package:app_on_cubit/core/base_modules/navigation/routes/app_routes.dart'
     show RoutesNames;
-import 'package:app_on_cubit/core/shared_presentation/utils/flavor_x.dart'
-    show FlavorX;
+import 'package:app_on_cubit/core/shared_presentation/utils/flavor_icon_path__x.dart'
+    show FlavorIconPathX;
 import 'package:app_on_cubit/features/password_changing_or_reset/reset_password/cubits/form_fields_cubit.dart'
     show ResetPasswordFormFieldsCubit;
 import 'package:app_on_cubit/features/password_changing_or_reset/reset_password/cubits/reset_password_cubit.dart'

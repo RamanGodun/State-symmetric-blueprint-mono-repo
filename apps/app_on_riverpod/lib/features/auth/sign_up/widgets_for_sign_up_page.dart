@@ -17,7 +17,7 @@ final class _SignUpHeader extends StatelessWidget {
         Hero(
           tag: 'Logo',
           child: Image.asset(
-            FlavorX.appIcon,
+            FlavorIconPathX.appIcon,
             width: AppSpacing.massive,
             height: AppSpacing.massive,
           ).withPaddingOnly(top: AppSpacing.xl, bottom: AppSpacing.l),

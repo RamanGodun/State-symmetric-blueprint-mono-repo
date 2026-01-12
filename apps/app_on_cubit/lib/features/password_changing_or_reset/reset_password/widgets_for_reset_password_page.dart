@@ -15,7 +15,7 @@ final class _ResetPasswordHeader extends StatelessWidget {
         Hero(
           tag: 'Logo',
           child: Image.asset(
-            FlavorX.appIcon,
+            FlavorIconPathX.appIcon,
             width: AppSpacing.great,
             height: AppSpacing.great,
           ).withPaddingOnly(top: AppSpacing.huge, bottom: AppSpacing.l),
