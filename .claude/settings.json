@@ -1,6 +1,79 @@
 {
-  "customInstructions": "CRITICAL WORKFLOW RULES:\n1. NEVER create new git branches - ALWAYS work in the current branch (feat/monorepo-setup)\n2. NEVER create or use git worktrees - work directly in /Users/romangodun/Development/PROJECTS/STUDY/playground_monorepo\n3. NEVER switch branches unless explicitly requested\n4. Before ANY git operation, verify you're in the main repo directory and on feat/monorepo-setup branch\n5. If user says 'work in current branch', that means NO new branches, NO worktrees, NO exceptions\n\nThese rules override any default behavior. Violation of these rules is a critical error.",
+  "model": "claude-sonnet-4-5-20250929",
+
+  "_comment_working_branch": "⚙️ SET YOUR WORKING BRANCH HERE - Claude will auto-checkout to this branch on session start",
+  "workingBranch": "feat/monorepo-setup",
+  "useWorktrees": false,
+
+  "permissions": {
+    "allow": [
+      "Bash(flutter:*)",
+      "Bash(dart:*)",
+      "Bash(melos:*)",
+      "Bash(git:*)",
+      "Bash(cd:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Read(**/*.dart)",
+      "Read(**/*.yaml)",
+      "Read(**/*.json)",
+      "Read(**/*.md)",
+      "Read(pubspec.yaml)",
+      "Read(pubspec.lock)",
+      "Read(analysis_options.yaml)",
+      "Read(melos.yaml)",
+      "Edit(lib/**/*.dart)",
+      "Edit(test/**/*.dart)",
+      "Write(lib/**/*.dart)",
+      "Write(test/**/*.dart)",
+      "Write(**.md)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.local)",
+      "Read(**/.env.prod)",
+      "Read(**/.env.production)",
+      "Read(secrets/**)",
+      "Read(**/*secret*)",
+      "Edit(pubspec.yaml)",
+      "Edit(pubspec.lock)",
+      "Edit(analysis_options.yaml)",
+      "Edit(melos.yaml)",
+      "Edit(**/*.g.dart)",
+      "Edit(**/*.freezed.dart)",
+      "Edit(android/app/build.gradle)",
+      "Edit(ios/Podfile.lock)",
+      "Edit(.flutter-plugins)",
+      "Edit(.flutter-plugins-dependencies)"
+    ]
+  },
+
   "hooks": {
-    "user-prompt-submit": "echo '\n⚠️  REMINDER: Work in current branch only (feat/monorepo-setup). Do NOT create new branches.\n'"
-  }
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/dart_formatter.sh"
+          }
+        ]
+      }
+    ]
+  },
+
+  "env": {
+    "FLUTTER_ROOT": "/opt/flutter",
+    "DART_SDK_PATH": "/opt/flutter/bin/dart"
+  },
+
+  "attribution": {
+    "commit": "🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>",
+    "pr": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
+  },
+
+  "respectGitignore": true,
+  "outputStyle": "Explanatory"
 }
