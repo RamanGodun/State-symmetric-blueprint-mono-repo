@@ -25,8 +25,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_core_modules/public_api/base_modules/errors_management.dart';
 
-import '../../../fixtures/test_constants.dart';
-import '../../../helpers/test_helpers.dart';
+import '../../../../fixtures/test_constants.dart';
+import '../../../../helpers/test_helpers.dart';
 
 // Since SignOutUseCase is a final class, we create a callable mock
 class MockSignOutUseCase extends Mock {
@@ -48,7 +48,9 @@ void main() {
     ProviderContainer createContainer() {
       return ProviderContainer(
         overrides: [
-          signOutUseCaseProvider.overrideWith((ref) => mockUseCase as SignOutUseCase),
+          signOutUseCaseProvider.overrideWith(
+            (ref) => mockUseCase as SignOutUseCase,
+          ),
           profileRepoProvider.overrideWithValue(mockProfileRepo),
         ],
       );
@@ -155,7 +157,7 @@ void main() {
         // Act
         try {
           await notifier.signOut();
-        } catch (e) {
+        } on Failure {
           // Expected to throw
         }
 
@@ -182,7 +184,7 @@ void main() {
         // Act
         try {
           await notifier.signOut();
-        } catch (e) {
+        } on Failure {
           // Expected to throw
         }
 
@@ -208,10 +210,10 @@ void main() {
         // Act
         try {
           await notifier.signOut();
-        } catch (e) {
+        } on Failure catch (e) {
           // Assert
           expect(e, isA<Failure>());
-          expect((e as Failure).message, equals('Auth error'));
+          expect(e.message, equals('Auth error'));
         }
       });
     });
@@ -226,7 +228,7 @@ void main() {
         final notifier = container.read(signOutProvider.notifier);
 
         when(() => mockUseCase()).thenAnswer((_) async {
-          await wait(Duration(milliseconds: 500));
+          await wait(const Duration(milliseconds: 500));
           return const Right(null);
         });
         when(() => mockProfileRepo.clearCache()).thenReturn(null);
@@ -290,7 +292,7 @@ void main() {
         // Sign out to get error state
         try {
           await notifier.signOut();
-        } catch (e) {
+        } on Failure {
           // Expected
         }
 
@@ -367,7 +369,7 @@ void main() {
         // Act
         try {
           await notifier.signOut();
-        } catch (e) {
+        } on Failure {
           // Expected
         }
 
@@ -395,7 +397,7 @@ void main() {
 
         try {
           await notifier.signOut();
-        } catch (e) {
+        } on Failure {
           // Expected
         }
 
@@ -426,7 +428,7 @@ void main() {
         final notifier = container.read(signOutProvider.notifier);
 
         when(() => mockUseCase()).thenAnswer((_) async {
-          await wait(Duration(milliseconds: 500));
+          await wait(const Duration(milliseconds: 500));
           return const Right(null);
         });
         when(() => mockProfileRepo.clearCache()).thenReturn(null);

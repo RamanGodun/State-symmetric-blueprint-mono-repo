@@ -55,8 +55,6 @@ class TestConstants {
   );
 
   static const AuthSession unauthenticatedSession = AuthSession(
-    uid: null,
-    email: null,
     emailVerified: false,
     isAnonymous: true,
   );

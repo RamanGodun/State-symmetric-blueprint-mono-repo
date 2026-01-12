@@ -79,9 +79,8 @@ void main() {
         final container = ProviderContainer();
         addTearDown(container.dispose);
         final notifier = container.read(signInFormProvider.notifier)
-
-        // Act - Valid email
-        ..onEmailChanged(TestConstants.validEmail);
+          // Act - Valid email
+          ..onEmailChanged(TestConstants.validEmail);
         await wait(TestConstants.mediumDelay);
 
         // Assert
@@ -102,9 +101,8 @@ void main() {
         final container = ProviderContainer();
         addTearDown(container.dispose);
         final _ = container.read(signInFormProvider.notifier)
-
-        // Act
-        ..onEmailChanged('  ${TestConstants.validEmail}  ');
+          // Act
+          ..onEmailChanged('  ${TestConstants.validEmail}  ');
         await wait(TestConstants.mediumDelay);
 
         // Assert
@@ -118,9 +116,8 @@ void main() {
         final container = ProviderContainer();
         addTearDown(container.dispose);
         final _ = container.read(signInFormProvider.notifier)
-
-        // Act
-        ..onEmailChanged(TestConstants.emptyString);
+          // Act
+          ..onEmailChanged(TestConstants.emptyString);
         await wait(TestConstants.mediumDelay);
 
         // Assert
@@ -134,12 +131,11 @@ void main() {
         final container = ProviderContainer();
         addTearDown(container.dispose);
         final _ = container.read(signInFormProvider.notifier)
-
-        // Act - Rapid changes
-        ..onEmailChanged('a')
-        ..onEmailChanged('ab')
-        ..onEmailChanged('abc')
-        ..onEmailChanged(TestConstants.validEmail);
+          // Act - Rapid changes
+          ..onEmailChanged('a')
+          ..onEmailChanged('ab')
+          ..onEmailChanged('abc')
+          ..onEmailChanged(TestConstants.validEmail);
 
         // Wait for debounce
         await wait(TestConstants.mediumDelay);
@@ -156,9 +152,8 @@ void main() {
         final container = ProviderContainer();
         addTearDown(container.dispose);
         final _ = container.read(signInFormProvider.notifier)
-
-        // Act
-        ..onPasswordChanged(TestConstants.validPassword);
+          // Act
+          ..onPasswordChanged(TestConstants.validPassword);
         await wait(TestConstants.mediumDelay);
 
         // Assert
@@ -172,9 +167,8 @@ void main() {
         final container = ProviderContainer();
         addTearDown(container.dispose);
         final notifier = container.read(signInFormProvider.notifier)
-
-        // Act - Valid password
-        ..onPasswordChanged(TestConstants.validPassword);
+          // Act - Valid password
+          ..onPasswordChanged(TestConstants.validPassword);
         await wait(TestConstants.mediumDelay);
 
         // Assert
@@ -195,9 +189,8 @@ void main() {
         final container = ProviderContainer();
         addTearDown(container.dispose);
         final _ = container.read(signInFormProvider.notifier)
-
-        // Act
-        ..onPasswordChanged(TestConstants.emptyString);
+          // Act
+          ..onPasswordChanged(TestConstants.emptyString);
         await wait(TestConstants.mediumDelay);
 
         // Assert
@@ -251,10 +244,9 @@ void main() {
         final container = ProviderContainer();
         addTearDown(container.dispose);
         final notifier = container.read(signInFormProvider.notifier)
-
-        // Set valid inputs
-        ..onEmailChanged(TestConstants.validEmail)
-        ..onPasswordChanged(TestConstants.validPassword);
+          // Set valid inputs
+          ..onEmailChanged(TestConstants.validEmail)
+          ..onPasswordChanged(TestConstants.validPassword);
         await wait(TestConstants.mediumDelay);
 
         final stateBefore = container.read(signInFormProvider);
@@ -289,11 +281,10 @@ void main() {
         // Arrange
         final container = ProviderContainer();
         addTearDown(container.dispose);
-        final notifier = container.read(signInFormProvider.notifier)
-
-        // Act
-        ..onEmailChanged(TestConstants.validEmail)
-        ..onPasswordChanged(TestConstants.validPassword);
+        container.read(signInFormProvider.notifier)
+          // Act
+          ..onEmailChanged(TestConstants.validEmail)
+          ..onPasswordChanged(TestConstants.validPassword);
         await wait(TestConstants.mediumDelay);
 
         // Assert
@@ -316,11 +307,10 @@ void main() {
         // Arrange
         final container = ProviderContainer();
         addTearDown(container.dispose);
-        final notifier = container.read(signInFormProvider.notifier)
-
-        // Act
-        ..onEmailChanged(TestConstants.validEmail)
-        ..onPasswordChanged(TestConstants.weakPassword);
+        container.read(signInFormProvider.notifier)
+          // Act
+          ..onEmailChanged(TestConstants.validEmail)
+          ..onPasswordChanged(TestConstants.weakPassword);
         await wait(TestConstants.mediumDelay);
 
         // Assert
@@ -332,11 +322,10 @@ void main() {
         // Arrange
         final container = ProviderContainer();
         addTearDown(container.dispose);
-        final notifier = container.read(signInFormProvider.notifier)
-
-        // Act
-        ..onEmailChanged(TestConstants.emptyString)
-        ..onPasswordChanged(TestConstants.emptyString);
+        container.read(signInFormProvider.notifier)
+          // Act
+          ..onEmailChanged(TestConstants.emptyString)
+          ..onPasswordChanged(TestConstants.emptyString);
         await wait(TestConstants.mediumDelay);
 
         // Assert
@@ -351,11 +340,10 @@ void main() {
         final container = ProviderContainer();
         addTearDown(container.dispose);
         final notifier = container.read(signInFormProvider.notifier)
-
-        // Fill in the form
-        ..onEmailChanged(TestConstants.validEmail)
-        ..onPasswordChanged(TestConstants.validPassword)
-        ..togglePasswordVisibility();
+          // Fill in the form
+          ..onEmailChanged(TestConstants.validEmail)
+          ..onPasswordChanged(TestConstants.validPassword)
+          ..togglePasswordVisibility();
         await wait(TestConstants.mediumDelay);
 
         // Act
@@ -394,9 +382,10 @@ void main() {
         final initialEpoch = container.read(signInFormProvider).epoch;
 
         // Act - Reset 3 times
-        notifier..resetState()
-        ..resetState()
-        ..resetState();
+        notifier
+          ..resetState()
+          ..resetState()
+          ..resetState();
 
         // Assert
         final finalEpoch = container.read(signInFormProvider).epoch;
@@ -408,10 +397,9 @@ void main() {
       test('disposes debouncer on container disposal', () {
         // Arrange
         final container = ProviderContainer()
-        ..read(signInFormProvider.notifier)
-
-        // Act
-        ..dispose();
+          ..read(signInFormProvider.notifier)
+          // Act
+          ..dispose();
 
         // Assert - Should not throw
         expect(container.dispose, returnsNormally);
@@ -424,9 +412,8 @@ void main() {
         final container = ProviderContainer();
         addTearDown(container.dispose);
         final notifier = container.read(signInFormProvider.notifier)
-
-        // Act - User types email
-        ..onEmailChanged('john.doe@example.com');
+          // Act - User types email
+          ..onEmailChanged('john.doe@example.com');
         await wait(TestConstants.mediumDelay);
 
         // Act - User types password
@@ -445,9 +432,8 @@ void main() {
         final container = ProviderContainer();
         addTearDown(container.dispose);
         final notifier = container.read(signInFormProvider.notifier)
-
-        // Act - User types invalid email
-        ..onEmailChanged('invalid-email');
+          // Act - User types invalid email
+          ..onEmailChanged('invalid-email');
         await wait(TestConstants.mediumDelay);
 
         var state = container.read(signInFormProvider);
@@ -467,9 +453,8 @@ void main() {
         final container = ProviderContainer();
         addTearDown(container.dispose);
         final notifier = container.read(signInFormProvider.notifier)
-
-        // Act - User types password
-        ..onPasswordChanged(TestConstants.validPassword);
+          // Act - User types password
+          ..onPasswordChanged(TestConstants.validPassword);
         await wait(TestConstants.mediumDelay);
 
         // Act - User wants to see password
@@ -493,10 +478,9 @@ void main() {
         final container = ProviderContainer();
         addTearDown(container.dispose);
         final notifier = container.read(signInFormProvider.notifier)
-
-        // Fill in form
-        ..onEmailChanged(TestConstants.validEmail)
-        ..onPasswordChanged(TestConstants.validPassword);
+          // Fill in form
+          ..onEmailChanged(TestConstants.validEmail)
+          ..onPasswordChanged(TestConstants.validPassword);
         await wait(TestConstants.mediumDelay);
 
         expect(container.read(signInFormProvider).isValid, isTrue);
