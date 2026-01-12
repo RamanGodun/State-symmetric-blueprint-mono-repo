@@ -173,12 +173,12 @@ scripts:
   kill:xcode: bash scripts/xcode_troubleshooting/kill_xcode.sh
   #
   # Clean iOS build artifacts for a specific app
-  clean:ios:state_symmetric_on_riverpod: bash scripts/xcode_troubleshooting/clean_ios.sh riverpod
-  clean:ios:state_symmetric_on_cubit: bash scripts/xcode_troubleshooting/clean_ios.sh cubit
+  clean:ios:app_on_riverpod: bash scripts/xcode_troubleshooting/clean_ios.sh riverpod
+  clean:ios:app_on_cubit: bash scripts/xcode_troubleshooting/clean_ios.sh cubit
   #
   # Reset iOS build completely (clean + remove DerivedData)
-  reset:ios:state_symmetric_on_riverpod: bash scripts/xcode_troubleshooting/reset_ios.sh riverpod
-  reset:ios:state_symmetric_on_cubit: bash scripts/xcode_troubleshooting/reset_ios.sh cubit
+  reset:ios:app_on_riverpod: bash scripts/xcode_troubleshooting/reset_ios.sh riverpod
+  reset:ios:app_on_cubit: bash scripts/xcode_troubleshooting/reset_ios.sh cubit
   #
   # Quick fix for "concurrent builds" error (kill + clean current directory)
   fix:ios: bash scripts/xcode_troubleshooting/fix_ios.sh

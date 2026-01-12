@@ -1,8 +1,6 @@
 {
-  "model": "claude-sonnet-4-5-20250929",
-
   "_comment_working_branch": "⚙️ SET YOUR WORKING BRANCH HERE - Claude will auto-checkout to this branch on session start",
-  "workingBranch": "feat/monorepo-setup",
+  "workingBranch": "refactor/optimize-files-structure",
   "useWorktrees": false,
 
   "permissions": {

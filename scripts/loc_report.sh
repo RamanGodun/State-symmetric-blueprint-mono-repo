@@ -87,47 +87,51 @@ half_num() { awk "BEGIN { printf \"%d\", ($1/2)+0.5 }"; }
 # --- BUCKET 2: Reused Core (Domain/Data) -------------------------------------
 # SCSM Track
 SCSM_CORE_FILES=(
-  "packages/features/lib/src/auth/data/auth_repo_implementations/sign_in_repo_impl.dart"
-  "packages/features/lib/src/auth/data/auth_repo_implementations/sign_up_repo_impl.dart"
-  "packages/features/lib/src/auth/data/remote_database_contract.dart"
-  "packages/features/lib/src/auth/data/remote_database_impl.dart"
-  "packages/features/lib/src/auth/domain/use_cases/sign_in.dart"
-  "packages/features/lib/src/auth/domain/use_cases/sign_up.dart"
-  "packages/features/lib/src/auth/domain/repo_contracts.dart"
-  "packages/features/lib/src/password_changing_or_reset/data/password_actions_repo_impl.dart"
-  "packages/features/lib/src/password_changing_or_reset/data/remote_database_contract.dart"
-  "packages/features/lib/src/password_changing_or_reset/data/remote_database_impl.dart"
-  "packages/features/lib/src/password_changing_or_reset/domain/password_actions_use_case.dart"
-  "packages/features/lib/src/password_changing_or_reset/domain/repo_contract.dart"
+  "packages/features_dd_layers/lib/src/auth/data/auth_repo_implementations/sign_in_repo_impl.dart"
+  "packages/features_dd_layers/lib/src/auth/data/auth_repo_implementations/sign_up_repo_impl.dart"
+  "packages/features_dd_layers/lib/src/auth/data/remote_database_contract.dart"
+  "packages/features_dd_layers/lib/src/auth/data/remote_database_impl.dart"
+  "packages/features_dd_layers/lib/src/auth/domain/use_cases/sign_in.dart"
+  "packages/features_dd_layers/lib/src/auth/domain/use_cases/sign_up.dart"
+  "packages/features_dd_layers/lib/src/auth/domain/repo_contracts.dart"
+  "packages/features_dd_layers/lib/src/password_changing_or_reset/data/password_actions_repo_impl.dart"
+  "packages/features_dd_layers/lib/src/password_changing_or_reset/data/remote_database_contract.dart"
+  "packages/features_dd_layers/lib/src/password_changing_or_reset/data/remote_database_impl.dart"
+  "packages/features_dd_layers/lib/src/password_changing_or_reset/domain/password_actions_use_case.dart"
+  "packages/features_dd_layers/lib/src/password_changing_or_reset/domain/repo_contract.dart"
 )
 
 # AVLSM Track
 AVLSM_CORE_FILES=(
-  "packages/features/lib/src/email_verification/data/email_verification_repo_impl.dart"
-  "packages/features/lib/src/email_verification/data/remote_database_contract.dart"
-  "packages/features/lib/src/email_verification/data/remote_database_impl.dart"
-  "packages/features/lib/src/email_verification/domain/email_verification_use_case.dart"
-  "packages/features/lib/src/email_verification/domain/repo_contract.dart"
-  "packages/features/lib/src/profile/data/implementation_of_profile_fetch_repo.dart"
-  "packages/features/lib/src/profile/data/remote_database_contract.dart"
-  "packages/features/lib/src/profile/data/remote_database_impl.dart"
-  "packages/features/lib/src/profile/domain/fetch_profile_use_case.dart"
-  "packages/features/lib/src/profile/domain/repo_contract.dart"
+  "packages/features_dd_layers/lib/src/email_verification/data/email_verification_repo_impl.dart"
+  "packages/features_dd_layers/lib/src/email_verification/data/remote_database_contract.dart"
+  "packages/features_dd_layers/lib/src/email_verification/data/remote_database_impl.dart"
+  "packages/features_dd_layers/lib/src/email_verification/domain/email_verification_use_case.dart"
+  "packages/features_dd_layers/lib/src/email_verification/domain/repo_contract.dart"
+  "packages/features_dd_layers/lib/src/profile/data/implementation_of_profile_fetch_repo.dart"
+  "packages/features_dd_layers/lib/src/profile/data/remote_database_contract.dart"
+  "packages/features_dd_layers/lib/src/profile/data/remote_database_impl.dart"
+  "packages/features_dd_layers/lib/src/profile/domain/fetch_profile_use_case.dart"
+  "packages/features_dd_layers/lib/src/profile/domain/repo_contract.dart"
+  "packages/features_dd_layers/lib/src/auth/data/auth_repo_implementations/sign_out_repo_impl.dart"
+  "packages/features_dd_layers/lib/src/auth/domain/use_cases/sign_out.dart"
 )
 
 # Shared stateless widgets
 SHARED_WIDGET_FILES=(
-  "packages/core/lib/src/base_modules/localization/module_widgets/text_widget.dart"
-  "packages/core/lib/src/base_modules/form_fields/form_field_factory.dart"
-  "packages/core/lib/src/base_modules/form_fields/widgets/app_form_field.dart"
-  "packages/core/lib/src/base_modules/form_fields/widgets/password_visibility_icon.dart"
-  "packages/core/lib/src/shared_presentation_layer/widgets_shared/buttons/filled_button.dart"
-  "packages/core/lib/src/shared_presentation_layer/widgets_shared/buttons/text_button.dart"
-  "packages/core/lib/src/shared_presentation_layer/widgets_shared/app_bar.dart"
-  "packages/core/lib/src/shared_presentation_layer/widgets_shared/loader.dart"
-  "packages/core/lib/src/shared_presentation_layer/widgets_shared/footer/footer_guard_while_loading.dart"
-  "packages/core/lib/src/shared_presentation_layer/widgets_shared/footer/inherited_footer_guard.dart"
-  "packages/core/lib/src/shared_presentation_layer/widgets_shared/key_value_text_widget.dart"
+  "packages/shared_layers/lib/src/shared_presentation_layer/pages/splash_page.dart"
+  "packages/shared_widgets/lib/src/footers/footer_guard_while_loading.dart"
+  "packages/shared_widgets/lib/src/footers/inherited_footer_guard.dart"
+  "packages/shared_widgets/lib/src/loaders/loader.dart"
+  "packages/shared_widgets/lib/src/buttons/filled_button.dart"
+  "packages/shared_widgets/lib/src/buttons/submit_button.dart"
+  "packages/shared_widgets/lib/src/buttons/text_button.dart"
+  "packages/shared_widgets/lib/src/text_widgets/text_widget.dart"
+  "packages/shared_core_modules/lib/src/form_fields/form_field_factory.dart"
+  "packages/shared_core_modules/lib/src/form_fields/widgets/app_form_field.dart"
+  "packages/shared_core_modules/lib/src/form_fields/widgets/password_visibility_icon.dart"
+  "packages/shared_widgets/lib/src/bars/app_bar.dart"
+  "packages/shared_widgets/lib/src/text_widgets/key_value_text_widget.dart"
 )
 
 # --- BUCKET 3: SM+INIT (per track & app) -------------------------------------
@@ -143,7 +147,8 @@ SCSM_SM_CB_FILES=(
   "apps/app_on_cubit/lib/features/password_changing_or_reset/reset_password/cubits/reset_password_cubit.dart"
 )
 SCSM_INIT_CB_FILES=(
-  "apps/app_on_cubit/lib/app_bootstrap/di_container/modules/auth_module.dart"
+  "apps/app_on_cubit/lib/app_bootstrap/di_container/global_di_container.dart"
+  "apps/app_on_cubit/lib/app_bootstrap/di_container/di_container_init.dart"
   "apps/app_on_cubit/lib/app_bootstrap/di_container/modules/password_module.dart"
 )
 
@@ -159,53 +164,60 @@ SCSM_SM_RP_FILES=(
   "apps/app_on_riverpod/lib/features/password_changing_or_reset/reset_password/providers/reset_password__provider.dart"
 )
 SCSM_INIT_RP_FILES=(
-  "packages/riverpod_adapter/lib/src/features/features_providers/auth/data_layer_providers/data_layer_providers.dart"
-  "packages/riverpod_adapter/lib/src/features/features_providers/auth/domain_layer_providers/use_cases_providers.dart"
-  "packages/riverpod_adapter/lib/src/features/features_providers/password_changing_or_reset/data_layer_providers/data_layer_providers.dart"
-  "packages/riverpod_adapter/lib/src/features/features_providers/password_changing_or_reset/domain_layer_providers/use_cases_provider.dart"
+  "apps/app_on_riverpod/lib/app_bootstrap/di_config_sync.dart"
+  "packages/adapters_for_riverpod/lib/src/features/auth/data_layer_providers/data_layer_providers.dart"
+  "packages/adapters_for_riverpod/lib/src/features/auth/domain_layer_providers/use_cases_providers.dart"
+  "packages/adapters_for_riverpod/lib/src/features/password_changing_or_reset/data_layer_providers/data_layer_providers.dart"
+  "packages/adapters_for_riverpod/lib/src/features/password_changing_or_reset/domain_layer_providers/use_cases_provider.dart"
 )
 
 # AVLSM Track — BLoC app
 AVLSM_SM_CB_FILES=(
+  "apps/app_on_cubit/lib/features/auth/sign_out/sign_out_cubit/sign_out_cubit.dart"
   "apps/app_on_cubit/lib/features/email_verification/email_verification_cubit/email_verification_cubit.dart"
   "apps/app_on_cubit/lib/features/profile/cubit/profile_page_cubit.dart"
 )
 AVLSM_INIT_CB_FILES=(
+  "apps/app_on_cubit/lib/app_bootstrap/di_container/global_di_container.dart"
+  "apps/app_on_cubit/lib/app_bootstrap/di_container/di_container_init.dart"
   "apps/app_on_cubit/lib/app_bootstrap/di_container/modules/email_verification.dart"
   "apps/app_on_cubit/lib/app_bootstrap/di_container/modules/profile_module.dart"
+  "apps/app_on_cubit/lib/app_bootstrap/di_container/modules/warmup_module.dart"
 )
 
 # AVLSM Track — Riverpod app
 AVLSM_SM_RP_FILES=(
+  "apps/app_on_riverpod/lib/features/auth/sign_out/sign_out_provider.dart"
   "apps/app_on_riverpod/lib/features/email_verification/provider/email_verification_provider.dart"
   "apps/app_on_riverpod/lib/features/profile/providers/profile_page_provider.dart"
 )
 AVLSM_INIT_RP_FILES=(
-  "packages/riverpod_adapter/lib/src/features/features_providers/profile/domain_layer_providers/use_case_provider.dart"
-  "packages/riverpod_adapter/lib/src/features/features_providers/profile/data_layers_providers/data_layer_providers.dart"
-  "packages/riverpod_adapter/lib/src/features/features_providers/email_verification/domain_layer_providers/use_case_provider.dart"
-  "packages/riverpod_adapter/lib/src/features/features_providers/email_verification/data_layer_providers/data_layer_providers.dart"
+  "apps/app_on_riverpod/lib/app_bootstrap/di_config_sync.dart"
+  "packages/adapters_for_riverpod/lib/src/features/email_verification/data_layer_providers/data_layer_providers.dart"
+  "packages/adapters_for_riverpod/lib/src/features/email_verification/domain_layer_providers/use_case_provider.dart"
+  "packages/adapters_for_riverpod/lib/src/features/profile/data_layers_providers/data_layer_providers.dart"
+  "packages/adapters_for_riverpod/lib/src/features/profile/domain_layer_providers/use_case_provider.dart"
 )
 
 # --- BUCKET 4: State Models --------------------------------------------------
 # SCSM Track
 SCSM_FORM_STATES=(
-  "packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/sign_in.dart"
-  "packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/sign_up.dart"
-  "packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/reset_password.dart"
-  "packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/change_password.dart"
+  "packages/shared_core_modules/lib/src/form_fields/shared_form_fields_states/sign_in.dart"
+  "packages/shared_core_modules/lib/src/form_fields/shared_form_fields_states/sign_up.dart"
+  "packages/shared_core_modules/lib/src/form_fields/shared_form_fields_states/reset_password.dart"
+  "packages/shared_core_modules/lib/src/form_fields/shared_form_fields_states/change_password.dart"
 )
-SCSM_SUBMISSION_STATE="packages/core/lib/src/shared_presentation_layer/shared_states/submission_state.dart"
+SCSM_SUBMISSION_STATE="packages/shared_layers/lib/src/shared_presentation_layer/state_models/submission_state.dart"
 
 # AVLSM Track
 AVLSM_BASELINE_MODEL_CANDIDATES=(
-  "packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_value_for_bloc.dart"
+  "packages/adapters_for_bloc/lib/src/presentation_shared/async_value_state_model/async_value_for_bloc.dart"
 )
 
-AVLSM_SHARED_MODEL="packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_value_for_bloc.dart"
-AVLSM_SHARED_BASE_CUBIT="packages/bloc_adapter/lib/src/core/presentation_shared/cubits/async_state_base_cubit.dart"
-AVLSM_SHARED_INTROSPECTION_BLOC="packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_state_introspection_bloc.dart"
-AVLSM_SHARED_INTROSPECTION_RP="packages/riverpod_adapter/lib/src/core/shared_presentation/async_state/async_state_introspection.dart"
+AVLSM_SHARED_MODEL="packages/adapters_for_bloc/lib/src/presentation_shared/async_value_state_model/async_value_for_bloc.dart"
+AVLSM_SHARED_BASE_CUBIT="packages/adapters_for_bloc/lib/src/presentation_shared/async_value_state_model/cubits/async_state_base_cubit.dart"
+AVLSM_SHARED_INTROSPECTION_BLOC="packages/adapters_for_bloc/lib/src/presentation_shared/async_value_state_model/async_state_introspection_bloc.dart"
+AVLSM_SHARED_INTROSPECTION_RP="packages/adapters_for_riverpod/lib/src/shared_presentation/async_state_model/async_state_introspection.dart"
 
 # --- BUCKET 5: Overhead ------------------------------------------------------
 # AVLSM Track (one-time, round-trip)
@@ -214,24 +226,24 @@ AVLSM_OH_FILES=(
   "$AVLSM_SHARED_BASE_CUBIT"
   "$AVLSM_SHARED_INTROSPECTION_BLOC"
   "$AVLSM_SHARED_INTROSPECTION_RP"
-  "packages/bloc_adapter/lib/src/core/presentation_shared/side_effects_listeners/adapter_for_async_value_flow.dart"
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/side_effects_listeners/adapter_for_async_value_flow.dart"
-  "packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/adapter_for_submit_button.dart"
-  "packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/adapter_for_footer_guard.dart"
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/adapter_for_submit_button.dart"
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/adapter_for_footer_guard.dart"
+  "packages/adapters_for_bloc/lib/src/presentation_shared/side_effects_listeners/adapter_for_async_value_flow.dart"
+  "packages/adapters_for_riverpod/lib/src/shared_presentation/side_effects_listeners/adapter_for_async_value_flow.dart"
+  "packages/adapters_for_bloc/lib/src/presentation_shared/general_shared_widgets/adapter_for_footer_guard.dart"
+  "packages/adapters_for_bloc/lib/src/presentation_shared/general_shared_widgets/adapter_for_submit_button.dart"
+  "packages/adapters_for_riverpod/lib/src/shared_presentation/widgets_shared/adapter_for_footer_guard.dart"
+  "packages/adapters_for_riverpod/lib/src/shared_presentation/widgets_shared/adapter_for_submit_button.dart"
 )
 
 # SCSM Track (per-SM, Lazy Parity)
 SCSM_OH_CB_FILES=(
-  "packages/bloc_adapter/lib/src/core/presentation_shared/side_effects_listeners/adapter_for_submission_flow.dart"
-  "packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/adapter_for_submit_button.dart"
-  "packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/adapter_for_footer_guard.dart"
+  "packages/adapters_for_bloc/lib/src/presentation_shared/side_effects_listeners/adapter_for_submission_flow.dart"
+  "packages/adapters_for_bloc/lib/src/presentation_shared/general_shared_widgets/adapter_for_footer_guard.dart"
+  "packages/adapters_for_bloc/lib/src/presentation_shared/general_shared_widgets/adapter_for_submit_button.dart"
 )
 SCSM_OH_RP_FILES=(
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/side_effects_listeners/adapter_for_submission_flow.dart"
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/adapter_for_submit_button.dart"
-  "packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/adapter_for_footer_guard.dart"
+  "packages/adapters_for_riverpod/lib/src/shared_presentation/side_effects_listeners/adapter_for_submission_flow.dart"
+  "packages/adapters_for_riverpod/lib/src/shared_presentation/widgets_shared/adapter_for_footer_guard.dart"
+  "packages/adapters_for_riverpod/lib/src/shared_presentation/widgets_shared/adapter_for_submit_button.dart"
 )
 
 # --- BUCKET 6: Presentation --------------------------------------------------
@@ -246,7 +258,7 @@ SCSM_PRESENTATION_CB_FILES=(
   "apps/app_on_cubit/lib/features/password_changing_or_reset/change_password/widgets_for_change_password.dart"
   "apps/app_on_cubit/lib/features/password_changing_or_reset/reset_password/reset_password__page.dart"
   "apps/app_on_cubit/lib/features/password_changing_or_reset/reset_password/widgets_for_reset_password_page.dart"
-  "packages/core/lib/src/shared_presentation_layer/side_effects_listeneres/submission_side_effects_config.dart"
+  "packages/shared_layers/lib/src/shared_presentation_layer/side_effects_listeneres/submission_side_effects_config.dart"
 )
 
 # SCSM Track — Riverpod app
@@ -258,15 +270,16 @@ SCSM_PRESENTATION_RP_FILES=(
   "apps/app_on_riverpod/lib/features/auth/sign_up/widgets_for_sign_up_page.dart"
   "apps/app_on_riverpod/lib/features/password_changing_or_reset/change_password/change_password_page.dart"
   "apps/app_on_riverpod/lib/features/password_changing_or_reset/change_password/widgets_for_change_password.dart"
-  "apps/app_on_riverpod/lib/features/password_changing_or_reset/reset_password/reset_password__page.dart"
+  "apps/app_on_riverpod/lib/features/password_changing_or_reset/reset_password/reset_password_page.dart"
   "apps/app_on_riverpod/lib/features/password_changing_or_reset/reset_password/widgets_for_reset_password_page.dart"
-  "packages/core/lib/src/shared_presentation_layer/side_effects_listeneres/submission_side_effects_config.dart"
+  "packages/shared_layers/lib/src/shared_presentation_layer/side_effects_listeneres/submission_side_effects_config.dart"
 )
 
 # AVLSM Track — BLoC app
 AVLSM_PRESENTATION_CB_FILES=(
   "apps/app_on_cubit/lib/features/email_verification/email_verification_page.dart"
   "apps/app_on_cubit/lib/features/email_verification/widgets_for_email_verification_page.dart"
+  "apps/app_on_cubit/lib/features/auth/sign_out/sign_out_widgets.dart"
   "apps/app_on_cubit/lib/features/profile/profile_page.dart"
   "apps/app_on_cubit/lib/features/profile/widgets_for_profile_page.dart"
 )
@@ -275,6 +288,7 @@ AVLSM_PRESENTATION_CB_FILES=(
 AVLSM_PRESENTATION_RP_FILES=(
   "apps/app_on_riverpod/lib/features/email_verification/email_verification_page.dart"
   "apps/app_on_riverpod/lib/features/email_verification/widgets_for_email_verification_page.dart"
+  "apps/app_on_riverpod/lib/features/auth/sign_out/sign_out_widgets.dart"
   "apps/app_on_riverpod/lib/features/profile/profile_page.dart"
   "apps/app_on_riverpod/lib/features/profile/widgets_for_profile_page.dart"
 )

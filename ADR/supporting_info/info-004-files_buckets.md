@@ -8,32 +8,32 @@
 
 ### Feature packages
 
-- packages/features/lib/src/email_verification/data/email_verification_repo_impl.dart
-- packages/features/lib/src/email_verification/data/remote_database_contract.dart
-- packages/features/lib/src/email_verification/data/remote_database_impl.dart
-- packages/features/lib/src/email_verification/domain/email_verification_use_case.dart
-- packages/features/lib/src/email_verification/domain/repo_contract.dart
-- packages/features/lib/src/profile/data/implementation_of_profile_fetch_repo.dart
-- packages/features/lib/src/profile/data/remote_database_contract.dart
-- packages/features/lib/src/profile/data/remote_database_impl.dart
-- packages/features/lib/src/profile/domain/fetch_profile_use_case.dart
-- packages/features/lib/src/profile/domain/repo_contract.dart
-- packages/features/lib/src/auth/data/auth_repo_implementations/sign_out_repo_impl.dart
-- packages/features/lib/src/auth/domain/use_cases/sign_out.dart
+- packages/features_dd_layers/lib/src/email_verification/data/email_verification_repo_impl.dart
+- packages/features_dd_layers/lib/src/email_verification/data/remote_database_contract.dart
+- packages/features_dd_layers/lib/src/email_verification/data/remote_database_impl.dart
+- packages/features_dd_layers/lib/src/email_verification/domain/email_verification_use_case.dart
+- packages/features_dd_layers/lib/src/email_verification/domain/repo_contract.dart
+- packages/features_dd_layers/lib/src/profile/data/implementation_of_profile_fetch_repo.dart
+- packages/features_dd_layers/lib/src/profile/data/remote_database_contract.dart
+- packages/features_dd_layers/lib/src/profile/data/remote_database_impl.dart
+- packages/features_dd_layers/lib/src/profile/domain/fetch_profile_use_case.dart
+- packages/features_dd_layers/lib/src/profile/domain/repo_contract.dart
+- packages/features_dd_layers/lib/src/auth/data/auth_repo_implementations/sign_out_repo_impl.dart
+- packages/features_dd_layers/lib/src/auth/domain/use_cases/sign_out.dart
 
 ### Shared stateless widgets
 
-- `packages/core/lib/src/shared_presentation_layer/pages_shared/splash_page.dart`
-- `packages/core/lib/src/shared_presentation_layer/widgets_shared/footer/footer_guard_while_loading.dart`
-- `packages/core/lib/src/shared_presentation_layer/widgets_shared/footer/inherited_footer_guard.dart`
-- `packages/core/lib/src/shared_presentation_layer/widgets_shared/loader.dart`
-- `packages/core/lib/src/shared_presentation_layer/widgets_shared/buttons/filled_button.dart`
-- `packages/core/lib/src/shared_presentation_layer/widgets_shared/buttons/submit_button.dart`
-- `packages/core/lib/src/shared_presentation_layer/widgets_shared/buttons/text_button.dart`
-- `packages/core/lib/src/base_modules/localization/module_widgets/text_widget.dart`
-- `packages/core/lib/src/base_modules/form_fields/form_field_factory.dart`
-- `packages/core/lib/src/base_modules/form_fields/widgets/app_form_field.dart`
-- `packages/core/lib/src/base_modules/form_fields/widgets/password_visibility_icon.dart`
+- `packages/shared_layers/lib/src/shared_presentation_layer/pages/splash_page.dart`
+- `packages/shared_widgets/lib/src/footers/footer_guard_while_loading.dart`
+- `packages/shared_widgets/lib/src/footers/inherited_footer_guard.dart`
+- `packages/shared_widgets/lib/src/loaders/loader.dart`
+- `packages/shared_widgets/lib/src/buttons/filled_button.dart`
+- `packages/shared_widgets/lib/src/buttons/submit_button.dart`
+- `packages/shared_widgets/lib/src/buttons/text_button.dart`
+- `packages/shared_widgets/lib/src/text_widgets/text_widget.dart`
+- `packages/shared_core_modules/lib/src/form_fields/form_field_factory.dart`
+- `packages/shared_core_modules/lib/src/form_fields/widgets/app_form_field.dart`
+- `packages/shared_core_modules/lib/src/form_fields/widgets/password_visibility_icon.dart`
 
 ---
 
@@ -41,28 +41,28 @@
 
 ### Feature packages
 
-- packages/features/lib/src/auth/data/auth_repo_implementations/sign_in_repo_impl.dart
-- packages/features/lib/src/auth/data/auth_repo_implementations/sign_up_repo_impl.dart
-- packages/features/lib/src/auth/data/remote_database_contract.dart
-- packages/features/lib/src/auth/data/remote_database_impl.dart
-- packages/features/lib/src/auth/domain/use_cases/sign_in.dart
-- packages/features/lib/src/auth/domain/use_cases/sign_up.dart
-- packages/features/lib/src/auth/domain/repo_contracts.dart
-- packages/features/lib/src/password_changing_or_reset/data/password_actions_repo_impl.dart
-- packages/features/lib/src/password_changing_or_reset/data/remote_database_contract.dart
-- packages/features/lib/src/password_changing_or_reset/data/remote_database_impl.dart
-- packages/features/lib/src/password_changing_or_reset/domain/password_actions_use_case.dart
-- packages/features/lib/src/password_changing_or_reset/domain/repo_contract.dart
+- packages/features_dd_layers/lib/src/auth/data/auth_repo_implementations/sign_in_repo_impl.dart
+- packages/features_dd_layers/lib/src/auth/data/auth_repo_implementations/sign_up_repo_impl.dart
+- packages/features_dd_layers/lib/src/auth/data/remote_database_contract.dart
+- packages/features_dd_layers/lib/src/auth/data/remote_database_impl.dart
+- packages/features_dd_layers/lib/src/auth/domain/use_cases/sign_in.dart
+- packages/features_dd_layers/lib/src/auth/domain/use_cases/sign_up.dart
+- packages/features_dd_layers/lib/src/auth/domain/repo_contracts.dart
+- packages/features_dd_layers/lib/src/password_changing_or_reset/data/password_actions_repo_impl.dart
+- packages/features_dd_layers/lib/src/password_changing_or_reset/data/remote_database_contract.dart
+- packages/features_dd_layers/lib/src/password_changing_or_reset/data/remote_database_impl.dart
+- packages/features_dd_layers/lib/src/password_changing_or_reset/domain/password_actions_use_case.dart
+- packages/features_dd_layers/lib/src/password_changing_or_reset/domain/repo_contract.dart
 
 ### Shared stateless widgets
 
-- `packages/core/lib/src/shared_presentation_layer/pages_shared/splash_page.dart`
-- `packages/core/lib/src/shared_presentation_layer/widgets_shared/loader.dart`
-- `packages/core/lib/src/shared_presentation_layer/widgets_shared/buttons/filled_button.dart`
-- `packages/core/lib/src/shared_presentation_layer/widgets_shared/buttons/text_button.dart`
-- `packages/core/lib/src/base_modules/localization/module_widgets/text_widget.dart`
-- `packages/core/lib/src/shared_presentation_layer/widgets_shared/app_bar.dart`
-- `packages/core/lib/src/shared_presentation_layer/widgets_shared/key_value_text_widget.dart`
+- `packages/shared_layers/lib/src/shared_presentation_layer/pages/splash_page.dart`
+- `packages/shared_widgets/lib/src/loaders/loader.dart`
+- `packages/shared_widgets/lib/src/buttons/filled_button.dart`
+- `packages/shared_widgets/lib/src/buttons/text_button.dart`
+- `packages/shared_widgets/lib/src/text_widgets/text_widget.dart`
+- `packages/shared_widgets/lib/src/bars/app_bar.dart`
+- `packages/shared_widgets/lib/src/text_widgets/key_value_text_widget.dart`
 
 ---
 
@@ -88,10 +88,10 @@
 
 1. apps/app_on_riverpod/lib/app_bootstrap/di_config_sync.dart
    Далі провайдери для шарів Data/Domain, що знаходяться у відповідних теках
-2. packages/riverpod_adapter/lib/src/features/features_providers/email_verification/data_layer_providers/data_layer_providers.dart
-3. packages/riverpod_adapter/lib/src/features/features_providers/email_verification/domain_layer_providers/use_case_provider.dart
-4. packages/riverpod_adapter/lib/src/features/features_providers/profile/data_layers_providers/data_layer_providers.dart
-5. packages/riverpod_adapter/lib/src/features/features_providers/profile/domain_layer_providers/use_case_provider.dart
+2. packages/adapters_for_riverpod/lib/src/features/email_verification/data_layer_providers/data_layer_providers.dart
+3. packages/adapters_for_riverpod/lib/src/features/email_verification/domain_layer_providers/use_case_provider.dart
+4. packages/adapters_for_riverpod/lib/src/features/profile/data_layers_providers/data_layer_providers.dart
+5. packages/adapters_for_riverpod/lib/src/features/profile/domain_layer_providers/use_case_provider.dart
    Далі самі провайдери шару презентації
 6. apps/app_on_riverpod/lib/features/auth/sign_out/sign_out_provider.dart
 7. apps/app_on_riverpod/lib/features/email_verification/provider/email_verification_provider.dart
@@ -120,10 +120,10 @@
 
 1. apps/app_on_riverpod/lib/app_bootstrap/di_config_sync.dart
    Далі провайдери для шарів Data/Domain , що знаходяться у відповідних теках
-2. packages/riverpod_adapter/lib/src/features/features_providers/auth/data_layer_providers/data_layer_providers.dart
-3. packages/riverpod_adapter/lib/src/features/features_providers/auth/domain_layer_providers/use_cases_providers.dart
-4. packages/riverpod_adapter/lib/src/features/features_providers/password_changing_or_reset/data_layer_providers/data_layer_providers.dart
-5. packages/riverpod_adapter/lib/src/features/features_providers/password_changing_or_reset/domain_layer_providers/use_cases_provider.dart
+2. packages/adapters_for_riverpod/lib/src/features/auth/data_layer_providers/data_layer_providers.dart
+3. packages/adapters_for_riverpod/lib/src/features/auth/domain_layer_providers/use_cases_providers.dart
+4. packages/adapters_for_riverpod/lib/src/features/password_changing_or_reset/data_layer_providers/data_layer_providers.dart
+5. packages/adapters_for_riverpod/lib/src/features/password_changing_or_reset/domain_layer_providers/use_cases_provider.dart
    Далі самі провайдери шару презентації
 6. apps/app_on_riverpod/lib/features/auth/sign_in/providers/input_form_fields_provider.dart
 7. apps/app_on_riverpod/lib/features/auth/sign_in/providers/sign_in\_\_provider.dart
@@ -145,14 +145,14 @@
 
 ### Для додатку на блоці
 
-1. packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_value_for_bloc.dart
-2. packages/bloc_adapter/lib/src/core/presentation_shared/cubits/async_state_base_cubit.dart (цей базовий кубіт іде в пакеті з моделю)
-3. packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_state_introspection_bloc.dart (хелпер для стейт моделі)
+1. packages/adapters_for_bloc/lib/src/presentation_shared/async_value_state_model/async_value_for_bloc.dart
+2. packages/adapters_for_bloc/lib/src/presentation_shared/async_value_state_model/cubits/async_state_base_cubit.dart (цей базовий кубіт іде в пакеті з моделю)
+3. packages/adapters_for_bloc/lib/src/presentation_shared/async_value_state_model/async_state_introspection_bloc.dart (хелпер для стейт моделі)
 
 ### Для додатку на ріверподі
 
 1. Немає, адже використовується готова AsyncValue стейт модель
-2. packages/riverpod_adapter/lib/src/core/shared_presentation/async_state/async_state_introspection.dart (хелпер для стейт моделі)
+2. packages/adapters_for_riverpod/lib/src/shared_presentation/async_state_model/async_state_introspection.dart (хелпер для стейт моделі)
 
 ---
 
@@ -160,19 +160,19 @@
 
 ### Для додатку на блоці
 
-1. packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/sign_in.dart
-2. packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/sign_up.dart
-3. packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/reset_password.dart
-4. packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/change_password.dart
-5. packages/core/lib/src/shared_presentation_layer/shared_states/submission_state.dart
+1. packages/shared_core_modules/lib/src/form_fields/shared_form_fields_states/sign_in.dart
+2. packages/shared_core_modules/lib/src/form_fields/shared_form_fields_states/sign_up.dart
+3. packages/shared_core_modules/lib/src/form_fields/shared_form_fields_states/reset_password.dart
+4. packages/shared_core_modules/lib/src/form_fields/shared_form_fields_states/change_password.dart
+5. packages/shared_layers/lib/src/shared_presentation_layer/state_models/submission_state.dart
 
 ### Для додатку на ріверподі
 
-1. packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/sign_in.dart
-2. packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/sign_up.dart
-3. packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/reset_password.dart
-4. packages/core/lib/src/base_modules/form_fields/shared_form_fields_states/change_password.dart
-5. packages/core/lib/src/shared_presentation_layer/shared_states/submission_state.dart
+1. packages/shared_core_modules/lib/src/form_fields/shared_form_fields_states/sign_in.dart
+2. packages/shared_core_modules/lib/src/form_fields/shared_form_fields_states/sign_up.dart
+3. packages/shared_core_modules/lib/src/form_fields/shared_form_fields_states/reset_password.dart
+4. packages/shared_core_modules/lib/src/form_fields/shared_form_fields_states/change_password.dart
+5. packages/shared_layers/lib/src/shared_presentation_layer/state_models/submission_state.dart
 
 ---
 
@@ -184,16 +184,16 @@
 
 ### Незалежно чи фіча написана на блоціб чи на ріверподі, разово додаємо оверхед і далі вільно користуємося (тобто для усередненого оверхеду, потрібно ці файли поділити на 2)
 
-1. packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_value_for_bloc.dart
-2. packages/bloc_adapter/lib/src/core/presentation_shared/cubits/async_state_base_cubit.dart (цей базовий кубіт іде в пакеті з моделю)
-3. packages/bloc_adapter/lib/src/core/presentation_shared/async_state/async_state_introspection_bloc.dart (хелпер для стейт моделі AsynValueForBloc)
-4. packages/riverpod_adapter/lib/src/core/shared_presentation/async_state/async_state_introspection.dart (хелпер для стейт моделі AsynValue)
-5. packages/bloc_adapter/lib/src/core/presentation_shared/side_effects_listeners/adapter_for_async_value_flow.dart
-6. packages/riverpod_adapter/lib/src/core/shared_presentation/side_effects_listeners/adapter_for_async_value_flow.dart
-7. packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/adapter_for_footer_guard.dart
-8. packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/adapter_for_submit_button.dart
-9. packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/adapter_for_footer_guard.dart
-10. packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/adapter_for_submit_button.dart
+1. packages/adapters_for_bloc/lib/src/presentation_shared/async_value_state_model/async_value_for_bloc.dart
+2. packages/adapters_for_bloc/lib/src/presentation_shared/async_value_state_model/cubits/async_state_base_cubit.dart (цей базовий кубіт іде в пакеті з моделю)
+3. packages/adapters_for_bloc/lib/src/presentation_shared/async_value_state_model/async_state_introspection_bloc.dart (хелпер для стейт моделі AsynValueForBloc)
+4. packages/adapters_for_riverpod/lib/src/shared_presentation/async_state_model/async_state_introspection.dart (хелпер для стейт моделі AsynValue)
+5. packages/adapters_for_bloc/lib/src/presentation_shared/side_effects_listeners/adapter_for_async_value_flow.dart
+6. packages/adapters_for_riverpod/lib/src/shared_presentation/side_effects_listeners/adapter_for_async_value_flow.dart
+7. packages/adapters_for_bloc/lib/src/presentation_shared/general_shared_widgets/adapter_for_footer_guard.dart
+8. packages/adapters_for_bloc/lib/src/presentation_shared/general_shared_widgets/adapter_for_submit_button.dart
+9. packages/adapters_for_riverpod/lib/src/shared_presentation/widgets_shared/adapter_for_footer_guard.dart
+10. packages/adapters_for_riverpod/lib/src/shared_presentation/widgets_shared/adapter_for_submit_button.dart
 
 ---
 
@@ -201,15 +201,15 @@
 
 ### Для додатку на блоці (тобто коли пишемо фічу на кубіту, а відповідні адаптери для ріверподу - у "Lazy parity mode')
 
-1. packages/bloc_adapter/lib/src/core/presentation_shared/side_effects_listeners/adapter_for_submission_flow.dart
-2. packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/adapter_for_footer_guard.dart
-3. packages/bloc_adapter/lib/src/core/presentation_shared/widgets_shared/adapter_for_submit_button.dart
+1. packages/adapters_for_bloc/lib/src/presentation_shared/side_effects_listeners/adapter_for_submission_flow.dart
+2. packages/adapters_for_bloc/lib/src/presentation_shared/general_shared_widgets/adapter_for_footer_guard.dart
+3. packages/adapters_for_bloc/lib/src/presentation_shared/general_shared_widgets/adapter_for_submit_button.dart
 
 ### Для додатку на ріверподі (тобто коли пишемо фічу на ріверподі, а відповідні адаптери для кубіту - у "Lazy parity mode')
 
-1. packages/riverpod_adapter/lib/src/core/shared_presentation/side_effects_listeners/adapter_for_submission_flow.dart
-2. packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/adapter_for_footer_guard.dart
-3. packages/riverpod_adapter/lib/src/core/shared_presentation/shared_widgets/adapter_for_submit_button.dart
+1. packages/adapters_for_riverpod/lib/src/shared_presentation/side_effects_listeners/adapter_for_submission_flow.dart
+2. packages/adapters_for_riverpod/lib/src/shared_presentation/widgets_shared/adapter_for_footer_guard.dart
+3. packages/adapters_for_riverpod/lib/src/shared_presentation/widgets_shared/adapter_for_submit_button.dart
 
 ---
 
@@ -252,7 +252,7 @@
 - `apps/app_on_cubit/lib/features/password_changing_or_reset/change_password/widgets_for_change_password.dart`
 - `apps/app_on_cubit/lib/features/password_changing_or_reset/reset_password/reset_password__page.dart`
 - `apps/app_on_cubit/lib/features/password_changing_or_reset/reset_password/widgets_for_reset_password_page.dart`
-- `packages/core/lib/src/shared_presentation_layer/side_effects_listeneres/submission_side_effects_config.dart`
+- `packages/shared_layers/lib/src/shared_presentation_layer/side_effects_listeneres/submission_side_effects_config.dart`
 
 ### Для додатку на ріверподі
 
@@ -263,8 +263,8 @@
 - `apps/app_on_riverpod/lib/features/auth/sign_up/widgets_for_sign_up_page.dart`
 - `apps/app_on_riverpod/lib/features/password_changing_or_reset/change_password/change_password_page.dart`
 - `apps/app_on_riverpod/lib/features/password_changing_or_reset/change_password/widgets_for_change_password.dart`
-- `apps/app_on_riverpod/lib/features/password_changing_or_reset/reset_password/reset_password__page.dart`
+- `apps/app_on_riverpod/lib/features/password_changing_or_reset/reset_password/reset_password_page.dart`
 - `apps/app_on_riverpod/lib/features/password_changing_or_reset/reset_password/widgets_for_reset_password_page.dart`
-- `packages/core/lib/src/shared_presentation_layer/side_effects_listeneres/submission_side_effects_config.dart`
+- `packages/shared_layers/lib/src/shared_presentation_layer/side_effects_listeneres/submission_side_effects_config.dart`
 
 ---
