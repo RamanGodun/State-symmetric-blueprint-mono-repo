@@ -115,8 +115,8 @@ ios/vendor/
 ios/vendor/bundle/
 **/vendor/
 **/sf_fonts
-.claude
 CLAUDE.md
+.claude
 
 
 
