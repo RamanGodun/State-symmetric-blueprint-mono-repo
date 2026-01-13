@@ -8,10 +8,20 @@ body:
       label: Scope
       description: Affected package/module in the monorepo
       options:
-        - core
-        - assets
+        - features_dd_layers
+        - shared_core_modules
+        - shared_layers
+        - shared_widgets
+        - shared_utils
+        - adapters_for_bloc
+        - adapters_for_riverpod
+        - adapters_for_firebase
         - app_bootstrap
-        - repo
+        - app_on_cubit
+        - app_on_riverpod
+        - monorepo
+        - ci/cd
+        - docs
     validations:
       required: true
 
