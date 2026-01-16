@@ -53,7 +53,7 @@ final class ProfilePage extends StatelessWidget {
     return BlocProvider<SignOutCubit>(
       create: (_) => di<SignOutCubit>(),
 
-      child: const _ProfileView(),
+      child: const _ProfileScreen(),
     );
   }
 }
@@ -61,14 +61,14 @@ final class ProfilePage extends StatelessWidget {
 ////
 ////
 
-/// 🔌 [_ProfileView] - Provides reactive auth-driven state for state-agnostic UI
-/// ✅ State-symmetric UI via [_ProfileScreen] + [AsyncValueForBLoC]
+/// 🔌 [_ProfileScreen] - Provides reactive auth-driven state for state-agnostic UI
+/// ✅ State-symmetric UI via [_ProfileView] + [AsyncValueForBLoC]
 /// ✅ `AsyncState<T>` adapted to `AsyncStateView<T>`
 /// ✅  Top-level error listeners (SignOut + Profile) are centralized
 //
-final class _ProfileView extends StatelessWidget {
+final class _ProfileScreen extends StatelessWidget {
   ///------------------------------------------
-  const _ProfileView();
+  const _ProfileScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ final class _ProfileView extends StatelessWidget {
       ],
 
       /// ♻️ Render state-agnostic UI (identical to same widget on app with Riverpod)
-      child: _ProfileScreen(state: asyncState),
+      child: _ProfileView(state: asyncState),
     );
     //;
   }
@@ -94,12 +94,12 @@ final class _ProfileView extends StatelessWidget {
 ////
 ////
 
-/// 📄 [_ProfileScreen] — State-symmetric rendering via [AsyncValueForBLoC]
+/// 📄 [_ProfileView] — State-symmetric rendering via [AsyncValueForBLoC]
 /// ✅ Symmetric widget used in Riverpod app for parity
 //
-final class _ProfileScreen extends StatelessWidget {
+final class _ProfileView extends StatelessWidget {
   ///--------------------------------------------
-  const _ProfileScreen({required this.state});
+  const _ProfileView({required this.state});
   //
   final AsyncValueForBLoC<UserEntity> state;
 

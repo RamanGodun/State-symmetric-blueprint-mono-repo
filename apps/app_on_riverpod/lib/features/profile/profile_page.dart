@@ -39,7 +39,7 @@ import 'package:shared_widgets/public_api/text_widgets.dart';
 part 'widgets_for_profile_page.dart';
 
 /// 👤 [ProfilePage] - Entry point for profile feature
-/// ✅ State-symmetric UI via [_ProfileScreen] + [AsyncValue]
+/// ✅ State-symmetric UI via [_ProfileView] + [AsyncValue]
 /// ✅ `AsyncValue<T>` adapted to `AsyncStateView<T>`
 /// ✅  Top-level error listeners (SignOut + Profile) are centralized
 //
@@ -62,7 +62,7 @@ final class ProfilePage extends ConsumerWidget {
       ],
       //
       /// ♻️ Render state-agnostic UI (identical to same widget on app with BLoC)
-      child: _ProfileScreen(state: asyncUser),
+      child: _ProfileView(state: asyncUser),
     );
   }
 }
@@ -70,12 +70,12 @@ final class ProfilePage extends ConsumerWidget {
 ////
 ////
 
-/// 📄 [_ProfileScreen] — State-symmetric rendering via [AsyncValue]
+/// 📄 [_ProfileView] — State-symmetric rendering via [AsyncValue]
 /// ✅ Symmetric widget used in BLoC app for parity
 //
-final class _ProfileScreen extends StatelessWidget {
+final class _ProfileView extends StatelessWidget {
   ///--------------------------------------------
-  const _ProfileScreen({required this.state});
+  const _ProfileView({required this.state});
   //
   final AsyncValue<UserEntity> state;
 
