@@ -1,3 +1,5 @@
+.gitignore
+
 # Flutter
 .dart_tool/
 .packages
@@ -50,5 +52,5 @@ coverage/
 _for_each_project
 .claude
 .husky
-TODO.md
+CLAUDE.md
 
